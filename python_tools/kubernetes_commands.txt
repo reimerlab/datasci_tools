@@ -1,0 +1,5 @@
+kubectl cluster-info
+kubectl get pods --namespace=jupyterhub
+
+To connect to a pod there:
+http://at-node43.ad.bcm.edu:8888/lab

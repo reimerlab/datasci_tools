@@ -1,0 +1,1 @@
+pip install -e /path/to/install #will install and add to path so still reflects the changes
