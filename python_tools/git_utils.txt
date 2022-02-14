@@ -72,3 +72,11 @@ pip3 install git+[repo link]
 
 # --- Good explanation of pull requests --- 
 https://www.youtube.com/watch?v=rgbCcBNZcdQ
+
+"""
+Submodule method: 
+1) git add,commit and push submodule
+2) git add, commit outter module
+git push --recurse-submodules=on-demand
+
+"""
