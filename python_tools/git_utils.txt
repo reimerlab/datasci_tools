@@ -76,7 +76,11 @@ https://www.youtube.com/watch?v=rgbCcBNZcdQ
 """
 Submodule method: 
 1) git add,commit and push submodule
-2) git add, commit outter module
+2) git add, commit outter module (should work)
+
+--> the following command just attempts to push
+any submodules first that not already pushed
 git push --recurse-submodules=on-demand
 
+Usefule link
 """
