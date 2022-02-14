@@ -377,7 +377,7 @@ def plot_table_scatters(df,
                           
                          )
     
-import neuron_visualizations as nviz
+
 def scatter_3D_ipv(scatters,
                   scatters_colors = [],
                   scatter_size = 10,
@@ -392,6 +392,7 @@ def scatter_3D_ipv(scatters,
                    scatter_size=10)
     
     """
+    import neuron_visualizations as nviz
     nviz.plot_objects(
         scatters=scatters,
             scatters_colors=scatters_colors,
