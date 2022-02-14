@@ -25,5 +25,6 @@ def hash_str(string,max_length = 10):
 """
 test comment
 test 2
+test 5
 """
 import hash_utils as hashu
