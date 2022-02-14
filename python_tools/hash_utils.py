@@ -22,3 +22,5 @@ def hash_str(string,max_length = 10):
         return x[:max_length]
     else:
         return x
+    
+import hash_utils as hashu
