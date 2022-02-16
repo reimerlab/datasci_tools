@@ -472,11 +472,23 @@ def filter_candidates_by_query(neuron_obj,
                                                           return_df_before_query=True)
 
     """
+    
+    """
+    Old method: 
     objs = [{flu.default_attribute_name:k,
              flu.node_arguments_name:{"limb_obj":neuron_obj[k["limb_idx"]],
                         "start_node":k["start_node"]}
             }  for k in candidates]
     C = flu.Comparator(objs,function_args=dict(neuron_obj=neuron_obj))
+    """
+    
+    objs_attrs = [{
+             flu.node_arguments_name:{"limb_obj":neuron_obj[k["limb_idx"]],
+                        "start_node":k["start_node"]}
+            }  for k in candidates]
+    C = flu.Comparator(candidates,
+                       function_args=dict(neuron_obj=neuron_obj),
+                      object_attributes = objs_attrs)
     
  
     C.compute_node_properties(functions_list,
