@@ -455,6 +455,36 @@ def heatmap_3D(
     scatter_size=scatter_size
     )
     
+    
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
+
+def plot_roc(
+    fpr,
+    tpr,
+    auc_score=None,
+    color="darkorange",
+    line_width = 2,):
+    
+    if auc_score is None:
+        auc_score = auc(fpr,tpr)
+        
+    plt.plot(
+    fpr,
+    tpr,
+    color=color,
+    lw=line_width,
+    label="ROC curve (area = %0.2f)" % auc_score,
+    )
+    
+    plt.plot([0, 1], [0, 1], color="navy", lw=line_width, linestyle="--")
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("Receiver operating characteristic")
+    plt.legend(loc="lower right")
+    plt.show()
 
 
     

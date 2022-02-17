@@ -140,5 +140,39 @@ def true_and_pred_labels_to_precision_recall_f1score(y_true,
         positive_idx = np.where(np.array(labels) == positive_value)[0][0]
         return precision[positive_idx],recall[positive_idx],f1[positive_idx]
 
+    
+    
+# ----------- probability distributions --------------
+
+# ----- binomial distribution ----
+import scipy
+
+def binomial_probability(sample,n,p):
+    """
+    Ex: 
+    r_values = list(range(n + 1))
+    dist = [binom.pmf(r, n, p) for r in r_values ]
+    
+    """
+    return scipy.stats.binom.pmf(sample, n, p)
+
+def binomial_probability_from_samples(samples,n,p,log = True):
+    
+    probs = np.array([stu.binomial_probability(k,n,p) for k in samples])
+    if log:
+        return np.sum(np.log(probs))
+    else:
+        return np.prod(probs)
+    
+import sklearn
+
+def roc_curve(
+    y_true,
+    y_score,
+    **kwargs):
+    return sklearn.metrics.roc_curve(
+        y_true,
+        y_score,
+        **kwargs)
 
 import statistics_utils as stu
