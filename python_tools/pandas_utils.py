@@ -176,6 +176,16 @@ df.loc[idx_to_change,"n_synapses_pre"]  =  0
 df.loc[idx_to_change,"synapse_density_pre"]  =  0
 
 
+----- PIVOT TABLES ----
+
+Pivot table:
+Index: The rows you want for your pivot table
+values: columns you want (wha tthe aggre will work on )
+aggfun: can be a list of things on how you want that combination to be combined
+columns: if you wanted to break the data further by columns and then the value
+in the boxes is just what you specify
+
+
 """
 pd_source = "pandas"
 
@@ -685,6 +695,8 @@ def set_pd_max_row_col(max_rows = None,max_cols=None):
     
 def set_pd_display_no_truncate():
     pu.set_pd_max_row_col()
+def set_pd_display_no_truncate_col():
+    pd.set_option('display.max_columns', None)
     
 def reset_pd_display():
     pd.reset_option('display.max_rows')
