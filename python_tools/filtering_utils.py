@@ -603,15 +603,22 @@ def filter_candidates_to_one_by_query(neuron_obj,
                         "start_node":k["start_node"]}
             }  for k in candidates]
 
-    C = flu.Comparator(objs,
+    C = flu.Comparator(candidates,
                        function_args=dict(neuron_obj=neuron_obj),
-                       object_attributes = candidates_attributes,
+                       object_attributes = objs,
                       )
     
     if functions_list is not None:
         C.compute_node_properties(functions_list,
                                  object_argument_name="candidate")
-    functions_list = None
+    
+    return flu.filter_to_one_by_query(
+    Comparator_obj=C,
+    queries=queries,
+    functions_list=functions_list,
+    functions_list_graph=functions_list_graph, #attriutes computed on just the functions
+    attributes_for_global_comparisons = attributes_for_global_comparisons,
+    return_df_before_query = return_df_before_query,)
     
     
         
