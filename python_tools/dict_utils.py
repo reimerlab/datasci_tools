@@ -22,6 +22,7 @@ def abbreviate_str_keys(
     verbose_key_change = False,
     verbose = False,
     return_key_mapping=False,
+    collision_resolution = True,
     ):
     """
     Purpose: to abbreviate
@@ -71,7 +72,10 @@ def abbreviate_str_keys(
             print(f"{k} --> {new_key}")
             
         if new_key in key_mapping:
-            raise Exception(f"{k} and {key_mapping[new_key]} had conflict at {new_key}")
+            if collision_resolution:
+                new_key = k
+            else:
+                raise Exception(f"{k} and {key_mapping[new_key]} had conflict at {new_key}")
             
         key_mapping[new_key] = k
             

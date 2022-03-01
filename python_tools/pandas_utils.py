@@ -200,6 +200,8 @@ def random_dataframe_with_missing_data():
 def dataframe_to_row_dicts(df):
     return df.to_dict(orient='records')
 
+df_to_dicts = dataframe_to_row_dicts
+
 def nans_in_column(df):
     return pd.isnull(df).any()
 
@@ -753,7 +755,24 @@ def fillna(df,value=0):
     return df.fillna(value)
 
 
-def filter_away_columns_by_data_type(df,data_type = "object"):
-    return df.loc[:,df.columns[df.dtypes != data_type]]
+def filter_away_columns_by_data_type(df,
+                                     data_type = "object",
+                                    verbose = False):
+    if data_type == "object":
+        cols_to_inspect = df.columns[df.dtypes == "object"]
+        cols_to_delete = []
+        for c in cols_to_inspect:
+            curr_col = df[c]
+            curr_col = curr_col[~curr_col.isna()]
+
+            if len(curr_col) > 0:
+                if curr_col.infer_objects().dtypes == "object":
+                    if verbose:
+                        print(f"{c} should be filtered away")
+                    cols_to_delete.append(c)
+        return pu.delete_columns(df,cols_to_delete)
+
+    else:
+        return df.loc[:,df.columns[df.dtypes != data_type]]
 
 import pandas_utils as pu
