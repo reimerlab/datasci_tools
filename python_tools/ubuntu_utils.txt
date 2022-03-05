@@ -35,6 +35,8 @@ grep -rIH  'word'
 
 #run python files in the background
 python test.py &
+# to kill it (to view all do ps -elf)
+kill [PID]
 
 ps -e # to view all the background processes
 

@@ -54,3 +54,93 @@ def linear_regression(x,y,verbose = False):
         print(f"r_value = {r_value}")
         print(f"p_value = {p_value}")
     return [slope,intercept]
+
+"""
+Example of how to use polyfit----
+
+****NOTE: makes ure the data doesn't have to have any vertical or horizontal shifts *****
+
+"""
+from scipy.optimize import curve_fit
+def model_fit(
+    y,
+    x=None,
+    n_downsample=10,
+    method = "poly4",
+    ):
+    
+
+    # x = np.linspace(0, 3, 50)
+    # y = np.exp(x)
+    if n_downsample > 1:
+        y = trace[::n_downsample]
+
+    if x is None:
+        x = np.arange(len(y)) + 1
+    else:
+        x = tracetimes[::n_downsample]
+
+
+    """
+    Plot your data
+    """
+    plt.plot(x, y, 'ro',label="Original Data")
+
+    """
+    brutal force to avoid errors
+    """    
+    x = np.array(x, dtype=float) #transform your data in a numpy array of floats 
+    y = np.array(y, dtype=float) #so the curve_fit can work
+
+    """
+    create a function to fit with your data. a, b, c and d are the coefficients
+    that curve_fit will calculate for you. 
+    In this part you need to guess and/or use mathematical knowledge to find
+    a function that resembles your data
+    """
+    
+    def func_poly4(x, a, b, c, d,e):
+        return a*x**4 + b*x**3 +c*x**2 + d*x + e
+        return b*x**2 +c*x + d
+    def func_poly6(x, a, b, c, d,e,f,g):
+        return a*x**6 + b*x**5 +c*x**4 + d*x**3 +e*x**2 + f*x + g
+    def func_exp(x, a, b, c):
+        return a*np.exp(-b*x) + c
+    
+    func = eval(f"func_{method}")
+    print(f"func = {func}")
+    """
+    make the curve_fit
+    """
+    popt, pcov = curve_fit(func, x, y,
+                           #p0=[1,-1],
+                           #p0 = [1,1]
+                          )
+
+    """
+    The result is:
+    popt[0] = a , popt[1] = b, popt[2] = c and popt[3] = d of the function,
+    so f(x) = popt[0]*x**3 + popt[1]*x**2 + popt[2]*x + popt[3].
+    """
+    #print(f"{popt[0]}x^{popt[1]} + {popt[2]}")# % (popt[0], popt[1], popt[2], popt[3]))
+    print(popt)
+
+    """
+    Use sympy to generate the latex sintax of the function
+    """
+    # xs = sym.Symbol('\lambda')    
+    # tex = sym.latex(func(xs,*popt)).replace('$', '')
+    # plt.title(r'$f(\lambda)= %s$' %(tex),fontsize=16)
+
+    """
+    Print the coefficients and plot the funcion.
+    """
+
+    plt.plot(x, func(x, *popt), label="Fitted Curve") #same as line above \/
+    #plt.plot(x, popt[0]*x**3 + popt[1]*x**2 + popt[2]*x + popt[3], label="Fitted Curve") 
+
+    plt.legend(loc='upper left')
+    plt.show()
+    
+    
+    return func(x, *popt)
