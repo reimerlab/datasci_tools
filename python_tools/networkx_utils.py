@@ -332,6 +332,8 @@ def get_nodes_of_out_degree_k(G,degree_choice):
 def get_nodes_of_in_degree_k(G,degree_choice):
     return [k for k,v in dict(getattr(G,"in_degree")).items() if v == degree_choice]
 
+def leaf_nodes(G):
+    return xu.get_nodes_of_out_degree_k(G,0)
 # def get_nodes_of_out_degree_k_Di(G,degree_choice):
 #     return [n for n in G.nodes() if len(G[n]) == degree_choice]
 
@@ -2794,7 +2796,7 @@ def connected_component_with_node(
 
     return winning_conn
 
-def most_upstream_node(G,nodes,verbose = False):
+def most_upstream_node(G,nodes=None,verbose = False):
     """
     Purpose: To find the most
     upstream node of a group of nodes in 
@@ -2811,6 +2813,8 @@ def most_upstream_node(G,nodes,verbose = False):
                    verbose = True
     )
     """
+    if nodes is None:
+        nodes = list(G.nodes())
 
     nodes = np.array(nodes)
     down_count = np.array([xu.n_all_downstream_nodes(G,k) for k in nodes])
@@ -3226,6 +3230,38 @@ def remove_nodes_from(G,nodes):
     return G
        
     
+
+def all_paths_to_leaf_nodes(
+    G,
+    start_node=None,
+    leaf_nodes = None,
+    verbose = False
+    ):
+
+    """
+    To find all of the list of branch paths to leaf nodes on 
+    limb
+
+    1) Get all of the leaf nodes
+    2) Get all paths from starting node to leaf nodes
+    """
+    if leaf_nodes is None:
+        leaf_nodes = xu.leaf_nodes(G)
+
+    if start_node is None:
+        start_node = xu.most_upstream_node(G)
+
+    if verbose:
+        print(f"leaf_nodes= {leaf_nodes}")
+        print(f"start node = {start_node}")
+
+
+    all_paths = [xu.shortest_path(G,start_node,k) for k in leaf_nodes]
+    if verbose:
+        for i,p in enumerate(all_paths):
+            print(f"Path {i}: {p}")
+        
+    return all_paths
 
 
 import networkx_utils as xu

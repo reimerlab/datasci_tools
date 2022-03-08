@@ -296,6 +296,10 @@ def sort_rows_by_column(array,column_idx,largest_to_smallest=True):
         order = np.flip(order)
     return array[order]
 
+# def sort_rows_by_every_column(array,largest_to_smallest=True):
+#     for column_idx in range(array.shape[1]):
+#         array =  nu.sort_rows_by_column(array,column_idx,largest_to_smallest=largest_to_smallest)
+#     return array
 
 from functools import reduce
 
@@ -888,6 +892,10 @@ def argsort_multidim_array_by_rows(array,descending=False):
         return argsort_index[::-1]
     else:
         return argsort_index
+    
+def sort_multidim_array_by_rows(array,descending=False):
+    return array[nu.argsort_multidim_array_by_rows(array,
+                                                    descending=descending)]
 
 def matrix_of_row_idx(n_rows,n_cols=None):
     if n_cols is None:
