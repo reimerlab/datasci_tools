@@ -331,6 +331,7 @@ def query(df,query,**kwargs):
     #s = pu.rewrite_sql_functions_in_query(s)
     pu.query(df,s)
     """
+    df_orig = df.copy()
     try:
         index_name = "xyzilij"
 
@@ -340,7 +341,7 @@ def query(df,query,**kwargs):
         s_cp = s
         s = pu.rewrite_sql_functions_in_query(s,**kwargs)
 
-        df_orig = df.copy()
+        
         df[index_name] = df.index
         df = pu.filter_away_columns_by_data_type(df)
 
@@ -349,7 +350,7 @@ def query(df,query,**kwargs):
             return df_orig.iloc[[],:]
         return df_orig.iloc[new_df[index_name],:]
     except:
-        return df.query(query)
+        return df_orig.query(query)
     
 
 def turn_off_scientific_notation(n_decimal_places=3):
