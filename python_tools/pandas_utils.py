@@ -157,7 +157,9 @@ cell_df.query("not segment_id in @error_segments",local_dict=dict(error_seegment
 How to query for null values: 
 df.query('value < 10 | value.isnull()', engine='python')
 
-
+ORRRRRR you could just check that the col not equal to itself (will get none values)
+filt_df.query("cell_type_coarse != cell_type_coarse")
+ 
 
 --- 6/14: Review of how to check if in list -------
 
@@ -775,5 +777,16 @@ def filter_away_columns_by_data_type(df,
 
     else:
         return df.loc[:,df.columns[df.dtypes != data_type]]
+    
+def duplicated_col_value_rows(
+    df,
+    col,
+    ):
+    return df[df.duplicated(subset=[col],keep=False)]
+def filter_away_rows_with_duplicated_col_value(
+    df,
+    col,
+    ):
+    return df[~df.duplicated(subset=[col],keep=False)]
 
 import pandas_utils as pu

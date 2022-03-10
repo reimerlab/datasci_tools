@@ -3264,5 +3264,40 @@ def all_paths_to_leaf_nodes(
     return all_paths
 
 
+# ------------ drawing functions --------------
+import matplotlib.pyplot as plt
+import pydot
+from networkx.drawing.nx_pydot import graphviz_layout
+
+def draw_tree(
+    G,
+    draw_type = "dot",#"twopi" (the circular), "circo" (makes square like)
+    node_size=4000,
+    font_size = 20,
+    font_color = "white",
+    figsize=(32,32),
+    **kwargs):
+    """
+    Purpose: To help draw a nice tree graph
+    
+    #https://stackoverflow.com/questions/57512155/how-to-draw-a-tree-more-beautifully-in-networkx
+    """
+    
+    plt.figure(figsize=figsize)
+
+    T = xu.copy_G_without_data(G)
+
+    pos = graphviz_layout(T, prog="dot")
+    nx.draw(T, 
+            pos,
+            with_labels = True,
+            node_size=node_size,
+            font_size = font_size,
+            font_color = font_color,
+            **kwargs
+            )
+    plt.show()
+
+
 import networkx_utils as xu
     
