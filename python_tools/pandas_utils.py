@@ -583,7 +583,9 @@ def df_to_csv(df,
              verbose = False,
              return_filepath = True,
               compression = "infer",
-             index = True,):
+              header = True,
+             index = True,
+             **kwargs):
     """
     Purpose: To export a dataframe as a csv
     file
@@ -602,7 +604,7 @@ def df_to_csv(df,
     if verbose: 
         print(f"Output path: {output_path}")
         
-    df.to_csv(str(output_filepath.absolute()), sep=',',index=index,compression=compression)
+    df.to_csv(str(output_filepath.absolute()), sep=',',index=index,compression=compression,header=header,**kwargs)
     
     if return_filepath:
         return output_path

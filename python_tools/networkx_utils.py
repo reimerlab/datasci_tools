@@ -323,7 +323,9 @@ def get_neighbors(G,node,int_label=True):
 def get_neighbors_simple(G,node,int_label=True):
     return [n for n in G[node]]
     
-
+def neighbors(G,node):
+    return [n for n in G[node]] 
+    
 def get_nodes_of_degree_k(G,degree_choice,degree_type="degree"):
     return [k for k,v in dict(getattr(G,degree_type)).items() if v == degree_choice]
 
@@ -2260,14 +2262,20 @@ def subgraph_from_node_query(G,
     remaining_nodes = reduced_df[upstream_name].to_list()
     return G.subgraph(remaining_nodes)
 
-def node_df_from_node_query(G,query):
+def node_df_from_node_query(G,query,return_nodes = False):
     if len(G.nodes()) == 0:
         return G
     node_df = xu.node_df(G)
     #reduced_df = node_df.query(query)
     reduced_df = pu.query(node_df,query)
     
-    return reduced_df
+    if return_nodes:
+        return reduced_df[upstream_name].to_numpy()
+    else:
+        return reduced_df
+    
+def nodes_from_node_query(G,query):
+    return xu.node_df_from_node_query(G,query,return_nodes = True)
     
 
 import general_utils as gu
@@ -3263,7 +3271,49 @@ def all_paths_to_leaf_nodes(
         
     return all_paths
 
+import networkx as nx
+def remove_edge_reattach_children_di(
+    G,
+    node,
+    inplace = True):
+    """
+    Purpose: To remove a node and reattach any children to the parents
+    
+    Pseudocode: 
+    1) Get the parent of the node
+    2) Get the children of the node
+    3) Remove the node
+    4) Create edges from the parent to the children
+    
+    Example: 
+    
+    import networkx as nx
+    import matplotlib.pyplot as plt
+    G1 = nx.DiGraph()
+    G1.add_edges_from([[1,2],[2,3],[2,4]])
+    print(f"Before")
+    nx.draw(G1,with_labels = True)
+    plt.show()
+    G1_new = remove_edge_reattach_children_di(G1,2)
+    print(f"After removal")
+    nx.draw(G1_new,with_labels = True)
+    """
+    if not inplace:
+        G = copy.deepcopy(G)
+    parent = xu.upstream_node(G,node)
+    children = xu.downstream_nodes(G,node)
+    
+    G.remove_nodes_from([node])
+    G.add_edges_from([(parent,k) for k in children])
+    return G
 
+
+def graph_attr_dict(G):
+    return G.graph
+def set_graph_attr_with_dict(G,d):
+    G.graph.update(d)
+def set_graph_attr(G,k,v):
+    xu.set_graph_attr_with_dict(G,{k:v})
 # ------------ drawing functions --------------
 import matplotlib.pyplot as plt
 import pydot
@@ -3297,6 +3347,13 @@ def draw_tree(
             **kwargs
             )
     plt.show()
+    
+    
+    
+    
+#-------- searching functions ----------
+def nodes_DFS(G,source=None):
+    return list(nx.dfs_preorder_nodes(G,source = source))
 
 
 import networkx_utils as xu
