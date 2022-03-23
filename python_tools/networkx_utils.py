@@ -3348,6 +3348,16 @@ def draw_tree(
             )
     plt.show()
     
+def star_graph(
+    n_vertices,
+    plot = False):
+    G =  nx.from_edgelist([[0,k] for k in range(1,n_vertices)])
+    
+    if plot:
+        nx.draw(G,with_labels = True)
+        
+    return G
+    
     
     
     

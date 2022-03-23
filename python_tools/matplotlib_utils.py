@@ -763,4 +763,31 @@ def divided_data_into_color_gradient(
     else:
         return data_as_bins,colors_dict
     
+    
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+def color_mix(color_1,color_2,mix):
+    c1=np.array(mpl.colors.to_rgb(color_1))
+    c2=np.array(mpl.colors.to_rgb(color_2))
+    return mpl.colors.to_rgb((1-mix)*c1 + mix*c2)
+
+def color_transition(
+    n,
+    color_1="red",
+    color_2="blue",
+    plot = False):
+    #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
+    c1=np.array(mpl.colors.to_rgb(color_1))
+    c2=np.array(mpl.colors.to_rgb(color_2))
+    total_colors = np.array([mpl.colors.to_rgb((1-mix)*c1 + mix*c2)
+                             for mix in np.linspace(0,1,n)])
+    
+    if plot:
+        fig, ax = plt.subplots(figsize=(8, 5))
+        for x,c in enumerate(total_colors):
+            ax.axvline(x, color=c, linewidth=4) 
+        plt.show()
+    
+    return total_colors
+    
 import matplotlib_utils as mu
