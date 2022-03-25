@@ -204,6 +204,14 @@ def dataframe_to_row_dicts(df):
 
 df_to_dicts = dataframe_to_row_dicts
 
+def df_to_dicts_index_key(
+    df,
+    index_column = None,
+    ):
+    if index_column is not None:
+        df = df.set_index(index_column)
+    return df.to_dict("index")
+
 def nans_in_column(df):
     return pd.isnull(df).any()
 
@@ -495,6 +503,19 @@ def new_column_from_row_function(df,row_function):
     new_column_from_row_function(proofreading_synapse_df,synapse_double)
     """
     return df.apply(lambda row: row_function(row), axis=1)
+
+def new_column_from_dict_mapping(
+    df,
+    dict_map,
+    column_name,
+    default_value=None):
+    def new_func(row):
+        try:
+            return dict_map[row[column_name]]
+        except:
+            return default_value
+        
+    return new_column_from_row_function(df,new_func)
 
 
 def reset_index(df):
@@ -790,5 +811,8 @@ def filter_away_rows_with_duplicated_col_value(
     col,
     ):
     return df[~df.duplicated(subset=[col],keep=False)]
+
+def filter_to_first_instance_of_unique_column(df,column_name):
+    return df.groupby([column_name]).first()
 
 import pandas_utils as pu
