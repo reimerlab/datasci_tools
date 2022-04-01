@@ -259,6 +259,17 @@ import shutil
 import os
 from pathlib import Path
 
+def is_path_obj(obj):
+    return isinstance(obj,Path)
+
+def copy_file(source,destination):
+    if is_path_obj(source):
+        source = str(source.absolute())
+    if is_path_obj(destination):
+        destination = str(destination.absolute())
+    shutil.copy(source,destination)
+
+
 def copy_file_and_create_shell_script(original_file,num_copies,new_dir=False):
     """
     Example: 
