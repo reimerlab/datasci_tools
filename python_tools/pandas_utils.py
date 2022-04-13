@@ -377,6 +377,12 @@ def find_all_rows_with_nan(df,return_indexes=True,return_non_nan_rows=False):
             return df[~df.isna().any(axis=1)]
         else:
             return df[df.isna().any(axis=1)]
+        
+def find_all_rows_without_nan(df,return_indexes=True,):
+    return find_all_rows_with_nan(
+        df,
+        return_indexes=return_indexes,
+        return_non_nan_rows=True)
     
 def filter_away_nan_rows(df):
     return df[~(df.isna().any(axis=1))]
