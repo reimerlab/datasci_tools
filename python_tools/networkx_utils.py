@@ -3358,13 +3358,99 @@ def star_graph(
         
     return G
     
+import numpy as np
+def adjacency_matrix(G,dense = True,nodelist=None,return_nodelist = False,**kwargs):
+    adj_matrix = nx.adjacency_matrix(G,nodelist=nodelist,**kwargs)
     
+    if dense:
+        adj_matrix = adj_matrix.toarray()
+        
+    if nodelist is None:
+        nodelist = np.array(list(G.nodes()))
+    
+    if return_nodelist:
+        return adj_matrix,nodelist
+    else:
+        return adj_matrix
     
     
 #-------- searching functions ----------
 def nodes_DFS(G,source=None):
     return list(nx.dfs_preorder_nodes(G,source = source))
 
+import numpy_utils as nu
+def delete_node_attributes(
+    G,
+    attributes,
+    nodelist = None,
+    verbose = False):
+    
+    if nodelist is None:
+        nodelist = list(G.nodes())
+    nodelist = nu.convert_to_array_like(nodelist)
+    attributes = nu.convert_to_array_like(attributes)
+    
+    for n in nodelist:
+        for a in attributes:
+            try:
+                del G.nodes[n][a]
+            except:
+                if verbose:
+                    print(f"Couldn't delete {a} from node {n}")
+        
+    return G
+
+def set_node_attribute(
+    G,
+    attribute_name,
+    attribute_value,
+    node=None,
+    verbose = False,
+    ):
+    """
+    Purpose: To set a single node
+    attribute (or apply to all the 
+    nodes if none given)
+    """
+    
+    
+    if node is None:
+        node = list(G.nodes())
+    
+    node = nu.convert_to_array_like(node)
+    
+    if verbose:
+        print(f"Setting {attribute_name} to {attribute_value} for nodes: {node}")
+        
+    for n in node:
+        G.nodes[n][attribute_name] = attribute_value
+    
+    return G
+
+def nodes_with_non_none_attributes(
+    G,
+    attribute_name,
+    node_name = "u",
+    return_attribute_value=False,
+    verbose=False):
+    """
+    Purpose: To find out all the nodes with 
+    an autoproofreading filter
+    """
+
+    node_df = xu.node_df(G).query(
+        f"{attribute_name} == {attribute_name}")
+
+    nodes = node_df[node_name].to_numpy()
+    
+    if verbose:
+        print(f"Nodes without None value in {attribute_name}: {nodes}")
+
+    if return_attribute_value:
+        filt_names = node_df[attribute_name].to_numpy()
+        return nodes,filt_names
+    else:
+        return nodes
 
 import networkx_utils as xu
     
