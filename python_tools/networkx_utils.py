@@ -3082,6 +3082,10 @@ def G_from_pandas_edgelist(df,
     
     Ex: 
     """
+    st = time.time()
+    
+    if type(graph_type) == str:
+        graph_type = getattr(nx,graph_type)
     
     G = nx.from_pandas_edgelist(df,
                            source = source,

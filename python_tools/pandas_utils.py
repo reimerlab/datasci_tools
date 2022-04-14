@@ -199,7 +199,7 @@ def random_dataframe():
 def random_dataframe_with_missing_data():
     util.testing.makeMissingDataframe()
     
-def dataframe_to_row_dicts(df):
+def dataframe_to_row_dicts(df,):
     return df.to_dict(orient='records')
 
 df_to_dicts = dataframe_to_row_dicts
@@ -680,8 +680,11 @@ def filter_away_columns(df,
     return df[final_columns]
 
 
-def csv_to_df(csv_filepath):
-    return pd.read_csv(csv_filepath) 
+def csv_to_df(csv_filepath,remove_unnamed_columns=True):
+    return_df = pd.read_csv(csv_filepath) 
+    if remove_unnamed_columns:
+        return_df = pu.remove_unnamed_columns(return_df)
+    return return_df
 
 def json_to_df(filepath,lines=True):
     return pd.read_json(filepath,lines=lines) 
@@ -786,7 +789,8 @@ def restrict_df_by_dict(df,dict_restriction,return_indexes=False):
 def fillna(df,value=0):
     return df.fillna(value)
 
-
+def column_data_types(df):
+    return df.dtypes
 def filter_away_columns_by_data_type(df,
                                      data_type = "object",
                                     verbose = False):
@@ -806,19 +810,78 @@ def filter_away_columns_by_data_type(df,
 
     else:
         return df.loc[:,df.columns[df.dtypes != data_type]]
-    
+
+import numpy_utils as nu
 def duplicated_col_value_rows(
     df,
     col,
     ):
-    return df[df.duplicated(subset=[col],keep=False)]
+    """
+    Ex:
+    df_test = pd.DataFrame.from_records([
+    dict(x=5,y=7,z=10),
+    dict(x=5,y=7,z=12),
+    dict(x=5,y=6,z=10)
+    ])
+
+    pu.duplicated_col_value_rows(df_test,col=["x","z"])
+    
+    """
+    col = nu.convert_to_array_like(col)
+    return df[df.duplicated(subset=col,keep=False)]
 def filter_away_rows_with_duplicated_col_value(
     df,
     col,
     ):
-    return df[~df.duplicated(subset=[col],keep=False)]
+    
+    col = nu.convert_to_array_like(col)
+    return df[~df.duplicated(subset=col,keep=False)]
 
 def filter_to_first_instance_of_unique_column(df,column_name):
-    return df.groupby([column_name]).first()
+    column_name = nu.convert_to_array_like(column_name) 
+    return df.groupby(column_name).first()
+
+def filter_df_rows_with_df(df,df_filter):
+    keys = list(df_filter.columns.values)
+    i1 = df.set_index(keys).index
+    i2 = df_filter.set_index(keys).index
+    return df[~i1.isin(i2)]
+
+def combine_columns_as_str(
+    df,
+    columns,
+    join_str = "_",
+    ):
+    
+    return df[columns].astype('str').agg(join_str.join,axis=1)
+
+import general_utils as gu
+def filter_away_characters_from_column(
+    df,
+    column=None,
+    characters_to_filter = ["_","/"],
+    ):
+    """
+    Purpose: To filter out certain characters of a column
+    values 
+    """
+    if column is None:
+        column = list(df.columns)
+    
+    for c in column:
+        def elim_func(row):
+            if type(row[c]) == str:
+                return gu.str_filter_away_characters(row[c],characters_to_filter)
+            else:
+                return row[c]
+
+        df[c] = pu.new_column_from_row_function(
+            df,
+            elim_func)
+    return df
+
+def remove_unnamed_columns(df):
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+    return df
 
 import pandas_utils as pu
