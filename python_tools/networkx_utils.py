@@ -3311,6 +3311,7 @@ def remove_edge_reattach_children_di(
     G.add_edges_from([(parent,k) for k in children])
     return G
 
+remove_node_reattach_children_di = remove_edge_reattach_children_di
 
 def graph_attr_dict(G):
     return G.graph
