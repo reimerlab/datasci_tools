@@ -199,7 +199,7 @@ def load_object(filename):
 # Pickle a file and then compress it into a file with extension 
 import bz2
 import _pickle as cPickle
-def compressed_pickle(obj,filename,return_size=False,verbose=True,
+def compressed_pickle(obj,filename,return_size=False,verbose=False,
                      return_filepath=False,
                      folder = None):
     """

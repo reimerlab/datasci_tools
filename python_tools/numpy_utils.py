@@ -1189,7 +1189,31 @@ def single_thread():
     os.environ["VECLIB_MAXIMUM_THREADS"] = "4" # export VECLIB_MAXIMUM_THREADS=4
     os.environ["NUMEXPR_NUM_THREADS"] = "6" # export NUMEXPR_NUM_THREADS=6
 
+def polar_3D_from_cartesian(x, y, z):
+    """
+    Purpose: To change x,y,z cartesian coordinates to 
+    polar coordinates: 
+    r: distance from origin
+    theta:  angle frotated from top of z axis down (helps give the z axis) 
+    phi:angle rotation along xy plane from 0 degrees
+    
+    Ex:
+    nu.cart2sph(0.1,0,1)
 
+    """
+    xy = np.sqrt(x**2 + y**2) # sqrt(x² + y²)
+    
+    x_2 = x**2
+    y_2 = y**2
+    z_2 = z**2
+
+    r = np.sqrt(x_2 + y_2 + z_2) # r = sqrt(x² + y² + z²)
+
+    phi = np.arctan2(y, x) 
+
+    theta = np.arctan2(xy, z) 
+
+    return r, theta, phi
 
 
 import numpy_utils as nu

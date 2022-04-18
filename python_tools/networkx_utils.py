@@ -1142,9 +1142,20 @@ def n_downstream_nodes(G,node):
     """
     return len(downstream_nodes(G,node))
 
-def all_downstream_nodes(G,node):
+def all_downstream_nodes(
+    G,
+    node,
+    include_self = False):
     curr_nodes = np.unique(np.array(xu.downstream_edges(G,node)).ravel())
-    return list(curr_nodes[curr_nodes!=node])
+    if not include_self:
+        return list(curr_nodes[curr_nodes!=node])
+    else:
+        return_nodes = list(curr_nodes)
+        if len(return_nodes) == 0:
+            return [node]
+        else:
+            return return_nodes
+        
 def n_all_downstream_nodes(G,node):
     return len(all_downstream_nodes(G,node))
 def all_downstream_nodes_including_node(G,node):
@@ -2245,6 +2256,9 @@ def node_df(G,
         col_names = np.setdiff1d(col_names,properties_to_exclude)
         
     return node_df[[node_id]+list(col_names[col_names != node_id])]
+
+def node_df_features(G):
+    return list(xu.node_df(G).columns)[1:]
 
 def subgraph_from_node_query(G,
                             query,
@@ -3378,6 +3392,92 @@ def adjacency_matrix(G,dense = True,nodelist=None,return_nodelist = False,**kwar
     else:
         return adj_matrix
     
+def G_from_adjacency_matrix(
+    matrix,
+    nodelist = None,
+    plot = False
+    ):
+    """
+    Purpose: To recover a networkx graph
+    from an adjacency matrix (and add proper node labels)
+    """
+
+    if "sparse" in str(type(matrix)):
+        matrix = matrix.toarray()
+
+    G_rec = nx.from_numpy_matrix(matrix)
+
+    if nodelist is not None:
+        if len(nodelist) != len(G_rec):
+            raise Exception("")
+
+        G_rec = xu.relabel_node_names(G_rec,{i:k for i,k in enumerate(nodelist)})
+
+    if plot:
+        nx.draw(G_rec,with_labels = True)
+        
+    return G_rec
+    
+import pandas as pd
+def feature_matrix_from_G(
+    G,
+    nodelist = None,
+    features = None,
+    return_df = False,
+    ):
+    """
+    Purpose: to get the node features matrix
+    from a list of node features
+    """
+    if nodelist is None:
+        nodelist = list(G.nodes())
+
+    df = pd.DataFrame.from_records([G.nodes[n] for n in nodelist])
+
+    if features is not None:
+        df = df[list(features)]
+
+    if return_df:
+        return df
+    else:
+        return df.to_numpy()
+    
+def adjacency_feature_info(
+    G,
+    dense_adjacency = False,
+    return_df_for_feature_matrix=True,
+    return_dict = True,
+    feature_matrix_dtype=None,
+    verbose=False,
+    ):
+    """
+    Process: get the information
+    needed for GNN training
+    1) Node names
+    2) Adjacency matrix
+    3) Feature matrix
+
+    """
+    features = np.array(xu.node_df_features(G))
+    adj_matrix,nodelist = xu.adjacency_matrix(
+        G,
+        dense=dense_adjacency,
+        return_nodelist = True)
+    
+    X = xu.feature_matrix_from_G(G,return_df=return_df_for_feature_matrix)
+    
+    if feature_matrix_dtype is not None:
+        X = X.astype(feature_matrix_dtype)
+    
+    if return_dict:
+        return dict(
+            nodelist = nodelist,
+            features=features,
+            adjacency=adj_matrix,
+            feature_matrix = X,)
+    else:
+        return nodelist,features,adj_matrix,X
+    
     
 #-------- searching functions ----------
 def nodes_DFS(G,source=None):
@@ -3386,17 +3486,27 @@ def nodes_DFS(G,source=None):
 import numpy_utils as nu
 def delete_node_attributes(
     G,
-    attributes,
+    attributes=None,
+    attributes_not_to_delete=None,
     nodelist = None,
     verbose = False):
     
     if nodelist is None:
         nodelist = list(G.nodes())
     nodelist = nu.convert_to_array_like(nodelist)
-    attributes = nu.convert_to_array_like(attributes)
+    if attributes is not None:
+        attributes = nu.convert_to_array_like(attributes)
     
     for n in nodelist:
-        for a in attributes:
+        if attributes is None:
+            curr_attrs = list(G.nodes[n].keys())
+        else:
+            curr_attrs = attributes
+        #print(f"curr_attrs = {curr_attrs}, attributes = {attributes}")
+        for a in curr_attrs:
+            if attributes_not_to_delete is not None:
+                if a in attributes_not_to_delete:
+                    continue
             try:
                 del G.nodes[n][a]
             except:
@@ -3456,6 +3566,9 @@ def nodes_with_non_none_attributes(
         return nodes,filt_names
     else:
         return nodes
+    
+    
+
 
 import networkx_utils as xu
     
