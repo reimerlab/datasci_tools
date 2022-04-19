@@ -903,4 +903,9 @@ def normalize_df(
     normalized_df=(df-column_means)/column_stds
     return normalized_df
 
+# Filter away rows with infinity
+def filter_away_non_finite_rows(df):
+    return df[df.replace([np.inf, -np.inf], np.nan).notnull().all(axis=1)]
+
+
 import pandas_utils as pu
