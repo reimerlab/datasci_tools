@@ -2291,6 +2291,7 @@ def node_df_from_node_query(G,query,return_nodes = False):
 def nodes_from_node_query(G,query):
     return xu.node_df_from_node_query(G,query,return_nodes = True)
     
+node_query = nodes_from_node_query
 
 import general_utils as gu
 from tqdm_utils import tqdm
@@ -3567,6 +3568,15 @@ def nodes_with_non_none_attributes(
     else:
         return nodes
     
+def is_frozen(G):
+    """
+    Usually happens when iterating over nodes (because it is a dictionary)
+    and can't change a dictionaries size while iterating over it
+    
+    Conclusion: Happens when try to modify the nodes of a subgraph, need to
+    make do G.subgraph([nodes]).copy()
+    """
+    return nx.is_frozen(G)
     
 
 

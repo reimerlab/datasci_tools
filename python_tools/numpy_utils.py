@@ -1215,5 +1215,14 @@ def polar_3D_from_cartesian(x, y, z):
 
     return r, theta, phi
 
+def clip(a,a_min,a_max,**kwargs):
+    """
+    To make sure array or number within limits
+    
+    Ex: 
+    import numpy as np
+    np.clip(-1,1,9)
+    """
+    return np.clip(a,a_min,a_max,**kwargs)
 
 import numpy_utils as nu
