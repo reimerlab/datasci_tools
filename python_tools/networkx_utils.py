@@ -3577,6 +3577,24 @@ def is_frozen(G):
     make do G.subgraph([nodes]).copy()
     """
     return nx.is_frozen(G)
+
+def edgelist_from_adjacency_matrix(
+    array,
+    verbose = False
+    ):
+    """
+    Purpose: To convert an adjacency
+    matrix to an edgelist
+
+    Pseudocode:
+    1) Read in the adjacency matrix to a networkx Graph
+    2) export the edges of the Graph
+    """
+    G = xu.G_from_adjacency_matrix(array)
+    edgelist = xu.edges(G)
+    if verbose:
+        print(f"# of Edges = {len(verbose)}")
+    return edgelist
     
 
 

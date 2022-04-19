@@ -884,4 +884,23 @@ def remove_unnamed_columns(df):
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     return df
 
+def normalize_df(
+    df,
+    column_means = None,
+    column_stds = None,
+    ):
+    """
+    Purpose: To normalize a pandas table with
+    means and standard deviations of the columns
+    """
+
+    if column_means is None:
+        column_means = df.mean(axis=0).to_numpy()
+
+    if column_stds is None:
+        column_stds = df.std(axis=0).to_numpy()
+
+    normalized_df=(df-column_means)/column_stds
+    return normalized_df
+
 import pandas_utils as pu
