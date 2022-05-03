@@ -2227,8 +2227,13 @@ def reverse_DiGraph(G):
     return G.reverse(copy=False)
     
     
-def connected_components(G):
-    return [list(k) for k in nx.connected_components(G.to_undirected())]
+def connected_components(G,return_subgraphs=False):
+    conn_comp_list  = [list(k) for k in nx.connected_components(G.to_undirected())]
+    
+    if return_subgraphs:
+        return [G.subgraph(k).copy() for k in conn_comp_list]
+    else:
+        return conn_comp_list
 
 
 # --------------------- 6/14: For help with queying graphs with datatables --------- #
@@ -3595,6 +3600,71 @@ def edgelist_from_adjacency_matrix(
     if verbose:
         print(f"# of Edges = {len(verbose)}")
     return edgelist
+
+def is_tree(G):
+    if nx.number_of_nodes(G) != nx.number_of_edges(G) + 1:
+        return False
+    return nx.is_connected(G)
+
+def high_degree_nodes(
+    G,
+    n_children_min = 3,
+    ):
+    
+    return np.array([k for k in G.nodes() if xu.n_downstream_nodes(G,k) >= n_children_min ])
+def binary_tree_from_di_tree(
+    G,
+    verbose = False,
+    inplace = False,
+    child_idx_to_reattach = 1,
+    ):
+    """
+    Purpose: To convert any tree into a binary tree
+
+    Pseudocode: 
+    1) Find the nodes with more than 1 child
+    While the list of non-binary nodes is non empty:
+    a. Get the first node and all of its children
+    b. disconnect parent from all children except first 2
+    c. Reattach disconnected children to first/last child
+    d. Repeat for next node
+    """
+
+
+    if not inplace:
+        G = copy.deepcopy(G)
+
+    high_degree_nodes = xu.high_degree_nodes(G)
+
+
+    
+
+    while len(high_degree_nodes) > 0:
+        if verbose:
+            print(f"\n\n---New Loop: high_degree_nodes=\n    {high_degree_nodes}")
+        for n in high_degree_nodes:
+            if verbose:
+                print(f"\n---Working on node {n}")
+            #a. Get the first node and all of its children
+            children = xu.downstream_nodes(G,n)
+            if verbose:
+                print(f"children = {children}")
+
+            keep_children = children[:2]
+            disconnect_children = children[2:]
+
+            G.remove_edges_from([(n,k) for k in disconnect_children])
+            G.add_edges_from([
+                (keep_children[child_idx_to_reattach],k) for k in disconnect_children])
+
+        high_degree_nodes = xu.high_degree_nodes(G)
+        
+    # to check everything went well:
+    tree_status = [xu.is_tree(k) for k in xu.connected_components(nx.Graph(G),return_subgraphs=True)]
+    if False in tree_status:
+        raise Exception("")
+    
+    return G
     
 
 
