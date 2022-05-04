@@ -419,6 +419,9 @@ def environment_variables():
 import shutil
 def rm_dir(directory,ignore_errors = False):
     shutil.rmtree(directory, ignore_errors=ignore_errors)
+    
+
+    
 
 
 import system_utils as su

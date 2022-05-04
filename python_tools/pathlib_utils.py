@@ -39,5 +39,9 @@ def create_folder(folder_path):
     """
     p = Path(folder_path)
     p.mkdir(parents=True, exist_ok=True)
+    
+import shutil
+def copy_file(filepath,destination):
+    shutil.copy(str(filepath), str(destination))
 
 import pathlib_utils as plu

@@ -595,7 +595,11 @@ def add_random_color_for_missing_labels_in_dict(labels,
         
     return return_dict
 
-def set_legend_outside_plot(ax,scale_down=0.8):
+def set_legend_outside_plot(
+    ax,
+    scale_down=0.8,
+    bbox_to_anchor=(1, 0.5),
+    loc='center left'):
     """
     Will adjust your axis so that the legend appears outside of the box
     """
@@ -603,7 +607,7 @@ def set_legend_outside_plot(ax,scale_down=0.8):
     ax.set_position([box.x0, box.y0, box.width * scale_down, box.height])
 
     # Put a legend to the right of the current axis
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    ax.legend(loc=loc, bbox_to_anchor=bbox_to_anchor)
     return ax
     
 def scatter_2D_with_labels(
