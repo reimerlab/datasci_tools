@@ -92,7 +92,8 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
 
     else:
         if(per > 0):
-            txt = '%s\n%.1f%%' %(cell_val, per)
+            txt = '%s\n' %(cell_val,)#%.1f%%' %(cell_val, per)
+            #txt = '%s\n%.1f%%' %(cell_val, per)
         else:
             if(show_null_values == 0):
                 txt = ''
