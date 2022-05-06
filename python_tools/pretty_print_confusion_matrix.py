@@ -29,6 +29,9 @@ def get_new_fig(fn, figsize=[9,9]):
     return fig1, ax1
 #
 
+percentage_wrong_color = "w"
+percentage_right_color = "w"
+
 def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, fmt, show_null_values=0):
     """
       config cell text and colors
@@ -62,7 +65,7 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
         else:
             per_ok = per_err = 0
 
-        per_ok_s = ['%.2f%%'%(per_ok), '100%'] [per_ok == 100]
+        per_ok_s = ['%.1f%%'%(per_ok), '100%'] [per_ok == 100]
 
         #text to DEL
         text_del.append(oText)
@@ -70,10 +73,10 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
         #text to ADD
         font_prop = fm.FontProperties(weight='bold', size=fz)
         text_kwargs = dict(color='w', ha="center", va="center", gid='sum', fontproperties=font_prop)
-        lis_txt = ['%d'%(cell_val), per_ok_s, '%.2f%%'%(per_err)]
+        lis_txt = ['%d'%(cell_val), per_ok_s,]# '%.1f%%'%(per_err)]
         lis_kwa = [text_kwargs]
-        dic = text_kwargs.copy(); dic['color'] = 'g'; lis_kwa.append(dic);
-        dic = text_kwargs.copy(); dic['color'] = 'r'; lis_kwa.append(dic);
+        dic = text_kwargs.copy(); dic['color'] = percentage_right_color; lis_kwa.append(dic);
+        #dic = text_kwargs.copy(); dic['color'] = percentage_wrong_color; lis_kwa.append(dic);
         lis_pos = [(oText._x, oText._y-0.3), (oText._x, oText._y), (oText._x, oText._y+0.3)]
         for i in range(len(lis_txt)):
             newText = dict(x=lis_pos[i][0], y=lis_pos[i][1], text=lis_txt[i], kw=lis_kwa[i])
@@ -89,7 +92,7 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
 
     else:
         if(per > 0):
-            txt = '%s\n%.2f%%' %(cell_val, per)
+            txt = '%s\n%.1f%%' %(cell_val, per)
         else:
             if(show_null_values == 0):
                 txt = ''

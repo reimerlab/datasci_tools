@@ -805,5 +805,62 @@ def color_transition(
         plt.show()
     
     return total_colors
+
+import numpy_utils as nu
+def text_overlay(
+    ax,
+    #dictionary mapping text to coordinate  
+    text_to_plot_dict = None,
+    #data so that can plot the mean of the coordinate
+    X = None,
+    y = None,
+    
+    #for text parameters:
+    text_color = "black",
+    backgroundcolor = "white",
+    alpha = 0.5,
+    fontsize = "small",#'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'
+    box_alpha = 0.8,
+    box_edgecolor = "black",
+    box_facecolor = "white",
+    ):
+    
+    """
+    Purpose: Will add a text to the plot
+    """
+    
+#     print(f"text_color = {text_color}")
+#     print(f"facecolor = {facecolor}")
+#     print(f"alpha = {alpha}")
+    
+    if text_to_plot_dict is None:
+        text_to_plot_dict = dict()
+        for k in set(y):
+            text_to_plot_dict[k] = k#X_proj[y==k,:3]
+    
+    for name, coord in text_to_plot_dict.items():
+        if not nu.is_array_like(coord):
+
+            coord = X[y==coord].mean(axis=0)
+        #print(f"{name} coord = {coord}")
+
+        try:
+            ax_func = getattr(ax,"text3D")
+            ndim = 3
+        except:
+            ax_func = ax.text
+            ndim = 2
+        
+
+        ax_func(*coord[:ndim],
+                  name,
+                  horizontalalignment='center',
+                  c = text_color,
+                alpha = alpha,
+                fontsize = fontsize,
+                  bbox=dict(
+                      alpha=box_alpha, 
+                      edgecolor=box_edgecolor, 
+                      facecolor=box_facecolor))
     
 import matplotlib_utils as mu

@@ -13,12 +13,14 @@ import pretty_print_confusion_matrix as p_cm
 def plot_pretty_confusion_matrix(y_true,
                                  y_pred,
                                  labels=None,
+    figsize = (20,20),
     cell_fontsize = 20,
     axes_fontsize=30,
     title='Confusion matrix',
     title_fontsize=30,
     ticklabel_fontsize=15,
-    cmap="Oranges"
+    cmap="Oranges",
+    **kwargs,
     ):
     """
     Purpose: To take 2 arrays 
@@ -26,13 +28,15 @@ def plot_pretty_confusion_matrix(y_true,
     """
     p_cm.plot_confusion_matrix_from_data(y_true,
                                          y_pred,
+                                         figsize=figsize,
                                     columns=labels,
                                     fz=cell_fontsize,
                                 axes_fontsize=axes_fontsize,
                                 title=title,
                                 title_fontsize=title_fontsize,
                                 ticklabel_fontsize=ticklabel_fontsize,
-                                cmap=cmap)
+                                cmap=cmap,
+                             **kwargs)
     
 import matplotlib as mpl
 import matplotlib.pyplot as plt
