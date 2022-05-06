@@ -41,3 +41,16 @@ def abbreviate_phrase(
         print(f"New length: {len(comb_s)}")
         
     return comb_s
+
+
+import difflib
+
+def str_overlap(s1, s2):
+    """
+    Ex: 
+    import string_utils as stru
+    stru.str_overlap("my name is Brendan","helloBrend")
+    """
+    s = difflib.SequenceMatcher(None, s1, s2)
+    pos_a, pos_b, size = s.find_longest_match(0, len(s1), 0, len(s2)) 
+    return s1[pos_a:pos_a+size]

@@ -2443,12 +2443,50 @@ import pandas_utils as pu
 import tqdm_utils as tqu
 import copy
 
+
+def subgraph_from_edges(
+    G,
+    edge_list,
+    ref_back=False):
+    """
+    Creates a networkx graph that is a subgraph of G
+    defined by the list of edges in edge_list.        
+
+    Requires G to be a networkx Graph or DiGraph
+    edge_list is a list of edges in either (u,v) or (u,v,d) form
+    where u and v are nodes comprising an edge, 
+    and d would be a dictionary of edge attributes
+
+    ref_back determines whether the created subgraph refers to back
+    to the original graph and therefore changes to the subgraph's 
+    attributes also affect the original graph, or if it is to create a
+    new copy of the original graph. 
+    """
+
+    sub_nodes = list({y for x in edge_list for y in x[0:2]})
+    edge_list_no_data = [edge[0:2] for edge in edge_list]
+    assert all([e in G.edges() for e in edge_list_no_data])
+
+    G_sub = G.subgraph(sub_nodes)
+    
+    if not ref_back:
+        G_sub = G_sub.copy()
+        
+    edges_to_remove = G.subgraph(sub_nodes).edges()
+    for edge in edges_to_remove:
+        if edge not in edge_list_no_data:
+            G_sub.remove_edge(*edge)
+
+    return G_sub
+
 def query_to_subgraph(G,
                       edge_query=None,
                       make_bidirectional_query=False,
                       node_query=None,
                       return_df = False,
                       delete_edges_only = True,
+                      return_edges = False,
+                      new_subgraph_from_edges_method = False,
                       verbose = False):
     """
     Purpose: To restrict a graph by 
@@ -2541,19 +2579,39 @@ def query_to_subgraph(G,
         return edge_df_filt
     
     #5) Export the edges
+    if verbose:
+        print(f"Exporting the edges")
     edges = pu.df_to_list(edge_df_filt[[xu.upstream_name,xu.downstream_name]],
                          return_tuples = True)
     
+    if return_edges:
+        return edges
+    
     if delete_edges_only:
-        total_edges = xu.edges(G)
-        removed_edges = nu.setdiff2d(total_edges,edges)
-        G = copy.deepcopy(G)
-        G.remove_edges_from(removed_edges)
-        return G
+        if new_subgraph_from_edges_method:
+            return xu.subgraph_from_edges(G,edges,ref_back=False)
+        else:
+            if verbose:
+                print(f"Deleteing edges only")
+            total_edges = xu.edges(G)
+            removed_edges = nu.setdiff2d(total_edges,edges)
+            if verbose:
+                print(f"    About to copy graph")
+            G = copy.deepcopy(G)
+            if verbose:
+                print(f"    About to remove edges")
+            G.remove_edges_from(removed_edges)
+            return G
     
     #6) Export the edge induced subgraph
     return G.edge_subgraph(edges)
     
+def subgraph_from_edge_query(G,query,**kwargs):
+    return xu.query_to_subgraph(G,
+                      edge_query=query,
+                      new_subgraph_from_edges_method = True,
+                      **kwargs)
+
     
 def complete_graph_from_node_ids(node_ids):
     """

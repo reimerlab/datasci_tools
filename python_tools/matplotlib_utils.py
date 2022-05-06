@@ -23,6 +23,8 @@ fig.tight_layout()
 
 
 
+           
+
 
 """
 
@@ -30,7 +32,17 @@ graph_color_list = ["blue","green","red","cyan","magenta",
      "black","grey","midnightblue","pink","crimson",
      "orange","olive","sandybrown","tan","gold","palegreen",
     "darkslategray","cadetblue","brown","forestgreen"]
-
+color_examples = dict(
+blues = ["darkblue","royalblue", "lightsteelblue","aqua","royalblue"],
+purples = ["indigo","plum"],
+pinks = ["pink","deeppink","fuchsia"],
+greens = ["greenyellow","yellowgreen","olivedrab","springgreen"],
+oranges = ["peachpuff","orange",],
+yellows = ["yellow","gold",],
+browns = ["sandybrown","sienna","maroon"],
+reds = ["coral","red","rosybrown"],
+greys = ["silver","grey","black"],
+)
 
 
 def generate_random_color(print_flag=False,colors_to_omit=[]):
