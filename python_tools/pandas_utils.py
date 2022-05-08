@@ -907,5 +907,18 @@ def normalize_df(
 def filter_away_non_finite_rows(df):
     return df[df.replace([np.inf, -np.inf], np.nan).notnull().all(axis=1)]
 
+def replace_None_with_default(df,default):
+    return pu.fillna(df,default)
+
+def set_column_value_of_query(df,column,query,value):
+    """
+    Purpose: Set colum value of query
+
+
+    """
+
+    df.loc[df.query(query).index,column] = value
+    return df
+
 
 import pandas_utils as pu

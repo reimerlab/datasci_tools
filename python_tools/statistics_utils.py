@@ -41,12 +41,13 @@ def calculate_scores(TP,FP,FN):
 
 import pandas_utils as pu
 import pandas as pd
-def add_false_true_positive_negative_labels(df,
-                                            y_true_label,
-                                           y_pred_label,
-                                           output_column_name="category",
-                                            positive_value=True,
-                                            negative_value=False):
+def add_false_true_positive_negative_labels(
+    df,
+    y_true_label,
+    y_pred_label,
+    output_column_name="category",
+    positive_value=True,
+    negative_value=False):
     """
     Purpose: To add the TP,TN,FP,FN labels to a dataframe
     
