@@ -921,4 +921,84 @@ def set_column_value_of_query(df,column,query,value):
     return df
 
 
+
+def group_by_func_to_column_old(
+    df,
+    columns,
+    name = None,
+    add_to_original_df = True,
+    function_name = "count",
+    ):
+    dum_col= "xnusid"
+    df[dum_col] = 1
+    rename_df = getattr(df.groupby(columns),function_name)()[[dum_col]]
+    if name is None:
+        name = "_".join(columns)
+        name = f"{function_name}_{name}"
+
+    rename_df = pu.rename_columns(rename_df,{dum_col:name})
+    
+
+    if add_to_original_df:
+        rename_df = pd.merge(df,rename_df,on=columns,how="left")
+
+    if dum_col in rename_df.columns:
+        rename_df = pu.delete_columns(rename_df,[dum_col])
+        
+    return rename_df
+
+def group_by_func_to_column_slow(
+    df,
+    columns,
+    name = None,
+    add_to_original_df = True,
+    function_name = "count",
+    ):
+    dum_col= "xnusid"
+    df[dum_col] = 1
+    rename_df = getattr(df.groupby(columns),function_name)()[[dum_col]]
+    if name is None:
+        name = "_".join(columns)
+        name = f"{function_name}_{name}"
+
+    rename_df = pu.rename_columns(rename_df,{dum_col:name})
+    
+
+    if add_to_original_df:
+        rename_df = pd.merge(df,rename_df,on=columns,how="left")
+
+    if dum_col in rename_df.columns:
+        rename_df = pu.delete_columns(rename_df,[dum_col])
+        
+    return rename_df
+
+def group_by_func_to_column(
+    df,
+    columns,
+    name = None,
+    add_to_original_df = True,
+    function_name = "count",
+    ):
+    dum_col= "xnusid"
+    df[dum_col] = 1
+    rename_df = df[columns + [dum_col]].groupby(columns).transform(function_name)
+    
+    if name is None:
+        name = "_".join(columns)
+        name = f"{function_name}_{name}"
+
+    rename_df = pu.rename_columns(rename_df,{dum_col:name})
+    
+
+    if add_to_original_df:
+        df[name] = rename_df[name]
+        rename_df = df
+
+    if dum_col in rename_df.columns:
+        rename_df = pu.delete_columns(rename_df,[dum_col])
+        
+    return rename_df
+
+
+
 import pandas_utils as pu

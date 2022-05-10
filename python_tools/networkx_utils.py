@@ -3725,6 +3725,11 @@ def binary_tree_from_di_tree(
     return G
     
 
+def n_connected_components(G):
+    return len(xu.connected_components(G))
 
+def get_node_attribute_for_all_nodes(G,name):
+    return nx.get_node_attributes(G,name)
+    
 import networkx_utils as xu
     
