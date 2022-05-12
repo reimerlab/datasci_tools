@@ -1225,4 +1225,7 @@ def clip(a,a_min,a_max,**kwargs):
     """
     return np.clip(a,a_min,a_max,**kwargs)
 
+def str_repr_of_array_to_array(array):
+    return np.array(eval(array))
+
 import numpy_utils as nu

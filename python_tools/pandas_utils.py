@@ -910,6 +910,9 @@ def filter_away_non_finite_rows(df):
 def replace_None_with_default(df,default):
     return pu.fillna(df,default)
 
+def replace_nan_with_default(df,default=None):
+    return df.where(pd.notnull(df), default)
+
 def set_column_value_of_query(df,column,query,value):
     """
     Purpose: Set colum value of query
@@ -998,6 +1001,10 @@ def group_by_func_to_column(
         rename_df = pu.delete_columns(rename_df,[dum_col])
         
     return rename_df
+
+
+def drop_rows_with_all_nans(df):
+    return df.dropna(how="all")
 
 
 
