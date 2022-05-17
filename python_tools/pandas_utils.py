@@ -592,8 +592,11 @@ def save_df(df,filename):
     filename_str = str(filename.absolute())
     if filename_str[:-4] != ".pkl":
         filename_str += ".pkl"
+        
+    df.to_pickle(filename_str)
     
-    df.to_pickle(filename)  
+def to_pickle(df,filename):
+    return pu.save_df(df,filename)
     
 def read_pickle(filepath):
     return pd.read_pickle(filepath)
@@ -1006,6 +1009,11 @@ def group_by_func_to_column(
 def drop_rows_with_all_nans(df):
     return df.dropna(how="all")
 
+def sample_rows(df,n_samples):
+    return df.sample(n_samples)
+
+def sample_columns(df,n_samples):
+    return df.sample(n_samples, axis=1)
 
 
 import pandas_utils as pu
