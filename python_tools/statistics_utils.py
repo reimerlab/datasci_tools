@@ -176,4 +176,31 @@ def roc_curve(
         y_score,
         **kwargs)
 
+
+
+# ------------ correlations --------------------
+def corr(x,y):
+    return np.corrcoef(x, y)[1,0]
+    
+def corr_pearson(x,y,return_p_value = False):
+    results = scipy.stats.pearsonr(x, y)
+    if return_p_value:
+        return results
+    else:
+        return results[0]
+    
+def corr_spearman(x,y,return_p_value = False):
+    results = scipy.stats.spearmanr(x, y)
+    if return_p_value:
+        return results
+    else:
+        return results[0]
+    
+def corr_kendall(x,y,return_p_value = False):
+    results = scipy.stats.kendalltau(x, y)
+    if return_p_value:
+        return results
+    else:
+        return results[0]
+
 import statistics_utils as stu
