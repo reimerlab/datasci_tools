@@ -781,6 +781,13 @@ def col_to_numeric_array(col=None,
     x = pd.to_numeric(col,errors='coerce').to_list()
     return x
 
+def convert_columns_to_numeric(df,columns):
+    columns = nu.convert_to_array_like(columns)
+    for k in columns:
+        df[k] = pd.to_numeric(df[k])
+        
+    return df
+
 from functools import reduce
 def restrict_df_by_dict(df,dict_restriction,return_indexes=False):
     mask = reduce(lambda x,y: x & y, [df[k] == v for k,v in dict_restriction.items()])
