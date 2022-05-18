@@ -1228,4 +1228,10 @@ def clip(a,a_min,a_max,**kwargs):
 def str_repr_of_array_to_array(array):
     return np.array(eval(array))
 
+def reject_outliers(array, m=2,return_mask = False):
+    mask = abs(array - np.mean(array)) < m * np.std(array)
+    if return_mask:
+        return mask
+    return array[mask]
+
 import numpy_utils as nu
