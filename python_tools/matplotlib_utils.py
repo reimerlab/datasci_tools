@@ -862,5 +862,63 @@ def text_overlay(
                       alpha=box_alpha, 
                       edgecolor=box_edgecolor, 
                       facecolor=box_facecolor))
+        
+        
+import matplotlib_utils as mu
+def stacked_bar_graph(
+    df,
+    x = "x",
+    x_min = -1,
+    x_max = np.inf,
+    verbose = False,
+    width_scale = 1,
+    figsize = (10,5),
+    alpha = 0.5,
+    color_dict = None,
+    set_legend_outside_plot = False
+    ):
+    """
+    Purpose: Plot a stacked bar graph
+
+    """
+    df = df.query(f"({x} >= {x_min}) & ({x} <= {x_max})")
+    fig,ax = plt.subplots(1,1,figsize = figsize)
+
+    all_ys = np.array(df.columns)
+    all_ys = all_ys[(all_ys != x) & (all_ys != "index")]
+
+    if verbose:
+        print(f"All labels = {all_ys}")
+
+    if color_dict is None:
+        colors = mu.generate_non_randon_named_color_list(len(all_ys))
+        color_dict = {k:v for k,v in zip(all_ys,colors)}
+
+    x_range = df[x].to_numpy()
+    width = width_scale*(x_range[1] - x_range[0])
+    
+    previous_count = 0
+    for lab in all_ys:
+        height = df[f"{lab}"].to_numpy()
+
+        ax.bar(x = x_range,
+               height = height ,
+                       bottom = previous_count,
+                        label=lab,
+                       alpha = alpha,
+                       width = width,
+                       color = color_dict.get(lab,None)
+                       )
+
+        previous_count += height
+
+    ax.legend()
+    ax.set_xlim([np.min(x_range),np.max(x_range)])
+    ax.set_ylim([0,np.max(previous_count)])
+
+    if set_legend_outside_plot:
+        mu.set_legend_outside_plot(ax)
+
+    return ax
     
 import matplotlib_utils as mu

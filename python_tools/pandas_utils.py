@@ -401,6 +401,7 @@ def unique_rows(df,columns=None):
     return df.drop_duplicates(subset = columns)
 
 def delete_columns(df,columns_to_delete):
+    columns_to_delete = nu.convert_to_array_like(columns_to_delete)
     columns_to_delete = [k for k in columns_to_delete if k in df.columns]
     if len(columns_to_delete) > 0:
         return df.drop(columns=columns_to_delete)
@@ -1022,5 +1023,146 @@ def sample_rows(df,n_samples):
 def sample_columns(df,n_samples):
     return df.sample(n_samples, axis=1)
 
+def expand_array_column_to_separate_columns(
+    df,
+    columns,
+    use_previous_column_name = True,
+    ):
+    """
+    Will expand a column that has an array stored in each
+    row to moving the values to each with its own column
+    
+    Ex: 
+    import pandas_utils as pu
+    pu.expand_array_column_to_separate_columns(
+    use_previous_column_name = False,
+    columns = "embedding",
+    df = df_old,
+    )
+    """
+    for column in nu.convert_to_array_like(columns):
+
+        sub_df = pd.DataFrame(np.vstack(df[column].to_numpy()))
+        if use_previous_column_name:
+            column_names = [f"{column}_{i}" for i in range(0,len(sub_df.columns))]
+            sub_df.columns = column_names
+
+        df = pd.concat([df,sub_df],axis=1)
+        df = pu.delete_columns(df,column)
+
+
+    return df
+
+def sort_df_by_column(
+    df,
+    columns,
+    ignore_index = True,
+    ascending = False,
+    na_position = "last" #where to put the nans
+    ):
+    columns = nu.convert_to_array_like(columns)
+    return df.sort_values(by=columns,
+                         ascending=ascending,
+                          ignore_index=ignore_index,
+                         na_position = na_position)
+
+
+def histogram_of_discrete_labels(
+    df,
+    y,
+    x = "index",
+    x_steps = None,
+    step_size = None,
+    nbins = 100,
+    verbose = True,
+    cumulative = False,
+    normalize = True,
+    plot = False,
+    **kwargs,
+    ):
+    """
+    Purpose: To create a cumulative or discrete
+    df of discrete values accordinate to another
+    indexing value
+
+    Ex: 
+    pu.histogram_of_discrete_labels(
+        df_centr_sort,
+        y="cell_type",
+        normalize=False,
+        cumulative=False
+    )
+    
+    Ex 2: 
+    import cell_type_utils as ctu
+    df_counts = pu.histogram_of_discrete_labels(
+        df_centr_sort,
+        y="cell_type_fine",
+        normalize=True,
+        cumulative=True,
+        x_steps = np.linspace(0,1000,100),
+        plot = True,
+        color_dict = ctu.cell_type_fine_color_map,
+        set_legend_outside_plot = True,
+
+        )
+    """
+    x_range = x_steps
+    
+    df = df.query(f"{y}=={y}").reset_index(drop = False)
+    all_ys = df[y].unique()
+    all_ys = all_ys[all_ys != "index"]
+    
+    
+    x_vals = getattr(df,x)
+    
+    if verbose:
+        print(f"All labels = {all_ys}")
+        
+    if x_range is None:
+        if step_size is None:
+            x_range = np.linspace(np.min(x_vals),np.max(x_vals),nbins)
+        else:
+            x_range = np.arange(np.min(x_vals),np.max(x_vals)+0.1,step_size)
+
+    
+    bins = np.mean(np.vstack([x_range[:-1],x_range[1:]]),axis=0)
+    
+    
+    counts_records = []
+    for j,x_val in enumerate(x_range[1:]):
+        x_lower = x_range[j]
+        x_middle = np.mean([x_val,x_lower])
+        #print(f"x_middle = {x_middle}")
+
+        local_dict = dict(x = x_middle)
+
+        if cumulative:
+            x_lower = np.min(x_range)
+
+        df_curr = df.query(f"({x} >= {x_lower}) and ({x} < {x_val})")
+
+        total_counts = len(df_curr)
+        if total_counts == 0:
+            continue
+        for lab in all_ys:
+            curr_counts = df_curr.query(f"{y} == '{lab}'")
+            if normalize:
+                local_dict[lab] = len(curr_counts)  / total_counts
+            else:
+                local_dict[lab] = len(curr_counts)
+
+        counts_records.append(local_dict)
+
+    df_counts = pd.DataFrame.from_records(counts_records)
+    
+    if plot:
+        import matplotlib_utils as mu
+        mu.stacked_bar_graph(
+           df_counts,
+            verbose = verbose,
+            **kwargs
+        )
+    return df_counts
 
 import pandas_utils as pu

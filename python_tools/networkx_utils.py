@@ -3728,11 +3728,23 @@ def binary_tree_from_di_tree(
 def n_connected_components(G):
     return len(xu.connected_components(G))
 
-def get_node_attribute_for_all_nodes(G,name,return_list = False):
+def get_node_attribute_for_all_nodes(
+    G,name,
+    return_list = False):
+    
     atts = nx.get_node_attributes(G,name)
     if return_list:
         return list(atts.values())
     return atts
+
+def set_node_attribute_default(G,attributes, default_value = None):
+    attributes= nu.convert_to_array_like(attributes)
+    for a in attributes:
+        for n in G.nodes():
+            if a not in G.nodes[n]:
+                G.nodes[n][a] = default_value
+                
+    
     
     
 import networkx_utils as xu
