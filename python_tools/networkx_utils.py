@@ -2479,15 +2479,20 @@ def subgraph_from_edges(
 
     return G_sub
 
-def query_to_subgraph(G,
-                      edge_query=None,
-                      make_bidirectional_query=False,
-                      node_query=None,
-                      return_df = False,
-                      delete_edges_only = True,
-                      return_edges = False,
-                      new_subgraph_from_edges_method = False,
-                      verbose = False):
+def query_to_subgraph(
+    G,
+    edge_query=None,
+    make_bidirectional_query=False,
+    node_query=None,
+    return_df = False,
+    delete_edges_only = True,
+    return_edges = False,
+    new_subgraph_from_edges_method = False,
+    verbose = False,
+    optimized_edge_df = False,
+    delete_edges_in_query = False,
+    inplace = False,
+    edge_df = None):
     """
     Purpose: To restrict a graph by 
     a query that is meant to restrict the edges
@@ -2521,12 +2526,25 @@ def query_to_subgraph(G,
     """    
     if verbose == False:
         tqu.turn_off_tqdm()
-    
+    st = time.time()
     #1) Build the edge df
-    edge_df = xu.edge_df(G)
+    if edge_df is None:
+        if optimized_edge_df:
+            edge_df  = xu.edge_df_optimized(
+                G,
+                source=upstream_name,
+                target = downstream_name)
+        else:
+            edge_df = xu.edge_df(G)
+            
+    if verbose:
+        print(f'Done with edge_df: {time.time() - st}')
     
     #2) Query the dataframe
     if edge_query is not None:
+        if not delete_edges_in_query:
+            edge_query = f"not ({edge_query})"
+            
         if verbose:
             print(f"Performing Edge Query")
             
@@ -2538,7 +2556,10 @@ def query_to_subgraph(G,
                 print(f"After bidiretional the edge query = {edge_query}")
                 
         #edge_df_filt = edge_df.query(edge_query)
-        edge_df_filt = pu.query(edge_df,edge_query)
+        try:
+            edge_df_filt = edge_df.query(edge_query)
+        except:
+            edge_df_filt = pu.query(edge_df,edge_query)
     else:
         edge_df_filt = edge_df
     
@@ -2591,16 +2612,21 @@ def query_to_subgraph(G,
         if new_subgraph_from_edges_method:
             return xu.subgraph_from_edges(G,edges,ref_back=False)
         else:
+            
             if verbose:
                 print(f"Deleteing edges only")
-            total_edges = xu.edges(G)
-            removed_edges = nu.setdiff2d(total_edges,edges)
-            if verbose:
-                print(f"    About to copy graph")
-            G = copy.deepcopy(G)
-            if verbose:
-                print(f"    About to remove edges")
-            G.remove_edges_from(removed_edges)
+            
+            if not inplace:
+                G = copy.deepcopy(G)
+            G.remove_edges_from(edges)
+#             total_edges = xu.edges(G)
+#             removed_edges = nu.setdiff2d(total_edges,edges)
+#             if verbose:
+#                 print(f"    About to copy graph")
+#             G = copy.deepcopy(G)
+#             if verbose:
+#                 print(f"    About to remove edges")
+#             G.remove_edges_from(removed_edges)
             return G
     
     #6) Export the edge induced subgraph
@@ -2640,6 +2666,29 @@ def set_edge_attribute_defualt(G,attribute_name,
                 for idx in dict(G[u][v]).keys():
                     if attribute_name not in G[u][v][idx]:
                         G[u][v][idx][attribute_name] = default_value
+                        
+def derived_edge_attribute(
+    G,
+    attribute,
+    new_attribute,
+    edge_function,
+    delete_original = False,
+    ):
+    if not xu.is_multigraph(G):
+        for u in G:
+            for v in G[u]:
+                if attribute not in G[u][v]:
+                    G[u][v][new_attribute] = edge_function(G[u][v][attribute])
+                    if delete_original:
+                        del G[u][v][attribute]
+    else:
+        for u in G:
+            for v in G[u]:
+                for idx in dict(G[u][v]).keys():
+                    if attribute in G[u][v][idx]:
+                        G[u][v][idx][new_attribute] = edge_function(G[u][v][idx][attribute])
+                        if delete_original:
+                            del G[u][v][idx][attribute]
                 
 def combine_edge_attributes(edge_attribute_dicts):
     """
@@ -3744,7 +3793,61 @@ def set_node_attribute_default(G,attributes, default_value = None):
             if a not in G.nodes[n]:
                 G.nodes[n][a] = default_value
                 
+def derived_node_attribute(
+    G,
+    attribute,
+    new_attribute,
+    func):
     
+    for n in G.nodes():
+        if attribute in G.nodes[n]:
+            G.nodes[n][new_attribute] = func(G.nodes[n][attribute])
+                
+def set_edge_attribute_from_node_attribute(
+    G,
+    attribute,
+    default_value = None,
+    upstream_prefix = upstream_name,
+    downstream_prefix = downstream_name,
+    verbose = False,
+    ):
+    """
+    Purpose: Add a certain node property of the presyn and postsyn
+    to the edge properties
+
+    Pseudocode: 
+    1) Get a lookup of the property you want
+    2) Go through the edges and add it to the edge attribute
+    """
+    st = time.time()
+    attributes = nu.convert_to_array_like(attribute)
+    multi_flag = xu.is_multigraph(G)
+
+    for att in attributes: 
+        if verbose:
+            print(f"--- Working on setting attribute {att}")
+        att_dict = {k:G.nodes[k].get(att,default_value) for k in G.nodes()}
+
+        for n1,n2 in G.edges():
+            if multi_flag:
+                for i in G[n1][n2]:
+                    G[n1][n2][i][f"{upstream_prefix}_{att}"] = att_dict[n1]
+                    G[n1][n2][i][f"{downstream_prefix}_{att}"] = att_dict[n2]
+                    
+        if verbose:
+            print(f"  --> total time = {time.time() - st}")
+    
+    return G
+    
+import networkx as nx
+def convert_to_non_multi(G):
+    if xu.is_multigraph(G):
+        if xu.is_digraph(G):
+            return nx.DiGraph(G)
+        else:
+            return nx.Graph(G)
+    else:
+        return G
     
     
 import networkx_utils as xu

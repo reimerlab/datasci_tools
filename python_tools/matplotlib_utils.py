@@ -868,14 +868,20 @@ import matplotlib_utils as mu
 def stacked_bar_graph(
     df,
     x = "x",
-    x_min = -1,
+    x_min = -np.inf,
     x_max = np.inf,
     verbose = False,
     width_scale = 1,
     figsize = (10,5),
     alpha = 0.5,
     color_dict = None,
-    set_legend_outside_plot = False
+    set_legend_outside_plot = False,
+    plot_twin_counts = False,
+    twin_color = "blue",
+    labels = None,
+    fontsize_axes = None,
+    x_multiplier = 1,
+    legend = True,
     ):
     """
     Purpose: Plot a stacked bar graph
@@ -884,8 +890,25 @@ def stacked_bar_graph(
     df = df.query(f"({x} >= {x_min}) & ({x} <= {x_max})")
     fig,ax = plt.subplots(1,1,figsize = figsize)
 
-    all_ys = np.array(df.columns)
-    all_ys = all_ys[(all_ys != x) & (all_ys != "index")]
+    
+    x_range = df[x].to_numpy()*x_multiplier
+    
+    if plot_twin_counts:
+        ax3 = ax.twinx()  # instantiate a second axes that shares the same x-axis
+        ax3.set_ylabel('Counts of Synpases',fontsize = fontsize_axes,color=twin_color)  # we already handled the x-label with ax1
+        ax3.tick_params(axis='y', labelcolor=twin_color)
+        ax3.plot(x_range, df["counts"].to_numpy(), color=twin_color)
+        ax2 = ax
+    else:
+        ax2 = ax
+        twin_color = None
+
+    if labels is None:
+        all_ys = np.array(df.columns)
+        all_ys = all_ys[(all_ys != x) & (all_ys != "index") & 
+                       (all_ys != "counts")]
+    else:
+        all_ys = labels
 
     if verbose:
         print(f"All labels = {all_ys}")
@@ -894,14 +917,16 @@ def stacked_bar_graph(
         colors = mu.generate_non_randon_named_color_list(len(all_ys))
         color_dict = {k:v for k,v in zip(all_ys,colors)}
 
-    x_range = df[x].to_numpy()
-    width = width_scale*(x_range[1] - x_range[0])
+    try:
+        width = width_scale*(x_range[1] - x_range[0])
+    except:
+        width = 2
     
     previous_count = 0
     for lab in all_ys:
         height = df[f"{lab}"].to_numpy()
 
-        ax.bar(x = x_range,
+        ax2.bar(x = x_range,
                height = height ,
                        bottom = previous_count,
                         label=lab,
@@ -912,13 +937,20 @@ def stacked_bar_graph(
 
         previous_count += height
 
-    ax.legend()
-    ax.set_xlim([np.min(x_range),np.max(x_range)])
-    ax.set_ylim([0,np.max(previous_count)])
+    if legend:
+        ax2.legend()
+    ax2.set_xlim([np.min(x_range),np.max(x_range)])
+    ax2.set_ylim([0,np.max(previous_count)])
+    ax2.tick_params(axis='y',)# labelcolor=twin_color)
+        
 
     if set_legend_outside_plot:
-        mu.set_legend_outside_plot(ax)
+        mu.set_legend_outside_plot(
+            ax2,
+            scale_down=0.8,
+            bbox_to_anchor=(1.2, 0.5),
+            loc='center left')
 
-    return ax
+    return ax2,ax
     
 import matplotlib_utils as mu

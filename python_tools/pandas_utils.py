@@ -1074,10 +1074,12 @@ def histogram_of_discrete_labels(
     x_steps = None,
     step_size = None,
     nbins = 100,
-    verbose = True,
+    verbose = False,
     cumulative = False,
     normalize = True,
+    add_counts = True,
     plot = False,
+    max_percentile = 99,
     **kwargs,
     ):
     """
@@ -1107,6 +1109,8 @@ def histogram_of_discrete_labels(
 
         )
     """
+    
+    
     x_range = x_steps
     
     df = df.query(f"{y}=={y}").reset_index(drop = False)
@@ -1116,20 +1120,27 @@ def histogram_of_discrete_labels(
     
     x_vals = getattr(df,x)
     
+    if max_percentile is not None:
+        max_value  = np.percentile(x_vals,max_percentile)
+        if max_value <= np.min(x_vals):
+            max_value = np.max(x_vals)
+    else:
+        max_value = np.max(x_vals)
+    
     if verbose:
         print(f"All labels = {all_ys}")
         
     if x_range is None:
         if step_size is None:
-            x_range = np.linspace(np.min(x_vals),np.max(x_vals),nbins)
+            x_range = np.linspace(np.min(x_vals),max_value,nbins)
         else:
-            x_range = np.arange(np.min(x_vals),np.max(x_vals)+0.1,step_size)
-
+            x_range = np.arange(np.min(x_vals),max_value+0.1,step_size)
     
-    bins = np.mean(np.vstack([x_range[:-1],x_range[1:]]),axis=0)
     
     
     counts_records = []
+#     print(f"len(df) = {len(df)}")
+#     print(f"x_range = {x_range}")
     for j,x_val in enumerate(x_range[1:]):
         x_lower = x_range[j]
         x_middle = np.mean([x_val,x_lower])
@@ -1140,7 +1151,8 @@ def histogram_of_discrete_labels(
         if cumulative:
             x_lower = np.min(x_range)
 
-        df_curr = df.query(f"({x} >= {x_lower}) and ({x} < {x_val})")
+        df_curr = df.query(f"({x} >= {x_lower}) and ({x} <= {x_val})")
+        #print(f"df_curr = {len(df_curr)}")
 
         total_counts = len(df_curr)
         if total_counts == 0:
@@ -1151,10 +1163,16 @@ def histogram_of_discrete_labels(
                 local_dict[lab] = len(curr_counts)  / total_counts
             else:
                 local_dict[lab] = len(curr_counts)
+        
+        if add_counts:
+            local_dict["counts"] = total_counts
+            
+        #print(f"total_counts = {total_counts}")
 
         counts_records.append(local_dict)
 
     df_counts = pd.DataFrame.from_records(counts_records)
+    #print(f"df_counts = {len(df_counts)}")
     
     if plot:
         import matplotlib_utils as mu
