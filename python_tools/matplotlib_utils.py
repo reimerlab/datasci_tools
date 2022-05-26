@@ -952,5 +952,104 @@ def stacked_bar_graph(
             loc='center left')
 
     return ax2,ax
+
+
+  
+import matplotlib.pyplot as plt
+def bar_plot_parallel_features_by_labels(
+    df,
+    features,
+    label,
+    labels_to_plot = None,
+    figsize = (20,6),
+    verbose = True,
+    normalize = True,
+    stat_measures = ("count",),#["sum","mean"],
+    width_buffer = 0.2,
+    horizontal = True,
+    title_append = None,
+    ):
+    """
+    Purpose: To plot parallel bar plots
+    of different labels
+
+    Define measurement (sum or mean)
+
+    for each stat measure:
+    1) group by cell type and take a certain measurement
+    2) For each cell type:
+        - plot the barplot 
+
+    Source Code: https://stackoverflow.com/questions/10369681/how-to-plot-bar-graphs-with-same-x-coordinates-side-by-side-dodged
+
+
+    mu.bar_plot_parallel_features_by_labels(
+        df_control,
+        label = "gnn_cell_type_fine",
+        #labels_to_plot = ctu.allen_cell_type_fine_classifier_labels,
+        features = ["axon_skeletal_length","n_syn_valid_pre"],
+        stat_measures = ("sum","mean"),
+        figsize = (14,6),
+        width_buffer = 0.2,
+        title_append = f" in {hdju.source.title()} Volume",
+        horizontal = True,)
+    """
+    fig,axes = plt.subplots(1,len(stat_measures),figsize=figsize)
+
+    axes = nu.convert_to_array_like(axes)
+    n_features = len(features)
+    width = (1-width_buffer)/len(features)                       # With of each column
+    
+    if labels_to_plot is None:
+        labels_to_plot = list(df[label].unique())
+        
+    if horizontal:
+        plot_func= "barh"
+        spacing_param = "height"
+    else:
+        plot_func = "bar"
+        spacing_param = "width"
+        
+    for s,ax in zip(stat_measures,axes):
+        ct = labels_to_plot
+        df_grouped = getattr(df.groupby([label]),s)().reset_index()
+        df_grouped = df_grouped.query(f"{label} in {ct}")
+        x = np.arange(0, len(ct))   # Center position of group on x axis
+
+        for j,f in enumerate(features):
+            f_val_unordered = df_grouped[f].to_numpy()
+            f_val_labels = df_grouped[label].to_numpy()
+            
+            f_val = f_val_unordered[nu.original_array_indices_of_elements(
+                f_val_labels,
+                ct,
+            )]
+            
+            if normalize:
+                f_val = f_val/np.sum(f_val)
+
+            position = x + (width*(1-n_features)/2) + j*width
+
+            kwargs = {spacing_param:width}
+            getattr(ax,plot_func)(position,f_val,label=f,**kwargs)
+
+        ax.legend()
+        if not horizontal:
+            ax.set_xlabel("Cell Type")
+            ax.set_ylabel(f"{f}")
+            ax.set_xticks(x)
+            ax.set_xticklabels(ct)
+        else:
+            ax.set_ylabel("Cell Type")
+            ax.set_xlabel(f"{f}")
+            ax.set_yticks(x)
+            ax.set_yticklabels(ct)
+        
+        title = f"Normalized Reconstruction {s.title()}" 
+        #ax.axes.xticks(ct_index + width / 2, ct)
+        if title_append is not None:
+                title += f" \n {title_append}"
+        ax.set_title(title)
+
     
 import matplotlib_utils as mu

@@ -58,3 +58,27 @@ def str_overlap(s1, s2):
 
 def is_int(s):
     return s.isdigit()
+
+def number_to_letter(number,upper = False):
+    """
+    Int to letter string: 
+    
+    Ex: 
+    number_to_letter(3)
+    """
+    return_value =  chr(ord('@')+(number+1)).lower()
+    if upper:
+        return return_value.upper()
+    else:
+        return return_value
+    
+def letter_to_number(letter):
+    """
+    letter to string string: 
+    
+    Ex: 
+    letter_to_number(3)
+    """
+    return ord(letter) - ord('a')
+
+import string_utils as stru
