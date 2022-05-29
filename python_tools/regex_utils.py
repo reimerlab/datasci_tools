@@ -125,6 +125,9 @@ def multiple_replace(text,dict_map):
     # For each match, look-up corresponding value in dictionary
     return regex.sub(lambda mo: dict_map[mo.string[mo.start():mo.end()]], text)
 
+def all_match_substring_in_str(Substring,expression):
+    z = re.match(substring,expression)
+    return z
 
 def match_substring_in_str(substring,expression):
     z = re.match(substring,expression)
@@ -132,3 +135,6 @@ def match_substring_in_str(substring,expression):
         return True
     else:
         return False
+    
+def substr_from_match_obj(match_obj):
+    return match_obj.string[match_obj.span()[0]:match_obj.span()[1]]
