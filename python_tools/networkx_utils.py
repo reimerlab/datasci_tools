@@ -2667,6 +2667,61 @@ def set_edge_attribute_defualt(G,attribute_name,
                     if attribute_name not in G[u][v][idx]:
                         G[u][v][idx][attribute_name] = default_value
                         
+def filter_down_edge_attributes(
+    G,
+    attributes=None,
+    attributes_to_delete=None,
+    nodelist = None,
+    verbose = False):
+    
+    for u in G:
+        if nodelist is not None:
+            if u not in nodelist:
+                continue
+        for v in G[u]:
+            if nodelist is not None:
+                if v not in nodelist:
+                    continue
+                    
+            if not xu.is_multigraph(G):
+                if attributes_to_delete is not None:
+                    for a in attributes_to_delete:
+                        if a in G[u][v]:
+                            del G[u][v][a]
+                            
+                if attributes is not None:
+                    attr_to_remove = np.setdiff1d(
+                        list(dict(G[u][v]).keys()),
+                        attributes)
+                    
+                    for a in attr_to_remove:
+                        if a in G[u][v]:
+                            del G[u][v][a]
+            else:
+                for idx in dict(G[u][v]).keys():
+                    if attributes_to_delete is not None:
+                        for a in attributes_to_delete:
+                            if a in G[u][v][idx]:
+                                del G[u][v][idx][a]
+
+                    if attributes is not None:
+                        attr_to_remove = np.setdiff1d(
+                            list(dict(G[u][v][idx]).keys()),
+                            attributes)
+
+                        for a in attr_to_remove:
+                            if a in G[u][v][idx]:
+                                del G[u][v][idx][a]
+                
+                
+#             else:
+#                 for idx in dict(G[u][v]).keys():
+#                     if attribute_name not in G[u][v][idx]:
+#                         G[u][v][idx][attribute_name] = default_value
+    
+                
+    return G
+                        
 def derived_edge_attribute(
     G,
     attribute,
@@ -3446,6 +3501,8 @@ def set_graph_attr_with_dict(G,d):
     G.graph.update(d)
 def set_graph_attr(G,k,v):
     xu.set_graph_attr_with_dict(G,{k:v})
+def get_graph_attr(G,k):
+    return G.graph[k]
 # ------------ drawing functions --------------
 import matplotlib.pyplot as plt
 import pydot
@@ -3628,6 +3685,21 @@ def delete_node_attributes(
         
     return G
 
+def filter_down_node_attributes(
+    G,
+    attributes = None,
+    attributes_to_delete = None,
+    nodelist = None,
+    verbose = False
+    ):
+    
+    return xu.delete_node_attributes(
+    G,
+    attributes=attributes_to_delete,
+    attributes_not_to_delete=attributes,
+    nodelist = nodelist,
+    verbose = verbose)
+
 def set_node_attribute(
     G,
     attribute_name,
@@ -3802,6 +3874,40 @@ def derived_node_attribute(
     for n in G.nodes():
         if attribute in G.nodes[n]:
             G.nodes[n][new_attribute] = func(G.nodes[n][attribute])
+            
+def derived_node_attribute_from_func(
+    G,
+    attribute_name,
+    func,
+    ):
+    
+    for n in G.nodes():
+        G.nodes[n][attribute_name] = func(dict(G.nodes[n]))
+        
+def derived_edge_attribute_from_func(
+    G,
+    attribute_name,
+    func,
+    ):
+    
+    """
+    Ex: 
+    def comp_flat(key):
+        if key["postsyn_compartment_fine"] is None:
+            return key["postsyn_compartment_coarse"]
+        else:
+            return key["postsyn_compartment_fine"]
+
+    xu.derived_edge_attribute_from_func(
+        G,
+        "postsyn_compartment_flat",
+        comp_flat 
+        )
+    
+    """
+    
+    for e in G.edges():
+        G[e[0]][e[1]][attribute_name] = func(G[e[0]][e[1]])
                 
 def set_edge_attribute_from_node_attribute(
     G,
