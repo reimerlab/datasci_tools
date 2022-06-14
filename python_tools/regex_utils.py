@@ -105,11 +105,22 @@ s = sql_pattern.sub(convert_func,s)
 if verbose:
     print(f"after replace:\n {s}")
     
+    
+# ------- searching for something but only replacing a certain part ----
 
+Ex: Will 
+s = dotmotif_str
+s = "6P-PT  -> hellow"
+pattern = (
+    "([a-zA-Z0-9])-([a-zA-Z0-9])")
+re.sub(pattern,r"\1\2",s)
 
 """
 
-def multiple_replace(text,dict_map):
+def multiple_replace(
+    text,
+    dict_map=None,
+    pattern = None):
     """
     Purpose: To replace multiple strings with a dictionary apping
     
@@ -120,10 +131,17 @@ def multiple_replace(text,dict_map):
     ru.multiple_replace(query,dict_mapping)
     """
     # Create a regular expression  from the dictionary keys
-    regex = re.compile("(%s)" % "|".join(map(re.escape, dict_map.keys())))
+    if dict_map is not None:
+        regex = re.compile("(%s)" % "|".join(map(re.escape, dict_map.keys())))
 
-    # For each match, look-up corresponding value in dictionary
-    return regex.sub(lambda mo: dict_map[mo.string[mo.start():mo.end()]], text)
+        # For each match, look-up corresponding value in dictionary
+        text = regex.sub(lambda mo: dict_map[mo.string[mo.start():mo.end()]], text)
+    
+    if pattern is not None:
+        pass
+    
+    return text
+        
 
 def all_match_substring_in_str(Substring,expression):
     z = re.match(substring,expression)
@@ -138,3 +156,9 @@ def match_substring_in_str(substring,expression):
     
 def substr_from_match_obj(match_obj):
     return match_obj.string[match_obj.span()[0]:match_obj.span()[1]]
+
+def sub_str_for_pattern(
+    s,
+    pattern,
+    replacement):
+    return re.sub(pattern,replacement,s)

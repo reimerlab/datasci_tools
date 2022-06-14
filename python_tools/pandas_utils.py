@@ -1183,4 +1183,39 @@ def histogram_of_discrete_labels(
         )
     return df_counts
 
+def unique_row_counts(
+    df,
+    columns=None,
+    count_column_name = "unique_counts",
+    add_to_df = False,
+    verbose = False,
+    ):
+
+    """
+    Purpose: To determine the counts of the 
+    number of unique rows as determined by the columns
+    (and could add the number to the dataframe)
+    """
+    unique_df = df
+    if columns is None:
+        columns = list(df.columns)
+
+    columns = nu.convert_to_array_like(columns)
+
+    count_column = count_column_name
+    unique_df[count_column] = 1
+    counts_df = unique_df[columns + [count_column]].groupby(columns).count().reset_index()
+    if verbose:
+        print(f"# of unique rows = {len(counts_df)}")
+    
+    if add_to_df:
+        df = pd.merge(
+            pu.delete_columns(df,count_column),
+            counts_df,
+            on=columns,
+            how="left")
+        return df
+    else:
+        return counts_df
+
 import pandas_utils as pu
