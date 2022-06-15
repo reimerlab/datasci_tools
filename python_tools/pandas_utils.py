@@ -1217,5 +1217,8 @@ def unique_row_counts(
         return df
     else:
         return counts_df
+    
+def set_max_colwidth(width=400):
+    pd.set_option('max_colwidth', width)
 
 import pandas_utils as pu

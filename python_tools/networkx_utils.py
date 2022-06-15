@@ -3956,5 +3956,107 @@ def convert_to_non_multi(G):
         return G
     
     
+def is_isomorphic(G1,G2):
+    return nx.is_isomorphic(G1,G2)
+
+def edge_str_from_G(
+    G,
+    delimiter = ";",
+    **kwargs):
+    return delimiter.join([f"{e1}->{e2}" for e1,e2 in G.edges()]) + delimiter
+
+import string_utils as stru
+def motif_Gs_for_n_nodes(
+    n,
+    graph_type = "DiGraph",
+    enforce_n_nodes = True,
+    verbose = False,
+    plot = False,
+    **kwargs
+    ):
+    """
+    Purpose: To compute all possible combinations
+    of edges in n nodes
+
+    Pseudocode: 
+    1) Get all combinations of edges
+
+    For each connection: 
+    a) Build a graph of it
+    b) See if the graph matches the dotmotif of another unique graph
+    c) If it doesn then add it to the unique list (and register the number of nodes associated)
+
+    2) Filter for a certain amount of nodes
+    
+    Ex: 
+    import networkx_utils as xu
+    xu.motif_Gs_for_n_nodes(n=3,plot = True)
+    """
+
+    node_names = [stru.number_to_letter(k).capitalize() for k in range(n)]
+    if verbose:
+        print(f"node_names = {node_names}")
+
+    if "Di" in graph_type:
+        edges = nu.choose_k_permutations(node_names,2)
+    else:
+        edges = nu.choose_k_combinations(node_names,2)
+
+    edges = np.array(edges)
+    binary_mat = nu.binary_permutation_matrix(len(edges))
+
+    if verbose:
+        print(f"# of edges = {len(edges)} with {len(binary_mat)} unique combinations")
+
+
+    unique_G = []
+    for e_idx in binary_mat:
+        curr_edges = edges[np.where(e_idx)[0]]
+        if verbose:
+            print(f"Working on edges = {curr_edges}")
+
+        #a) Build a graph of it
+        G = getattr(nx,graph_type)()
+        G.add_edges_from(curr_edges)
+
+        #b) See if the graph matches the dotmotif of another unique graph
+        found = False
+        for j,(curr_G) in enumerate(unique_G):
+
+            if len(curr_G.nodes()) != len(G.nodes()):
+                continue
+
+            iso_match = xu.is_isomorphic(G,curr_G)
+
+            if iso_match:
+                if verbose:
+                    print(f"Found matching graph: {j}")
+                found = True
+                break
+
+        if not found: 
+            unique_G.append(G)
+            if plot:
+                nx.draw(G,with_labels = True)
+                plt.show()
+
+    if verbose:
+        print(f"Unique number of Graphs for {n} nodes: {len(unique_G)}")
+
+
+    if enforce_n_nodes:
+        unique_G = [k for k in unique_G if len(k.nodes()) == n]
+        if verbose:
+            print(f"After filtering to {n} node graphs: {len(unique_G)}")
+
+    return unique_G
+    
+    
+def motif_strs_for_n_nodes(
+    n,
+    **kwargs):
+    motif_Gs = xu.motif_Gs_for_n_nodes(n=n,**kwargs)
+    return [xu.edge_str_from_G(k,**kwargs) for k in motif_Gs]
+    
 import networkx_utils as xu
     

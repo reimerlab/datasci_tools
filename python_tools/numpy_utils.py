@@ -489,6 +489,10 @@ import itertools
 
 def choose_k_combinations(array,k):
     return list(itertools.combinations(array,k))
+
+def choose_k_permutations(array,k):
+    return list(itertools.permutations(array, k))
+
 def all_unique_choose_2_combinations(array):
     """
     Given a list of numbers  or labels, will 
@@ -501,6 +505,8 @@ def all_unique_choose_2_combinations(array):
 def all_unique_choose_k_combinations(array,k):
     starting_node_combinations = list(itertools.combinations(array,k))
     return nu.unique_non_self_pairings(starting_node_combinations)
+    
+
     
 
 def unique_pairings_between_2_arrays(array1,array2):
@@ -1233,5 +1239,14 @@ def reject_outliers(array, m=2,return_mask = False):
     if return_mask:
         return mask
     return array[mask]
+
+import itertools
+def binary_permutation_matrix(n):
+    """
+    Purpose: to get a binary matrix of n number of variables
+    showing all the possible binary combinations
+    """
+    lst = np.array(list(itertools.product([0, 1], repeat=n)))
+    return lst
 
 import numpy_utils as nu
