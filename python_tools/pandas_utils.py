@@ -797,8 +797,10 @@ def restrict_df_by_dict(df,dict_restriction,return_indexes=False):
     else:
         return df[mask]
     
-def fillna(df,value=0):
-    return df.fillna(value)
+def fillna(df,value=0,columns=None):
+    if columns is None:
+        columns = df.columns
+    return df.fillna({k:value for k in columns})
 
 def column_data_types(df):
     return df.dtypes
@@ -918,8 +920,8 @@ def normalize_df(
 def filter_away_non_finite_rows(df):
     return df[df.replace([np.inf, -np.inf], np.nan).notnull().all(axis=1)]
 
-def replace_None_with_default(df,default):
-    return pu.fillna(df,default)
+def replace_None_with_default(df,default,columns=None):
+    return pu.fillna(df,default,columns=columns)
 
 def replace_nan_with_default(df,default=None):
     return df.where(pd.notnull(df), default)
