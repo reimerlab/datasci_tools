@@ -416,11 +416,13 @@ def heatmap_3D(
     feature_name = "feature_name",
     scatter_size = 0.5,
     plot_highest_bin_value = False,
-    
+    axis_box_off = False,
     ):
     """
     Purpose: To plot a 3D heatmap of a feature with values and coordinates
     """
+    import neuron_visualizations as nviz
+    
     curr_data= values
     curr_centers = coordinates
 
@@ -456,7 +458,9 @@ def heatmap_3D(
     nviz.plot_objects(
     scatters=scatters,
     scatters_colors=scatters_colors,
-    scatter_size=scatter_size
+    scatter_size=scatter_size,
+    axis_box_off = axis_box_off,
+    
     )
     
     

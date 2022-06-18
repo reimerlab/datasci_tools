@@ -924,7 +924,10 @@ def stacked_bar_graph(
     
     previous_count = 0
     for lab in all_ys:
-        height = df[f"{lab}"].to_numpy()
+        if lab in df.columns:
+            height = df[f"{lab}"].to_numpy()
+        else:
+            continue
 
         ax2.bar(x = x_range,
                height = height ,
@@ -1050,6 +1053,93 @@ def bar_plot_parallel_features_by_labels(
         if title_append is not None:
                 title += f" \n {title_append}"
         ax.set_title(title)
+        
+        
+def histograms_overlayed(
+    df,
+    column,
+    hue=None,
+    
+    #histogram plot formatting
+    bins = 50,
+    density = False,
+    alpha = 0.5,
+    color_dict = None,
+
+    #formatting
+    figsize = (10,5),
+    fontsize = 20,
+    
+    xlabel= None,
+    title = None,
+    
+    fontsize_title = 30,
+    fontsize_legend = 15,
+    
+    ):
+    
+    """
+    Purpose: 
+    To plot different histograms all overlayed
+    
+    import matplotlib_utils as mu
+    mu.histograms_overlayed(
+        coord_df,
+        column="centroid_y_nm",
+        hue="gnn_cell_type_fine")
+    """
+    
+    
+    fig,ax = plt.subplots(1,1,figsize=figsize)
+    
+    if hue is not None:
+        cats = df[hue].unique()
+    else:
+        cats = [None]
+        
+    for cat in cats:
+        if cat is not None:
+            curr_df = df.query(f"{hue} == '{cat}'")
+            if len(curr_df) == 0:
+                curr_df = df.query(f"{hue} == {cat}")
+        else:
+            curr_df = df
+        
+        if color_dict is not None:
+            color = color_dict.get(cat,None)
+        else:
+            color = None
+        ax.hist(curr_df[column],
+                        density = density,
+                         label = cat,
+                        color = color,
+                         bins=bins,
+                        alpha = alpha,
+                        #zorder=zorder
+        )
+        
+    
+    if xlabel is None:
+        xlabel = column
+        
+    ax.set_xlabel(f"{xlabel}",fontsize = fontsize)
+    
+    if density:
+        ax.set_ylabel("Density",fontsize=fontsize)
+    else:
+        ax.set_ylabel("Frequency",fontsize = fontsize)
+        
+    if title is None:
+        title = f"{column.title()} Distribution"
+    ax.set_title(f"{title}",fontsize = fontsize_title)
+    ax.legend()
+    ax.legend(loc="upper right", 
+              markerscale=2.,
+              scatterpoints=1, 
+              fontsize=fontsize_legend)
+    
+    return ax
+        
 
     
 import matplotlib_utils as mu

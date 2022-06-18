@@ -2240,14 +2240,18 @@ def connected_components(G,return_subgraphs=False):
 upstream_name = "u"
 downstream_name = "v"
 import general_utils as gu
-def node_df(G,
-            properties_to_exclude = None,
-            properties_to_include=None,
-           node_id = upstream_name):
+def node_df(
+    G,
+    properties_to_exclude = None,
+    properties_to_include=None,
+    node_id = upstream_name,
+    verbose = False,
+    ):
     """
     To export the node properties  as a dataframe
     
     """
+    st = time.time()
     node_dict = [gu.merge_dicts([G.nodes[k],{node_id:k}]) for k in G.nodes()]
     node_df = pu.dicts_to_dataframe(node_dict)
     col_names = np.array(node_df.columns)
@@ -2259,6 +2263,9 @@ def node_df(G,
         
     if properties_to_exclude is not None:
         col_names = np.setdiff1d(col_names,properties_to_exclude)
+        
+    if verbose:
+        print(f"Time for node_df = {time.time() - st}")
         
     return node_df[[node_id]+list(col_names[col_names != node_id])]
 
@@ -3238,19 +3245,91 @@ def set_node_attributes_from_df(G,df,index_name):
     nx.set_node_attributes(G, df.set_index(index_name).to_dict('index'))
     return G
 
-def edge_df_optimized(G,edge_key=None,nodelist=None,
-                      source= "source",
-                      target = "target",
-                      **kwargs):
+def edge_df_optimized(
+    G,
+    edge_key=None,
+    nodelist=None,
+    source= "source",
+    target = "target",
+    node_attributes = None,
+    node_attributes_source_name = None,
+    node_attributes_target_name = None,
+    **kwargs):
     """
     edge_key: Returns just the edges 
     """
 
-    return nx.convert_matrix.to_pandas_edgelist(G,
+    
+    
+    
+    return_df =  nx.convert_matrix.to_pandas_edgelist(G,
                                                 source= source,
                                                 target=target,
                                                nodelist=nodelist,
                                                **kwargs)
+    
+    if node_attributes is not None:
+        return_df = xu.add_node_attributes_to_edge_df(
+            return_df,
+            source= source,
+            target = target,
+            node_attributes = node_attributes,
+            node_attributes_source_name = node_attributes_source_name,
+            node_attributes_target_name = node_attributes_target_name,
+            G = G,)
+        
+    return return_df
+
+def add_node_attributes_to_edge_df(
+    edge_df,
+    node_attributes,
+    source= "source",
+    target = "target",
+    node_attributes_source_name = None,
+    node_attributes_target_name = None,
+    node_df = None,
+    G = None,
+    verbose = False,
+    ):
+    """
+    Purpose: To add node attributes to an edge_df already generated
+    
+    xu.add_node_attributes_to_edge_df(
+        edge_df_pre,
+        node_attributes = ["gnn_cell_type"],
+        verbose = True,
+        G = G,
+        node_attributes_source_name = "presyn",
+        node_attributes_target_name = "postsyn",
+        #node_df = node_df
+    )
+    """
+    
+    if node_attributes_source_name is None:
+        node_attributes_source_name = source
+    if node_attributes_target_name is None:
+        node_attributes_target_name = target
+    
+    return_df = edge_df
+    
+    if node_df is None:
+        node_df = xu.node_df(G,node_id=source,verbose = verbose)
+        
+    
+    node_df = node_df[[source] + list(node_attributes)]
+    for old_name,prefix in zip([source,target],
+                               [node_attributes_source_name,
+                                 node_attributes_target_name]):
+        rename_dict = {source:old_name}
+        rename_dict.update({k:f"{prefix}_{k}" for k in node_df.columns
+                           if k != source and 
+                            f"{prefix}_{k}" not in return_df.columns})
+        node_df_curr = pu.rename_columns(node_df,rename_dict)
+        return_df= pd.merge(return_df,node_df_curr,on=old_name,how="left")
+        
+    return return_df
+        
+        
 
 def G_from_pandas_edgelist(df,
                            source = "source",
@@ -3944,6 +4023,31 @@ def set_edge_attribute_from_node_attribute(
             print(f"  --> total time = {time.time() - st}")
     
     return G
+
+def set_edge_attribute(
+    G,
+    node_1,
+    node_2,
+    attribute,
+    value,
+    edge_idx = None):
+    
+    if edge_idx is not None:
+        G[node_1][node_2][edge_idx][attribute] = value
+    else:
+        G[node_1][node_2][attribute] = value
+        
+def get_edge_attribute(
+    G,
+    node_1,
+    node_2,
+    attribute,
+    edge_idx = None):
+    
+    if edge_idx is not None:
+        return G[node_1][node_2][edge_idx][attribute]
+    else:
+        return G[node_1][node_2][attribute]
     
 import networkx as nx
 def convert_to_non_multi(G):
