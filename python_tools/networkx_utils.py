@@ -511,6 +511,34 @@ def get_edge_attributes(G,attribute="order",edge_list=[],undirected=True):
     else:
         return edge_attributes
 
+def get_edge_attributes_df(
+    G,
+    attributes, #= "presyn_soma_postsyn_soma_euclid_dist"
+    return_df = True,
+    return_array = False,
+    ):
+    """
+    Purpose: To retrieve a dataframe of the
+    edge attributes
+    """
+    if not nu.is_array_like(attributes):
+        singular_flag = True
+        attributes = [attributes]
+    attribute_dict = {k:np.array(list(nx.get_edge_attributes(G,k).values()))
+                     for k in attributes}
+
+    if return_array:
+        return_value = list(attribute_dict.values())
+        if singular_flag:
+            return return_value[0]
+        else:
+            return return_value
+
+    if return_df:
+        df = pd.DataFrame(attribute_dict)
+        return df
+    else:
+        return attribute_dict
 
 import copy
 # how you can try to remove a cycle from a graph

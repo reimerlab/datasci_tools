@@ -1139,6 +1139,84 @@ def histograms_overlayed(
               fontsize=fontsize_legend)
     
     return ax
+
+
+import numpy as np
+import numpy_utils as nu
+def histograms_over_intervals(
+    df,
+    attribute,
+    interval_attribute,
+    verbose = False,
+    outlier_buffer = 1,
+    intervals = None,
+
+    n_intervals = 10,
+    overlap = 0.1,
+    title_append = None,
+    figsize = (8,4), 
+    ):
+    """
+    Purpose: To plot a sequence of histograms that show the continuous progression of a value for 
+    discrete intervals of another continuous value
+
+    Pseudocode: 
+    1) Filter the data for outliers if requested
+    2) Get the continuous value you will bin and divide it up intervals
+    3) Create a figure with a shared x axis
+    for each interval: 
+    a. restrict the dataframe to that interval
+    b. Plot a histogram
+    c. Label the title the continuous value range
+    """
+
+
+
+    df = df.query(f"{attribute} == {attribute}")
+
+    if outlier_buffer is not None:
+        att_vals = df[attribute].to_numpy()
+        min_value = np.percentile(att_vals,outlier_buffer)
+        max_value = np.percentile(att_vals,100-outlier_buffer)
+        if verbose:
+            print(f"outlier processing: min_value = {min_value}, max_value = {max_value}")
+
+        original_size = len(df)
+        df = df.query(
+            f"({attribute}>={min_value})"
+            f" and ({attribute}<={max_value})"
+        )
+
+        if verbose:
+            print(f"After outlier filtering df reduced from {original_size} to {len(df)} entries")
+
+    #2) Get the continuous value you will bin and divide it up intervals
+    interval_vals = df[interval_attribute]
+    if intervals is None:
+        intervals = nu.interval_bins_covering_array(
+            array = interval_vals,
+            n_intervals = n_intervals,
+            overlap = overlap, #if this is a percentage then it is a proportion of the interval
+            outlier_buffer = 0,
+            verbose = False,
+        )
+
+    for j,(lower,upper) in enumerate(intervals):
+        df_curr = df.query(
+            f"({interval_attribute} >= {lower})"
+            f"and ({interval_attribute} >= {upper})"
+        )
+        fig,ax = plt.subplots(1,1,figsize=figsize)
+        ax.hist(df_curr[attribute].to_numpy())
+        curr_title = (f"{attribute} Distribution\n{interval_attribute} [{np.round(lower,2)},{np.round(upper,2)}]"
+                      f"\nn_samples = {len(df_curr)}")
+
+        if title_append is not None:
+            curr_title += f"\n{title_append}"
+        plt.title(curr_title)
+        ax.set_xlabel(f"{attribute}")
+        ax.set_ylabel(f"Count")
+        plt.show()
         
 
     

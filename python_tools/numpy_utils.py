@@ -1251,4 +1251,70 @@ def binary_permutation_matrix(n):
     lst = np.array(list(itertools.product([0, 1], repeat=n)))
     return lst
 
+def interval_bins_covering_array(
+    array,
+    n_intervals,
+    overlap = 0,
+    outlier_buffer = 0,
+    verbose = False,
+    ):
+    """
+    Create a set of intervals with a certain amount
+    of overlap in between each 
+    
+    Ex: 
+    import numpy_utils as nu
+    nu.interval_bins_covering_array(
+        array = interval_vals,
+        n_intervals = 10,
+        overlap = 20, #if this is a percentage then it is a proportion of the interval
+        outlier_buffer = 0,
+        verbose = False,
+    )
+    """
+
+    if outlier_buffer is not None and outlier_buffer > 0:
+        original_size = len(array)
+        array = array[(array >= np.percentile(array,outlier_buffer)) &
+                      (array <= np.percentile(array,100-outlier_buffer))]
+
+        if verbose:
+            print(f"After interval outlier filtering array reduced from {original_size} to {len(array)} entries")
+
+    array_min = np.min(array)
+    array_max = np.max(array)
+    array_size = array_max - array_min
+    if verbose:
+        print(f"array_min = {array_min}, array_max = {array_max}")
+
+
+    if overlap == 0:
+        boundaries = np.linspace(array_min,array_max,n_intervals + 1)
+        intervals = np.vstack([boundaries[:-1],boundaries[1:]]).T
+        interval_size = intervals[0][1] - intervals[0][0]
+    if overlap > 0:
+        if overlap < 1:
+            overlap = array_size * overlap
+
+        if verbose:
+            print(f"Overlap size = {overlap}")
+
+        interval_size = ((array_size) + overlap*(n_intervals - 1))/n_intervals
+        if verbose:
+            print(f"interval_size = {interval_size}")
+
+
+        if overlap > interval_size:
+            raise Exception(f"Overlap size {overlap} is greater than {interval_size}")
+
+        non_overlap_size = interval_size - overlap
+        boundaries_left = np.arange(0,n_intervals)*non_overlap_size
+        boundaries_right = boundaries_left + interval_size
+        intervals = array_min + np.vstack([boundaries_left,boundaries_right]).T
+
+    if verbose:
+        print(f"intervals = {intervals}")
+        
+    return intervals
+
 import numpy_utils as nu
