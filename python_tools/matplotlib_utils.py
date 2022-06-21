@@ -1,7 +1,7 @@
 from matplotlib import colors
 import numpy as np
 import numpy_utils as nu
-
+import pandas_utils as pu
 """
 Notes on other functions: 
 eventplot #will plot 1D data as lines, can stack multiple 1D events
@@ -1063,8 +1063,9 @@ def histograms_overlayed(
     #histogram plot formatting
     bins = 50,
     density = False,
-    alpha = 0.5,
+    alpha = 0.3,
     color_dict = None,
+    default_color = "black",
 
     #formatting
     figsize = (10,5),
@@ -1075,6 +1076,13 @@ def histograms_overlayed(
     
     fontsize_title = 30,
     fontsize_legend = 15,
+    
+    verbose = False,
+    include_mean_std_in_title = True,
+    
+    outlier_buffer = 1,
+    
+    
     
     ):
     
@@ -1089,7 +1097,20 @@ def histograms_overlayed(
         hue="gnn_cell_type_fine")
     """
     
+    df= df.query(f"{column} == {column}")
+    import numpy_utils as nu
+    df = pu.filter_away_rows_with_nan_in_columns(
+        df = df,
+        columns = column,
+        verbose=verbose,
+    )
     
+    if outlier_buffer is not None:
+        df = pu.filter_df_by_column_percentile(
+            df,
+            columns=column,
+            percentile_buffer=outlier_buffer,
+        )
     fig,ax = plt.subplots(1,1,figsize=figsize)
     
     if hue is not None:
@@ -1097,6 +1118,7 @@ def histograms_overlayed(
     else:
         cats = [None]
         
+    total_colors = []
     for cat in cats:
         if cat is not None:
             curr_df = df.query(f"{hue} == '{cat}'")
@@ -1105,10 +1127,16 @@ def histograms_overlayed(
         else:
             curr_df = df
         
+        #print(f"color_dict = {color_dict}")
         if color_dict is not None:
-            color = color_dict.get(cat,None)
+            color = color_dict.get(cat,default_color)
         else:
             color = None
+            
+        #print(f"Category = {cat}")
+        #print(f"{cat} color = {np.unique(color)}")
+        if cat is None:
+            cat = "None"
         ax.hist(curr_df[column],
                         density = density,
                          label = cat,
@@ -1117,6 +1145,11 @@ def histograms_overlayed(
                         alpha = alpha,
                         #zorder=zorder
         )
+        ax.legend()
+        
+        total_colors.append(color)
+        
+    #print(f"total_colors = {total_colors}")
         
     
     if xlabel is None:
@@ -1131,6 +1164,9 @@ def histograms_overlayed(
         
     if title is None:
         title = f"{column.title()} Distribution"
+        
+    if include_mean_std_in_title:
+        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
     ax.set_title(f"{title}",fontsize = fontsize_title)
     ax.legend()
     ax.legend(loc="upper right", 
@@ -1147,14 +1183,19 @@ def histograms_over_intervals(
     df,
     attribute,
     interval_attribute,
-    verbose = False,
+    
+    bins = 30,
     outlier_buffer = 1,
     intervals = None,
+    
+    hue = None,
+    color_dict = None,
 
     n_intervals = 10,
     overlap = 0.1,
     title_append = None,
     figsize = (8,4), 
+    verbose = False,
     ):
     """
     Purpose: To plot a sequence of histograms that show the continuous progression of a value for 
@@ -1201,21 +1242,36 @@ def histograms_over_intervals(
             verbose = False,
         )
 
+    x_ax_min = df[attribute].min()
+    x_ax_max = df[attribute].max()
     for j,(lower,upper) in enumerate(intervals):
         df_curr = df.query(
             f"({interval_attribute} >= {lower})"
-            f"and ({interval_attribute} >= {upper})"
+            f"and ({interval_attribute} <= {upper})"
         )
-        fig,ax = plt.subplots(1,1,figsize=figsize)
-        ax.hist(df_curr[attribute].to_numpy())
+        
+        #if hue is not None:
+        ax = mu.histograms_overlayed(
+            df_curr,
+            attribute,
+            hue = hue,
+            bins = bins,
+            color_dict=color_dict,
+            )
+#         else:
+#             fig,ax = plt.subplots(1,1,figsize=figsize)
+#             ax.hist(df_curr[attribute].to_numpy(),
+#                    bins=bins)
         curr_title = (f"{attribute} Distribution\n{interval_attribute} [{np.round(lower,2)},{np.round(upper,2)}]"
                       f"\nn_samples = {len(df_curr)}")
+        curr_title += f"\nMean = {np.round(df_curr[attribute].median(),2)}, Std Dev = {np.round(df_curr[attribute].std(),2)}"
 
         if title_append is not None:
             curr_title += f"\n{title_append}"
         plt.title(curr_title)
         ax.set_xlabel(f"{attribute}")
         ax.set_ylabel(f"Count")
+        ax.set_xlim([x_ax_min,x_ax_max])
         plt.show()
         
 

@@ -1222,5 +1222,93 @@ def unique_row_counts(
     
 def set_max_colwidth(width=400):
     pd.set_option('max_colwidth', width)
+    
+import numpy_utils as nu
+def filter_df_by_column_percentile(
+    df,
+    columns,
+    percentile_buffer=None,
+    percentile_lower = None,
+    percentile_upper = None,
+    verbose = False,
+    ):
+    """
+    Purpose: To filter a dataframe for
+    a certain percentile range
+    
+    Ex: 
+    pu.filter_df_by_column_percentile(
+        df_to_plot,
+        "n_syn_soma_no_label_postsyn",
+        percentile_buffer = 5,
+        verbose = True
+    )
+    """
+    columns = nu.convert_to_array_like(columns)
+    if percentile_lower is None:
+        if percentile_buffer is not None:
+            percentile_lower = percentile_buffer
+        else: 
+            percentile_lower = 0
+    
+    if percentile_upper is None:
+        if percentile_buffer is not None:
+            percentile_upper = 100 - percentile_buffer
+        else:
+            percentile_upper = 100
+    
+    for attribute in columns:
+        att_vals = df[attribute].to_numpy()
+        min_value = np.percentile(att_vals,percentile_lower)
+        max_value = np.percentile(att_vals,percentile_upper)
+        if verbose:
+            print(f"outlier processing: min_value = {min_value}, max_value = {max_value}")
+
+        original_size = len(df)
+        df = df.query(
+            f"({attribute}>={min_value})"
+            f" and ({attribute}<={max_value})"
+        )
+
+        if verbose:
+            print(f"After filtering df by column {attribute}: reduced from {original_size} to {len(df)} entries")
+            
+    return df
+
+
+def filter_away_rows_with_nan_in_columns(
+    df,
+    columns,
+    verbose = False,):
+    """
+    Purpose: To filter away rows that have
+    a nan value in certain columns
+
+    """
+    try:
+        df = df.reset_index()
+    except:
+        pass
+    
+    columns = nu.convert_to_array_like(columns)
+    
+    df_curr = df[columns]
+    idx = pu.find_all_rows_without_nan(
+        df_curr,return_indexes = True,
+    )
+    df_filt = df.iloc[idx,:]
+    
+    if verbose:
+        print(f"Filtering {len(df)} rows to {len(df_filt)} rows")
+    
+    for c in columns:
+        df_filt = df_filt.query(f"{c}=={c}")
+        
+    try:
+        df_filt.reset_index()
+    except:
+        pass
+    
+    return df_filt
 
 import pandas_utils as pu

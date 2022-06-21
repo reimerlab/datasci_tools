@@ -4189,6 +4189,15 @@ def motif_strs_for_n_nodes(
     **kwargs):
     motif_Gs = xu.motif_Gs_for_n_nodes(n=n,**kwargs)
     return [xu.edge_str_from_G(k,**kwargs) for k in motif_Gs]
+
+def compute_node_attribute(
+    G,
+    attribute,
+    attribute_function,
+    ):
+    
+    for n in G.nodes():
+        G.nodes[n][attribute] = attribute_function(G.nodes[n])
     
 import networkx_utils as xu
     
