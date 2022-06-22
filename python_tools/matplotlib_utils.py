@@ -863,6 +863,8 @@ def text_overlay(
                       edgecolor=box_edgecolor, 
                       facecolor=box_facecolor))
         
+    return ax
+        
         
 import matplotlib_utils as mu
 def stacked_bar_graph(
