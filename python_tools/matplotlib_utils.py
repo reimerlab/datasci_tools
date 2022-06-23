@@ -1276,6 +1276,98 @@ def histograms_over_intervals(
         ax.set_xlim([x_ax_min,x_ax_max])
         plt.show()
         
+def get_cmap(cmap="RdYlBu"):
+    """
+    List of all color maps:
+    
+    Usually end up setting the color map as
+    cmap=mu.get_cmap()
+    """
+    return plt.cm.get_cmap(cmap)
 
+def scatter_with_gradient(
+    df = None,
+    column_coordinates = None,
+    column_gradient = None,
+    coordinates = None,
+    gradient = None,
+    percentile_buffer = None,
+    cmap = 'RdYlBu',
+    alpha = 0.5,
+    vmin = None,
+    vmax = None,
+    figsize = (10,10),
+    title = None,
+    ):
+    
+    
+    cmap = mu.get_cmap(cmap)
+    
+    if gradient is None:
+        gradient = df[column_gradient].to_numpy().astype("float")
+    if coordinates is None:
+        column_coordinates = list(nu.convert_to_array_like(column_coordinates))
+        coordinates = np.vstack(df[column_coordinates].to_numpy()).astype("float")
+        
+    coordinates = np.array(coordinates)
+    if coordinates.shape[1] == 3:
+        X,Y,Z = coordinates[:,0],coordinates[:,1],coordinates[:,2]
+    else:
+        X,Y = coordinates[:,0],coordinates[:,1]
+        Z = None
+        
+
+    if Z is not None:
+        Z = np.array(Z)
+        projection_type = "3d"
+    else:
+        projection_type = None
+
+    X = np.array(X)
+    Y = np.array(Y)
+
+    if percentile_buffer:
+        if vmin is None:
+            vmin = np.percentile(gradient,percentile_buffer)
+        if vmax is None:
+            vmax = np.percentile(gradient,100-percentile_buffer)
+            
+        print(f"vmin = {vmin}")
+        print(f"vmax = {vmax}")
+
+    #fig,ax = plt.subplots(1,1,projection_type=projection_type)
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111, projection = projection_type)
+    
+    if Z is not None:
+        sc = ax.scatter(
+            X,
+            Y,
+            Z,
+            c=gradient,
+            vmin=vmin,
+            vmax = vmax,
+            cmap = cmap,
+            alpha = alpha,
+            )
+    else:
+        sc = ax.scatter(
+            X,
+            Y,
+            c=gradient,
+            vmin=vmin,
+            vmax = vmax,
+            cmap = cmap,
+            alpha = alpha,
+            )
+        
+    cbar = plt.colorbar(sc)
+    if column_gradient is not None:
+        cbar.set_label(f'{column_gradient}')#, rotation=270)
+
+    if title is not None:
+        ax.set_title(title)
+    
+    return ax
     
 import matplotlib_utils as mu

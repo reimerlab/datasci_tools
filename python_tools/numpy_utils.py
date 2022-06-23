@@ -1317,4 +1317,41 @@ def interval_bins_covering_array(
         
     return intervals
 
+def ind_conversion(
+    idx,
+    shape,
+    order_start,
+    ):
+    """
+    Purpose: convert flattened indices
+    from one order to another (example
+    from C to Fortran or Fortran to C)
+    
+    Ex:
+    image_height=3
+    image_width=4
+    mp_ = np.array([ 3,  6,  1,  4, 10,  2])
+
+    ind_conversion(
+       idx=mp_,
+        shape = (image_height,image_width),
+        order_start = "f"
+    )
+    
+    >> output: mp_=np.array([1,2,4,5,7,8]) 
+    """
+    idx = np.array(idx).astype("int")
+    order_start = order_start.lower()
+    if order_start == "c":
+        order_end = "f"
+    elif order_start == "f":
+        order_end = "c"
+    else:
+        raise Exception(f"Unknown order {order_start}")
+        
+    coords=np.unravel_index(idx, shape, order=order_start.upper())  
+    ind_out = np.ravel_multi_index(coords, shape, order=order_end.upper())
+    
+    return ind_out
+
 import numpy_utils as nu
