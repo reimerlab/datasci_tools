@@ -1001,13 +1001,13 @@ def interpercentile_range(array,range_percentage,axis = None,verbose = False):
         
     return interpercentile_range
 
-def randomly_shuffle_array(array):
-    return np.random.choice(array, len(array), replace=False)
-def randomly_sample_array(array,n_samples):
-    return np.random.choice(array,n_samples,replace = True)
-def random_shuffled_indexes_for_array(array):
+def randomly_shuffle_array(array,**kwargs):
+    return np.random.choice(array, len(array), replace=False,**kwargs)
+def randomly_sample_array(array,n_samples,**kwargs):
+    return np.random.choice(array,n_samples,replace = True,**kwargs)
+def random_shuffled_indexes_for_array(array,**kwargs):
     idx_to_process = np.arange(0,len(array))
-    return nu.randomly_shuffle_array(idx_to_process)
+    return nu.randomly_shuffle_array(idx_to_process,**kwargs)
 
 def aligning_matrix_3D(starting_vector,target_vector):
     """
