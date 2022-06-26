@@ -3725,6 +3725,7 @@ def adjacency_feature_info(
     return_df_for_feature_matrix=True,
     return_dict = True,
     feature_matrix_dtype=None,
+    features = None,
     verbose=False,
     ):
     """
@@ -3741,7 +3742,10 @@ def adjacency_feature_info(
         dense=dense_adjacency,
         return_nodelist = True)
     
-    X = xu.feature_matrix_from_G(G,return_df=return_df_for_feature_matrix)
+    X = xu.feature_matrix_from_G(
+        G,
+        return_df=return_df_for_feature_matrix,
+        features =features,)
     
     if feature_matrix_dtype is not None:
         X = X.astype(feature_matrix_dtype)
