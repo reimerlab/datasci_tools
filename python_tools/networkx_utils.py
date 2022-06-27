@@ -1354,8 +1354,13 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
     
 # --------- 9/17 Addition ----------------------- #
 from copy import deepcopy
-def shortest_path_between_two_sets_of_nodes(G,node_list_1,node_list_2,
-                                           return_node_pairs=True):
+def shortest_path_between_two_sets_of_nodes(
+    G,
+    node_list_1,
+    node_list_2,
+    return_node_pairs=True,
+    return_path_distance = False,
+    weight = "weight"):
     """
     Algorithm that will find the shortest path from a set of one
     list of nodes on a graph and another set of nodes:
@@ -1385,18 +1390,18 @@ def shortest_path_between_two_sets_of_nodes(G,node_list_1,node_list_2,
     """
     #0) Make a copy of the graph
     G_copy = deepcopy(G)
-    node_number_max = np.max(G.nodes())
+    #node_number_max = np.max(G.nodes())
 
     #1) Add a new node to graph that is connected to all nodes in node_list_1 (s)
-    s = node_number_max + 1
+    s = "node_source_1" #node_number_max + 1
     G_copy.add_weighted_edges_from([(s,k,0.0001) for k in node_list_1])
 
     #2) Add a new node to graph that is connected to all nodes in node_list_2 (t)
-    t = node_number_max + 2
+    t = "node_target_2" #node_number_max + 2
     G_copy.add_weighted_edges_from([(k,t,0.0001) for k in node_list_2])
 
     #3) Find shortest path from s to t
-    shortest_path = nx.shortest_path(G_copy,s,t,weight="weight")
+    shortest_path = nx.shortest_path(G_copy,s,t,weight=weight)
     
 
     #node_pair
@@ -1406,6 +1411,9 @@ def shortest_path_between_two_sets_of_nodes(G,node_list_1,node_list_2,
     
     #make sure it is the shortest path between end nodes
     curr_shortest_path = nx.shortest_path(G,end_node_1,end_node_2)
+    
+    if return_path_distance:
+        curr_shortest_path = xu.path_distance(G,curr_shortest_path,weight=weight)
     
     if return_node_pairs:
         return curr_shortest_path,end_node_1,end_node_2
@@ -4202,6 +4210,14 @@ def compute_node_attribute(
     
     for n in G.nodes():
         G.nodes[n][attribute] = attribute_function(G.nodes[n])
+        
+        
+import networkx.classes.function as cls_func
+def path_distance(G,path,weight="weight"):
+    if weight is None:
+        return len(path) - 1
+    else:
+        return cls_func.path_weight(G,path,weight=weight)
     
 import networkx_utils as xu
     
