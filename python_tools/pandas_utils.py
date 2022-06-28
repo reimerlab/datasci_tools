@@ -1315,11 +1315,16 @@ def randomly_sample_df(
     df,
     n_samples,
     seed = None,
-    replace = False):
+    replace = False,
+    verbose = False,):
     
     if seed is not None:
         np.random.seed(seed)
 
+    if (n_samples > len(df)) and replace == False:
+        if verbose:
+            print(f"# of samples greater than df length so just returning df")
+        return df
     idx = nu.randomly_sample_array(np.arange(len(df)),n_samples,replace = replace)
 
     restricted_df = df.iloc[idx,:].reset_index(drop = True)

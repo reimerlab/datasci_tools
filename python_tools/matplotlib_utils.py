@@ -1061,6 +1061,8 @@ def histograms_overlayed(
     df,
     column,
     hue=None,
+    hue_order = None,
+    hue_secondary = None,
     
     #histogram plot formatting
     bins = 50,
@@ -1118,9 +1120,17 @@ def histograms_overlayed(
     
     
     if hue is not None:
-        cats = df[hue].unique()
+        if hue_order is None:
+            cats = df[hue].unique()
+        else:
+            cats = hue_order
     else:
         cats = [None]
+        
+    if hue_secondary is not None:
+        cats_secondary = df[hue_secondary].unique()
+    else:
+        cats_secondary= None
         
     if same_axis:
         fig,ax = plt.subplots(1,1,figsize=figsize)
@@ -1160,14 +1170,31 @@ def histograms_overlayed(
         #print(f"{cat} color = {np.unique(color)}")
         if cat is None:
             cat = "None"
-        curr_ax.hist(curr_df[column],
-                        density = density,
-                         label = cat,
-                        color = color,
-                         bins=bins,
-                        alpha = alpha,
-                        #zorder=zorder
-        )
+            
+        if hue_secondary is None:
+            curr_ax.hist(curr_df[column],
+                            density = density,
+                             label = cat,
+                            color = color,
+                             bins=bins,
+                            alpha = alpha,
+                            #zorder=zorder
+            )
+        else:
+            for c2 in cats_secondary:
+                curr_query = f"{hue_secondary} == '{c2}'"
+                #print(f"curr_query = {curr_query}")
+                curr_df_local = curr_df.query(curr_query)
+                
+                #print(f"curr_df_local = {len(curr_df_local)}")
+                curr_ax.hist(curr_df_local[column],
+                            density = density,
+                             label = c2,
+                            #color = color,
+                             bins=bins,
+                            alpha = alpha,
+                            #zorder=zorder
+                )
         curr_ax.legend()
         
         curr_ax.set_xlabel(f"{xlabel}",fontsize = fontsize)
