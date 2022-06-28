@@ -1311,4 +1311,19 @@ def filter_away_rows_with_nan_in_columns(
     
     return df_filt
 
+def randomly_sample_df(
+    df,
+    n_samples,
+    seed = None,
+    replace = False):
+    
+    if seed is not None:
+        np.random.seed(seed)
+
+    idx = nu.randomly_sample_array(np.arange(len(df)),n_samples,replace = replace)
+
+    restricted_df = df.iloc[idx,:].reset_index(drop = True)
+    return restricted_df
+    
+
 import pandas_utils as pu

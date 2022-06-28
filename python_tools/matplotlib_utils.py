@@ -1083,6 +1083,7 @@ def histograms_overlayed(
     include_mean_std_in_title = True,
     
     outlier_buffer = 1,
+    same_axis = True,
     
     
     
@@ -1113,15 +1114,35 @@ def histograms_overlayed(
             columns=column,
             percentile_buffer=outlier_buffer,
         )
-    fig,ax = plt.subplots(1,1,figsize=figsize)
+        
+    
     
     if hue is not None:
         cats = df[hue].unique()
     else:
         cats = [None]
         
+    if same_axis:
+        fig,ax = plt.subplots(1,1,figsize=figsize)
+        axes = [None]*len(cats)
+    else:
+        new_fig_size = np.array(figsize)
+        new_fig_size[1] = new_fig_size[1]*len(cats)
+        fig,axes = plt.subplots(len(cats),1,figsize=new_fig_size,sharex=True)
+        
+    if xlabel is None:
+        xlabel = column
+        
+    if title is None:
+        title = f"{column.title()} Distribution"
+        
+    if include_mean_std_in_title:
+        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
+            
     total_colors = []
-    for cat in cats:
+    for cat,curr_ax in zip(cats,axes):
+        if curr_ax is None:
+            curr_ax = ax
         if cat is not None:
             curr_df = df.query(f"{hue} == '{cat}'")
             if len(curr_df) == 0:
@@ -1139,7 +1160,7 @@ def histograms_overlayed(
         #print(f"{cat} color = {np.unique(color)}")
         if cat is None:
             cat = "None"
-        ax.hist(curr_df[column],
+        curr_ax.hist(curr_df[column],
                         density = density,
                          label = cat,
                         color = color,
@@ -1147,36 +1168,38 @@ def histograms_overlayed(
                         alpha = alpha,
                         #zorder=zorder
         )
-        ax.legend()
+        curr_ax.legend()
         
+        curr_ax.set_xlabel(f"{xlabel}",fontsize = fontsize)
         total_colors.append(color)
         
+        if density:
+            curr_ax.set_ylabel("Density",fontsize=fontsize)
+        else:
+            curr_ax.set_ylabel("Frequency",fontsize = fontsize)
+            
+        curr_ax.legend()
+        curr_ax.legend(loc="upper right", 
+                  markerscale=2.,
+                  scatterpoints=1, 
+                  fontsize=fontsize_legend)
+        
+        title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
+        
+        if include_mean_std_in_title:
+            curr_ax.set_title(title)
+        
     #print(f"total_colors = {total_colors}")
-        
-    
-    if xlabel is None:
-        xlabel = column
-        
-    ax.set_xlabel(f"{xlabel}",fontsize = fontsize)
-    
-    if density:
-        ax.set_ylabel("Density",fontsize=fontsize)
+
+    if same_axis:
+        ax.set_title(f"{title}",fontsize = fontsize_title)
+        return ax
     else:
-        ax.set_ylabel("Frequency",fontsize = fontsize)
-        
-    if title is None:
-        title = f"{column.title()} Distribution"
-        
-    if include_mean_std_in_title:
-        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
-    ax.set_title(f"{title}",fontsize = fontsize_title)
-    ax.legend()
-    ax.legend(loc="upper right", 
-              markerscale=2.,
-              scatterpoints=1, 
-              fontsize=fontsize_legend)
+        fig.suptitle(f"{title}",fontsize = fontsize_title)
+        return axes
     
-    return ax
+    
+    
 
 
 import numpy as np
@@ -1300,7 +1323,10 @@ def scatter_with_gradient(
     title = None,
     ):
     
-    
+    if df is not None:
+        df = pu.replace_None_with_default(df,0,columns=gradient)
+        df = pu.replace_nan_with_default(df,0,)
+
     cmap = mu.get_cmap(cmap)
     
     if gradient is None:
