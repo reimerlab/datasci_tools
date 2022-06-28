@@ -1329,6 +1329,56 @@ def randomly_sample_df(
 
     restricted_df = df.iloc[idx,:].reset_index(drop = True)
     return restricted_df
+
+import general_utils as gu
+def expand_array_column_to_separate_rows(
+    df,
+    array_columns,
+    scalar_columns = None,
+    verbose = False,
+    ):
+    
+    """
+    Purpose: to take columns that have arrays stored in them and turn them
+    into rows, add on the scalar rows if requested
+    
+    Ex:
+    import pandas as pd
+    array_columns = ["spine_intervals_1","spine_intervals_2"]
+    scalar_columns = ["compartment","n_spine","segment_id","width"]
+
+    out_df = pu.expand_array_column_to_separate_rows(
+        df = inter_attr_df,
+        array_columns=array_columns,
+        scalar_columns=scalar_columns
+    )
+    """
+    
+    array_columns= nu.convert_to_array_like(array_columns)
+
+    curr_data = {k:df[k].to_list() for k in array_columns}
+    dtype_map = {}
+
+    if scalar_columns is not None:
+        first_key = list(curr_data.keys())[0]
+        scalar_columns = nu.convert_to_array_like(scalar_columns)
+        for s in scalar_columns:
+            curr_data[s] = [[k]*len(v) for k,v in zip(df[s].to_list(),curr_data[first_key])]
+            dtype_map[s] = df[s].dtype
+            
+        #return curr_data
+
+    curr_data = dict([(k,gu.combine_list_of_lists(v)) if len(v) > 0 else
+                      (k,v) for k,v in curr_data.items()])
+    df = pd.DataFrame.from_dict(curr_data)
+    df = pu.set_column_datatypes(df,dtype_map)
+    return df
+
+def set_column_datatypes(
+    df,
+    datatype_map):
+    
+    return df.astype(datatype_map)
     
 
 import pandas_utils as pu

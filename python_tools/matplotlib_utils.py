@@ -1143,11 +1143,6 @@ def histograms_overlayed(
     if xlabel is None:
         xlabel = column
         
-    if title is None:
-        title = f"{column.title()} Distribution"
-        
-    if include_mean_std_in_title:
-        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
             
     total_colors = []
     for cat,curr_ax in zip(cats,axes):
@@ -1156,7 +1151,10 @@ def histograms_overlayed(
         if cat is not None:
             curr_df = df.query(f"{hue} == '{cat}'")
             if len(curr_df) == 0:
-                curr_df = df.query(f"{hue} == {cat}")
+                try:
+                    curr_df = df.query(f"{hue} == {cat}")
+                except:
+                    continue
         else:
             curr_df = df
         
@@ -1217,6 +1215,12 @@ def histograms_overlayed(
             curr_ax.set_title(title)
         
     #print(f"total_colors = {total_colors}")
+    
+    
+    title = f"{column.title()} Distribution"
+        
+    if include_mean_std_in_title:
+        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
 
     if same_axis:
         ax.set_title(f"{title}",fontsize = fontsize_title)
