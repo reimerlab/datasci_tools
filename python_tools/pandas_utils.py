@@ -1380,5 +1380,10 @@ def set_column_datatypes(
     
     return df.astype(datatype_map)
     
+def is_column_numeric(df,column):
+    if(df[column].dtype == np.float64 or df[column].dtype == np.int64):
+        return True
+    else:
+        return False
 
 import pandas_utils as pu

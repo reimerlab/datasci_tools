@@ -1230,6 +1230,68 @@ def histograms_overlayed(
         return axes
     
     
+import seaborn as sns
+import seaborn_ml as sml
+import matplotlib.pyplot as plt
+import pandas_utils as pu
+
+def histogram_2D_overlayed(
+    df,
+    x,
+    y,
+    hue,
+    hue_order=None,
+    hue_secondary = None,
+    xlim = None,
+    ylim = None,
+    same_axis = False
+    ):
+    """
+    Purpose: To plot a joint plot for different attributes
+    one after the other
+    """
+
+    if hue_order is None:
+        hue_order = df[hue].unique()
+
+    if not same_axis:
+        for ct in hue_order:
+            if not pu.is_column_numeric(df,hue):
+                query = f"({hue} == '{ct}')"
+            else:
+                query = f"({hue} == {ct})"
+
+            print(f"query = {query}")
+
+            curr_df = df.query(query)
+            sns.jointplot(
+                    data=curr_df,
+                    x=x,
+                    y=y,
+                    kind="hist",
+                    hue=hue_secondary,
+                    xlim= xlim,
+                    ylim =ylim,
+                )
+
+            plt.show()
+    else:
+        if hue_order is not None:
+            curr_df = df.query(f"{hue} in {hue_order}")
+        else:
+            curr_df= df
+        sns.jointplot(
+                    data=curr_df,
+                    x=x,
+                    y=y,
+                    kind="hist",
+                    hue=hue,
+                    xlim= xlim,
+                    ylim =ylim,
+                )
+        
+        plt.legend()
+        
     
 
 
@@ -1252,6 +1314,8 @@ def histograms_over_intervals(
     title_append = None,
     figsize = (8,4), 
     verbose = False,
+    
+    density = False,
     ):
     """
     Purpose: To plot a sequence of histograms that show the continuous progression of a value for 
@@ -1313,6 +1377,7 @@ def histograms_over_intervals(
             hue = hue,
             bins = bins,
             color_dict=color_dict,
+            density=density,
             )
 #         else:
 #             fig,ax = plt.subplots(1,1,figsize=figsize)
@@ -1320,13 +1385,16 @@ def histograms_over_intervals(
 #                    bins=bins)
         curr_title = (f"{attribute} Distribution\n{interval_attribute} [{np.round(lower,2)},{np.round(upper,2)}]"
                       f"\nn_samples = {len(df_curr)}")
-        curr_title += f"\nMean = {np.round(df_curr[attribute].median(),2)}, Std Dev = {np.round(df_curr[attribute].std(),2)}"
+        curr_title += f"\nMean = {np.round(df_curr[attribute].mean(),2)}, Std Dev = {np.round(df_curr[attribute].std(),2)}"
 
         if title_append is not None:
             curr_title += f"\n{title_append}"
         plt.title(curr_title)
         ax.set_xlabel(f"{attribute}")
-        ax.set_ylabel(f"Count")
+        if density:
+            ax.set_ylabel(f"Density")
+        else:
+            ax.set_ylabel(f"Count")
         ax.set_xlim([x_ax_min,x_ax_max])
         plt.show()
         
