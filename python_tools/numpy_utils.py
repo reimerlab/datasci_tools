@@ -1354,4 +1354,19 @@ def ind_conversion(
     
     return ind_out
 
+def arange_with_leftover(stop,start=0,step = 1,dtype=None,tol=0.0001):
+    """
+    Purpose: to do what arange does but include the
+    little part that might be left over
+    
+    Ex: 
+    import numpy_utils as nu
+    nu.arange_with_leftover(10.1)
+    """
+    curr_array = np.arange(stop=stop,start=start,step=step,dtype=dtype)
+    if (np.abs(curr_array[-1]-stop) > tol):
+        curr_array = np.hstack([curr_array,[stop]])
+        
+    return curr_array
+
 import numpy_utils as nu
