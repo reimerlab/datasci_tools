@@ -1231,7 +1231,6 @@ def histograms_overlayed(
     
     
 import seaborn as sns
-import seaborn_ml as sml
 import matplotlib.pyplot as plt
 import pandas_utils as pu
 
@@ -1250,6 +1249,7 @@ def histogram_2D_overlayed(
     Purpose: To plot a joint plot for different attributes
     one after the other
     """
+    import seaborn_ml as sml
 
     if hue_order is None:
         hue_order = df[hue].unique()
