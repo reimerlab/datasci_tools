@@ -1102,6 +1102,9 @@ def histograms_overlayed(
         hue="gnn_cell_type_fine")
     """
     
+    if hue_secondary is not None:
+        same_axis = False
+    
     df= df.query(f"{column} == {column}")
     import numpy_utils as nu
     df = pu.filter_away_rows_with_nan_in_columns(
@@ -1226,7 +1229,7 @@ def histograms_overlayed(
         ax.set_title(f"{title}",fontsize = fontsize_title)
         return ax
     else:
-        fig.suptitle(f"{title}",fontsize = fontsize_title)
+        #fig.suptitle(f"{title}",fontsize = fontsize_title)
         return axes
     
     
@@ -1249,6 +1252,7 @@ def histogram_2D_overlayed(
     Purpose: To plot a joint plot for different attributes
     one after the other
     """
+    
     import seaborn_ml as sml
 
     if hue_order is None:

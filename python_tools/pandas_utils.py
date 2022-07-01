@@ -1385,5 +1385,25 @@ def is_column_numeric(df,column):
         return True
     else:
         return False
+    
+def normalize_rows_by_sum(
+    df,
+    fillna_value=0,
+    percentage = False
+    ):
+    """
+    Purpose: To divide the rows of a dataframe by the sum  
+    of the rows
+    """
+
+    if fillna_value is not None:
+        df = pu.fillna(df,fillna_value)
+    
+    divisor = df.sum(axis=1)
+    if percentage:
+        divisor = divisor/100
+        
+    return df.div(divisor, axis=0)
+
 
 import pandas_utils as pu
