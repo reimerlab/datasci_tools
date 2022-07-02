@@ -1246,7 +1246,8 @@ def histogram_2D_overlayed(
     hue_secondary = None,
     xlim = None,
     ylim = None,
-    same_axis = False
+    same_axis = False,
+    verbose = False
     ):
     """
     Purpose: To plot a joint plot for different attributes
@@ -1268,6 +1269,8 @@ def histogram_2D_overlayed(
             print(f"query = {query}")
 
             curr_df = df.query(query)
+            if verbose:
+                print(f"len(query_df) = {len(curr_df)}")
             sns.jointplot(
                     data=curr_df,
                     x=x,
@@ -1498,5 +1501,7 @@ def scatter_with_gradient(
         ax.set_title(title)
     
     return ax
+
+    
     
 import matplotlib_utils as mu

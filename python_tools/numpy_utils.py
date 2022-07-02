@@ -1369,4 +1369,24 @@ def arange_with_leftover(stop,start=0,step = 1,dtype=None,tol=0.0001):
         
     return curr_array
 
+import itertools
+def all_combinations_of_lists(*args):
+    """
+    Purpose: Given a list of attributes and their possible attribute
+    values, find all the unique combinations of all the lists
+    
+    Ex: 
+    all_combinations_of_lists(
+        [1,5,6],
+        ["hi","hello","yes"],
+        [True,False],
+    )
+    """
+    return list(itertools.product(*args))
+
+def is_list_of_lists(array):
+    return any(isinstance(el, list) for el in array) or any(isinstance(el, np.array) for el in array)
+
+
+
 import numpy_utils as nu
