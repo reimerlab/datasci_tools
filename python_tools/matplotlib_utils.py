@@ -1077,6 +1077,7 @@ def histograms_overlayed(
     
     xlabel= None,
     title = None,
+    title_prefix = "",
     
     fontsize_title = 30,
     fontsize_legend = 15,
@@ -1213,17 +1214,16 @@ def histograms_overlayed(
                   fontsize=fontsize_legend)
         
         title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
+        print(title)
         
         if include_mean_std_in_title:
             curr_ax.set_title(title)
         
     #print(f"total_colors = {total_colors}")
-    
-    
-    title = f"{column.title()} Distribution"
+    title = f"{title_prefix.title()}\n{column.title()} Distribution"
         
     if include_mean_std_in_title:
-        title += f"\nMean = {np.round(df[column].median(),2)}, Std Dev = {np.round(df[column].std(),2)}"
+        title += f"\nMean = {np.round(df[column].mean(),2):.2f}, Std Dev = {np.round(df[column].std(),2):.2f}"
 
     if same_axis:
         ax.set_title(f"{title}",fontsize = fontsize_title)
