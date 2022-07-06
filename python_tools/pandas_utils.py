@@ -520,7 +520,10 @@ def new_column_from_dict_mapping(
         try:
             return dict_map[row[column_name]]
         except:
-            return default_value
+            if default_value == "same":
+                return row[column_name]
+            else:
+                return default_value
         
     return new_column_from_row_function(df,new_func)
 
