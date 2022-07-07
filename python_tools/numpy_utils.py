@@ -1387,6 +1387,16 @@ def all_combinations_of_lists(*args):
 def is_list_of_lists(array):
     return any(isinstance(el, list) for el in array) or any(isinstance(el, np.array) for el in array)
 
+def coordinates_edges_from_line_segments(array):
+    """
+    Purpose: will return the nodes and edges but without making the nodes unique
+    (so will have some repeats)
+    
+    """
+    unique_rows  = np.array(array).reshape(-1,3)
+    curr_edges = np.arange(len(unique_rows)).reshape(-1,2)
+    return unique_rows, curr_edges
+
 
 
 import numpy_utils as nu
