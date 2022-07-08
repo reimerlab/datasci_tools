@@ -1409,4 +1409,35 @@ def normalize_rows_by_sum(
     return df.div(divisor, axis=0)
 
 
+def concat_dfs_without_duplicates(
+    dfs,
+    columns=None,
+    keep = "first",
+    verbose = False
+    ):
+    """
+    Purpose: Want to do a concatenate on a list as long as 
+    there are no repeats in certain columns beforehand
+
+    Pseudocode: 
+    1)concatenate the dataframes and reset the index
+    2) drop the duplicates (after restricting to certain columns)
+    3) Get the indexes of the dropped duplicates and use that to restrict the concatenated dataframe
+    4) Reset the index and return
+    """
+    df_combined = pd.concat(dfs).reset_index(drop=True)
+    
+    if columns is None:
+        columns = list(df_combined.columns)
+
+    if "str" in str(type(columns)):
+        columns = [columns]
+
+    unique_df = df_combined[columns].drop_duplicates(keep="first")
+    final_df = df_combined.iloc[unique_df.index,:].reset_index(drop=True)
+
+    if verbose:
+        print(f"# of duplicate rows = {len(df_combined) - len(final_df)}")
+    return final_df
+
 import pandas_utils as pu

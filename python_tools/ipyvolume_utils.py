@@ -17,6 +17,20 @@ import ipywidgets as widgets
 from IPython.display import display
 import numpy as np
 
+def print_selection_hotkeys():
+    s = """
+    Now hold the control key to do selections, type
+
+    ‘C’ for circle
+    ‘R’ for rectangle
+    ‘L’ for lasso
+    ‘=’ for replace mode
+    ‘&’ for logically and mode
+    ‘|’ for logically or mode
+    ‘-’ for subtract mode
+    """
+    print(s)
+
 def example_widgets_linked_to_attributes():
     """
     Pseudocode: 
