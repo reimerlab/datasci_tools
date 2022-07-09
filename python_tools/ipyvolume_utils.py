@@ -2,6 +2,7 @@
 Purpose: To summarize and expose ipyvolume functionality
 
 Tutorial: https://www.youtube.com/watch?v=hOKa8klJPyo
+Documentation: https://ipyvolume.readthedocs.io/_/downloads/en/docs/pdf/
 
 Notes: 
 - whenever changing properties on ipyvolume you do so through the returned object and the transition is interpolated
@@ -31,6 +32,13 @@ def print_selection_hotkeys():
     """
     print(s)
 
+def example_scatter():
+    N = 1000
+    x,y,z = np.random.normal(0,1,(3,N))
+    
+    fig = ipv.figure()
+    scatter = ipv.scatter(x,y,z,marker = "sphere")
+    ipv.show()
 def example_widgets_linked_to_attributes():
     """
     Pseudocode: 
@@ -57,9 +65,9 @@ def example_widgets_linked_to_attributes():
     display(w,slider)
     
     
-def example_quiver_plot_and_attributes():
+def example_quiver_plot_and_attributes(offset = 0):
     N = 1000
-    x,y,z = np.random.normal(0,1,(3,N))
+    x,y,z = np.random.normal(0,1,(3,N)) + offset
 
     fig = ipv.figure()
     quiver = ipv.quiver(x,y,z,x,y,z)
@@ -172,6 +180,12 @@ def animation_off():
     fig.animation = 0
     
     
+"""
+For selection:
+Can add the kwargs: color_selected to control color of the selected
+
+
+"""
 def example_scatter(N=1000):
     x,y,z = np.random.normal(0,1,(3,N))
     return x,y,z
@@ -281,6 +295,362 @@ def example_movie_recorded(filename="bc_example"):
     ipvu.example_movie()
     fig = ipv.gcf()
     display(webrtc.VideoRecorder(stream=fig,filename=filename))
+    
+# ------------- utils to help with plotting ---- 
+import ipywidgets as widgets
+def add_attribute_widget(
+    obj,
+    widget,
+    attribute,
+    description=None,
+    description_prefix = None,
+    default_value = None,
+    display_widget = False,
+    **kwargs):
+    
+    if description is None:
+        description = attribute.title()
+        
+    if description_prefix is not None:
+        description = f"{description_prefix} {description}"
+    
+    if default_value is not None:
+        value = default_value
+    else:
+        value = None
+        
+    try:
+        w = getattr(widgets,widget)(
+            description=description,
+            value=value,
+            **kwargs)
+    except:
+        w = getattr(widgets,widget)(
+            description=description,
+            **kwargs)
+    
+    if widget in ["ColorPicker"]:
+        link_func = "jslink"
+    else:
+        link_func = "link"
+    curr_link = getattr(widgets,link_func)((obj,attribute),(w,"value"))
+    
+    if display_widget:
+        display(w)
+    return w
+
+def add_size_widget(
+    obj,
+    min=0,
+    max=3,
+    **kwargs
+    ):
+    
+    return ipvu.add_attribute_widget(
+        obj,
+        widget="FloatSlider",
+        attribute = "size",
+        min=min,
+        max=max,
+        **kwargs)
+
+def add_color_widget(
+    obj,
+    **kwargs
+    ):
+    
+    return ipvu.add_attribute_widget(
+        obj,
+        widget="ColorPicker",
+        attribute = "color",
+        **kwargs)
+
+marker_options= (
+    "arrow","box","diamond","sphere","point_2d","square_2d","triangle_2d","circle_2d","cat",
+)
+
+def add_marker_widget(
+    obj,
+    options=marker_options,
+    default_value = "sphere",
+    **kwargs
+    ):
+    
+    return ipvu.add_attribute_widget(
+        obj,
+        widget="Dropdown",
+        attribute = "geo",
+        default_value=default_value,
+        options=options,
+        **kwargs)
+
+def set_axes_lim(
+    min=None,
+    max=None,
+    lim = None,
+    xlim = None,
+    ylim = None,
+    zlim = None,
+    ):
+    
+    if min is not None and max is not None:
+        ipv.xlim(min[0],max[0])
+        ipv.ylim(min[1],max[1])
+        ipv.zlim(min[2],max[2])
+        return
+        
+    if xlim is None:
+        xlim = lim
+        
+    if ylim is None:
+        ylim = lim
+        
+    if zlim is None:
+        zlim = lim
+        
+    ipv.xlim(xlim[0],xlim[1])
+    ipv.ylim(ylim[0],ylim[1])
+    ipv.zlim(zlim[0],zlim[1])
+    
+def set_axes_visibility(visibility=True):
+    if not visibility:
+        ipv.style.axes_off()
+        ipv.style.box_off()
+    else:
+        ipv.style.axes_on()
+        ipv.style.box_on()
+        
+def save_to_html(path):
+    ipv.pylab.save(path)
+    
+def set_zoom(
+    center_coordinate,
+    radius=0,
+    radius_xyz = None,
+    show_at_end=False,
+    flip_y = True,
+    axis_visibility=False):
+    
+    
+    coord = np.array(center_coordinate)
+    
+    if flip_y:
+        coord[...,1] = -coord[...,1]
+        
+    if radius_xyz is None:
+        radius_xyz = np.array([radius,radius,radius])
+        
+    coord_radius = [k if k is not None else radius for k in radius_xyz]
+    ipv_function = [ipv.xlim,ipv.ylim,ipv.zlim]
+    for c,c_rad,ipvf in zip(coord,coord_radius,ipv_function):
+        ipvf(c - c_rad, c + c_rad)
+
+    ipvu.set_axes_visibility(axis_visibility)
+    if show_at_end:
+        ipv.show()  
+        
+def clear_figure():
+    ipv.clear()
+    
+def get_all_fig_scatters(verbose = False):
+    fig = ipv.gcf()
+    return_list = fig.scatters
+    if verbose:
+        print(f"# of scatter objects = {len(return_list)}")
+    return return_list
+
+def get_all_fig_meshes(verbose = False):
+    fig = ipv.gcf()
+    return_list = fig.meshes
+    if verbose:
+        print(f"# of meshes objects = {len(return_list)}")
+    return return_list
+
+def get_all_fig_objs(verbose=False):
+    """
+    Purpose: To get all the objects
+    of the current figure
+    """
+    fig = ipv.gcf()
+    return_list = (
+        ipvu.get_all_fig_scatters(verbose=verbose) 
+        + ipvu.get_all_fig_meshes(verbose=verbose) 
+    )
+    
+    return return_list
+
+def coords_from_obj(obj):
+    """
+    Purpose: Find the coordinates of an obj
+    """
+    if len(obj.x) == 0:
+        return np.array([]).reshape(-1,3)
+    return np.vstack([getattr(obj,k) for k in ["x","y","z"]]).T.astype("float")
+
+def coords_min_max_from_obj(obj):
+    coords = coords_from_obj(obj)
+    if len(coords) > 0:
+        return np.vstack([np.min(coords,axis=0),np.max(coords,axis=0)])
+    else:
+        return np.array([]).reshape(-1,3)
+    
+def coords_min_max_from_fig(
+    verbose = False,
+    ):
+    """
+    Purpose: to find the min and max coordinates
+    of all the objects in a current figure
+    """
+
+    all_objs = ipvu.get_all_fig_objs(verbose=verbose)
+
+    min_coords = []
+    max_coords = []
+
+    for k in all_objs:
+        coords = ipvu.coords_min_max_from_obj(k)
+        if len(coords) > 0:
+            min_coords.append(coords[0])
+            max_coords.append(coords[1])
+
+    if len(min_coords) > 0:
+        all_min = np.min(np.array(min_coords).reshape(-1,3),axis=0)
+        all_max = np.max(np.array(max_coords).reshape(-1,3),axis=0)
+        return_coords =  np.vstack([all_min,all_max])
+        if verbose:
+            print(f"Min,Max = {return_coords}")
+        return return_coords
+        
+    else:
+        return np.array([]).reshape(-1,3)
+
+def set_axes_lim_from_fig(
+    buffer = 0,
+    verbose = False,
+    ):
+    """
+    Purpose: To automatically set the zoom to include
+    all the coordinates of the current scatters
+    and meshes
+    """
+
+    
+
+    min_max_coords = ipvu.coords_min_max_from_fig(verbose = verbose) + buffer
+    if len(min_max_coords) > 0:
+        ipvu.set_axes_lim(min=min_max_coords[0],max=min_max_coords[1])
+    
+def scatter_plot_func(
+    array,
+    size = 0.3,
+    marker = "sphere",
+    **kwargs
+    ):
+    return ipv.scatter(*ipvu.xyz_from_array(array),
+                       size=size,marker=marker
+                      )
+    
+def surface_plot_func(
+    array,
+    **kwargs
+    ):
+    return ipv.plot_surface(*ipvu.xyz_from_array(array))
+    
+def line_plot_func(
+    array,
+    **kwargs
+    ):
+    return ipv.plot(*ipvu.xyz_from_array(array))
+
+def line_segments_plot_func(
+    array,
+    lines=None,
+    **kwargs):
+    
+    if lines is None:
+        vertices,lines = nu.coordinates_edges_from_line_segments(
+            array
+        )
+    else:
+        vertices = array
+    
+    return ipv.plot_trisurf(vertices[:,0], 
+                                vertices[:,1], 
+                                vertices[:,2], 
+                                lines=lines)
+    
+def trisurf_plot_func(
+    array,
+    triangles,
+    **kwargs
+    ):
+    x,y,z = ipvu.xyz_from_array(array)
+    return ipv.plot_trisurf(x,y,z,
+        triangles = triangles,
+                           )
+    
+    
+def plot_obj(
+    array,
+    plot_type="scatter",
+    #all possible inputs to functions
+    triangles = None,
+    lines=None,
+    color = "green",
+    widgets_to_plot = ("size","marker","color"),
+    show_at_end = True,
+    new_figure = True,
+    flip_y = False,
+    **kwargs,
+    ):
+    """
+    Purpose: To plot an object
+    using a plot type (and possibly add on widgets)
+    to help control
+    
+    import ipyvolume_utils as ipvu
+    import ipyvolume as ipv
+
+    ipvu.plot_obj(
+        array = cell_centers,
+        flip_y = True
+    )
+    """
+    array = np.array(array).astype("float")
+    if flip_y:
+        array[...,1] = -array[...,1]
+
+    if new_figure:
+        ipv.figure()
+        
+    scat = getattr(ipvu,f"{plot_type}_plot_func")(
+        array,
+        triangles = triangles,
+        lines=lines,
+    )
+    
+    scat.color = color
+    
+
+    widget_list = []
+    
+    if widgets_to_plot is None:
+        widgets_to_plot = []
+    for w in widgets_to_plot:
+        curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
+        widget_list.append(curr_widget)
+        
+    if len(widget_list) > 0:
+        display(widgets.HBox(widget_list))
+        
+    ipvu.set_axes_lim_from_fig()
+
+    if show_at_end:
+        ipv.show()
+    
+#def add_marker_selection()
+def xyz_from_array(array):
+    return array[:,0],array[:,1],array[:,2]
     
 import ipyvolume_utils as ipvu
     
