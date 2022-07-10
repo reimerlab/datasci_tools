@@ -200,7 +200,10 @@ def random_dataframe_with_missing_data():
     util.testing.makeMissingDataframe()
     
 def dataframe_to_row_dicts(df,):
-    return df.to_dict(orient='records')
+    if pu.is_series(df):
+        return df.to_dict()
+    else:
+        return df.to_dict(orient='records')
 
 df_to_dicts = dataframe_to_row_dicts
 
@@ -1444,4 +1447,275 @@ def concat_dfs_without_duplicates(
         print(f"# of duplicate rows = {len(df_combined) - len(final_df)}")
     return final_df
 
+def is_dataframe(df):
+    return isinstance(df, pd.DataFrame)
+def is_series(df):
+    return isinstance(df, pd.Series)
+
+import numpy_utils as nu
+import pandas_utils as pu
+
+def summary_statistic_over_columns(
+    df,
+    columns,
+    summary_statistic="mean",
+    weight = None,
+    summary_statisic_args = None,
+    
+    #for the naming
+    prefix = None,
+    suffix = None,
+    append_statistic_name = False,
+    special_count_name = False,
+    
+    # for outputting
+    verbose = False,
+    return_df = False,
+    debug_time = False
+    ):
+    """
+    Purpose: To compute a summary statistic for columns 
+    over all rows of dataframe
+    
+    Ex: 
+    import pandas_utils as pu
+    pu.summary_statistic_over_columns(
+        columns = ["n_synapses"],#["","n_synapses_pre"],
+        df = node_df,
+        summary_statistic = "percentile",
+        summary_statisic_args = 99,
+        verbose = True,
+        return_df = False,
+    append_statistic_name = True
+    )
+
+    """
+    st = time.time()
+    
+    singular_flag = False
+    
+    if columns is None:
+        default_column = list(df.columns)[0]
+        columns = [default_column]
+    else:
+        default_column = None
+        
+        
+    if not nu.is_array_like(columns):
+        singular_flag = True
+        columns = [columns]
+        
+    columns = list(columns)
+    node_df_restr = df[columns]
+
+    if summary_statisic_args is not None:
+        summary_statisic_args = nu.convert_to_array_like(summary_statisic_args)
+    else:
+        summary_statisic_args = []
+
+    if summary_statistic == "percentile":
+        summary_statistic = "quantile"
+        if summary_statisic_args is not None:
+            summary_statisic_args = [k/100 if type(k) in [int,float]
+                                    else k for k in summary_statisic_args]
+
+    if verbose:
+        print(f"summary_statistic = {summary_statistic}\n   -> summary_statisic_args = {summary_statisic_args}")
+    
+    if weight is not None and summary_statistic == "mean":
+        summary_df = pd.Series(data=[nu.average_by_weights(node_df_restr[k].to_numpy(),
+                                                          weights = df[weight].to_numpy())
+                                    for k in columns],
+                               index = columns)
+    else:
+        summary_df = getattr(node_df_restr,summary_statistic)(*summary_statisic_args)
+        
+    if debug_time:
+        print(f"Time for computing summary statistic = {time.time() - st}")
+        st = time.time()
+
+    
+    if suffix is not None:
+        summary_df.index = [f"{k}{suffix}" for k in summary_df.index]
+    
+    if prefix is not None:
+        summary_df.index = [f"{prefix}_{k}" for k in summary_df.index]
+        
+    if append_statistic_name:
+        if summary_statistic == "count" and special_count_name:
+             summary_df.index = [f"n_{k}" for k in summary_df.index]
+        else:
+            summary_df.index=[f"{k}_{summary_statistic}{''.join([f'_{j}' for j in summary_statisic_args])}" 
+                              for k in summary_df.index]
+            
+    if default_column is not None:
+        summary_df.index = [k.replace(f"{default_column}_","") if k !=
+                            default_column else k for k in summary_df.index]
+        summary_df.index = [k.replace(default_column,"") if k !=
+                            default_column else k for k in summary_df.index]
+        summary_df.index = [k[:-1] if k[-1] == "_"
+                     else k for k in summary_df.index]
+        
+    if debug_time:
+        print(f"Fixing the names = {time.time() - st}")
+        st = time.time()
+        
+            
+    if not return_df:
+        return_dicts = pu.df_to_dicts(summary_df)
+        if singular_flag:
+            return list(return_dicts.values())[0]
+        else:
+            return return_dicts
+    else:
+        return summary_df
+    
+    
+import numpy_utils as nu
+def summary_statistics_over_columns_by_category(
+    df,
+    category_columns,
+    prefix = None,
+    attribute_summary_dicts = None,
+    add_counts_summary = False,
+    special_count_name = True,
+    verbose = False,
+    debug_time = False,
+    ):
+    """
+    summary_statistics_over_columns_by_category()
+
+    def 
+
+    Purpose: Want to compute a bunch 
+    of category counts/or statistic
+    of certain columns
+
+    Pseudocode: 
+    1) Create a dataframe of the attribute
+    2) Get all the possible combinations of restrictions for categories
+    3) 
+    
+    
+    Ex: 
+    node_dict = G.nodes["L1_2"]
+    attribute = "synapse_data"
+    prefix = "synapse"
+    df = pd.DataFrame.from_records(node_dict[attribute])
+
+    pu.summary_statistics_over_columns_by_category(
+        df,
+        prefix = "synapse",
+        category_columns = ["head_neck_shaft","syn_type"],
+        attribute_summary_dicts = [dict(columns="volume",
+                                       summary_statistic = "sum",
+                                        summary_statisic_args = None)],
+        add_counts_summary = True,
+        verbose = False,
+        special_count_name = True,
+
+    )
+    """
+    st = time.time()
+
+    if attribute_summary_dicts is None:
+        attribute_summary_dicts = []
+
+    if type(attribute_summary_dicts) == dict:
+        attribute_summary_dicts = [attribute_summary_dicts]
+
+    if add_counts_summary:
+        attribute_summary_dicts.append(
+            dict(columns = None,summary_statistic = "count")
+        )
+
+
+    category_combinations = [None]
+    if category_columns is not None:
+        category_columns_revised = []
+        for k in category_columns:
+            if k in df.columns:
+                category_columns_revised.append(k)
+        else:
+            if verbose:
+                print(f"No column {k} for category")
+        
+        if len(category_columns_revised) > 0:
+            category_columns = category_columns_revised
+            category_columns = nu.convert_to_array_like(category_columns)
+            category_attributes_pos = [list(df[k].unique()) + [None]
+                                      for k in category_columns]
+            category_combinations = nu.all_combinations_of_lists(*category_attributes_pos)
+            if verbose:
+                print(f"category_combinations = {category_combinations}")
+        else:
+            category_columns = [None]
+            
+    if debug_time:
+        print(f"Time for combinations = {time.time() - st}")
+        st = time.time()
+    
+
+    results_dict = dict()
+    for curr_restr in category_combinations:
+        if verbose:
+            print(f"\n-- Working on curr_restr = {curr_restr}--")
+        suffix = ""
+        if curr_restr is None:
+            curr_df = df
+        else:
+            queries = []
+            for k,v in zip(category_columns,curr_restr):
+                if v is not None:
+                    suffix += f"_{v}"
+                    queries.append(f"({k} == '{v}')")
+
+            if len(queries) == 0:
+                curr_df = df
+            else:
+                total_query = " and ".join(queries)
+                if verbose:
+                    print(f"total_query = {total_query}")
+                curr_df = df.query(total_query)
+
+        if verbose:
+            print(f"  len(df) {suffix} = {len(curr_df)}")
+            
+        if debug_time:
+            print(f"Time for query = {time.time() - st}")
+            st = time.time()
+
+        # compute the statistics over the current dataframe
+        for stat_dict in attribute_summary_dicts:
+            summary_statisic_args = stat_dict.get("summary_statisic_args",None)
+            summary_statistic = stat_dict["summary_statistic"]
+            columns= stat_dict["columns"]
+
+            if columns is not None:
+                columns = nu.convert_to_array_like(columns)
+
+            results = pu.summary_statistic_over_columns(
+                columns = columns,#["","n_synapses_pre"],
+                df = curr_df,
+                summary_statistic = summary_statistic,
+                summary_statisic_args = summary_statisic_args,
+                verbose = False,
+                return_df = False,
+                append_statistic_name = True,
+                suffix = suffix,
+                prefix = prefix,
+                special_count_name=special_count_name,
+                debug_time=debug_time
+            )
+            
+            if debug_time:
+                print(f"Time for summary_statistic_over_columns = {time.time() - st}")
+                st = time.time()
+
+            results_dict.update(results)
+    return results_dict
+
+def example_Series():
+    return pd.Series(data=[2255,81],index=["n_synapses",'n_synapses_pre'])
+    
 import pandas_utils as pu
