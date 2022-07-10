@@ -516,6 +516,10 @@ def new_column_from_dict_mapping(
     dict_map,
     column_name,
     default_value=None):
+    """
+    If want the same value to exist if not
+    in the dictionary set default_value = "same"
+    """
     def new_func(row):
         try:
             return dict_map[row[column_name]]
