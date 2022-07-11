@@ -1506,6 +1506,11 @@ def summary_statistic_over_columns(
         columns = [columns]
         
     columns = list(columns)
+    #print(f"columns before reduction = {columns}")
+    # only keep the columns that are in df
+    columns = [k for k in columns if k in df.columns]
+    #print(f"   -> columns after reduction = {columns}")
+    
     node_df_restr = df[columns]
 
     if summary_statisic_args is not None:
@@ -1543,7 +1548,10 @@ def summary_statistic_over_columns(
         
     if append_statistic_name:
         if summary_statistic == "count" and special_count_name:
-             summary_df.index = [f"n_{k}" for k in summary_df.index]
+            if prefix is not None:
+                summary_df.index = [k.replace(prefix,f"n_{prefix}s") for k in summary_df.index]
+            else:
+                summary_df.index = [f"n_{k}" for k in summary_df.index]
         else:
             summary_df.index=[f"{k}_{summary_statistic}{''.join([f'_{j}' for j in summary_statisic_args])}" 
                               for k in summary_df.index]
@@ -1555,6 +1563,9 @@ def summary_statistic_over_columns(
                             default_column else k for k in summary_df.index]
         summary_df.index = [k[:-1] if k[-1] == "_"
                      else k for k in summary_df.index]
+        
+    if summary_statistic == "count":
+        summary_df = summary_df.astype('int')
         
     if debug_time:
         print(f"Fixing the names = {time.time() - st}")

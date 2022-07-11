@@ -578,6 +578,8 @@ def line_segments_plot_func(
                                 vertices[:,1], 
                                 vertices[:,2], 
                                 lines=lines)
+
+skeleton_plot_func = line_segments_plot_func
     
 def trisurf_plot_func(
     array,
@@ -588,6 +590,8 @@ def trisurf_plot_func(
     return ipv.plot_trisurf(x,y,z,
         triangles = triangles,
                            )
+
+mesh_plot_func = trisurf_plot_func
     
     
 def plot_obj(
@@ -597,6 +601,7 @@ def plot_obj(
     triangles = None,
     lines=None,
     color = "green",
+    plot_widgets = True,
     widgets_to_plot = ("size","marker","color"),
     show_at_end = True,
     new_figure = True,
@@ -623,6 +628,11 @@ def plot_obj(
     if new_figure:
         ipv.figure()
         
+    if lines is not None:
+        plot_type = "line_segments"
+    elif triangles is not None:
+        plot_type = "mesh"
+        
     scat = getattr(ipvu,f"{plot_type}_plot_func")(
         array,
         triangles = triangles,
@@ -636,9 +646,15 @@ def plot_obj(
     
     if widgets_to_plot is None:
         widgets_to_plot = []
-    for w in widgets_to_plot:
-        curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
-        widget_list.append(curr_widget)
+        
+    if plot_widgets:
+        for w in widgets_to_plot:
+            try:
+                curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
+            except:
+                pass
+            else:
+                widget_list.append(curr_widget)
         
     if len(widget_list) > 0:
         display(widgets.HBox(widget_list))

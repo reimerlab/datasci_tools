@@ -3709,6 +3709,7 @@ def feature_matrix_from_G(
     nodelist = None,
     features = None,
     return_df = False,
+    default_value = 0
     ):
     """
     Purpose: to get the node features matrix
@@ -3720,6 +3721,9 @@ def feature_matrix_from_G(
     df = pd.DataFrame.from_records([G.nodes[n] for n in nodelist])
 
     if features is not None:
+        for f in features:
+            if f not in df.columns:
+                df[f] = default_value
         df = df[list(features)]
 
     if return_df:
@@ -3744,7 +3748,8 @@ def adjacency_feature_info(
     3) Feature matrix
 
     """
-    features = np.array(xu.node_df_features(G))
+    if features is None:
+        features = np.array(xu.node_df_features(G))
     adj_matrix,nodelist = xu.adjacency_matrix(
         G,
         dense=dense_adjacency,

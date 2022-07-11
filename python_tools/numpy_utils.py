@@ -1397,6 +1397,9 @@ def coordinates_edges_from_line_segments(array):
     curr_edges = np.arange(len(unique_rows)).reshape(-1,2)
     return unique_rows, curr_edges
 
-
+def bounding_box(array):
+    array = np.array(array).reshape(-1,3)
+    return np.vstack([np.min(array,axis=0),
+                     np.max(array,axis=0)])
 
 import numpy_utils as nu
