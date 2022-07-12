@@ -1402,4 +1402,19 @@ def bounding_box(array):
     return np.vstack([np.min(array,axis=0),
                      np.max(array,axis=0)])
 
+def edge_list_from_adjacency_matrix(array):
+    return np.vstack(np.where(array == 1)).T
+def adjacency_matrix_from_edge_list(array):
+    """
+    THIS IS ASSUMING THAT ALL NODES IN THE GRAPH HAVE AT LEAST ONE EDGE
+    """
+    max_index = np.max(array.ravel())
+    empty_array = np.zeros((max_index+1,max_index+1)).astype('int')
+    empty_array[array.T[0],array.T[1]] = 1
+    return empty_array
+
+def replace_nan_with_zero(array):
+    return np.nan_to_num(array)
+    
+
 import numpy_utils as nu
