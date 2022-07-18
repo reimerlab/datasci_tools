@@ -4249,6 +4249,9 @@ def balanced_tree(degree=2,height=None,n=None):
     
     return G
 
+def binary_tree(height=None,n=None):
+    return balanced_tree(degree=2,height=height,n=n)
+
 def edge_list_from_graph_type(
     n,
     graph_type=None,

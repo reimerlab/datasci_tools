@@ -612,8 +612,8 @@ def to_pickle(df,filename):
 def read_pickle(filepath):
     return pd.read_pickle(filepath)
 
-def concat(df_list):
-    return pd.concat(df_list)
+def concat(df_list,**kwargs):
+    return pd.concat(df_list,**kwargs)
 
 from pathlib import Path
 def df_to_csv(df,
@@ -925,6 +925,51 @@ def normalize_df(
 
     normalized_df=(df-column_means)/column_stds
     return normalized_df
+
+def normalize_df_with_df(
+    df,
+    df_norm,
+    verbose = False,
+    ):
+    """
+    Purpose: To normalize a dataframe with
+    another dataframe
+
+    Pseudocode: 
+    1) Get the columns of dataframe
+    2) Use the columns of df to restrict the normalization df
+    3) Get the column means and standard deviations
+    """
+
+    columns = list(df.columns)
+    df_standardization = df_norm[columns]
+
+    try:
+        col_means = df_standardization.loc["norm_mean",:].to_numpy()
+    except:
+        col_means = df_standardization.iloc[0,:].to_numpy()
+
+    try:
+        col_stds = df_standardization.loc["norm_std",:].to_numpy()
+    except:
+        col_stds = df_standardization.iloc[1,:].to_numpy()
+
+    if verbose:
+        print(f"col_means = {col_means}")
+        print(f"col_stds = {col_stds}")
+
+    return pu.normalize_df(
+        df,
+        column_means = col_means,
+        column_stds = col_stds,)
+
+def normalize_df_with_names(df):
+    col_means = df.mean(axis=0).to_numpy()
+    col_stds = df.std(axis=0).to_numpy()
+    df_standardization = pd.DataFrame(np.array([col_means,col_stds]),
+         index=["norm_mean","norm_std"],
+        columns=df.columns)
+    return df_standardization
 
 # Filter away rows with infinity
 def filter_away_non_finite_rows(df):
@@ -1728,5 +1773,46 @@ def summary_statistics_over_columns_by_category(
 
 def example_Series():
     return pd.Series(data=[2255,81],index=["n_synapses",'n_synapses_pre'])
+
+def df_from_array(
+    array,
+    columns,
+    inf_fill_value = 10000,
+    ):
+    
+    df_temp = pd.DataFrame(array)
+    df_temp.columns = columns
+    if inf_fill_value is not None:
+        df_temp=df_temp.replace([np.inf],inf_fill_value)
+    return df_temp
+
+def filter_columns(
+    df,
+    columns_to_keep = None,
+    columns_to_delete = None):
+    """
+    Purpose: To filter columns
+    of dataframe for those specified to keep
+    and those specified to delete
+    
+    Ex: 
+    pu.filter_columns(
+        normalization_df,
+        #columns_to_keep = ["skeletal_length",'skeleton_vector_upstream_theta'],
+        columns_to_delete=["skeletal_length"]
+    )
+    """
+    
+    if columns_to_keep is not None:
+        columns_to_keep = list(nu.convert_to_array_like(columns_to_keep))
+        df = df[columns_to_keep]
+        
+    if columns_to_delete is not None:
+        columns_to_delete = list(nu.convert_to_array_like(columns_to_delete))
+        df = pu.delete_columns(df,columns_to_delete)
+        
+    return df
+
+
     
 import pandas_utils as pu

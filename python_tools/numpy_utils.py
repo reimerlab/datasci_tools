@@ -1403,7 +1403,7 @@ def bounding_box(array):
                      np.max(array,axis=0)])
 
 def edge_list_from_adjacency_matrix(array):
-    return np.vstack(np.where(array == 1)).T
+    return np.vstack(np.where(array == 1)).T.reshape(-1,2)
 def adjacency_matrix_from_edge_list(array):
     """
     THIS IS ASSUMING THAT ALL NODES IN THE GRAPH HAVE AT LEAST ONE EDGE
