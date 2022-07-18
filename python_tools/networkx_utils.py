@@ -4224,5 +4224,57 @@ def path_distance(G,path,weight="weight"):
     else:
         return cls_func.path_weight(G,path,weight=weight)
     
+    
+# -------- for different graph constructors ----
+def path_graph(n):
+    return nx.path_graph(n)
+
+line_graph = path_graph
+
+def complete_graph(n):
+    return nx.complete_graph(n)
+    
+def cycle_graph(n):
+    return nx.cycle_graph(n)
+circle_graph = cycle_graph
+
+def balanced_tree(degree=2,height=None,n=None):
+    # compute the number of splits needed
+    if height is None:
+        height = np.ceil(nu.log_n(n+1,degree)-1).astype('int')
+        
+    G = nx.balanced_tree(degree,height)
+    if n is not None:
+        G = G.subgraph(np.arange(0,n)).copy()
+    
+    return G
+
+def edge_list_from_graph_type(
+    n,
+    graph_type=None,
+    graph_func = None,
+    plot = False,
+    **kwargs
+    ):
+    """
+    Purpose: To generate an edgelist for a
+    given graph type and size
+    
+    --- Example ---
+    n = 10
+    graph_type = "complete_graph"
+
+    xu.edge_list_from_graph_type(
+        n=n,
+        graph_type=graph_type,
+        plot=True
+    )
+    """
+    
+    G = getattr(xu,graph_type)(n=n,**kwargs)
+    if plot:
+        nx.draw(G,with_labels = True)
+    return np.array(list(G.edges()))
+
 import networkx_utils as xu
     

@@ -1415,6 +1415,9 @@ def adjacency_matrix_from_edge_list(array):
 
 def replace_nan_with_zero(array):
     return np.nan_to_num(array)
+
+def log_n(array,base):
+    return np.log(array) / np.log(base) 
     
 
 import numpy_utils as nu
