@@ -143,7 +143,7 @@ def multiple_replace(
     return text
         
 
-def all_match_substring_in_str(Substring,expression):
+def all_match_substring_in_str(substring,expression):
     z = re.match(substring,expression)
     return z
 
@@ -162,3 +162,29 @@ def sub_str_for_pattern(
     pattern,
     replacement):
     return re.sub(pattern,replacement,s)
+
+
+def match_pattern_in_str(
+    string,
+    pattern,
+    return_one = False,
+    verbose = False
+    ):
+    """
+    Purpose: To find the string that
+    matches the pattern compiled
+    """
+
+    pattern = re.compile(pattern)
+    s_find = pattern.finditer(string)
+    found_strings = []
+    for st in s_find:
+        found_strings.append(string[st.start():st.end()])
+        
+    if verbose:
+        print(f"found_strings = {found_strings}")
+
+    if return_one:
+        return found_strings[0]
+    else:
+        return found_strings
