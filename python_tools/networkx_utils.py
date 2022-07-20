@@ -4252,11 +4252,20 @@ def balanced_tree(degree=2,height=None,n=None):
 def binary_tree(height=None,n=None):
     return balanced_tree(degree=2,height=height,n=n)
 
+def self_loop_edges(n):
+    """
+    Purpose: To create self loops 
+    from tne number of nodes
+    """
+    edges = np.vstack([np.arange(n),np.arange(n)]).T
+    return edges
+    
 def edge_list_from_graph_type(
     n,
     graph_type=None,
     graph_func = None,
     plot = False,
+    add_self_loops=False,
     **kwargs
     ):
     """
@@ -4277,7 +4286,12 @@ def edge_list_from_graph_type(
     G = getattr(xu,graph_type)(n=n,**kwargs)
     if plot:
         nx.draw(G,with_labels = True)
-    return np.array(list(G.edges()))
+    return_edges = np.array(list(G.edges()))
+    
+    
+    if add_self_loops:
+        return_edges = np.vstack([return_edges.reshape(-1,2),xu.self_loop_edges(n)])
+    return return_edges.astype('int')
 
 import networkx_utils as xu
     

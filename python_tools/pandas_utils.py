@@ -958,6 +958,7 @@ def normalize_df_with_df(
         print(f"col_means = {col_means}")
         print(f"col_stds = {col_stds}")
 
+    #raise Exception("")
     return pu.normalize_df(
         df,
         column_means = col_means,

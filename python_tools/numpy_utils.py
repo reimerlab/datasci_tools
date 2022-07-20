@@ -1402,8 +1402,15 @@ def bounding_box(array):
     return np.vstack([np.min(array,axis=0),
                      np.max(array,axis=0)])
 
-def edge_list_from_adjacency_matrix(array):
-    return np.vstack(np.where(array == 1)).T.reshape(-1,2)
+
+    
+def edge_list_from_adjacency_matrix(array,add_self_loops=False):
+    return_edges = np.vstack(np.where(array == 1)).T.reshape(-1,2)
+    if add_self_loops:
+        import networkx_utils as xu
+        return_edges = np.vstack([return_edges.reshape(-1,2),xu.self_loop_edges(len(array))])
+    return return_edges.astype('int')
+
 def adjacency_matrix_from_edge_list(array):
     """
     THIS IS ASSUMING THAT ALL NODES IN THE GRAPH HAVE AT LEAST ONE EDGE
