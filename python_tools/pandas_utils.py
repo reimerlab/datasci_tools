@@ -1815,5 +1815,22 @@ def filter_columns(
     return df
 
 
+def set_column_subset_value_by_query(
+    df,
+    query,
+    column,
+    value,
+    verbose = False):
+    """
+    Purpose: Set column
+    """
+    
+    curr_map = df.eval(query)
+    if verbose:
+        print(f"Number of rows in query = {curr_map.sum()}")
+        
+    df.loc[curr_map,column] = value
+    return df
+
     
 import pandas_utils as pu
