@@ -1832,5 +1832,121 @@ def set_column_subset_value_by_query(
     df.loc[curr_map,column] = value
     return df
 
+def count_unique_column_values(df,column):
+    return pu.unique_row_counts(df[[column]])
+
+import numpy_utils as nu
+def intersect_columns(dfs):
+    return list(nu.intersect1d_multi_list([list(df.columns) for df in dfs]))
+
+def intersect_df(
+    df,
+    df_restr,
+    restriction_columns = None,
+    append_restr_columns = True,
+    reset_index = False,
+    verbose = False,
+    ):
+    """
+    Purpose: To get the intersection of two dataframes
+    """
+    
+    if restriction_columns is None:
+        restriction_columns = pu.intersect_columns([df,df_restr])
+        
+    if append_restr_columns:
+        cols = list(df_restr.columns)
+    else:
+        cols = restriction_columns
+        
+    restr_df = df.reset_index().merge(
+        df_restr[cols],
+        how="inner",
+        on=restriction_columns,
+    ).set_index("index")
+    
+    if reset_index:
+        restr_df = restr_df.reset_index(drop=True)
+        
+    if verbose:
+        print(f"Length of df after restriction using ({restriction_columns}): {len(restr_df)}")
+        
+    return restr_df
+
+def setdiff_df(
+    df,
+    df_restr,
+    restriction_columns = None,
+    reset_index = False,
+    verbose = False,
+    inter_df = None,
+    ):
+    """
+    Purpose: To find subtract the 
+    rows of one dataframe from the other
+    """
+    if restriction_columns is None:
+        restriction_columns = pu.intersect_columns([df,df_restr])
+        
+    if inter_df is None:
+        inter_df = intersect_df(
+            df,
+            df_restr,
+            restriction_columns = restriction_columns,
+            append_restr_columns = False,
+            reset_index = False,
+            verbose = False,
+            )
+    
+    diff_df = df.iloc[list(np.setdiff1d(
+        df.index.to_list(),
+        inter_df.index.to_list())
+        ),:]
+    
+    if verbose:
+        print(f"Length of df after restriction using ({restriction_columns}): {len(diff_df)}")
+        
+    if reset_index:
+        diff_df = diff_df.reset_index(drop=True)
+        
+    return diff_df
+
+def split_df_from_intersect_df(
+    df,
+    df_restr,
+    restriction_columns = None,
+    append_restr_columns = False,
+    reset_index = True,
+    verbose = False):
+    """
+    Purpose: To Split a table using a restriction df
+    """
+    inter_df = pu.intersect_df(
+        df,
+        df_restr,
+        restriction_columns = restriction_columns,
+        append_restr_columns = append_restr_columns,
+        reset_index = False,
+        verbose = False,
+        )
+
+    
+    diff_df = pu.setdiff_df(
+        df,
+        df_restr,
+        restriction_columns = restriction_columns,
+        reset_index = reset_index,
+        verbose = False,
+        inter_df = inter_df,
+        )
+    
+    if reset_index:
+        inter_df = inter_df.reset_index(drop=True)
+    
+    if verbose:
+        print(f"inter_df size = {len(inter_df)}, diff_df = {len(diff_df)}")
+        
+    return inter_df,diff_df
+    
     
 import pandas_utils as pu
