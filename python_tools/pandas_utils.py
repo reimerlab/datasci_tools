@@ -1948,5 +1948,7 @@ def split_df_from_intersect_df(
         
     return inter_df,diff_df
     
+def split_str_column_into_multple(df,column,delimiter):
+    return df[column].str.split(delimiter,expand =True)
     
 import pandas_utils as pu
