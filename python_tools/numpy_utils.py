@@ -1004,6 +1004,7 @@ def interpercentile_range(array,range_percentage,axis = None,verbose = False):
 def randomly_shuffle_array(array,**kwargs):
     return np.random.choice(array, len(array), replace=False,**kwargs)
 def randomly_sample_array(array,n_samples,replace = True,**kwargs):
+    n_samples = int(n_samples)
     return np.random.choice(array,n_samples,replace = replace,**kwargs)
 def random_shuffled_indexes_for_array(array,**kwargs):
     idx_to_process = np.arange(0,len(array))
