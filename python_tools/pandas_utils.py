@@ -1832,8 +1832,11 @@ def set_column_subset_value_by_query(
     df.loc[curr_map,column] = value
     return df
 
-def count_unique_column_values(df,column):
-    return pu.unique_row_counts(df[[column]])
+def count_unique_column_values(df,column,sort = False):
+    return_df =  pu.unique_row_counts(df[[column]])
+    if sort:
+        return_df = pu.sort_df_by_column(return_df,"unique_counts")
+    return return_df
 
 import numpy_utils as nu
 def intersect_columns(dfs):
