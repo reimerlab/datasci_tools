@@ -1037,6 +1037,7 @@ def closest_dist_between_coordinates(
     array2,
     return_min = True,
     return_array_indices = False,
+    return_coordinates = False,
     verbose = False,
     ):
     """
@@ -1072,6 +1073,9 @@ def closest_dist_between_coordinates(
         print(f"dist = {dist}")
         print(f"array_1_idx = {array_1_idx}, array_2_idx = {array_2_idx} ")
 
+    if return_coordinates:
+        return array1[array_1_idx],array2[array_2_idx]
+    
     if return_array_indices:
         return dist,array_1_idx,array_2_idx
     else:
