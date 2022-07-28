@@ -640,7 +640,10 @@ def plot_obj(
         array[...,1] = -array[...,1]
 
     if new_figure:
+        ipv.pylab.clear()
+        ipv.clear()
         ipv.figure()
+        
         
     if lines is not None:
         plot_type = "line_segments"
