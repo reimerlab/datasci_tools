@@ -1060,7 +1060,6 @@ def closest_dist_between_coordinates(
         f = np.argmin
     else:
         f = np.argmax
-    print(f"{f}")
 
     kd = KDTree(np.vstack(array1))
     closest_dist,kd_idx = kd.query(array2)
