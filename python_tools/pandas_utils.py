@@ -1953,5 +1953,8 @@ def split_df_from_intersect_df(
     
 def split_str_column_into_multple(df,column,delimiter):
     return df[column].str.split(delimiter,expand =True)
+
+def excel_to_df(filename):
+    return pd.read_excel(filename, index_col=0) 
     
 import pandas_utils as pu

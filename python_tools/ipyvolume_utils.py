@@ -108,10 +108,11 @@ def example_mesh():
     x,y,z = tetrahedron_vertices.T
 
     ipv.figure()
-    ipv.plot_trisurf(x,y,z,triangles = tetrahedron_triangles,color = "orange")
+    new_mesh = ipv.plot_trisurf(x,y,z,triangles = tetrahedron_triangles,color = "orange")
     ipv.scatter(x,y,z,marker="sphere",color = "blue")
     ipv.xyzlim(-2,2)
     ipv.show()
+    return new_mesh
     
 import numpy_utils as nu
 def example_plot_line_segments(array = None):
@@ -363,6 +364,19 @@ def add_color_widget(
         obj,
         widget="ColorPicker",
         attribute = "color",
+        **kwargs)
+
+def add_alpha_widget(
+    obj,
+    **kwargs
+    ):
+    
+    return ipvu.add_attribute_widget(
+        obj,
+        widget="FloatSlider",
+        attribute = "alpha",
+        min=0,
+        max = 1,
         **kwargs)
 
 marker_options= (
@@ -651,7 +665,8 @@ def plot_obj(
         for w in widgets_to_plot:
             try:
                 curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
-            except:
+            except Exception as e:
+                #print(e)
                 pass
             else:
                 widget_list.append(curr_widget)
@@ -663,11 +678,45 @@ def plot_obj(
 
     if show_at_end:
         ipv.show()
+        
+    return scat
     
 #def add_marker_selection()
 def xyz_from_array(array):
     return array[:,0],array[:,1],array[:,2]
+
+import matplotlib_utils as mu
+def plot_mesh(
+    mesh,
+    alpha = None,
+    plot_widgets = True,
+    widgets_to_plot = ("color",),
+    show_at_end = True,
+    new_figure = True,
+    flip_y = False,
+    **kwargs
+    ):
     
+    
+    return_mesh =  ipvu.plot_obj(
+        mesh.vertices,
+        plot_type="scatter",
+        #all possible inputs to functions
+        triangles = mesh.faces,
+        plot_widgets = True,
+        widgets_to_plot = widgets_to_plot,
+        show_at_end = show_at_end,
+        new_figure = new_figure,
+        flip_y = flip_y,
+         **kwargs
+    )
+    
+    if alpha is not None:
+        return_mesh.material.transparent = True
+        return_mesh.color = mu.color_to_rgba(str(return_mesh.color),alpha)
+    return return_mesh
+
+
 import ipyvolume_utils as ipvu
     
     
