@@ -719,6 +719,31 @@ def plot_mesh(
         return_mesh.color = mu.color_to_rgba(str(return_mesh.color),alpha)
     return return_mesh
 
+def plot_mesh_with_scatter(
+    mesh=None,
+    mesh_alpha = 0.2,
+    scatter=None,
+    flip_y = True,
+    ):
+    
+    
+    new_figure = True
+    if mesh is not None:
+        new_mesh = ipvu.plot_mesh(
+                mesh,
+                alpha=mesh_alpha,
+                flip_y = flip_y,
+                show_at_end=False,
+                new_figure = True,
+            )
+        new_figure = False
+        
+    ipvu.plot_obj(
+            scatter,
+            flip_y = True,
+            new_figure = new_figure,
+            show_at_end=True,
+        ) 
 
 import ipyvolume_utils as ipvu
     
