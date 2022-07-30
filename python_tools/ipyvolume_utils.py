@@ -191,6 +191,7 @@ def example_scatter(N=1000):
     x,y,z = np.random.normal(0,1,(3,N))
     return x,y,z
 def example_selection():
+    ipvu.print_selection_hotkeys()
     x,y,z = example_scatter()
     fig = ipv.figure()
     scatter = ipv.scatter(x,y,z,marker = "sphere",color = "green")

@@ -1063,6 +1063,7 @@ def histograms_overlayed(
     hue=None,
     hue_order = None,
     hue_secondary = None,
+    hue_secondary_order = None,
     
     #histogram plot formatting
     bins = 50,
@@ -1133,6 +1134,10 @@ def histograms_overlayed(
         
     if hue_secondary is not None:
         cats_secondary = df[hue_secondary].unique()
+        if hue_secondary_order is not None:
+            cats_secondary = [k for k in hue_secondary_order
+                             if k in cats_secondary]
+        
     else:
         cats_secondary= None
         
