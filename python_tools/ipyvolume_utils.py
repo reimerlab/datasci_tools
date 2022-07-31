@@ -616,11 +616,13 @@ def plot_obj(
     triangles = None,
     lines=None,
     color = "green",
+    size = None,
     plot_widgets = True,
     widgets_to_plot = ("size","marker","color"),
     show_at_end = True,
     new_figure = True,
     flip_y = False,
+    axis_visibility = True,
     **kwargs,
     ):
     """
@@ -651,37 +653,46 @@ def plot_obj(
     elif triangles is not None:
         plot_type = "mesh"
         
-    scat = getattr(ipvu,f"{plot_type}_plot_func")(
-        array,
-        triangles = triangles,
-        lines=lines,
-    )
-    
-    scat.color = color
-    
+        
+    if len(array) > 0:
+        scat = getattr(ipvu,f"{plot_type}_plot_func")(
+            array,
+            triangles = triangles,
+            lines=lines,
+        )
 
-    widget_list = []
-    
-    if widgets_to_plot is None:
-        widgets_to_plot = []
-        
-    if plot_widgets:
-        for w in widgets_to_plot:
-            try:
-                curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
-            except Exception as e:
-                #print(e)
-                pass
-            else:
-                widget_list.append(curr_widget)
-        
-    if len(widget_list) > 0:
-        display(widgets.HBox(widget_list))
+        scat.color = color
+
+        if size is not None:
+            scat.size = size
+
+
+        widget_list = []
+
+        if widgets_to_plot is None:
+            widgets_to_plot = []
+
+        if plot_widgets:
+            for w in widgets_to_plot:
+                try:
+                    curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
+                except Exception as e:
+                    #print(e)
+                    pass
+                else:
+                    widget_list.append(curr_widget)
+
+        if len(widget_list) > 0:
+            display(widgets.HBox(widget_list))
+    else:
+        scat = None
         
     ipvu.set_axes_lim_from_fig()
 
     if show_at_end:
         ipv.show()
+        
+    ipvu.set_axes_visibility(axis_visibility)
         
     return scat
     
@@ -704,7 +715,6 @@ def plot_mesh(
     
     return_mesh =  ipvu.plot_obj(
         mesh.vertices,
-        plot_type="scatter",
         #all possible inputs to functions
         triangles = mesh.faces,
         plot_widgets = True,
@@ -719,6 +729,7 @@ def plot_mesh(
         return_mesh.material.transparent = True
         return_mesh.color = mu.color_to_rgba(str(return_mesh.color),alpha)
     return return_mesh
+
 
 def plot_mesh_with_scatter(
     mesh=None,
@@ -745,6 +756,103 @@ def plot_mesh_with_scatter(
             new_figure = new_figure,
             show_at_end=True,
         ) 
+    
+def plot_scatter(
+    array,
+    plot_widgets = True,
+    widgets_to_plot = ("size","marker","color"),
+    show_at_end = True,
+    new_figure = True,
+    color = "red",
+    size = 1,
+    flip_y = False,
+    axis_visibility=True,
+    **kwargs
+    ):
+    
+    return_sc =  ipvu.plot_obj(
+        array,
+        plot_widgets = True,
+        color = color,
+        size = size,
+        widgets_to_plot = widgets_to_plot,
+        show_at_end = show_at_end,
+        new_figure = new_figure,
+        flip_y = flip_y,
+        axis_visibility=axis_visibility,
+         **kwargs
+    )
+    
+    return return_sc
+
+import numpy_utils as nu
+
+def plot_multi_scatters(
+    scatters,
+    scatters_colors = "red",
+    scatter_size = 1,
+    plot_widgets = True,
+    widgets_to_plot = ("size","marker","color"),
+    flip_y = False,
+    axis_visibility = False,
+    verbose = False,
+    show_at_end = True,
+    new_figure = True,
+    ):
+    
+    """
+    Purpose: To plot a group of synapses and have the 
+    scatter controls to be able to control size for each color
+
+
+    """
+    
+    if type(scatters) != list:
+        scatters = [scatters]
+    if not nu.is_array_like(scatters_colors):
+        scatters_colors = [scatters_colors]
+
+    if len(scatters_colors) != len(scatters):
+        scatters_colors = scatters_colors*len(scatters)
+
+    if not nu.is_array_like(scatter_size):
+        scatter_size = [scatter_size]
+
+    if len(scatter_size) != len(scatters):
+        scatter_size = scatter_size*len(scatters)
+        
+    sum_points = np.sum([len(k) for k in scatters])
+    if sum_points == 0:
+        if verbose:
+            print(f"No scatters to plot")
+        if show_at_end:
+            ipv.show()
+        return
+
+    for j,(sc,sc_c,sz) in enumerate(zip(
+        scatters,
+        scatters_colors,
+        scatter_size
+        )):
+        
+        show_at_end_inner = False
+        new_figure_inner = False
+        
+        if (j == len(scatters) - 1) and show_at_end:
+            show_at_end_inner = True
+        if (j == 0) and new_figure:
+            new_figure_inner = True
+        ipvu.plot_scatter(
+            sc,
+            size = sz,
+            color = sc_c,
+            show_at_end = show_at_end_inner,
+            new_figure = new_figure_inner,
+            axis_visibility=axis_visibility,
+            flip_y=flip_y,
+            )
+    
+
 
 import ipyvolume_utils as ipvu
     
