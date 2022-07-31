@@ -344,7 +344,7 @@ def add_attribute_widget(
 def add_size_widget(
     obj,
     min=0,
-    max=3,
+    max=10,
     **kwargs
     ):
     
