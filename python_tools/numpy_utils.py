@@ -1429,6 +1429,16 @@ def replace_nan_with_zero(array):
 
 def log_n(array,base):
     return np.log(array) / np.log(base) 
+
+def is_inf(x):
+    return  ~np.isfinite(x)
+
+def is_nan(x):
+    return np.isnan(x)
+
+def is_nan_or_inf(x):
+    return nu.is_nan(x) | nu.is_inf(x) 
+
     
 
 import numpy_utils as nu
