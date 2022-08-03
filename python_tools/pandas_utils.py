@@ -1956,5 +1956,81 @@ def split_str_column_into_multple(df,column,delimiter):
 
 def excel_to_df(filename):
     return pd.read_excel(filename, index_col=0) 
+
+def bin_df_by_column(
+    df,
+    column,
+    bins=None,
+    n_bins = 10,
+    verbose = False,
+    return_bins = False,
+    ):
+    """
+    Purpose: To calculate sub dataframe
+    after binning a certain column
+    """
+
+
+    if bins is None:
+        bins = np.linspace(0,df[column].max(),n_bins + 1)
+
+    if verbose:
+        print(f"bins = {bins}")
+
+    df_list = []
+    for i in range(1,len(bins)):
+        if i == len(bins) -1:
+            final_comp = "<="
+        else:
+            final_comp = "<"
+
+        query_str = f"({column} >= {bins[i-1]}) and ({column} {final_comp} {bins[i]})"
+        curr_df = df.query(query_str)
+
+        if verbose:
+            print(f"For bin {i}, query_str = {query_str}")
+            print(f"   -> length of sub df = {len(curr_df)}")
+        df_list.append(curr_df)
+
+    if return_bins:
+        return df_list,bins
+    return df_list
+
+def bin_df_by_column_stat(
+    df,
+    column,
+    func,
+    bins=None,
+    n_bins = 10,
+    verbose = False,
+    return_bins = True,
+    return_df_len = True
+    ):
+    """
+    Purpose: to compute a statistic over
+    binned sub dfs (where bins are determined by column)
+    """
+
+    df_bins,bins = bin_df_by_column(
+        df=df,
+        column=column,
+        bins=bins,
+        n_bins = n_bins,
+        verbose = verbose,
+        return_bins = True,
+        )
+    
+    df_stats = [func(k) for k in df_bins]
+
+    if (not return_bins) and (not return_df_len):
+        return df_stats
+    return_list = [df_stats]
+    if return_bins:
+        return_list.append(bins)
+    if return_df_len:
+        df_len = [len(k) for k in df_bins]
+        return_list.append(df_len)
+        
+    return return_list
     
 import pandas_utils as pu
