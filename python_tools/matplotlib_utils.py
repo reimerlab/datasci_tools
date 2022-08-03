@@ -580,6 +580,32 @@ def set_font_size(font_size):
     
     matplotlib.rc('font', **font)
     
+def set_axes_font_size(
+    ax,
+    fontsize = 20,
+    xlabel_fontsize = None,
+    ylabel_fontsize = None,
+    x_rotation = 45,
+    ):
+    
+    if xlabel_fontsize is None:
+        xlabel_fontsize = fontsize
+    if ylabel_fontsize is None:
+        ylabel_fontsize = fontsize
+    
+    ax.set_xticklabels(
+        ax.get_xmajorticklabels(),
+        fontsize = xlabel_fontsize,
+        rotation=x_rotation)
+
+    ax.set_yticklabels(
+        ax.get_ymajorticklabels(),
+        fontsize = ylabel_fontsize,
+        #rotation=45
+    )
+    
+    return ax
+    
     
 def add_random_color_for_missing_labels_in_dict(labels,
                                                 label_color_dict,
@@ -1507,6 +1533,5 @@ def scatter_with_gradient(
     
     return ax
 
-    
     
 import matplotlib_utils as mu

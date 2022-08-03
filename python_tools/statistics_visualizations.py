@@ -66,6 +66,8 @@ def plot_heatmap(#need to order by
     Type 3
 
     """
+    if input_row_names is None:
+        input_row_names = list(df.index)
     synapse_types= [k.replace("_"," ") for k in input_row_names]
     score_types = input_col_names
     if df is not None:
