@@ -2004,7 +2004,8 @@ def bin_df_by_column_stat(
     n_bins = 10,
     verbose = False,
     return_bins = True,
-    return_df_len = True
+    return_df_len = True,
+    plot = False,
     ):
     """
     Purpose: to compute a statistic over
@@ -2021,6 +2022,25 @@ def bin_df_by_column_stat(
         )
     
     df_stats = [func(k) for k in df_bins]
+    df_len = [len(k) for k in df_bins]
+    
+    if plot:
+        twin_color = "blue"
+        fontsize = 20
+
+        figsize = (10,5)
+        mid_bins = (bins[1:] + bins[:-1])/2
+
+        fig,ax = plt.subplots(1,1,figsize=figsize)
+        ax.plot(mid_bins,df_stats,)
+        ax.set_xlabel(f"{column}")
+        ax.set_ylabel(f"{func.__name__}")
+
+        ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
+        ax2.set_ylabel('# of Data Points',fontsize=fontsize,color=twin_color)  # we already handled the x-label with ax1
+        ax2.tick_params(axis='y', labelcolor=twin_color)
+        ax2.plot(mid_bins, df_len, color=twin_color)
+        plt.show()
 
     if (not return_bins) and (not return_df_len):
         return df_stats
@@ -2028,7 +2048,6 @@ def bin_df_by_column_stat(
     if return_bins:
         return_list.append(bins)
     if return_df_len:
-        df_len = [len(k) for k in df_bins]
         return_list.append(df_len)
         
     return return_list
