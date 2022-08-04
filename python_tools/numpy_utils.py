@@ -1439,6 +1439,15 @@ def is_nan(x):
 def is_nan_or_inf(x):
     return nu.is_nan(x) | nu.is_inf(x) 
 
+
+def example_apply_along_axis():
+    import numpy as np
+    x = np.arange(0,15).reshape(-1,3)
+    weights = np.array([1,2,3])
+    np.apply_along_axis(nu.weighted_average,axis=1,arr=x,weights=weights)
+    
+def weighted_average_along_axis(array,weights,axis=0):
+    return np.apply_along_axis(nu.weighted_average,axis=axis,arr=array,weights=weights)
     
 
 import numpy_utils as nu
