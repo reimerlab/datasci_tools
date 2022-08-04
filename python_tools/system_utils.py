@@ -181,17 +181,24 @@ def save_object(obj, filename,return_size=False):
     if return_size:
         return file_size
     
-
+import pickle5 as pickle5
 def load_object(filename):
     if type(filename) == type(Path()):
         filename = str(filename.absolute())
     else:
         if filename[-4:] != ".pkl":
             filename += ".pkl"
-    with open(filename, 'rb') as input:
-        retrieved_obj = pickle.load(input)
+            
+    try:
+        with open(filename, 'rb') as input:
+            retrieved_obj = pickle.load(input)
+    except:
+        with open(filename, "rb") as fh:
+            data = pickle5.load(fh)
     return retrieved_obj
 
+
+load_pkl = load_object
 
 
 
