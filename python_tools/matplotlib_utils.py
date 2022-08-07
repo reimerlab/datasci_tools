@@ -583,28 +583,80 @@ def set_font_size(font_size):
 def set_axes_font_size(
     ax,
     fontsize = 20,
-    xlabel_fontsize = None,
-    ylabel_fontsize = None,
+    x_fontsize = None,
+    y_fontsize = None,
     x_rotation = 45,
     ):
     
-    if xlabel_fontsize is None:
-        xlabel_fontsize = fontsize
-    if ylabel_fontsize is None:
-        ylabel_fontsize = fontsize
+    attribute = "ticklabels"
     
-    ax.set_xticklabels(
+    if x_fontsize is None:
+        x_fontsize = fontsize
+    if y_fontsize is None:
+        y_fontsize = fontsize
+    
+    getattr(ax,f"set_x{attribute}")(
         ax.get_xmajorticklabels(),
-        fontsize = xlabel_fontsize,
+        fontsize = x_fontsize,
         rotation=x_rotation)
 
-    ax.set_yticklabels(
+    getattr(ax,f"set_y{attribute}")(
         ax.get_ymajorticklabels(),
-        fontsize = ylabel_fontsize,
+        fontsize = y_fontsize,
         #rotation=45
     )
     
     return ax
+
+def set_axes_title_size(
+    ax,
+    fontsize = 20,
+    x_fontsize = None,
+    y_fontsize = None,):
+    
+    if x_fontsize is None:
+        x_fontsize = fontsize
+    if y_fontsize is None:
+        y_fontsize = fontsize
+        
+        
+    attribute = "label"
+    getattr(ax,f"set_x{attribute}")(
+        getattr(ax,f"get_x{attribute}")(),
+        fontsize = x_fontsize)
+
+    getattr(ax,f"set_y{attribute}")(
+        getattr(ax,f"get_y{attribute}")(),
+        fontsize = y_fontsize)
+    
+    return ax
+
+
+def set_axes_title_size(
+    ax,
+    fontsize = 20,
+    x_fontsize = None,
+    y_fontsize = None,):
+    
+    if x_fontsize is None:
+        x_fontsize = fontsize
+    if y_fontsize is None:
+        y_fontsize = fontsize
+        
+        
+    attribute = "label"
+    getattr(ax,f"set_x{attribute}")(
+        getattr(ax,f"get_x{attribute}")(),
+        fontsize = x_fontsize)
+
+    getattr(ax,f"set_y{attribute}")(
+        getattr(ax,f"get_y{attribute}")(),
+        fontsize = y_fontsize)
+    
+    return ax
+    
+
+
     
     
 def add_random_color_for_missing_labels_in_dict(labels,

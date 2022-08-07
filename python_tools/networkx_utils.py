@@ -4252,6 +4252,12 @@ def balanced_tree(degree=2,height=None,n=None):
 def binary_tree(height=None,n=None):
     return balanced_tree(degree=2,height=height,n=n)
 
+def star_graph(n,plot=False):
+    G = nx.from_edgelist([(0,k) for k in range(1,n)])
+    if plot:
+        nx.draw(G,with_labels=True)
+    return G
+
 def self_loop_edges(n):
     """
     Purpose: To create self loops 
