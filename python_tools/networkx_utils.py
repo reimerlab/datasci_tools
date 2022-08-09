@@ -4272,6 +4272,7 @@ def edge_list_from_graph_type(
     graph_func = None,
     plot = False,
     add_self_loops=False,
+    bidirectional = False,
     **kwargs
     ):
     """
@@ -4293,6 +4294,9 @@ def edge_list_from_graph_type(
     if plot:
         nx.draw(G,with_labels = True)
     return_edges = np.array(list(G.edges()))
+    
+    if bidirectional and len(return_edges) > 0:
+        return_edges = np.vstack([return_edges,return_edges[:,[1,0]]])
     
     
     if add_self_loops:

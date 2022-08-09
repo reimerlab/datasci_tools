@@ -3,6 +3,7 @@ import trimesh
 import numpy as np
 import numpy_utils as nu
 
+
 def mesh_center_vertex_average(mesh_list):
     if not nu.is_array_like(mesh_list):
         mesh_list = [mesh_list]
@@ -73,5 +74,33 @@ def center_mesh(mesh,new_center):
     added_offset =  np.array(new_center) - new_mesh.center_mass
     new_mesh.vertices = new_mesh.vertices + added_offset
     return new_mesh
+
+
+import trimesh
+import ipyvolume_utils as ipvu
+from scipy.spatial import Delaunay
+def mesh_from_delauny_3d(
+    tri,
+    plot = False,):
+    
+    if "array" in str(type(tri)):
+        tri = Delaunay(tri)
+    
+    
+    vertices = tri.points
+    faces_orig = tri.simplices
+    faces = np.vstack([
+        faces_orig[:,[0,1,2]],
+        faces_orig[:,[0,1,3]],
+        faces_orig[:,[1,2,3]],
+        faces_orig[:,[2,0,3]]]
+    )
+    
+    
+    mesh = trimesh.Trimesh(vertices=vertices,faces=faces)
+
+    if plot:
+        ipvu.plot_mesh(mesh)
+    return mesh
 
 import mesh_utils as mhu

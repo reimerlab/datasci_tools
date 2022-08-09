@@ -144,3 +144,4 @@ def model_fit(
     
     
     return func(x, *popt)
+
