@@ -419,6 +419,7 @@ def heatmap_3D(
     scatter_size = 0.5,
     plot_highest_bin_value = False,
     axis_box_off = False,
+    **kwargs
     ):
     """
     Purpose: To plot a 3D heatmap of a feature with values and coordinates
@@ -462,6 +463,7 @@ def heatmap_3D(
     scatters_colors=scatters_colors,
     scatter_size=scatter_size,
     axis_box_off = axis_box_off,
+    **kwargs
     
     )
     
