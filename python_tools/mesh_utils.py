@@ -41,17 +41,6 @@ def scatter_mesh_with_radius(array,radius):
                     for k,r in zip(array,radius)])
     return total_mesh
 
-def combine_meshes(mesh_pieces,merge_vertices=True):
-    leftover_mesh = trimesh.Trimesh(vertices=np.array([]),faces=np.array([]))
-#     for m in mesh_pieces:
-#         leftover_mesh += m
-
-    leftover_mesh = trimesh.util.concatenate( mesh_pieces +  [leftover_mesh])
-        
-    if merge_vertices:
-        leftover_mesh.merge_vertices()
-    
-    return leftover_mesh
 
 def combine_meshes(mesh_pieces,merge_vertices=True):
     leftover_mesh = trimesh.Trimesh(vertices=np.array([]),faces=np.array([]))
@@ -103,4 +92,31 @@ def mesh_from_delauny_3d(
         ipvu.plot_mesh(mesh)
     return mesh
 
+def sample_surface(
+    mesh,
+    count,
+    even_sampling=False,
+    radius = None,
+    plot=False):
+    
+    """
+    Purpose: To sample the surface of a mesh
+    
+    import mesh_utils as mhu
+    mhu.sample_surface(mesh,10000,even_sampling=False,plot=True)
+    """
+    
+    if even_sampling:
+        return_value,_ = trimesh.sample.sample_surface_even(mesh, count=count, radius=radius)
+    else:
+        return_value,_ = trimesh.sample.sample_surface(mesh,count=count)
+        
+    if plot:
+        ipvu.plot_mesh_with_scatter(
+            mesh,
+            scatter = return_value,
+        )
+        
+    return return_value
+    
 import mesh_utils as mhu

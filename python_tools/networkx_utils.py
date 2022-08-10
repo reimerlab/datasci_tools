@@ -334,6 +334,16 @@ def get_nodes_of_out_degree_k(G,degree_choice):
 def get_nodes_of_in_degree_k(G,degree_choice):
     return [k for k,v in dict(getattr(G,"in_degree")).items() if v == degree_choice]
 
+def get_nodes_greater_or_equal_out_degree_k(G,degree_choice):
+    return [k for k,v in dict(getattr(G,"out_degree")).items() if v >= degree_choice]
+def get_nodes_greater_or_equal_in_degree_k(G,degree_choice):
+    return [k for k,v in dict(getattr(G,"in_degree")).items() if v >= degree_choice]
+
+def get_nodes_less_or_equal_out_degree_k(G,degree_choice):
+    return [k for k,v in dict(getattr(G,"out_degree")).items() if v <= degree_choice]
+def get_nodes_less_or_equal_in_degree_k(G,degree_choice):
+    return [k for k,v in dict(getattr(G,"in_degree")).items() if v <= degree_choice]
+
 def leaf_nodes(G):
     return xu.get_nodes_of_out_degree_k(G,0)
 # def get_nodes_of_out_degree_k_Di(G,degree_choice):

@@ -1833,7 +1833,8 @@ def set_column_subset_value_by_query(
     return df
 
 def count_unique_column_values(df,column,sort = False):
-    return_df =  pu.unique_row_counts(df[[column]])
+    column = list(nu.convert_to_array_like(column))
+    return_df =  pu.unique_row_counts(df[column])
     if sort:
         return_df = pu.sort_df_by_column(return_df,"unique_counts")
     return return_df

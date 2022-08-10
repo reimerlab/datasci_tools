@@ -701,6 +701,7 @@ def xyz_from_array(array):
     return array[:,0],array[:,1],array[:,2]
 
 import matplotlib_utils as mu
+import mesh_utils as mhu
 def plot_mesh(
     mesh,
     alpha = None,
@@ -712,7 +713,8 @@ def plot_mesh(
     **kwargs
     ):
     
-    
+    if nu.is_array_like(mesh):
+        mesh = mhu.combine_meshes(mesh)
     return_mesh =  ipvu.plot_obj(
         mesh.vertices,
         #all possible inputs to functions
@@ -733,8 +735,8 @@ def plot_mesh(
 
 def plot_mesh_with_scatter(
     mesh=None,
-    mesh_alpha = 0.2,
     scatter=None,
+    mesh_alpha = 0.2,
     flip_y = True,
     ):
     
@@ -750,7 +752,7 @@ def plot_mesh_with_scatter(
             )
         new_figure = False
         
-    ipvu.plot_obj(
+    ipvu.plot_scatter(
             scatter,
             flip_y = True,
             new_figure = new_figure,
@@ -769,6 +771,9 @@ def plot_scatter(
     axis_visibility=True,
     **kwargs
     ):
+    
+    if type(array) == list:
+        array = np.vstack(array)
     
     return_sc =  ipvu.plot_obj(
         array,
