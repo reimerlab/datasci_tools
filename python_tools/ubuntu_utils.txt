@@ -53,3 +53,10 @@ export OMP_NUM_THREADS=63
 import os
 os.environ['OPENBLAS_NUM_THREADS'] = '12`
 #the issue is RLIMIT_NPROC set to -1 and having a pottleneck with creating a fork
+
+
+# ---------------- Searching for a file with a keyword in it -----
+ grep -rIH  'word'
+-r for recursive search down from current directory
+-I to ignore binary files
+-H to output filename where match is found
