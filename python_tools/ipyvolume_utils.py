@@ -774,6 +774,8 @@ def plot_scatter(
     
     if type(array) == list:
         array = np.vstack(array)
+        
+    array=  array.reshape(-1,3)
     
     return_sc =  ipvu.plot_obj(
         array,
@@ -794,8 +796,8 @@ import numpy_utils as nu
 
 def plot_multi_scatters(
     scatters,
-    scatters_colors = "red",
-    scatter_size = 1,
+    color = "red",
+    size = 1,
     plot_widgets = True,
     widgets_to_plot = ("size","marker","color"),
     flip_y = False,
@@ -814,17 +816,17 @@ def plot_multi_scatters(
     
     if type(scatters) != list:
         scatters = [scatters]
-    if not nu.is_array_like(scatters_colors):
-        scatters_colors = [scatters_colors]
+    if not nu.is_array_like(color):
+        color = [color]
 
-    if len(scatters_colors) != len(scatters):
-        scatters_colors = scatters_colors*len(scatters)
+    if len(color) != len(scatters):
+        color = color*len(scatters)
 
-    if not nu.is_array_like(scatter_size):
-        scatter_size = [scatter_size]
+    if not nu.is_array_like(size):
+        size = [size]
 
-    if len(scatter_size) != len(scatters):
-        scatter_size = scatter_size*len(scatters)
+    if len(size) != len(scatters):
+        size = size*len(scatters)
         
     sum_points = np.sum([len(k) for k in scatters])
     if sum_points == 0:
@@ -834,10 +836,11 @@ def plot_multi_scatters(
             ipv.show()
         return
 
+    all_scatter_obj = []
     for j,(sc,sc_c,sz) in enumerate(zip(
         scatters,
-        scatters_colors,
-        scatter_size
+        color,
+        size,
         )):
         
         show_at_end_inner = False
@@ -847,7 +850,7 @@ def plot_multi_scatters(
             show_at_end_inner = True
         if (j == 0) and new_figure:
             new_figure_inner = True
-        ipvu.plot_scatter(
+        sc_obj = ipvu.plot_scatter(
             sc,
             size = sz,
             color = sc_c,
@@ -855,7 +858,12 @@ def plot_multi_scatters(
             new_figure = new_figure_inner,
             axis_visibility=axis_visibility,
             flip_y=flip_y,
+            widgets_to_plot=widgets_to_plot,
             )
+        
+        all_scatter_obj.append(sc_obj)
+        
+    return all_scatter_obj
     
 
 
