@@ -976,7 +976,7 @@ def normalize_df_with_names(df):
 def filter_away_non_finite_rows(df):
     return df[df.replace([np.inf, -np.inf], np.nan).notnull().all(axis=1)]
 
-def replace_None_with_default(df,default,columns=None):
+def replace_None_with_default(df,default=0,columns=None):
     return pu.fillna(df,default,columns=columns)
 
 def replace_nan_with_default(df,default=None):
