@@ -2052,5 +2052,17 @@ def bin_df_by_column_stat(
         return_list.append(df_len)
         
     return return_list
+
+def empty_df(columns=None):
+    """
+    Purpose: Create an empty dataframe
+    with certain columns
+    """
+    if columns is None:
+        columns = []
+        
+    return pd.DataFrame.from_dict({k:[] for k in columns})
+
+
     
 import pandas_utils as pu

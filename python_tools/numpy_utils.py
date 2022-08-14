@@ -1454,5 +1454,7 @@ def example_apply_along_axis():
 def weighted_average_along_axis(array,weights,axis=0):
     return np.apply_along_axis(nu.weighted_average,axis=axis,arr=array,weights=weights)
     
-
+def dict_map_array(array,map):
+    return np.vectorize(map.get)(array)
+    
 import numpy_utils as nu

@@ -6,6 +6,7 @@ Documentation: https://ipyvolume.readthedocs.io/_/downloads/en/docs/pdf/
 
 Notes: 
 - whenever changing properties on ipyvolume you do so through the returned object and the transition is interpolated
+- ARRAYS HAVE TO BE FLOATS TO SHOW UP
 
 The upper left controls: 
 1) Eye: allows 2 outputs from different angles for VR
@@ -208,6 +209,9 @@ def example_selection():
     display(out)
     scatter.observe(print_info,"selected")
     
+def scatter_selected_idx(scatter):
+    return scatter.selected[0]
+    
 def set_style(style="light"):
     """
     Prospective styles: light, dark
@@ -344,7 +348,7 @@ def add_attribute_widget(
 def add_size_widget(
     obj,
     min=0,
-    max=10,
+    max=3,
     **kwargs
     ):
     
@@ -562,7 +566,8 @@ def scatter_plot_func(
     **kwargs
     ):
     return ipv.scatter(*ipvu.xyz_from_array(array),
-                       size=size,marker=marker
+                       size=size,
+                       marker=marker
                       )
     
 def surface_plot_func(
@@ -698,6 +703,7 @@ def plot_obj(
     
 #def add_marker_selection()
 def xyz_from_array(array):
+    array = np.array(array).astype('float')
     return array[:,0],array[:,1],array[:,2]
 
 import matplotlib_utils as mu
@@ -709,7 +715,7 @@ def plot_mesh(
     widgets_to_plot = ("color",),
     show_at_end = True,
     new_figure = True,
-    flip_y = False,
+    flip_y = True,
     **kwargs
     ):
     
@@ -743,7 +749,7 @@ def plot_mesh_with_scatter(
     
     new_figure = True
     if mesh is not None:
-        new_mesh = ipvu.plot_mesh(
+        mesh_obj = ipvu.plot_mesh(
                 mesh,
                 alpha=mesh_alpha,
                 flip_y = flip_y,
@@ -751,13 +757,17 @@ def plot_mesh_with_scatter(
                 new_figure = True,
             )
         new_figure = False
+    else:
+        new_mesh = None
         
-    ipvu.plot_scatter(
+    sc_obj = ipvu.plot_scatter(
             scatter,
             flip_y = True,
             new_figure = new_figure,
             show_at_end=True,
         ) 
+    
+    return mesh_obj,sc_obj
     
 def plot_scatter(
     array,
@@ -767,7 +777,7 @@ def plot_scatter(
     new_figure = True,
     color = "red",
     size = 1,
-    flip_y = False,
+    flip_y = True,
     axis_visibility=True,
     **kwargs
     ):
@@ -864,7 +874,23 @@ def plot_multi_scatters(
         all_scatter_obj.append(sc_obj)
         
     return all_scatter_obj
+
+
+def print_ipv_cheatsheet():
+    s = """
+    Ipyvolume Cheat sheet: 
+
+    1) Alt + Click and Hold: Can drag neuron
+    2) Pinch: zoom in and Out
+    3) Magnifying glass on + pinch: Zoom in and Out on place mouse hovering
+    4) Double click and move mouse: rotate neuron
+    5) gear icon: different resolutions
+    6) Shift + Picture: Copies screenshot to clipboard
+    """
+    print(s)
     
+def clear_selected(obj):
+    obj.selected = None
 
 
 import ipyvolume_utils as ipvu
