@@ -567,7 +567,8 @@ def scatter_plot_func(
     ):
     return ipv.scatter(*ipvu.xyz_from_array(array),
                        size=size,
-                       marker=marker
+                       marker=marker,
+                       **kwargs
                       )
     
 def surface_plot_func(
@@ -664,6 +665,7 @@ def plot_obj(
             array,
             triangles = triangles,
             lines=lines,
+            **kwargs
         )
 
         scat.color = color
