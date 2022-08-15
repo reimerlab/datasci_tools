@@ -1076,8 +1076,10 @@ def drop_rows_with_all_nans(df):
     return df.dropna(how="all")
 
 def sample_rows(df,n_samples,seed=None):
-    if len(df) <= n_samples:
+    if len(df) == 0:
         return df
+    if len(df) <= n_samples:
+        n_samples = len(df)
     return df.sample(n_samples,random_state=seed)
 
 def sample_columns(df,n_samples):
