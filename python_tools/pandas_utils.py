@@ -1075,8 +1075,10 @@ def group_by_func_to_column(
 def drop_rows_with_all_nans(df):
     return df.dropna(how="all")
 
-def sample_rows(df,n_samples):
-    return df.sample(n_samples)
+def sample_rows(df,n_samples,seed=None):
+    if len(df) <= n_samples:
+        return df
+    return df.sample(n_samples,random_state=seed)
 
 def sample_columns(df,n_samples):
     return df.sample(n_samples, axis=1)
