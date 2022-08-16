@@ -21,7 +21,7 @@ import numpy as np
 
 def print_selection_hotkeys():
     s = """
-    Now hold the control key to do selections, type
+    Now hold the CTRL key to do selections, type
 
     ‘C’ for circle
     ‘R’ for rectangle

@@ -4313,5 +4313,21 @@ def edge_list_from_graph_type(
         return_edges = np.vstack([return_edges.reshape(-1,2),xu.self_loop_edges(n)])
     return return_edges.astype('int')
 
+
+def shortest_path_length(
+    G, 
+    source=None, 
+    target=None, 
+    weight=None, 
+    method='dijkstra'):
+    return nx.shortest_path_length(
+        G=G,
+        source=source, 
+        target=target, 
+        weight=weight, 
+        method=method,
+    )
+ 
+
 import networkx_utils as xu
     
