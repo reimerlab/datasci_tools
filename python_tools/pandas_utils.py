@@ -1836,11 +1836,15 @@ def set_column_subset_value_by_query(
     df.loc[curr_map,column] = value
     return df
 
-def count_unique_column_values(df,column,sort = False):
+def count_unique_column_values(
+    df,
+    column,
+    sort = False,
+    count_column_name = "unique_counts"):
     column = list(nu.convert_to_array_like(column))
-    return_df =  pu.unique_row_counts(df[column])
+    return_df =  pu.unique_row_counts(df[column],count_column_name=count_column_name)
     if sort:
-        return_df = pu.sort_df_by_column(return_df,"unique_counts")
+        return_df = pu.sort_df_by_column(return_df,count_column_name)
     return return_df
 
 import numpy_utils as nu
@@ -1956,7 +1960,7 @@ def split_df_from_intersect_df(
         
     return inter_df,diff_df
     
-def split_str_column_into_multple(df,column,delimiter):
+def split_str_column_into_multple(df,column,delimiter="_"):
     return df[column].str.split(delimiter,expand =True)
 
 def excel_to_df(filename):
@@ -2067,6 +2071,65 @@ def empty_df(columns=None):
         
     return pd.DataFrame.from_dict({k:[] for k in columns})
 
+def restriction_str_from_list(
+    restrictions,
+    verbose = False,
+    joiner="and",
+    ):
+    
+    if len(restrictions) == 0:
+        return None
+    
+    restrictions = [k.replace(" = "," == ") for k in restrictions ]
+    joiner = joiner.lower()
+    
+    restr_str = joiner.join([f"({k})" for k in restrictions])
+        
+    if verbose:
+        print(f"restr_str = {restr_str}")
+    return restr_str
 
+def append_df_to_source_target(
+    df,
+    df_append,
+    source_name = "source",
+    target_name = "target",
+    prefix = True,
+    on = None,
+    how = "left",
+    columns = None,
+    in_place = False,
+    ):
+
+    """
+    Purpose: merge a dataframe to 
+    a dataframe with a directional column
+    """
+    if columns is None:
+        columns = list(df_append.columns)
+
+    if not in_place:
+        df = df.copy(deep=True)
+
+    for k in [source_name,target_name]:
+        if prefix:
+            name_str = 'f"{kk}_{v}"'
+        else:
+            name_str = 'f"{v}_{kk}"'
+
+        rename_dict = {v:eval(name_str) for kk,v in zip([k]*len(columns),columns)}
+        
+        if on is None:
+            curr_on = [v for v in rename_dict.values() if v in df.columns]
+        else:
+            curr_on = on
+        df = pd.merge(
+            df,
+            pu.rename_columns(df_append[columns],
+                              rename_dict),
+            on=curr_on,
+            how=how,
+        )
+    return df
     
 import pandas_utils as pu
