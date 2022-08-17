@@ -1456,5 +1456,17 @@ def weighted_average_along_axis(array,weights,axis=0):
     
 def dict_map_array(array,map):
     return np.vectorize(map.get)(array)
+
+def angle_from_xy_vec(xy):
+    """
+    Purpose: To compute angles from the vectors
+    
+    Ex
+    nu.angle_from_xy_vec(np.array([[1,0],[0,1],[-1,0]]).T)
+    """
+    angle = np.arctan2(*xy)
+    return np.degrees(angle) % 360.0  
+
+
     
 import numpy_utils as nu

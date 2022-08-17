@@ -2089,12 +2089,13 @@ def restriction_str_from_list(
         print(f"restr_str = {restr_str}")
     return restr_str
 
-def append_df_to_source_target(
+import numpy_utils as nu
+def merge_df_to_source_target(
     df,
     df_append,
     source_name = "source",
     target_name = "target",
-    prefix = True,
+    append_type = "prefix",
     on = None,
     how = "left",
     columns = None,
@@ -2112,17 +2113,29 @@ def append_df_to_source_target(
         df = df.copy(deep=True)
 
     for k in [source_name,target_name]:
-        if prefix:
+        if append_type == "prefix":
             name_str = 'f"{kk}_{v}"'
-        else:
+        elif append_type == "suffix":
             name_str = 'f"{v}_{kk}"'
+        elif append_type is None:
+            name_str = 'f"{kk}"'
+        else:
+            raise Exception("")
 
+        
         rename_dict = {v:eval(name_str) for kk,v in zip([k]*len(columns),columns)}
+            
+        
         
         if on is None:
             curr_on = [v for v in rename_dict.values() if v in df.columns]
         else:
-            curr_on = on
+            if len(np.intersect1d(nu.convert_to_array_like(on),list(rename_dict.values()))) == 0:
+                curr_on = k
+                rename_dict[on] = k
+                
+        
+                
         df = pd.merge(
             df,
             pu.rename_columns(df_append[columns],

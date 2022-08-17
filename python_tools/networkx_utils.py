@@ -4327,6 +4327,20 @@ def shortest_path_length(
         weight=weight, 
         method=method,
     )
+
+def subgraph_downstream_of_node(G,node,include_self=True):
+    return G.subgraph(xu.all_downstream_nodes(
+                 G,
+                node,
+                include_self=include_self
+            )).copy()
+
+def all_downstream_nodes_including_self(G,node):
+    return xu.all_downstream_nodes(
+                 G,
+                node,
+                include_self=True
+            )
  
 
 import networkx_utils as xu
