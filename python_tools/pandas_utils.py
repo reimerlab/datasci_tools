@@ -2144,5 +2144,25 @@ def merge_df_to_source_target(
             how=how,
         )
     return df
+
+def df_to_index_dict(
+    df,
+    column = None,
+    columns_to_export = None):
+    """
+    Purpose: To convert a pandas dataframe
+    to just one dictionary indexed by the index
+    """
+
+    if column is not None:
+        df = df.set_index(column)
+        
+    keys = df.index.to_list()
+    
+    if columns_to_export is None:
+        columns_to_export = list(df.columns)
+    values = df[columns_to_export].to_numpy()
+    my_dict = {k:v for k,v in zip(keys,values)}
+    return my_dict
     
 import pandas_utils as pu
