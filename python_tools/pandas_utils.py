@@ -2089,6 +2089,19 @@ def restriction_str_from_list(
         print(f"restr_str = {restr_str}")
     return restr_str
 
+def restrict_df_from_list(
+    df,
+    restrictions,
+    verbose = False,
+    joiner="and",
+    ):
+    
+    return df.query(pu.restriction_str_from_list(
+       restrictions=restrictions,
+        verbose = verbose,
+        joiner=joiner, 
+    ))
+
 import numpy_utils as nu
 def merge_df_to_source_target(
     df,
@@ -2164,5 +2177,21 @@ def df_to_index_dict(
     values = df[columns_to_export].to_numpy()
     my_dict = {k:v for k,v in zip(keys,values)}
     return my_dict
+
+
+
+def coordinates_from_df(
+    df,
+    name="synapse",
+    suffix = "nm",
+    axes = ("x","y","z"),
+    ):
+    if suffix is not None and len(suffix) > 0:
+        suffix = f"_{suffix}"
+    else:
+        suffix = ""
+    return df[
+        [f"{name}_{a}{suffix}" for
+        a in axes]].to_numpy().astype('float')
     
 import pandas_utils as pu

@@ -893,6 +893,23 @@ def print_ipv_cheatsheet():
     
 def clear_selected(obj):
     obj.selected = None
+    
+def view_top_down(
+    axis_visibility = True
+):
+    """
+    Purpose: Make a top down view
+    of the current figure
+    
+    
+    azimuth (float) – rotation around the axis pointing up in degrees
+    elevation (float) – rotation where +90 means ‘up’, -90 means ‘down’, in degrees
+    distance (float) – radial distance from the center to the camera.
+
+
+    """
+    ipvu.set_axes_visibility(axis_visibility)
+    ipv.pylab.view(azimuth=-90, elevation=90, distance=2)
 
 
 import ipyvolume_utils as ipvu

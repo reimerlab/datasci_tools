@@ -4341,7 +4341,29 @@ def all_downstream_nodes_including_self(G,node):
                 node,
                 include_self=True
             )
- 
+
+from tqdm_utils import tqdm
+def compute_edge_statistic(
+    G,
+    edge_func,
+    verbose = False,
+    verbose_loop = False,
+    ):
+    st = time.time()
+    
+    for node1 in tqdm(list(G.nodes())):
+        for node2 in dict(G[node1]).keys():
+            G = edge_func(
+                G,
+                node1,
+                node2,
+                verbose = verbose_loop,
+            )
+    if verbose:
+        print(f"Total time for adding {edge_func.__name__} = {time.time() - st} ")
+    return G
+
+
 
 import networkx_utils as xu
     
