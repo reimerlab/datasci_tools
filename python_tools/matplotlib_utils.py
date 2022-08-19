@@ -1406,6 +1406,8 @@ def histograms_over_intervals(
     verbose = False,
     
     density = False,
+    
+    summary_func = np.mean,
     ):
     """
     Purpose: To plot a sequence of histograms that show the continuous progression of a value for 
@@ -1421,8 +1423,12 @@ def histograms_over_intervals(
     c. Label the title the continuous value range
     """
 
-
-
+    
+    sum_stats = []
+    std_stats = []
+    bin_stats = []
+    n_samples = []
+    
     df = df.query(f"{attribute} == {attribute}")
 
     if outlier_buffer is not None:
@@ -1468,14 +1474,25 @@ def histograms_over_intervals(
             bins = bins,
             color_dict=color_dict,
             density=density,
+            outlier_buffer = None,
             )
 #         else:
 #             fig,ax = plt.subplots(1,1,figsize=figsize)
 #             ax.hist(df_curr[attribute].to_numpy(),
 #                    bins=bins)
+
+        curr_data = df_curr[attribute].to_numpy()
+        sum_stat = summary_func(curr_data)
+        std_stat = np.std(curr_data)
+        
+        sum_stats.append(std_stat)
+        std_stats.append(std_stat)
+        bin_stats.append([min_value,max_value])
+        n_samples.append(len(df_curr))
+                                      
         curr_title = (f"{attribute} Distribution\n{interval_attribute} [{np.round(lower,2)},{np.round(upper,2)}]"
                       f"\nn_samples = {len(df_curr)}")
-        curr_title += f"\nMean = {np.round(df_curr[attribute].mean(),2)}, Std Dev = {np.round(df_curr[attribute].std(),2)}"
+        curr_title += f"\n{summary_func.__name__} = {sum_stat:.2f}, Std Dev = {std_stat:.2f}"
 
         if title_append is not None:
             curr_title += f"\n{title_append}"
@@ -1487,6 +1504,8 @@ def histograms_over_intervals(
             ax.set_ylabel(f"Count")
         ax.set_xlim([x_ax_min,x_ax_max])
         plt.show()
+        
+    return sum_stats,std_stats,bin_stats,n_samples
         
 def get_cmap(cmap="RdYlBu"):
     """

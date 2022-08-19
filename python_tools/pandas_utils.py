@@ -1973,15 +1973,22 @@ def bin_df_by_column(
     n_bins = 10,
     verbose = False,
     return_bins = False,
+    equal_depth_bins = False,
     ):
     """
     Purpose: To calculate sub dataframe
     after binning a certain column
     """
 
+    
 
     if bins is None:
-        bins = np.linspace(0,df[column].max(),n_bins + 1)
+        if equal_depth_bins:
+            bins = nu.equal_depth_bins(
+                df[column].to_numpy()
+            )
+        else:
+            bins = np.linspace(0,df[column].max(),n_bins + 1)
 
     if verbose:
         print(f"bins = {bins}")
@@ -2009,29 +2016,43 @@ def bin_df_by_column_stat(
     df,
     column,
     func,
+    stat_column=None,
     bins=None,
+    equal_depth_bins = False,
     n_bins = 10,
     verbose = False,
     return_bins = True,
     return_df_len = True,
+    return_std = True,
+    func_std = None,
     plot = False,
+    plot_n_data_points = True,
+    
+    
     ):
     """
     Purpose: to compute a statistic over
     binned sub dfs (where bins are determined by column)
     """
 
-    df_bins,bins = bin_df_by_column(
+    df_bins,bins = pu.bin_df_by_column(
         df=df,
         column=column,
         bins=bins,
         n_bins = n_bins,
         verbose = verbose,
         return_bins = True,
+        equal_depth_bins=equal_depth_bins,
         )
     
-    df_stats = [func(k) for k in df_bins]
+    if type(func) == str:
+        df_stats = [k[func].mean() for k in df_bins]
+        df_std = [k[func].std() for k in df_bins]
+    else:
+        df_stats = [func(k) for k in df_bins]
+        df_std = [func_std(k) for k in df_bins]
     df_len = [len(k) for k in df_bins]
+    
     
     if plot:
         twin_color = "blue"
@@ -2043,21 +2064,28 @@ def bin_df_by_column_stat(
         fig,ax = plt.subplots(1,1,figsize=figsize)
         ax.plot(mid_bins,df_stats,)
         ax.set_xlabel(f"{column}")
-        ax.set_ylabel(f"{func.__name__}")
+        if type(func) == str:
+            ax.set_ylabel(f"{func}")
+        else:
+            ax.set_ylabel(f"{func.__name__}")
 
-        ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
-        ax2.set_ylabel('# of Data Points',fontsize=fontsize,color=twin_color)  # we already handled the x-label with ax1
-        ax2.tick_params(axis='y', labelcolor=twin_color)
-        ax2.plot(mid_bins, df_len, color=twin_color)
+        if plot_n_data_points and not equal_depth_bins:
+            ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
+            ax2.set_ylabel('# of Data Points',fontsize=fontsize,color=twin_color)  # we already handled the x-label with ax1
+            ax2.tick_params(axis='y', labelcolor=twin_color)
+            ax2.plot(mid_bins, df_len, color=twin_color)
         plt.show()
 
-    if (not return_bins) and (not return_df_len):
+    if (not return_bins) and (not return_df_len) and (not return_std):
         return df_stats
     return_list = [df_stats]
     if return_bins:
         return_list.append(bins)
     if return_df_len:
         return_list.append(df_len)
+        
+    if return_std:
+        return_list.append(df_std)
         
     return return_list
 

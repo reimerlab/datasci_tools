@@ -1468,5 +1468,10 @@ def angle_from_xy_vec(xy):
     return np.degrees(angle) % 360.0  
 
 
+from scipy import stats
+def equal_depth_bins(array,n_bins=10):
+    return stats.mstats.mquantiles(array, np.linspace(0,1,n_bins+1))
+
+
     
 import numpy_utils as nu
