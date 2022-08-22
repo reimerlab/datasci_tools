@@ -1,0 +1,91 @@
+
+Example: 
+
+from setuptools import setup, find_packages
+
+setup(
+   name='web_automation_tools', # the name of the package, which can be different than the folder when using pip instal
+   version='1.0',
+   description='Usefule Module for Web Scraping and Automation',
+   author='Brendan Celii',
+   author_email='bac8@rice.edu',
+   packages=find_packages(),  #teslls what packages to be included for the install
+   install_requires=[
+       'pathlib', 
+       'beautifulsoup4', 
+       'selenium<4.3',
+       'pandas',
+       'requests',
+       'argparse',
+   ], #external packages as dependencies
+    
+    # if wanted to install with the extra requirements use pip install -e ".[interactive]"
+    extras_require={
+        #'interactive': ['matplotlib>=2.2.0', 'jupyter'],
+    },
+    
+    # if have a python script that wants to be run from the command line
+    entry_points={
+        'console_scripts': ['pipeline_download=Applications.Eleox_Data_Fetch.Eleox_Data_Fetcher_vp1:main']
+    },
+    scripts=[], 
+    
+
+You can then go to the folder and install it using the following to make sure that it is still editable (like you normally do)
+
+pip install -e . 
+    --> -e installs it in editable mode)
+    --> the . just tells where the setup.py directory can be found
+
+and in jupyter notebooks include the autoreload extension
+%load_ext autoreload  # Load the extension
+%autoreload 2  # Autoreload all modules
+
+If You specify extra_requires then you can install them in the pip statement
+pip install -e ".[interactive]"
+
+# ------- when have a python function to run from the command line ------
+Purpose: Want to register a command with the CLI that is essentially you running a python function
+from one of your files
+
+Ex: 
+funniest/
+    funniest/
+        __init__.py
+        my_function.py
+        ...
+    setup.py
+    bin/
+        funniest-joke
+    ...
+   
+setup(
+    ...
+    entry_points={
+        'console_scripts': ['silly_function=funniest.my_function:main']
+    },
+    ...
+)
+
+
+# --------- script argument (when have a bash script to run) -----------
+if want to make a bash file available as a command line tool now can include
+
+Ex: 
+funniest/
+    funniest/
+        __init__.py
+        ...
+    setup.py
+    bin/
+        funniest-joke
+    ...
+
+
+setup(
+    ...
+    scripts=['bin/funniest-joke'],
+    ...
+)
+if this was python code the first line would just be #!/usr/bin/env python
+
