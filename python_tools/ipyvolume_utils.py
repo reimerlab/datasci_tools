@@ -613,7 +613,8 @@ def trisurf_plot_func(
                            )
 
 mesh_plot_func = trisurf_plot_func
-    
+
+import matplotlib_utils as mu
     
 def plot_obj(
     array,
@@ -668,6 +669,10 @@ def plot_obj(
             **kwargs
         )
 
+        if nu.is_array_like(color):
+            if type(color[0]) == str:
+                print(f"changing colors")
+                color = np.array([mu.color_to_rgb(k) for k in color])
         scat.color = color
 
         if size is not None:
@@ -910,6 +915,16 @@ def view_top_down(
     """
     ipvu.set_axes_visibility(axis_visibility)
     ipv.pylab.view(azimuth=-90, elevation=90, distance=2)
+    
+    
+def plot_skeleton(nodes,edges,flip_y=True,color="green",**kwargs):
+    ipvu.plot_obj(
+        array = nodes,
+        lines=edges,
+        flip_y = flip_y,
+        color = color,
+        **kwargs
+    )
 
 
 import ipyvolume_utils as ipvu
