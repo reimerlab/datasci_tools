@@ -1472,6 +1472,21 @@ from scipy import stats
 def equal_depth_bins(array,n_bins=10):
     return stats.mstats.mquantiles(array, np.linspace(0,1,n_bins+1))
 
-
+from scipy import stats
+def mode(array,axis=0,return_counts = False):
+    """
+    Purpos: To get the mode of an array
+    """
+    m = stats.mode(array,axis=axis)
+    
+    mode = m.mode.squeeze()
+    
+    if return_counts:
+        return mode,m.count.squeeze()
+    else:
+        return mode
+    
+    
+    
     
 import numpy_utils as nu

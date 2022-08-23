@@ -4363,6 +4363,93 @@ def compute_edge_statistic(
         print(f"Total time for adding {edge_func.__name__} = {time.time() - st} ")
     return G
 
+def edge_graph(
+    G,
+    plot_node_graph=False,
+    plot_edge_graph=False):
+    
+    """
+    Purpose: Converts a graph into a graph
+    where the edges are now the nodes and 
+    edges between the nodes are if the 
+    edges are incident on the same node
+    
+    Ex: 
+    G_test = nx.from_edgelist([(1,2),(2,3),(2,4),(3,5),(3,6)])
+    xu.edge_graph(G_test,plot_node_graph=True,plot_edge_graph=True)
+    """
+    
+    if plot_node_graph:
+        print(f"Node Graph before conversion")
+        nx.draw(G,with_labels=True)
+        plt.show()
+        
+    G_edge = nx.line_graph(G)
+    
+    if plot_edge_graph:
+        print(f"Node Graph before conversion")
+        nx.draw(G_edge,with_labels=True)
+        plt.show()
+        
+    return G_edge
+
+def unique_vertices_edges_from_vertices_edges(
+    vertices,
+    edges,
+    verbose = False,
+    return_vertex_index = False,
+    ):
+    
+    unique_verts,vert_first_index,verts_index = np.unique(vertices,return_index=True,return_inverse=True,axis=0)
+    unique_edges = verts_index[edges]
+    
+    if verbose:
+        print(f"# of vertices went from {len(vertices)} -> {len(unique_verts)}")
+        
+    if return_vertex_index:
+        return unique_verts,unique_edges,vert_first_index
+    else:
+        return unique_verts,unique_edges
+
+def graph_from_unique_vertices_edges(
+    vertices,
+    edges,
+    graph_type = "Graph",
+    verbose = False,
+    ):
+    verts_unique = vertices
+    edges_unique = edges
+    
+    G = getattr(nx,graph_type)()
+
+    node_to_coord = {i:dict(coordinates=k) for i,k in enumerate(verts_unique)}
+    weights = np.linalg.norm(verts_unique[edges_unique[:,0]] - verts_unique[edges_unique[:,1]],axis=1).reshape(-1,1)
+
+    G.add_nodes_from(list(node_to_coord.keys()))
+    G.add_weighted_edges_from(np.hstack([edges_unique,weights]))
+    
+    nx.set_node_attributes(G,node_to_coord)
+    return G
+
+def graph_from_non_unique_vertices_edges(
+    vertices,
+    edges,
+    graph_type = "Graph",
+    verbose = False
+    ):
+    
+    verts_unique,edges_unique = sk.unique_vertices_edges_from_vertices_edges(
+        vertices,edges,verbose=verbose,
+    )
+    
+    return sk.graph_from_unique_vertices_edges(
+        vertices=verts_unique,
+        edges = edges_unique,
+        graph_type = graph_type,
+        verbose = verbose
+    )
+
+
 
 
 import networkx_utils as xu

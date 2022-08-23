@@ -33,7 +33,7 @@ def print_selection_hotkeys():
     """
     print(s)
 
-def example_scatter():
+def example_scatter_plot():
     N = 1000
     x,y,z = np.random.normal(0,1,(3,N))
     
@@ -351,7 +351,6 @@ def add_size_widget(
     max=3,
     **kwargs
     ):
-    
     return ipvu.add_attribute_widget(
         obj,
         widget="FloatSlider",
@@ -671,11 +670,12 @@ def plot_obj(
 
         if nu.is_array_like(color):
             if type(color[0]) == str:
-                print(f"changing colors")
+                #print(f"changing colors")
                 color = np.array([mu.color_to_rgb(k) for k in color])
         scat.color = color
 
         if size is not None:
+            #print(f"Setting size")
             scat.size = size
 
 
@@ -684,10 +684,17 @@ def plot_obj(
         if widgets_to_plot is None:
             widgets_to_plot = []
 
+#         wid = ipvu.add_size_widget(scat,prefix="test_size")
+#         widget_list.append(wid)
+#         display(widgets.HBox(widget_list))
+#         ipv.show()
+#         return 
         if plot_widgets:
             for w in widgets_to_plot:
                 try:
+                    #curr_widget = ipvu.add_size_widget(scat,prefix="test_size")
                     curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
+                    #print(f"Adding widget = {w}")
                 except Exception as e:
                     #print(e)
                     pass
@@ -786,6 +793,7 @@ def plot_scatter(
     size = 1,
     flip_y = True,
     axis_visibility=True,
+    return_scatter = False,
     **kwargs
     ):
     
@@ -807,7 +815,8 @@ def plot_scatter(
          **kwargs
     )
     
-    return return_sc
+    if return_scatter:
+        return return_sc
 
 import numpy_utils as nu
 
@@ -876,6 +885,7 @@ def plot_multi_scatters(
             axis_visibility=axis_visibility,
             flip_y=flip_y,
             widgets_to_plot=widgets_to_plot,
+            return_scatter=True,
             )
         
         all_scatter_obj.append(sc_obj)
