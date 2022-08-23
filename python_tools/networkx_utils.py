@@ -428,6 +428,7 @@ def relabel_node_names(G,mapping,copy=False):
     print("Finished relabeling nodes")
     return G
     
+rename_nodes = relabel_node_names
     
 def get_all_attributes_for_nodes(G,node_list=[],
                        return_dict=False):

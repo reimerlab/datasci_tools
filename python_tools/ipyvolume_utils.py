@@ -210,6 +210,8 @@ def example_selection():
     scatter.observe(print_info,"selected")
     
 def scatter_selected_idx(scatter):
+    if scatter.selected is None:
+        return []
     return scatter.selected[0]
     
 def set_style(style="light"):
