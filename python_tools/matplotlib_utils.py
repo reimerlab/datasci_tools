@@ -1604,5 +1604,36 @@ def scatter_with_gradient(
     
     return ax
 
+
+from matplotlib import cm
+def gradient_from_array(
+    array,
+    colormap = cm.coolwarm,
+    verbose = False,
+    plot_colormap = False,
+    ):
+    """
+    Purpose: To Create a color map for an
+    array of values
+
+    Pseudocode: 
+    1) Define a certain color map
+    2) Normalize your data
+    3) Feed into color map to get data
+    """
+    Z = array
+    znorm = Z - Z.min()
+    znorm /= znorm.ptp()
+    if verbose:
+        print(f"min,max = {znorm.min(), znorm.max()}")
+        
+    curr_color_map = colormap(znorm)
+    if plot_colormap:
+        x = array
+        y = np.random.random(array.shape)
+        plt.scatter(x,y,color=curr_color_map)
+        plt.show()
+    
+    return curr_color_map
     
 import matplotlib_utils as mu

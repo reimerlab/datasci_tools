@@ -2124,11 +2124,17 @@ def restrict_df_from_list(
     joiner="and",
     ):
     
-    return df.query(pu.restriction_str_from_list(
+    return_df = df.query(pu.restriction_str_from_list(
        restrictions=restrictions,
         verbose = verbose,
         joiner=joiner, 
     ))
+    
+    if verbose:
+        print(f"Before Restriction of df: # of entries = {len(df)}")
+        print(f"After Restriction of df: # of entries = {len(return_df)}")
+        
+    return return_df
 
 import numpy_utils as nu
 def merge_df_to_source_target(
@@ -2222,4 +2228,8 @@ def coordinates_from_df(
         [f"{name}_{a}{suffix}" for
         a in axes]].to_numpy().astype('float')
     
+    
+def flatten_column_multi_index(df):
+    df.columns = ["_".join(k) for k in df.columns.to_flat_index()]
+    return df
 import pandas_utils as pu

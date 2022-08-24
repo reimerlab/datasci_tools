@@ -938,6 +938,49 @@ def plot_skeleton(nodes,edges,flip_y=True,color="green",**kwargs):
         **kwargs
     )
 
+    
+def flip_y_func(array):
+    array = np.array(array).astype("float")
+    array[...,1] = -array[...,1]
+    return array
+def plot_quiver_with_gradients(
+    centers,
+    vectors,
+    color_array = None,
+    plot_colormap = True,
+    size_array = None,
+    flip_y = True,
+    ):
+    """
+    Purpose: plotting quiver with a 
+    color gradient determined by an 
+    attribute (and a size gradient optional)
+    """
+    if flip_y:
+        centers = flip_y_func(centers)
+        vectors = flip_y_func(vectors)
+
+
+    ipv.figure()
+    quiver = ipv.quiver(
+        *ipvu.xyz_from_array(centers,),
+        *ipvu.xyz_from_array(vectors,)
+    )
+    
+    if color_array is not None:
+        quiver.color = mu.gradient_from_array(
+            color_array,
+            plot_colormap = True,
+        )
+
+    if size_array is not None:
+        quiver.size = size_array
+    else:
+        slider = widgets.FloatSlider(min=0,max=10,description = "size")
+        widgets.link((quiver,"size"),(slider,"value"))
+        display(slider)
+
+    ipv.show()
 
 import ipyvolume_utils as ipvu
     
