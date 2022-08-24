@@ -1486,7 +1486,46 @@ def mode(array,axis=0,return_counts = False):
     else:
         return mode
     
+from shapely.geometry import LineString
+from shapely.geometry import Point
+
+def circle_intersect_by_line_semgment(
+    array,
+    circle_center,
+    circle_radius,
+    verbose = False,
+    ):
+
+    """
+    Purpose: To find the intersection points of a 
+    circle and a line
     
+    Ex: 
+    import numpy_utils as nu
+    nu.circle_intersect_by_line_semgment(
+        array = np.array([(0,0), (10,10)]),
+        circle_center=(5,5),
+        circle_radius=3
+    )
+    """
+    dim = array.shape[-1]
+    p = Point(*circle_center)
+    c = p.buffer(circle_radius).boundary
+    l = LineString(array)
+    i = c.intersection(l)
+
+
+    if i.geom_type == 'MultiPoint':
+        intersect = np.array([k.coords[0] for k in list(i.geoms)]).reshape(-1,dim)
+    elif i.geom_type == "Point":
+        intersect = np.array([i.coords[0]]).reshape(-1,dim)
+    else:
+        intersect = np.array([]).reshape(-1,dim)
+
+    return intersect
+    
+def repeat_vector_hstack(array):
+    return np.tile(array.T,(2,1)).T
     
     
 import numpy_utils as nu

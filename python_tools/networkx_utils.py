@@ -2281,6 +2281,9 @@ def connected_components(G,return_subgraphs=False):
         return [G.subgraph(k).copy() for k in conn_comp_list]
     else:
         return conn_comp_list
+    
+def connected_components_subgraphs(G):
+    return xu.connected_components(G,return_subgraphs=True)
 
 
 # --------------------- 6/14: For help with queying graphs with datatables --------- #
@@ -2972,10 +2975,11 @@ def downstream_conn_comps(G,
     
 import itertools
 import time
-def all_connected_subgraphs(G,
-                           start_node=None,
-                            print_subgraphs = False,
-                           verbose=False,):
+def all_connected_subgraphs(
+    G,
+    start_node=None,
+    print_subgraphs = False,
+    verbose=False,):
     """
     Getting allthe connected subgraphs
     """
