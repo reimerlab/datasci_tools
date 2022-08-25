@@ -1373,13 +1373,16 @@ def filter_away_rows_with_nan_in_columns(
 
 def randomly_sample_df(
     df,
-    n_samples,
+    n_samples=None,
     seed = None,
     replace = False,
     verbose = False,):
     
     if seed is not None:
         np.random.seed(seed)
+        
+    if n_samples is None:
+        n_samples = len(df)
 
     if (n_samples > len(df)) and replace == False:
         if verbose:
@@ -1389,6 +1392,11 @@ def randomly_sample_df(
 
     restricted_df = df.iloc[idx,:].reset_index(drop = True)
     return restricted_df
+
+def shuffle_df(df,**kwargs):
+    return pu.randomly_sample_df(
+        df,
+        **kwargs)
 
 import general_utils as gu
 def expand_array_column_to_separate_rows(
@@ -2232,4 +2240,61 @@ def coordinates_from_df(
 def flatten_column_multi_index(df):
     df.columns = ["_".join(k) for k in df.columns.to_flat_index()]
     return df
+
+import numpy as np
+def restrict_df_to_coordinates_within_radius(
+    df,
+    name,
+    center,
+    radius,
+    within_radius = True,
+    suffix = "nm",
+    axes = ('x','y','z'),
+    verbose = False,
+    ):
+    """
+    Purpose: Restrict df by radius and a center point
+    
+    Ex: 
+    import pandas_utils as pu
+
+    center_df = hdju.seg_split_centroid(
+        table = hdju.proofreading_neurons_with_gnn_cell_type_fine,
+        features = [
+            "gnn_cell_type_coarse",
+            "gnn_cell_type_fine",
+            "cell_type"
+        ],
+        return_df = True,
+    )
+
+    pu.restrict_df_to_coordinates_within_radius(
+        center_df,
+        name = "centroid",
+        center = [861471,976721,896473],
+        radius = 100_000
+    )
+    """
+    center = np.array(center)
+    coords = pu.coordinates_from_df(
+        df,
+        name=name,
+        suffix=suffix,
+        axes = axes,
+    )
+    
+    dists = np.linalg.norm(coords-center,axis=1)
+    if within_radius:
+        idx_map = dists <= radius
+        descr = "inside"
+    else:
+        idx_map = dists >= radius
+        descr = "outside"
+        
+    if verbose:
+        print(f"# of records {descr} radius ({radius}): {np.sum(idx_map)}")
+        
+    return df.iloc[idx_map,:].reset_index(drop=True)
+    
+    
 import pandas_utils as pu

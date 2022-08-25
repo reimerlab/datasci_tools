@@ -1534,6 +1534,17 @@ def circle_intersect_by_line_semgment(
     
 def repeat_vector_hstack(array):
     return np.tile(array.T,(2,1)).T
+
+def angle_from_chord(chord,radius,rad = True):
+    """
+    Purpose: To return angle in a circle defined by the
+    length of the chord it forms with a circle of raidus r
+    """
+    return_value = np.arcsin(chord/(2*radius))
+    if not rad:
+        return_value = return_value * 180/ np.pi
+        
+    return return_value
     
     
 import numpy_utils as nu
