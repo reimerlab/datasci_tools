@@ -943,25 +943,31 @@ def flip_y_func(array):
     array = np.array(array).astype("float")
     array[...,1] = -array[...,1]
     return array
-def plot_quiver_with_gradients(
+def plot_quiver(
     centers,
     vectors,
     color_array = None,
     plot_colormap = True,
     size_array = None,
     flip_y = True,
+    new_figure = True,
+    show_at_end = True,
     ):
     """
     Purpose: plotting quiver with a 
     color gradient determined by an 
     attribute (and a size gradient optional)
     """
+    centers = np.array(centers).reshape(-1,3)
+    vectors = np.array(vectors).reshape(-1,3)
+    
     if flip_y:
         centers = flip_y_func(centers)
         vectors = flip_y_func(vectors)
 
 
-    ipv.figure()
+    if new_figure:
+        ipv.figure()
     quiver = ipv.quiver(
         *ipvu.xyz_from_array(centers,),
         *ipvu.xyz_from_array(vectors,)
@@ -980,7 +986,10 @@ def plot_quiver_with_gradients(
         widgets.link((quiver,"size"),(slider,"value"))
         display(slider)
 
-    ipv.show()
+    if show_at_end:
+        ipv.show()
+    
+plot_quiver_with_gradients = plot_quiver
 
 import ipyvolume_utils as ipvu
     

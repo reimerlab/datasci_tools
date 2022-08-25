@@ -1227,6 +1227,14 @@ def polar_3D_from_cartesian(x, y, z):
 
     return r, theta, phi
 
+import math
+def polar2cart(r, theta, phi):
+    return [
+         r * math.sin(theta) * math.cos(phi),
+         r * math.sin(theta) * math.sin(phi),
+         r * math.cos(theta)
+    ]
+
 def clip(a,a_min,a_max,**kwargs):
     """
     To make sure array or number within limits
@@ -1464,7 +1472,7 @@ def angle_from_xy_vec(xy):
     Ex
     nu.angle_from_xy_vec(np.array([[1,0],[0,1],[-1,0]]).T)
     """
-    angle = np.arctan2(*xy)
+    angle = np.arctan2(xy[1],xy[0])
     return np.degrees(angle) % 360.0  
 
 
