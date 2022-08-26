@@ -717,6 +717,8 @@ def convert_to_array_like(array,include_tuple=False):
         return [array]
     return array
 
+array_like = convert_to_array_like
+
 def original_array_indices_of_elements(original_array,
                                       matching_array):
     """
@@ -1454,7 +1456,6 @@ def is_nan_or_inf(x):
 
 
 def example_apply_along_axis():
-    import numpy as np
     x = np.arange(0,15).reshape(-1,3)
     weights = np.array([1,2,3])
     np.apply_along_axis(nu.weighted_average,axis=1,arr=x,weights=weights)
@@ -1545,6 +1546,37 @@ def angle_from_chord(chord,radius,rad = True):
         return_value = return_value * 180/ np.pi
         
     return return_value
+
+
+# ---------- circular statistics -----
+def cdiff(alpha, beta, period=2*np.pi,rad=True,):
+    """
+    Returns the cirvular difference between two orientations given the period
+    
+    Ex: 
+    import numpy_utils as nu
+    nu.cdist(180,20,rad=False)
+    """
+    if not rad:
+        if period <= np.pi*2:
+            period = period * 180 / np.pi
+    return (alpha - beta + period / 2) % period - period / 2
+
+
+def cdist(alpha, beta, period=2*np.pi,rad=True):
+    """
+    Returns the cirvular distance between two orientations given the period
+
+    Example:
+        import numpy as np
+        from matplotlib import pyplot as plt
+        ori_scale = np.linspace(0, np.pi, 100)
+        ori_x, ori_y = np.meshgrid(ori_scale, ori_scale)
+        delta_ori = cdist(ori_x, ori_y)
+        plt.scatter(ori_x.ravel(), ori_y.ravel(), c=delta_ori.ravel())
+        plt.colorbar()
+    """
+    return np.abs(cdiff(alpha, beta, period,rad=rad))
     
     
 import numpy_utils as nu

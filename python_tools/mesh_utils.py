@@ -64,6 +64,16 @@ def center_mesh(mesh,new_center):
     new_mesh.vertices = new_mesh.vertices + added_offset
     return new_mesh
 
+def center_mesh_at_origin(mesh,center=None):
+    new_mesh = mesh.copy()
+    if center is None:
+        center = new_mesh.center_mass
+    
+    added_offset = - center
+    new_mesh.vertices = new_mesh.vertices + added_offset
+    return new_mesh
+    
+
 
 import trimesh
 import ipyvolume_utils as ipvu

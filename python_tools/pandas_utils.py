@@ -359,6 +359,7 @@ def query(df,query,**kwargs):
         df = pu.filter_away_columns_by_data_type(df)
 
         new_df = pandasql.sqldf(s, locals())
+        #new_df = pu.delete_columns(new_df,index_name)
         if len(new_df[index_name]) == 0:
             return df_orig.iloc[[],:]
         return df_orig.iloc[new_df[index_name],:]
@@ -1389,7 +1390,6 @@ def randomly_sample_df(
             print(f"# of samples greater than df length so just returning df")
         return df
     idx = nu.randomly_sample_array(np.arange(len(df)),n_samples,replace = replace)
-
     restricted_df = df.iloc[idx,:].reset_index(drop = True)
     return restricted_df
 
