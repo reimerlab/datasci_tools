@@ -327,7 +327,7 @@ def rewrite_sql_functions_in_query(query,
     
     
         
-    
+import math
 def query(df,query,**kwargs):
     """
     PUrpose: To query a dataframe using an query 
@@ -345,8 +345,9 @@ def query(df,query,**kwargs):
     pu.query(df,s)
     """
     df_orig = df.copy()
+    index_name = "xyzilij"
     try:
-        index_name = "xyzilij"
+        
 
         s = ("SELECT * "
             "FROM df WHERE "
@@ -362,9 +363,12 @@ def query(df,query,**kwargs):
         #new_df = pu.delete_columns(new_df,index_name)
         if len(new_df[index_name]) == 0:
             return df_orig.iloc[[],:]
-        return df_orig.iloc[new_df[index_name],:]
+        return_df = df_orig.iloc[new_df[index_name],:]
     except:
-        return df_orig.query(query)
+        return_df = df_orig.query(query)
+        
+    return_df = pu.delete_columns(return_df,index_name)
+    return return_df
     
 
 def turn_off_scientific_notation(n_decimal_places=3):
@@ -2242,7 +2246,7 @@ def flatten_column_multi_index(df):
     return df
 
 import numpy as np
-def restrict_df_to_coordinates_within_radius(
+def restrict_df_to_coordinates_within_radius_old(
     df,
     name,
     center,
@@ -2295,6 +2299,131 @@ def restrict_df_to_coordinates_within_radius(
         print(f"# of records {descr} radius ({radius}): {np.sum(idx_map)}")
         
     return df.iloc[idx_map,:].reset_index(drop=True)
+
+def bbox_query(
+    coordinate_name="centroid",
+    
+    # -- arguments for creating the bounding box
+    center = None,
+    buffer = None,
+    bbox = None,
+    buffer_array=None,
+    buffer_percentage = None,
+    buffer_array_multipier = None,
+    
+    # ---- for creating query
+    suffix = None,
+    inside = True,
+    upper_case = False,
+    
+    verbose = False,
+    ):
+    """
+    Purpose: Want to create a query that
+    will restrict coordinates to a rectangular
+    window
+
+    """
+
+    
+    bbox = nu.bbox_with_buffer(
+        center = center,
+        buffer = buffer,
+        bbox = bbox,
+        buffer_array=buffer_array,
+        percentage = buffer_percentage,
+        multiplier = buffer_array_multipier,
+        subtract_buffer = False,
+    )
+
+
+    if suffix is None:
+        suffix = ""
+
+    if upper_case:
+        joiner = "AND"
+        notter = "NOT"
+    else:
+        joiner = "and"
+        notter = "not"
+
+
+    inequalities = []
+    for ineq,array in zip([">=","<="],bbox):
+        inequalities += [f"({coordinate_name}_{xyz}{suffix} {ineq} {array[i]})" for i,xyz in enumerate(["x","y","z"])]
+
+    if verbose:
+        print(f"inequalities = {inequalities}")
+
+    query = f" {joiner} ".join(inequalities)
+
+    if not inside:
+        query = f"({notter} ({query}))"
+
+    if verbose:
+        print(f"bbox query = {query}") 
+        
+    return query
+
+
+def radius_query(
+    center,
+    radius,
+    coordinate_name = "centroid",
+    suffix = "",
+    axes = ("x","y","z"),
+    verbose = False,
+    inside = True,
+    upper_case = False,
+    ):
+    """
+    Purpose: Query to Find if coordintes are inside a radius
+
+    Pseudocode: 
+    Design a query that computes
+    sqrt((x - x_coord)**2 + (y - y_coord)**2 + (z - z_coord)**2) < radius
+    """
+    if upper_case:
+        sqrt_func = "SQRT"
+    else:
+        sqrt_func = "sqrt"
+    
+    query = "+".join([f"(({coordinate_name}_{ax}{suffix} - {coord}) * ({coordinate_name}_{ax}{suffix} - {coord}))" for ax,coord in zip(axes,center)])
+
+    if inside:
+        comp = "<="
+    else:
+        comp = ">="
+    query = f"{sqrt_func}({query}) {comp} {radius}"
+
+    if verbose:
+        print(f"radius query = {query}")
+
+    return query
+
+def restrict_df_to_coordinates_within_radius(
+    df,
+    name,
+    center,
+    radius,
+    within_radius = True,
+    suffix = "_nm",
+    axes = ('x','y','z'),
+    verbose = False,
+    ):
+    
+    curr_query = pu.radius_query(
+        center = center,
+        radius = radius,
+        inside = within_radius,
+        suffix = suffix,
+        axes = axes,
+        verbose = verbose,
+        coordinate_name = name,
+    )
+    
+    return df.query(curr_query)
+
     
     
 import pandas_utils as pu

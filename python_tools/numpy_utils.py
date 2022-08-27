@@ -1577,6 +1577,114 @@ def cdist(alpha, beta, period=2*np.pi,rad=True):
         plt.colorbar()
     """
     return np.abs(cdiff(alpha, beta, period,rad=rad))
+
+
+def bbox_with_buffer(
+    bbox=None,
+    center = None,
+    buffer_array = None,
+    percentage = None,
+    buffer = 0,
+    buffer_x = None,
+    buffer_y = None,
+    buffer_z = None,
+    buffer_x_min = None,
+    buffer_x_max = None,
+    buffer_y_min = None,
+    buffer_y_max = None,
+    buffer_z_min = None,
+    buffer_z_max = None,
+    multiplier = None,
+    verbose = False,
+    subtract_buffer = True,
+    return_buffer_array = False,
+    ):
+    """
+    To create a bounding box with a buffer either
+    subtracted or added to it
+    """
+    #print(f"buffer_array = {buffer_array}")
+    if (percentage is not None) and buffer_array is None:
+        if percentage == True:
+            percentage = None
+        buffer_array = (bbox[1] - bbox[0]) * (percentage/100)
+
+    #print(f"buffer_array = {buffer_array}")
+    if buffer_array is not None:
+        if buffer_array.ndim == 1 or (buffer_array.ndim == 2 and len(buffer_array)==1):
+#                 print(f"Replacing buffer_array")
+#                 print(f"buffer_array.ndim = {buffer_array.ndim}, len(buffer_array) = {len(buffer_array)}")
+            buffer_array = np.vstack([buffer_array,buffer_array])
+        buffer_x_min,buffer_y_min,buffer_z_min = buffer_array[0]
+        buffer_x_max,buffer_y_max,buffer_z_max = buffer_array[1]
+    else:
+        if buffer_x is None:
+            buffer_x = buffer
+
+        if buffer_y is None:
+            buffer_y = buffer
+
+        if buffer_z is None:
+            buffer_z= buffer
+
+        if buffer_x_min is None:
+            buffer_x_min = buffer_x
+        if buffer_x_max is None:
+            buffer_x_max = buffer_x
+        if buffer_y_min is None:
+            buffer_y_min = buffer_y
+        if buffer_y_max is None:
+            buffer_y_max = buffer_y
+        if buffer_z_min is None:
+            buffer_z_min = buffer_z
+        if buffer_z_max is None:
+            buffer_z_max = buffer_z
+
+        
+    buffer_array = np.array([[buffer_x_min,buffer_y_min,buffer_z_min],
+                              [buffer_x_max,buffer_y_max,buffer_z_max]])
+    
+    if multiplier is not None:
+        buffer_array = buffer_array * buffer_array_multipier
+    
+    if return_buffer_array:
+        return buffer_array
+    
+    if verbose:
+        print(f"Original bbox:\n{bbox}")
+        
+    subtract_array = np.array([[buffer_x_min,buffer_y_min,buffer_z_min],
+                              [-buffer_x_max,-buffer_y_max,-buffer_z_max]])
+    
+    if not subtract_buffer:
+        subtract_array = -1* subtract_array
+    #print(f"subtract_array = {subtract_array}")
+
+    if None in subtract_array:
+        raise Exception("")
+        
+    if bbox is None:
+        bbox = np.vstack([center,center])
+
+    new_bounds = bbox + subtract_array
+    if verbose:
+        print(f"New bbox:\n{new_bounds}")
+    return new_bounds
+
+def bbox_from_center_and_widths(
+    center,
+    buffer = None,
+    buffer_x = None,
+    buffer_y = None,
+    buffer_z = None,
+    ):
+    
+    return nu.bbox_with_buffer(
+    center = center,
+    buffer = buffer,
+    buffer_x = buffer_x,
+    buffer_y = buffer_y,
+    buffer_z = buffer_z,)
     
     
 import numpy_utils as nu
