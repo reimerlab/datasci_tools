@@ -2245,6 +2245,9 @@ def flatten_column_multi_index(df):
     df.columns = ["_".join(k) for k in df.columns.to_flat_index()]
     return df
 
+def flatten_row_multi_index(df):
+    return df.reset_index()
+
 import numpy as np
 def restrict_df_to_coordinates_within_radius_old(
     df,
