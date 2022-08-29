@@ -1541,7 +1541,7 @@ def angle_from_chord(chord,radius,rad = True):
     Purpose: To return angle in a circle defined by the
     length of the chord it forms with a circle of raidus r
     """
-    return_value = np.arcsin(chord/(2*radius))
+    return_value = 2*np.arcsin(chord/(2*radius))
     if not rad:
         return_value = return_value * 180/ np.pi
         
