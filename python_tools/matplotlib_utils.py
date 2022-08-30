@@ -812,7 +812,8 @@ def divided_data_into_color_gradient(
     verbose = True,
     low_color = "red",
     high_color = "green",
-    return_bin_spacing = True,):
+    return_bin_spacing = True,
+    bin_type = "equal_width"):
     """
     Pseudocode: 
     1) Divide the data up into bins using digitize up to the kth percentile
@@ -830,7 +831,14 @@ def divided_data_into_color_gradient(
     else: 
         low_bin = np.min(data)
 
-    bin_spacing = np.linspace(low_bin,top_bin,n_bins-1)
+    
+    data_filt = data[(data >= low_bin) & (data <= top_bin )]
+    if bin_type == "equal_width":
+        #bin_spacing = np.linspace(low_bin,top_bin,n_bins-1)
+        bin_spacing = nu.equal_width_bins(data_filt,n_bins-2)
+    else:
+        bin_spacing = nu.equal_depth_bins(data_filt,n_bins-2)
+        
     if verbose:
         print(f"low_bin = {low_bin}")
         print(f"top_bin = {top_bin}")

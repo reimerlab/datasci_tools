@@ -419,6 +419,7 @@ def heatmap_3D(
     scatter_size = 0.5,
     plot_highest_bin_value = False,
     axis_box_off = False,
+    bin_type = "equal_width",
     **kwargs
     ):
     """
@@ -432,6 +433,7 @@ def heatmap_3D(
     data_dict,color_dict,bin_spacing_to_return = mu.divided_data_into_color_gradient(
     data = curr_data,
     n_bins = n_bins,
+    bin_type=bin_type,
     verbose = False
     )
 
@@ -466,6 +468,50 @@ def heatmap_3D(
     **kwargs
     
     )
+    
+def heatmap_2D(
+    values,
+    coordinates,
+    n_bins = 20,
+    feature_name = "feature_name",
+    bin_type = "equal_width",
+    plot_highest_bin_value = False,
+    figsize=(10,10),
+    alpha = 0.3,
+    size = 20,
+    ):
+    
+    data_dict,color_dict,bin_spacing_to_return = mu.divided_data_into_color_gradient(
+    data = values,
+    n_bins = n_bins,
+    bin_type=bin_type,
+    verbose = False
+    )
+    
+    x_values = bin_spacing_to_return
+    x_colors = np.array(list(color_dict.values())).reshape(-1,3)
+    
+    if not plot_highest_bin_value:
+        x_values = x_values[:-1]
+        x_colors = x_colors[:-1]
+    
+    y = np.ones(x_values.shape)
+    
+    fig,ax = plt.subplots(figsize=(5,2))
+    plt.scatter(x_values,y,c = x_colors,s = 200)
+    plt.xlabel(feature_name)
+    print(f"Color Scale")
+    plt.show()
+    
+    fig,ax = plt.subplots(1,1,figsize=figsize)
+    for bin_idx,data_idx in data_dict.items():
+        ax.scatter(coordinates[data_idx][:,0],
+                   coordinates[data_idx][:,1],
+                    c = color_dict[bin_idx],
+                      alpha = alpha,
+                        s = size,)
+        
+    plt.show()
     
     
 import matplotlib.pyplot as plt

@@ -1481,6 +1481,10 @@ from scipy import stats
 def equal_depth_bins(array,n_bins=10):
     return stats.mstats.mquantiles(array, np.linspace(0,1,n_bins+1))
 
+def equal_width_bins(array,n_bins = 10):
+    return  np.linspace(np.min(array),np.max(array),n_bins+1)
+    
+
 from scipy import stats
 def mode(array,axis=0,return_counts = False):
     """
