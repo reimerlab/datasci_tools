@@ -928,6 +928,8 @@ def view_top_down(
     ipvu.set_axes_visibility(axis_visibility)
     ipv.pylab.view(azimuth=-90, elevation=90, distance=2)
     
+show_top_down = view_top_down
+top_down = view_top_down
     
 def plot_skeleton(nodes,edges,flip_y=True,color="green",**kwargs):
     ipvu.plot_obj(
