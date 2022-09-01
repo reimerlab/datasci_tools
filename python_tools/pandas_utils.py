@@ -2117,6 +2117,8 @@ def restriction_str_from_list(
     joiner="and",
     ):
     
+    restrictions= [k for k in restrictions if k is not None]
+    
     if len(restrictions) == 0:
         return None
     
