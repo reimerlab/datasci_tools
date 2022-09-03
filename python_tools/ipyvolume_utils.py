@@ -316,6 +316,7 @@ def add_attribute_widget(
     display_widget = False,
     **kwargs):
     
+    #print(f"description_prefix = {description_prefix}")
     if description is None:
         description = attribute.title()
         
@@ -555,8 +556,10 @@ def set_axes_lim_from_fig(
     """
 
     
-
-    min_max_coords = ipvu.coords_min_max_from_fig(verbose = verbose) + buffer
+    buffer_array = np.array([[-buffer,-buffer,-buffer,],
+                             [buffer,buffer,buffer,]
+                            ])
+    min_max_coords = ipvu.coords_min_max_from_fig(verbose = verbose) + buffer_array
     if len(min_max_coords) > 0:
         ipvu.set_axes_lim(min=min_max_coords[0],max=min_max_coords[1])
     
@@ -627,6 +630,7 @@ def plot_obj(
     size = None,
     plot_widgets = True,
     widgets_to_plot = ("size","marker","color"),
+    widget_description_prefix = None,
     show_at_end = True,
     new_figure = True,
     flip_y = False,
@@ -680,7 +684,8 @@ def plot_obj(
             #print(f"Setting size")
             scat.size = size
 
-
+        
+    
         widget_list = []
 
         if widgets_to_plot is None:
@@ -691,24 +696,38 @@ def plot_obj(
 #         display(widgets.HBox(widget_list))
 #         ipv.show()
 #         return 
+        idx_for_description = 0
         if plot_widgets:
-            for w in widgets_to_plot:
+            for j,w in enumerate(widgets_to_plot):
                 try:
-                    #curr_widget = ipvu.add_size_widget(scat,prefix="test_size")
-                    curr_widget = getattr(ipvu,f"add_{w}_widget")(scat,prefix=w,**kwargs)
+                    if j == idx_for_description:
+                        description_prefix = widget_description_prefix
+                    else:
+                        description_prefix = None
+                    curr_widget = getattr(
+                        ipvu,
+                        f"add_{w}_widget"
+                    )(scat,description_prefix=description_prefix,**kwargs)
                     #print(f"Adding widget = {w}")
                 except Exception as e:
+                    idx_for_description += 1
                     #print(e)
                     pass
                 else:
                     widget_list.append(curr_widget)
-
+        
         if len(widget_list) > 0:
             display(widgets.HBox(widget_list))
     else:
         scat = None
         
-    ipvu.set_axes_lim_from_fig()
+    if len(array) <= 1:
+        buffer = 5
+    else:
+        buffer = 0
+    
+    
+    ipvu.set_axes_lim_from_fig(buffer,verbose = False)
 
     if show_at_end:
         ipv.show()
@@ -796,6 +815,7 @@ def plot_scatter(
     flip_y = True,
     axis_visibility=True,
     return_scatter = False,
+    widget_description_prefix = None,
     **kwargs
     ):
     
@@ -814,6 +834,7 @@ def plot_scatter(
         new_figure = new_figure,
         flip_y = flip_y,
         axis_visibility=axis_visibility,
+        widget_description_prefix=widget_description_prefix,
          **kwargs
     )
     
