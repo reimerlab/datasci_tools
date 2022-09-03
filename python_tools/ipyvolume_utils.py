@@ -828,7 +828,7 @@ def plot_multi_scatters(
     size = 1,
     plot_widgets = True,
     widgets_to_plot = ("size","marker","color"),
-    flip_y = False,
+    flip_y = True,
     axis_visibility = False,
     verbose = False,
     show_at_end = True,

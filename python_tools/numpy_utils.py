@@ -856,11 +856,26 @@ def min_max(array,axis=0):
 def min_max_3D_coordinates(array):
     return np.array(min_max(array,axis=0))
 
-def bouning_box_corners(array):
-    return min_max_3D_coordinates(array)
+def bouning_box_corners(array,return_dict = False):
+    bbox = min_max_3D_coordinates(array)
+    if return_dict and bbox is not None:
+        bbox = dict(
+            bbox_min_x = bbox[0][0],
+            bbox_min_y = bbox[0][1],
+            bbox_min_z = bbox[0][2],
+            
+            bbox_max_x = bbox[1][0],
+            bbox_max_y = bbox[1][1],
+            bbox_max_z = bbox[1][2],
+        )
+    return bbox
+
+bounding_box_corners = bouning_box_corners
 
 def bouning_box_midpoint(array):
     return np.mean(nu.bouning_box_corners(array),axis=0)
+
+bounding_box_midpoint = bouning_box_midpoint
 
 def bounding_box_side_lengths(array):
     min_max = nu.min_max(array)

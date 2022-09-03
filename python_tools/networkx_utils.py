@@ -346,6 +346,10 @@ def get_nodes_less_or_equal_in_degree_k(G,degree_choice):
 
 def leaf_nodes(G):
     return xu.get_nodes_of_out_degree_k(G,0)
+def non_leaf_nodes(G):
+    return xu.get_nodes_greater_or_equal_out_degree_k(G,1)
+    
+end_nodes = leaf_nodes
 # def get_nodes_of_out_degree_k_Di(G,degree_choice):
 #     return [n for n in G.nodes() if len(G[n]) == degree_choice]
 
@@ -4453,6 +4457,39 @@ def graph_from_non_unique_vertices_edges(
         graph_type = graph_type,
         verbose = verbose
     )
+
+def shortest_path_graph(
+    G,
+    start,
+    end,
+    weight=None,
+    **kwargs
+    ):
+    """
+    Purpose: To create a path subgraph between 
+    two nodes 
+
+    Pseudocode: 
+    1) Find shortest path
+    """
+    path = xu.shortest_path(G,start,end,weight = weight,**kwargs)
+    return G.subgraph(path).copy()
+
+def shortest_path_graph_from_most_upstream(
+    G,
+    node,
+    **kwargs,
+    ):
+    """
+    Purpose: To create a path subgraph from
+    the most upstream node to another node
+
+    Psueodocode:
+    1) Get the most upstream node
+    2) Get the path subgraph
+    """
+    most_up_node = xu.most_upstream_node(G)
+    return xu.shortest_path_graph(G,most_up_node,node,**kwargs)
 
 
 
