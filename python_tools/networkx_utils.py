@@ -4475,10 +4475,27 @@ def shortest_path_graph(
     path = xu.shortest_path(G,start,end,weight = weight,**kwargs)
     return G.subgraph(path).copy()
 
+def shortest_path_from_most_upstream(
+    G,
+    node,
+    weight = None,
+    nodes_to_exclude = None,
+    **kwargs
+    ):
+    most_up_node = xu.most_upstream_node(G)
+    return_nodes= xu.shortest_path(G,most_up_node,node,weight = weight,**kwargs)
+    
+    if nodes_to_exclude is not None:
+        return_nodes = [k for k in return_nodes if k not in nodes_to_exclude]
+        
+    return return_nodes
+    
 def shortest_path_graph_from_most_upstream(
     G,
     node,
-    **kwargs,
+    weight = None,
+    nodes_to_exclude = None,
+    **kwargs
     ):
     """
     Purpose: To create a path subgraph from
@@ -4488,8 +4505,15 @@ def shortest_path_graph_from_most_upstream(
     1) Get the most upstream node
     2) Get the path subgraph
     """
-    most_up_node = xu.most_upstream_node(G)
-    return xu.shortest_path_graph(G,most_up_node,node,**kwargs)
+    nodes = xu.shortest_path_from_most_upstream(
+    G,
+    node=node,
+    weight = node,
+    nodes_to_exclude = nodes_to_exclude,
+    **kwargs
+    )
+    
+    return G.subgraph(nodes).copy()
 
 
 
