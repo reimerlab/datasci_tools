@@ -2111,44 +2111,7 @@ def empty_df(columns=None):
         
     return pd.DataFrame.from_dict({k:[] for k in columns})
 
-def restriction_str_from_list(
-    restrictions,
-    verbose = False,
-    joiner="and",
-    ):
-    
-    restrictions= [k for k in restrictions if k is not None]
-    
-    if len(restrictions) == 0:
-        return None
-    
-    restrictions = [k.replace(" = "," == ") for k in restrictions ]
-    joiner = joiner.lower()
-    
-    restr_str = joiner.join([f"({k})" for k in restrictions])
-        
-    if verbose:
-        print(f"restr_str = {restr_str}")
-    return restr_str
 
-def restrict_df_from_list(
-    df,
-    restrictions,
-    verbose = False,
-    joiner="and",
-    ):
-    
-    return_df = df.query(pu.restriction_str_from_list(
-       restrictions=restrictions,
-        verbose = verbose,
-        joiner=joiner, 
-    ))
-    
-    if verbose:
-        print(f"Before Restriction of df: # of entries = {len(df)}")
-        print(f"After Restriction of df: # of entries = {len(return_df)}")
-        
-    return return_df
 
 import numpy_utils as nu
 def merge_df_to_source_target(
@@ -2305,6 +2268,105 @@ def restrict_df_to_coordinates_within_radius_old(
         
     return df.iloc[idx_map,:].reset_index(drop=True)
 
+# ------------- datajoint and pandas interface -------
+import regex_utils as reu
+
+def table_type_from_table(table):
+    if pu.is_dataframe(table):
+        return "pandas"
+    elif "datajoint" in str(type(table)):
+        return "dj"
+    else:
+        raise Exception("")
+
+def query_str_from_list(
+    restrictions,
+    table_type="dj",
+    verbose = False,
+    joiner = "AND"):
+    """
+    Purpose: To turn any list of restrictions into a restriction str
+    """
+    if len(restrictions) == 0:
+        return None
+
+    if table_type == "dj":
+        restrictions = [k.replace("==","=") for k in restrictions]
+        joiner = joiner.upper()
+
+    else:
+        restrictions = [k.replace(" = "," == ") for k in restrictions ]
+        joiner = joiner.lower()
+
+    restr_str = joiner.join([f"({k})" for k in restrictions])
+
+    if verbose:
+        print(f"query_str = {restr_str}")
+    return restr_str
+
+dj_to_pandas_query_map = {" = ":" == ","AND":"and","OR":"or","NOT":"not"}
+def pandas_query_str_from_query_str(query):
+    """
+    Purpose: To replace a query of another form (usually datajoint query)
+    to a pandas query
+    
+    Pseudocode:
+    1) For all of the joiners (and, or, not), convert to lowercase
+    2) convert the ' = ' to double equal
+    """
+    return reu.multiple_replace(
+        query,
+        dj_to_pandas_query_map
+    )
+
+def datajoint_query_str_from_query_str(query):
+    return reu.multiple_replace(
+        query,
+        {v:k for k,v in dj_to_pandas_query_map.items()}
+    )
+
+def query_str_from_type(
+    query,
+    table_type = "pandas"
+    ):
+    
+    if table_type == "pandas":
+        return pu.pandas_query_str_from_query_str(query)
+    elif table_type == 'dj':
+        return pu.datajoint_query_str_from_query_str(query)
+    else:
+        raise Exception("")
+        
+def query_table_from_query_str(
+    table,
+    query):
+    
+    if pu.is_dataframe(table):
+        query = pu.query_str_from_type(query,table_type = 'pandas')
+        return table.query(query)
+    else:
+        query = pu.query_str_from_type(query,table_type = 'dj')
+        return table & query
+    
+def query_table_from_list(
+    table,
+    restrictions,
+    verbose = False,
+    joiner = "AND"
+    ):
+    
+    if len(restrictions) == 0:
+        return table
+    
+    table_type = pu.table_type_from_table(table)
+    query = pu.query_str_from_list(
+        restrictions,
+        table_type=table_type,
+        verbose = verbose,
+        joiner=joiner,)
+    return pu.query_table_from_query_str(table,query)
+        
+
 def bbox_query(
     coordinate_name="centroid",
     
@@ -2320,6 +2382,7 @@ def bbox_query(
     suffix = None,
     inside = True,
     upper_case = False,
+    axes = ('x','y','z'),
     
     verbose = False,
     ):
