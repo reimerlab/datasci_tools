@@ -2304,7 +2304,7 @@ def query_str_from_list(
         print(f"query_str = {restr_str}")
     return restr_str
 
-dj_to_pandas_query_map = {" = ":" == ","AND":"and","OR":"or","NOT":"not"}
+dj_to_pandas_query_map = {" = ":" == ","AND":"and","OR":"or","NOT":"not","SQRT":"sqrt"}
 def pandas_query_str_from_query_str(query):
     """
     Purpose: To replace a query of another form (usually datajoint query)
@@ -2364,8 +2364,10 @@ def query_table_from_list(
         table_type=table_type,
         verbose = verbose,
         joiner=joiner,)
-    return pu.query_table_from_query_str(table,query)
-        
+    st = time.time()
+    return_df =  pu.query_table_from_query_str(table,query)
+    #print(f"Time for query = {time.time() - st}")
+    return return_df
 
 def bbox_query(
     coordinate_name="centroid",
