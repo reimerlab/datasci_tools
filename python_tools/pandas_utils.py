@@ -2369,6 +2369,8 @@ def query_table_from_list(
     #print(f"Time for query = {time.time() - st}")
     return return_df
 
+restrict_df_from_list = query_table_from_list
+
 def bbox_query(
     coordinate_name="centroid",
     
