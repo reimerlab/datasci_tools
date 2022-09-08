@@ -2506,7 +2506,30 @@ def distance_between_coordinates(
 
     return np.sqrt(
         np.sum(np.array([(df[f"{coordinate_column_1}_{ax}_{coordinate_column_1_suffix}"]-df[f"{coordinate_column_2}_{ax}_{coordinate_column_2_suffix}"])**2
-               for ax in ["x","y","z"]]).T,axis = 1)
+               for ax in ["x","y","z"]]).T.astype('float'),axis = 1)
+    )
+
+def vector_between_coordinates(
+    df,
+    coordinate_column_1,
+    coordinate_column_2,
+    coordinate_column_1_suffix="nm",
+    coordinate_column_2_suffix="nm",
+    ):
+
+    return (np.array([(df[f"{coordinate_column_1}_{ax}_{coordinate_column_1_suffix}"]-df[f"{coordinate_column_2}_{ax}_{coordinate_column_2_suffix}"])
+               for ax in ["x","y","z"]]).T.astype('float')
+    )
+
+def distance_from_vector(
+    df,
+    vector_column,
+    vector_column_suffix="nm",
+    ):
+
+    return np.sqrt(
+        np.sum(np.array([(df[f"{vector_column}_{ax}_{vector_column_suffix}"])**2
+               for ax in ["x","y","z"]]).T.astype('float'),axis = 1)
     )
     
     

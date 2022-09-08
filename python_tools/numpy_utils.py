@@ -1704,6 +1704,26 @@ def bbox_from_center_and_widths(
     buffer_x = buffer_x,
     buffer_y = buffer_y,
     buffer_z = buffer_z,)
+
+
+def angle_between_matrix_of_vectors_and_vector(
+    array,
+    vector,
+    acute=True,
+    degrees=True):
+    
+    dot_product = array @ np.expand_dims(vector,axis=1).ravel()
+    angle = np.arccos(dot_product / (np.linalg.norm(array,axis=1) * np.linalg.norm(vector)))
+    
+    if acute == True:
+        rad_angle =  angle
+    else:
+        rad_angle =  2 * np.pi - angle
+        
+    if degrees:
+        return  180* rad_angle/np.pi
+    else:
+        return rad_angle
     
     
 import numpy_utils as nu
