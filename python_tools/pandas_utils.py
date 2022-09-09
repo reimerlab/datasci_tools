@@ -1997,10 +1997,15 @@ def bin_df_by_column(
     if bins is None:
         if equal_depth_bins:
             bins = nu.equal_depth_bins(
-                df[column].to_numpy()
+                df[column].to_numpy(),
+                n_bins = n_bins,
             )
         else:
-            bins = np.linspace(0,df[column].max(),n_bins + 1)
+            #bins = np.linspace(0,df[column].max(),n_bins + 1)
+            bins = nu.equal_width_bins(
+                df[column].to_numpy(),
+                n_bins = n_bins,
+            )
 
     if verbose:
         print(f"bins = {bins}")
@@ -2028,7 +2033,6 @@ def bin_df_by_column_stat(
     df,
     column,
     func,
-    stat_column=None,
     bins=None,
     equal_depth_bins = False,
     n_bins = 10,
@@ -2531,6 +2535,52 @@ def distance_from_vector(
         np.sum(np.array([(df[f"{vector_column}_{ax}_{vector_column_suffix}"])**2
                for ax in ["x","y","z"]]).T.astype('float'),axis = 1)
     )
+
+
+
+def reduce_mem_usage(df):
+    """ iterate through all the columns of a dataframe and modify the data type
+        to reduce memory usage.        
+    """
+    start_mem = df.memory_usage().sum() / 1024**2
+    print('Memory usage of dataframe is {:.2f} MB'.format(start_mem))
+    
+    for col in df.columns:
+        col_type = df[col].dtype
+        
+        if col_type != object:
+            c_min = df[col].min()
+            c_max = df[col].max()
+            if str(col_type)[:3] == 'int':
+                if c_min > np.iinfo(np.int8).min and c_max < np.iinfo(np.int8).max:
+                    df[col] = df[col].astype(np.int8)
+                elif c_min > np.iinfo(np.int16).min and c_max < np.iinfo(np.int16).max:
+                    df[col] = df[col].astype(np.int16)
+                elif c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
+                    df[col] = df[col].astype(np.int32)
+                elif c_min > np.iinfo(np.int64).min and c_max < np.iinfo(np.int64).max:
+                    df[col] = df[col].astype(np.int64)  
+            else:
+                if c_min > np.finfo(np.float16).min and c_max < np.finfo(np.float16).max:
+                    df[col] = df[col].astype(np.float16)
+                elif c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
+                    df[col] = df[col].astype(np.float32)
+                else:
+                    df[col] = df[col].astype(np.float64)
+        else:
+            df[col] = df[col].astype('category')
+
+    end_mem = df.memory_usage().sum() / 1024**2
+    print('Memory usage after optimization is: {:.2f} MB'.format(end_mem))
+    print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
+    
+    return df
+
+pandas_alternatives_for_large_datasets = dict(
+    ray = None,
+    dask = None,
+    modin = "https://modin.readthedocs.io/en/stable/"
+)
     
     
     

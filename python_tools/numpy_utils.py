@@ -1498,6 +1498,9 @@ def equal_depth_bins(array,n_bins=10):
 
 def equal_width_bins(array,n_bins = 10):
     return  np.linspace(np.min(array),np.max(array),n_bins+1)
+
+def bin_array(array,n_bins = 10,bin_type = "equal_width"):
+    return getattr(nu,f"{bin_type}_bins")(array,n_bins = n_bins)
     
 
 from scipy import stats

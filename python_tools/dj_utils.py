@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pandas_utils as pu
 
-def df_from_table(
+def df_from_table_old(
     table,
     features=None,
     remove_method_features = False,):
@@ -39,6 +39,47 @@ def df_from_table(
 #         return_df = return_df[features]
     return return_df
 
+def df_from_table(
+    table,
+    features=None,
+    remove_method_features = False,
+    features_to_remove = None,
+    features_substr_to_remove = None):
+    
+    all_atts = list(all_attribute_names_from_table(table))
+    
+    if features is None:
+        features = all_atts
+    
+    features = nu.convert_to_array_like(features)
+    
+    if features_to_remove is None:
+        features_to_remove = []
+        
+    if remove_method_features:
+        features_to_remove += [k for k in all_atts if "method" not in k]
+        
+    if features_substr_to_remove is not None:
+        for att in all_atts:
+            remove_flag = False
+            for sub in features_substr_to_remove:
+                if sub in att:
+                    remove_flag = True
+                    break
+            if remove_flag:
+                features_to_remove.append(att)
+            
+    features = [k for k in features if k not in features_to_remove]
+    
+    if len(features) == 1:
+        curr_data = np.array(table.fetch(*features)).reshape(-1,len(features))
+    else:
+        curr_data = np.array(table.fetch(*features)).T
+    return_df = pd.DataFrame(curr_data)
+    return_df.columns = features
+    
+    return return_df
+
 def all_attribute_names_from_table(table):
     return [str(k) for k in table.heading.names]
 
@@ -53,10 +94,11 @@ def append_table_to_pairwise_table(
     table_to_append,
     primary_attributes = None,
     secondary_attributes = None,
+    attributes_to_not_rename = None,
     source_name = "",
     target_name = "match",
     append_type = "prefix",
-    verbose = True,
+    verbose = False,
     ):
     """
     Purpose: To add on a table to both 
@@ -93,6 +135,8 @@ def append_table_to_pairwise_table(
         verbose = True,
     )
     """
+    if attributes_to_not_rename is None:
+        attributes_to_not_rename = []
 
     if primary_attributes is None:
         primary_attributes = primary_attribute_names_from_table(table_to_append)
@@ -122,7 +166,8 @@ def append_table_to_pairwise_table(
         else:
             raise Exception("")
 
-        rename_dict.update({eval(name_str):v for kk,v in zip([k]*len(all_attributes),all_attributes)})
+        rename_dict.update(dict([(eval(name_str),v) if v not in attributes_to_not_rename
+                                 else (v,v) for kk,v in zip([k]*len(all_attributes),all_attributes)]))
 
         if verbose:
             print(f"rename_dict for {name} = {rename_dict}")
@@ -130,6 +175,8 @@ def append_table_to_pairwise_table(
         final_table = final_table * proj_table.proj(**rename_dict) 
 
     return final_table
+
+
 
 
 restrict_table_from_list = pu.restrict_df_from_list
