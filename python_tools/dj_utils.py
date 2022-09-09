@@ -57,7 +57,7 @@ def df_from_table(
         features_to_remove = []
         
     if remove_method_features:
-        features_to_remove += [k for k in all_atts if "method" not in k]
+        features_to_remove += [k for k in all_atts if "method" in k]
         
     if features_substr_to_remove is not None:
         for att in all_atts:
