@@ -44,7 +44,8 @@ def df_from_table(
     features=None,
     remove_method_features = False,
     features_to_remove = None,
-    features_substr_to_remove = None):
+    features_substr_to_remove = None,
+    primary_features = False):
     
     all_atts = list(all_attribute_names_from_table(table))
     
@@ -52,6 +53,10 @@ def df_from_table(
         features = all_atts
     
     features = nu.convert_to_array_like(features)
+    
+    if primary_features:
+        primary_features = list(primary_attribute_names_from_table(table))
+        features =primary_features + [k for k in features if k not in primary_features]
     
     if features_to_remove is None:
         features_to_remove = []

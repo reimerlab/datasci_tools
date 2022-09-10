@@ -1240,6 +1240,7 @@ def histograms_overlayed(
         
             
     total_colors = []
+    axes = nu.array_like(axes)
     for cat,curr_ax in zip(cats,axes):
         if curr_ax is None:
             curr_ax = ax

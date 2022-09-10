@@ -2352,6 +2352,8 @@ def query_table_from_query_str(
         query = pu.query_str_from_type(query,table_type = 'dj')
         return table & query
     
+restrict_df_from_str = query_table_from_query_str
+    
 def query_table_from_list(
     table,
     restrictions,

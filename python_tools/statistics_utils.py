@@ -179,7 +179,7 @@ def roc_curve(
 
 
 # ------------ correlations --------------------
-def corr(x,y):
+def corr(x,y,**kwargs):
     return np.corrcoef(x, y)[1,0]
     
 def corr_pearson(x,y,return_p_value = False):
@@ -202,5 +202,40 @@ def corr_kendall(x,y,return_p_value = False):
         return results
     else:
         return results[0]
+    
+corr_funcs = [
+    corr,
+    corr_pearson,
+    corr_spearman,
+    corr_kendall,
+]
+
+def correlation_scores_all(
+    x,
+    y,
+    correlation_funcs = None,
+    return_dict = True,
+    return_p_value= False,
+    df = None,
+    ):
+    """
+    Purpose: To calculate the correlation
+    scores for all the functions
+    """
+    if df is not None:
+        x = df[x].to_numpy().astype('float')
+        y = df[y].to_numpy().astype('float')
+    
+    if correlation_funcs is None:
+        correlation_funcs = corr_funcs
+        
+    corr_scores = {k.__name__:k(
+        x,y,return_p_value=return_p_value) 
+                   for k in correlation_funcs}
+    if not return_dict:
+        return list(corr_scores.values())
+    return corr_scores
+    
+
 
 import statistics_utils as stu
