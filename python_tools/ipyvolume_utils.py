@@ -1014,6 +1014,156 @@ def plot_quiver(
     
 plot_quiver_with_gradients = plot_quiver
 
+# --------------- helper functions with making movies ----
+def rotation_movie_export():
+    # create 2d grids: x, y, and r
+    u = np.linspace(-10, 10, 25)
+    x, y = np.meshgrid(u, u)
+    r = np.sqrt(x**2+y**2)
+    print("x,y and z are of shape", x.shape)
+    # and turn them into 1d
+    x = x.flatten()
+    y = y.flatten()
+    r = r.flatten()
+    print("and flattened of shape", x.shape)
+
+
+    # create a sequence of 15 time elements
+    time = np.linspace(0, np.pi*2, 15)
+    z = np.array([(np.cos(r + t) * np.exp(-r/5)) for t in time])
+    print("z is of shape", z.shape)
+
+    # draw the scatter plot, and add controls with animate_glyphs
+    ipv.figure()
+    s = ipv.scatter(x, z, y, marker="sphere")
+    ipv.animation_control(s, interval=200)
+    ipv.ylim(-3,3)
+    ipv.show()
+
+    # Now also include, color, which containts rgb values
+    color = np.array([[np.cos(r + t), 1-np.abs(z[i]), 0.1+z[i]*0] for i, t in enumerate(time)])
+    size = (z+1)
+    print("color is of shape", color.shape)
+
+
+    #This is commented out, otherwise it would run on readthedocs
+    def set_view(figure, framenr, fraction):
+        ipv.view(fraction*360)
+        #s.size = size * (2+0.5*np.sin(fraction * 6 * np.pi))
+    ipv.movie('wave.mp4', set_view, fps=20, frames=40)
+    
+import ipywidgets
+ 
+import os
+def movie(
+    func,
+    filename="movie.mp4", 
+    #function=_change_azimuth_angle, 
+    fps=30, 
+    frames=30,
+    endpoint=False, 
+    cmd_template_ffmpeg="ffmpeg -y -r {fps} -i {tempdir}/frame-%5d.png -vcodec h264 -pix_fmt yuv420p {filename}",
+    cmd_template_gif="convert -delay {delay} {loop} {tempdir}/frame-*.png {filename}",
+    gif_loop=0,
+    width = 1920,
+    height = 1080,
+    **kwargs):
+    """Create a movie (mp4/gif) out of many frames
+
+    If the filename ends in `.gif`, `convert` is used to convert all frames to an animated gif using the `cmd_template_gif`
+    template. Otherwise `ffmpeg is assumed to know the file format`.
+
+    Example:
+
+    >>> def set_angles(fig, i, fraction):
+    >>>     fig.angley = fraction*np.pi*2
+    >>> # 4 second movie, that rotates around the y axis
+    >>> p3.movie('test2.gif', set_angles, fps=20, frames=20*4,
+            endpoint=False)
+
+    Note that in the example above we use `endpoint=False` to avoid to first and last frame to be the same
+
+    :param str f: filename out output movie (e.g. 'movie.mp4' or 'movie.gif')
+    :param function: function called before each frame with arguments (figure, framenr, fraction)
+    :param fps: frames per seconds
+    :param int frames: total number of frames
+    :param bool endpoint: if fraction goes from [0, 1] (inclusive) or [0, 1) (endpoint=False is useful for loops/rotatations)
+    :param str cmd_template_ffmpeg: template command when running ffmpeg (non-gif ending filenames)
+    :param str cmd_template_gif: template command when running imagemagick's convert (if filename ends in .gif)
+    :param gif_loop: None for no loop, otherwise the framenumber to go to after the last frame
+    :return: the temp dir where the frames are stored
+    """
+    movie_filename = filename
+    import tempfile
+    tempdir = tempfile.mkdtemp()
+    output = ipywidgets.Output()
+    display(output)
+    fig = ipv.gcf()
+    for i in range(frames):
+        with output:
+            fraction = i / (frames - 1. if endpoint else frames)
+            func(fig, i, fraction)
+            frame_filename = os.path.join(tempdir, "frame-%05d.png" % i)
+            ipv.savefig(frame_filename, output_widget=output,width=width,height=height,**kwargs)
+    with output:
+        if movie_filename.endswith(".gif"):
+            if gif_loop is None:
+                loop = ""
+            else:
+                loop = "-loop %d" % gif_loop
+            delay = 100 / fps
+            cmd = cmd_template_gif.format(delay=delay, loop=loop, tempdir=tempdir, filename=movie_filename)
+        else:
+            cmd = cmd_template_ffmpeg.format(fps=fps, tempdir=tempdir, filename=movie_filename)
+        print(cmd)
+        os.system(cmd)
+    return tempdir
+
+
+"""
+Example of how to use ipvu.movie to make a movie about a neuron: 
+
+exc_name = "864691135494192528_0"
+conu.visualize_graph_connections_by_method(
+    G,
+    segment_ids = [bpc_name,bc_name,exc_name],
+    segment_ids_colors = ["skyblue","orange","black"],
+    method = "meshafterparty",
+    plot_gnn=False,
+    synapse_color = "red",
+    plot_soma_centers=False,
+    
+    plot_synapse_skeletal_paths = True,
+    plot_proofread_skeleton = False,
+    
+    synapse_path_presyn_color='plum',
+    synapse_path_postsyn_color='lime',
+    
+    transparency = 0.8,
+    
+    synapse_scatter_size=1.4,
+    synapse_path_scatter_size=0.7,
+    
+)
+
+
+# apt install ffmpeg
+def set_view(figure, framenr, fraction):
+    ipv.view(fraction*360,distance = 1)
+    #s.size = size * (2+0.5*np.sin(fraction * 6 * np.pi))
+    
+fps = 60
+n_sec = 10
+ipvu.movie(
+    filename = f'./bpc_mc_23p_rotation.mp4', 
+    func=set_view,
+    fps=fps, 
+    frames=fps*n_sec,
+    cmd_template_ffmpeg='ffmpeg -y -r {fps} -i {tempdir}/frame-%5d.png -vcodec h264 -pix_fmt yuv420p {filename}',
+)
+
+"""
+
 import ipyvolume_utils as ipvu
     
     
