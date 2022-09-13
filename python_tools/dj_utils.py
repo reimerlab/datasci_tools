@@ -151,26 +151,34 @@ def append_table_to_pairwise_table(
 
     all_attributes = list(primary_attributes) + list(secondary_attributes)
 
-    if source_name is not None and len(source_name) > 0:
-        source_name = f"{source_name}_"
+#     if source_name is not None and len(source_name) > 0:
+#         source_name = f"{source_name}_"
 
-    if target_name is not None and len(target_name) > 0:
-        target_name = f"{target_name}_"
+#     if target_name is not None and len(target_name) > 0:
+#         target_name = f"{target_name}_"
 
     proj_table = table_to_append.proj(*all_attributes)
     final_table = table
 
-    rename_dict = {}
+    
     for name,k in zip(["source","target"],[source_name,target_name]):
-        if append_type == "prefix":
-            name_str = 'f"{kk}{v}"'
-        elif append_type == "suffix":
-            name_str = 'f"{v}{kk}"'
-        elif append_type is None:
-            name_str = 'f"{kk}"'
-        else:
-            raise Exception("")
-
+        rename_dict = {}
+        name_str = None
+        if k is not None and len(k) > 0:
+            if append_type == "prefix":
+                name_str = 'f"{kk}_{v}"'
+            elif append_type == "suffix":
+                name_str = 'f"{v}_{kk}"'
+            elif append_type is None:
+                name_str = 'f"{kk}"'
+        
+        
+        if name_str is None:
+            name_str = 'f"{v}"'
+            #raise Exception("")
+            
+        
+        #print(f"name_str = {name_str}")
         rename_dict.update(dict([(eval(name_str),v) if v not in attributes_to_not_rename
                                  else (v,v) for kk,v in zip([k]*len(all_attributes),all_attributes)]))
 

@@ -378,6 +378,14 @@ def get_node_degree(G,node_name,
         return node_degrees
     else:
         return node_degrees[0]
+    
+def get_node_degree_out(G,node_name):
+    return get_node_degree(G,node_name,
+                   degree_type="out")
+
+def get_node_degree_in(G,node_name):
+    return get_node_degree(G,node_name,
+                   degree_type="in")
 
 def degree_distribution(G,degree_type="in_and_out"):
     if degree_type == "in_and_out":
@@ -1276,6 +1284,127 @@ def upstream_node(G,node,return_single=True):
             return [k[0] for k in curr_upstream_nodes]
     else:
         return curr_upstream_nodes[0][0]
+    
+def all_parent_nodes(G,n,depth_limit = 1):
+    """
+    Purpose: To find the all parent nodes
+    of a certain node (can be multiple)
+    """
+    reverse_tree = nx.traversal.bfs_tree(
+        G,
+        n,
+        reverse = True,
+        depth_limit = depth_limit,
+    ).nodes()
+
+    return [k for k in reverse_tree if k != n]
+
+def all_children_nodes(G,n,depth_limit = 1):
+    """
+    Purpose: To find the all parent nodes
+    of a certain node (can be multiple)
+    """
+    reverse_tree = nx.traversal.bfs_tree(
+        G,
+        n,
+        reverse = False,
+        depth_limit = depth_limit,
+    ).nodes()
+
+    return [k for k in reverse_tree if k != n]
+
+def common_relational_nodes(
+    G,
+    nodes,
+    relation = "parent",
+    combining_method = "intersect",
+    depth_limit = 1,
+    verbose = False,
+    ):
+    """
+    Purpose: To find common parent nodes
+
+    Pseudocode: 
+    For all nodes:
+    1) Find the parent nodes
+
+    Get the intersection
+    """
+    nodes= nu.array_like(nodes)
+
+    common_nodes_list = [getattr(xu,f"all_{relation}_nodes")(G,n,depth_limit=depth_limit)
+                   for n in nodes]
+
+    if type(combining_method) == str:
+         func = getattr(nu,f"{combining_method}1d_multi_list")
+    else:
+        func = combining_method
+
+    common_nodes = func(common_nodes_list)
+
+    if verbose:
+        print(f"n_common_nodes of {relation} = {len(common_nodes)} (after {combining_method})")
+
+    return common_nodes
+
+def common_parent_nodes(
+    G,
+    nodes,
+    combining_method = "intersect",
+    depth_limit = 1,
+    verbose = False,
+    ):
+    """
+    Ex: 
+    xu.common_parent_nodes(
+        G,
+        nodes = ["864691134884741626_0","864691136226945617_0"],
+    )
+    """
+    
+    return common_relational_nodes(
+    G,
+    nodes=nodes,
+    relation = "parent",
+    combining_method = combining_method,
+    depth_limit = depth_limit,
+    verbose = verbose,
+    )
+
+def n_common_parent_nodes(
+    G,
+    nodes,
+    combining_method = "intersect",
+    depth_limit = 1,
+    verbose = False,
+    ):
+    
+    return len(
+        common_parent_nodes(
+            G,
+            nodes,
+            combining_method = combining_method,
+            depth_limit = depth_limit,
+            verbose = verbose,
+        )
+    )
+
+def common_children_nodes(
+    G,
+    nodes,
+    combining_method = "intersect",
+    depth_limit = 1,
+    verbose = False,
+    ):
+    
+    return common_relational_nodes(
+    G,
+    nodes=nodes,
+    relation = "children",
+    combining_method = combining_method,
+    depth_limit = depth_limit,
+    verbose = verbose,
+    )
        
     
 # --------------------- 8/31 -------------------------- #
