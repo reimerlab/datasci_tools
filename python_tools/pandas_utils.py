@@ -2141,18 +2141,31 @@ def merge_df_to_source_target(
         df = df.copy(deep=True)
 
     for k in [source_name,target_name]:
-        if append_type == "prefix":
-            name_str = 'f"{kk}_{v}"'
-        elif append_type == "suffix":
-            name_str = 'f"{v}_{kk}"'
-        elif append_type is None:
-            name_str = 'f"{kk}"'
-        else:
-            raise Exception("")
+#         if append_type == "prefix":
+#             name_str = 'f"{kk}_{v}"'
+#         elif append_type == "suffix":
+#             name_str = 'f"{v}_{kk}"'
+#         elif append_type is None:
+#             name_str = 'f"{kk}"'
+#         else:
+#             raise Exception("")
+
+        name_str = None
+        if k is not None and len(k) > 0:
+            if append_type == "prefix":
+                name_str = 'f"{kk}_{v}"'
+            elif append_type == "suffix":
+                name_str = 'f"{v}_{kk}"'
+            elif append_type is None:
+                name_str = 'f"{kk}"'
+        
+        
+        if name_str is None:
+            name_str = 'f"{v}"'
+            #raise Exception("")
 
         
         rename_dict = {v:eval(name_str) for kk,v in zip([k]*len(columns),columns)}
-            
         
         
         if on is None:
@@ -2163,14 +2176,26 @@ def merge_df_to_source_target(
                 rename_dict[on] = k
                 
         
-                
-        df = pd.merge(
-            df,
-            pu.rename_columns(df_append[columns],
-                              rename_dict),
-            on=curr_on,
-            how=how,
-        )
+        try:
+            df = pd.merge(
+                df,
+                pu.rename_columns(df_append[columns],
+                                  rename_dict),
+                on=curr_on,
+                how=how,
+            )
+        except:
+            rename_dict.update({v:eval(name_str) for kk,v in zip([k],[on])})
+            curr_on = rename_dict[on]
+            
+            df = pd.merge(
+                df,
+                pu.rename_columns(df_append[columns],
+                                  rename_dict),
+                on=curr_on,
+                how=how,
+            )
+            
     return df
 
 def df_to_index_dict(
@@ -2307,6 +2332,8 @@ def query_str_from_list(
     if verbose:
         print(f"query_str = {restr_str}")
     return restr_str
+
+restriction_str_from_list = query_str_from_list
 
 dj_to_pandas_query_map = {" = ":" == ","AND":"and","OR":"or","NOT":"not","SQRT":"sqrt"}
 def pandas_query_str_from_query_str(query):
