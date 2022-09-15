@@ -1711,6 +1711,29 @@ def bbox_from_center_and_widths(
     buffer_y = buffer_y,
     buffer_z = buffer_z,)
 
+def bbox_cube_from_bbox(
+    bbox,
+    verbose = False,
+    ):
+    """
+    Purpose: To create a bounding box  that
+    is square based on the longest current side 
+    length of the bounding bbox
+    """
+    axes_bbox = bbox
+    axes_bbox_center = np.mean(axes_bbox,axis = 0)
+    max_side_length = np.max(np.abs(axes_bbox[0,:] - axes_bbox[1,:]))
+
+    if verbose:
+        print(f"max_side_length = {max_side_length}")
+
+    new_bbox = nu.bbox_from_center_and_widths(
+        axes_bbox_center,
+        buffer = max_side_length/2
+    )
+
+    return new_bbox[[1,0],:]
+
 
 def angle_between_matrix_of_vectors_and_vector(
     array,

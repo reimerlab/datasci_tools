@@ -433,6 +433,30 @@ def set_axes_lim(
     ipv.ylim(ylim[0],ylim[1])
     ipv.zlim(zlim[0],zlim[1])
     
+def get_axes_lim(fig = None):
+    if fig is None:
+        fig = ipv.gcf()
+    old_lims = np.vstack([fig.xlim,fig.ylim,fig.zlim]).T
+    return old_lims
+
+def set_axes_lim_to_cube(
+    bbox = None):
+    """
+    Purpose: To set the limits of the xyz
+    to be a square equal to the longest current size
+    """
+    if bbox is None:
+        bbox = ipvu.get_axes_lim() 
+    new_bbox = nu.bbox_cube_from_bbox(
+        bbox = bbox,
+        verbose = True,
+    )
+
+    ipvu.set_axes_lim(
+        min = new_bbox[0,:],
+        max = new_bbox[1,:],
+    )
+    
 def set_axes_visibility(visibility=True):
     if not visibility:
         ipv.style.axes_off()
