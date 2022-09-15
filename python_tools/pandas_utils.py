@@ -2198,6 +2198,8 @@ def merge_df_to_source_target(
             
     return df
 
+append_df_to_source_target = merge_df_to_source_target
+
 def df_to_index_dict(
     df,
     column = None,
@@ -2610,6 +2612,23 @@ pandas_alternatives_for_large_datasets = dict(
     dask = None,
     modin = "https://modin.readthedocs.io/en/stable/"
 )
+
+
+def source_target_coordinate_edges(
+    df,
+    source_column = "presyn_centroid",
+    target_column = "postsyn_centroid",
+    suffix='nm',
+    **kwargs):
+    """
+    Purpose: Get edges from source, target
+    coordinate edges 
+    """
+   
+    pre_coords = pu.coordinates_from_df(df,source_column,suffix=suffix,**kwargs)
+    post_coords = pu.coordinates_from_df(df,target_column,suffix=suffix,**kwargs)
+    pre_post_edges = np.hstack([pre_coords,post_coords]).reshape(-1,2,3)
+    return pre_post_edges
     
     
     

@@ -864,6 +864,8 @@ def plot_scatter(
     
     if return_scatter:
         return return_sc
+    
+
 
 import numpy_utils as nu
 
@@ -1035,6 +1037,44 @@ def plot_quiver(
 
     if show_at_end:
         ipv.show()
+        
+def plot_line_segments(
+    array,
+    lines=None,
+    plot_widgets = True,
+    widgets_to_plot = ("size","marker","color"),
+    show_at_end = True,
+    new_figure = True,
+    color = "red",
+    size = 1,
+    flip_y = True,
+    axis_visibility=True,
+    return_obj = False,
+    widget_description_prefix = None,
+    **kwargs
+    ):
+    
+    if type(array) == list:
+        array = np.vstack(array)
+    
+    return_sc =  ipvu.plot_obj(
+        array,
+        lines=lines,
+        plot_type = "line_segments",
+        plot_widgets = plot_widgets,
+        color = color,
+        size = size,
+        widgets_to_plot = widgets_to_plot,
+        show_at_end = show_at_end,
+        new_figure = new_figure,
+        flip_y = flip_y,
+        axis_visibility=axis_visibility,
+        widget_description_prefix=widget_description_prefix,
+         **kwargs
+    )
+    
+    if return_obj:
+        return return_sc
     
 plot_quiver_with_gradients = plot_quiver
 
