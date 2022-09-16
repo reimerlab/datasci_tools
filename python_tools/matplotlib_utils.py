@@ -1604,12 +1604,45 @@ def scatter_with_gradient(
             alpha = alpha,
             )
         
+    if column_coordinates is not None:
+        ax.set_xlabel(column_coordinates[0])
+        ax.set_ylabel(column_coordinates[1])
+        if Z is not None:
+            ax.set_zlabel(column_coordinates[2])
+        
     cbar = plt.colorbar(sc)
     if column_gradient is not None:
         cbar.set_label(f'{column_gradient}')#, rotation=270)
 
     if title is not None:
         ax.set_title(title)
+    
+    return ax
+
+def scatter_with_gradient_3D_simple(
+    array,
+    gradient,
+    color_map = "coolwarm",
+    axes_names = None,
+    ):
+
+    fig = plt.figure(figsize = (10,10))
+    ax = fig.add_subplot(111,projection = "3d")
+
+
+    p = ax.scatter(
+        array[:,0],
+        array[:,1],
+        array[:,2],
+        c = gradient,
+        cmap = color_map
+    )
+
+    if axes_names is not None:
+        for name,curr_ax in zip(axes_names,["x","y","z"]):
+            getattr(ax,f"set_{curr_ax}label")(name)
+
+    plt.colorbar(p)
     
     return ax
 
@@ -1644,5 +1677,61 @@ def gradient_from_array(
         plt.show()
     
     return curr_color_map
+
+
+
+cmaps = {}
+
+gradient = np.linspace(0, 1, 256)
+gradient = np.vstack((gradient, gradient))
+
+"""
+Color map notes: 
+1) can usually just feed in values to the color arguemnt and then 
+just provide a string name to the cmap argument
+
+Ex: 
+ax.scatter(
+    array[:,0],
+    array[:,1],
+    array[:,2],
+    c = y_value,
+    cmap = "coolwarm"
+)
+
+2) To reverse the color map, can do '{name}_r'
+
+"""
+
+def plot_color_gradients(category, cmap_list):
+    # Create figure and adjust figure height to number of colormaps
+    nrows = len(cmap_list)
+    figh = 0.35 + 0.15 + (nrows + (nrows - 1) * 0.1) * 0.22
+    fig, axs = plt.subplots(nrows=nrows + 1, figsize=(6.4, figh))
+    fig.subplots_adjust(top=1 - 0.35 / figh, bottom=0.15 / figh,
+                        left=0.2, right=0.99)
+    axs[0].set_title(f'{category} colormaps', fontsize=14)
+
+    for ax, name in zip(axs, cmap_list):
+        ax.imshow(gradient, aspect='auto', cmap=plt.get_cmap(name))
+        ax.text(-0.01, 0.5, name, va='center', ha='right', fontsize=10,
+                transform=ax.transAxes)
+
+    # Turn off *all* ticks & spines, not just the ones with colormaps.
+    for ax in axs:
+        ax.set_axis_off()
+
+    # Save colormap list for later.
+    cmaps[category] = cmap_list
+    
+def example_plot_color_maps():
+    plot_color_gradients('Sequential',
+                     ['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
+                      'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
+                      'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
+    
+    plot_color_gradients('Diverging',
+                     ['PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu', 'RdYlBu',
+                      'RdYlGn', 'Spectral', 'coolwarm', 'bwr', 'seismic'])
     
 import matplotlib_utils as mu

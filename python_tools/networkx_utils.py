@@ -4576,11 +4576,11 @@ def graph_from_non_unique_vertices_edges(
     verbose = False
     ):
     
-    verts_unique,edges_unique = sk.unique_vertices_edges_from_vertices_edges(
+    verts_unique,edges_unique = unique_vertices_edges_from_vertices_edges(
         vertices,edges,verbose=verbose,
     )
     
-    return sk.graph_from_unique_vertices_edges(
+    return graph_from_unique_vertices_edges(
         vertices=verts_unique,
         edges = edges_unique,
         graph_type = graph_type,
