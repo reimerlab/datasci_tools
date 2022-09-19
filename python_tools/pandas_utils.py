@@ -2716,7 +2716,7 @@ def split_df_to_source_target_df(
     return df[source_columns],df[target_columns]
 
 def randomly_sample_source_target_df(
-    df,
+    df=None,
     
     n_samples = 100,
     replace = True,
