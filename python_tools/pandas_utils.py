@@ -1397,9 +1397,10 @@ def randomly_sample_df(
     restricted_df = df.iloc[idx,:].reset_index(drop = True)
     return restricted_df
 
-def shuffle_df(df,**kwargs):
+def shuffle_df(df,seed=None,**kwargs):
     return pu.randomly_sample_df(
         df,
+        seed=seed,
         **kwargs)
 
 import general_utils as gu
@@ -2629,6 +2630,146 @@ def source_target_coordinate_edges(
     post_coords = pu.coordinates_from_df(df,target_column,suffix=suffix,**kwargs)
     pre_post_edges = np.hstack([pre_coords,post_coords]).reshape(-1,2,3)
     return pre_post_edges
+
+
+def split_df_to_source_target_df(
+    df,
+    columns = None,
+    source_name = "presyn",
+    target_name = "postsyn",
+    append_type = "prefix",
+    source_columns = None,
+    target_columns = None,
+    include_source_target_name_in_columns = True,
+    source_target_name_not_in_eachother_columns = True,
+    verbose = False,
+    ):
+    """
+    Purpose: To split a dataframe into source and 
+    target dataframe
+
+    Pseudocode: 
+    1) Divide the dataframe into the source column, target columns
+    """
+
+    def column_to_name(column,append_name):
+        if len(column) == 0:
+            return append_name
+        if append_type == "prefix":
+            return f"{append_name}_{column}"
+        elif append_type == "suffix":
+            return f"{column}_{append_name}"
+        elif append_type is None:
+            return f"{column}"
+        else:
+            raise Exception("")
+
+    def append_name_in_columns(column,append_name):
+        if append_type == "prefix":
+            return append_name == column[:len(append_name)]
+        elif append_type == "suffix":
+            return append_name == column[-len(append_name):]
+        else:
+            raise Exception("")
+
+    if source_columns is None:
+        if columns is not None:
+            source_columns = [
+                column_to_name(k,source_name) for k in columns
+            ]
+        else:
+            source_columns = [k for k in df.columns if append_name_in_columns(k,source_name)]
+
+        if source_target_name_not_in_eachother_columns:
+            source_columns = [k for k in source_columns if target_name not in k]
+
+    if include_source_target_name_in_columns:
+        if source_name not in source_columns:
+            source_columns = [source_name] + source_columns
+            
+    source_columns = [k for k in source_columns if k in df.columns]
+            
+    if verbose:
+        print(f"\nsource_columns ({len(source_columns)}) = {source_columns}")
+
+    if target_columns is None:
+        if columns is not None:
+            target_columns = [
+                column_to_name(k,target_name) for k in columns
+            ]
+            
+        else:
+            target_columns = [k for k in df.columns if append_name_in_columns(k,target_name)]
+
+        if source_target_name_not_in_eachother_columns:
+            target_columns = [k for k in target_columns if source_name not in k]
+
+    if include_source_target_name_in_columns:
+        if target_name not in target_columns:
+            target_columns = [target_name] + target_columns
+            
+    target_columns = [k for k in target_columns if k in df.columns]
+            
+    if verbose:
+        print(f"\ntarget_columns ({len(target_columns)}) = {target_columns}")
+
+    return df[source_columns],df[target_columns]
+
+def randomly_sample_source_target_df(
+    df,
+    
+    n_samples = 100,
+    replace = True,
+    seed=None,
+    
+    # -- arguments for the source_target_split
+    source_df = None,
+    target_df = None,
+    
+    columns = None,
+    source_name = "presyn",
+    target_name = "postsyn",
+    append_type = "prefix",
+    source_columns = None,
+    target_columns = None,
+    include_source_target_name_in_columns = False,
+    source_target_name_not_in_eachother_columns = True,
+    ):
+    """
+    Purpose: To create a random sampling of source
+    and target from a source-target dataframe. This is to 
+    create synthetic data
+    """
+
+    if source_df is None or target_df is None:
+        source_df,target_df = pu.split_df_to_source_target_df(
+            df = df,
+            columns = columns,
+            source_name = source_name,
+            target_name = target_name,
+            append_type = append_type,
+            source_columns = source_columns,
+            target_columns = target_columns,
+            include_source_target_name_in_columns = include_source_target_name_in_columns,
+            source_target_name_not_in_eachother_columns = source_target_name_not_in_eachother_columns,
+        )
+
+    source_df_samp = pu.randomly_sample_df(
+        source_df,
+        n_samples = n_samples,
+        replace=replace,
+        seed = seed,
+    )
+
+    target_df_samp = pu.randomly_sample_df(
+        target_df,
+        n_samples = n_samples,
+        replace=replace,
+        seed = seed,
+    )
+
+    df_samp = pu.concat([source_df_samp,target_df_samp],axis = 1)
+    return df_samp
     
     
     

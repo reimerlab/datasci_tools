@@ -1702,8 +1702,31 @@ ax.scatter(
 2) To reverse the color map, can do '{name}_r'
 
 """
+def plot_color_map(
+    name,
+    array = None,
+    figsize = (10,2),
+    ):
+    
+    fig,ax = plt.subplots(1,1,figsize = figsize)
+    ax.set_title(f"{name} colormap",fontsize = 14)
+    
+    ax.imshow(gradient,aspect="auto",cmap = plt.get_cmap(name))
+    ax.text(-0.01, 0.5, name, va='center', ha='right', fontsize=10,
+                transform=ax.transAxes)
+    if array is not None:
+        ax.text(-0.01, -0.1, np.min(array), va='center', ha='right', fontsize=10,
+                    transform=ax.transAxes)
+        ax.text(1.01, -0.1, np.max(array), va='center', ha='right', fontsize=10,
+                    transform=ax.transAxes)
+    
+    ax.set_axis_off()
+    plt.show()
+    
 
-def plot_color_gradients(category, cmap_list):
+def plot_color_gradients(
+    category, 
+    cmap_list,):
     # Create figure and adjust figure height to number of colormaps
     nrows = len(cmap_list)
     figh = 0.35 + 0.15 + (nrows + (nrows - 1) * 0.1) * 0.22
@@ -1716,6 +1739,7 @@ def plot_color_gradients(category, cmap_list):
         ax.imshow(gradient, aspect='auto', cmap=plt.get_cmap(name))
         ax.text(-0.01, 0.5, name, va='center', ha='right', fontsize=10,
                 transform=ax.transAxes)
+        
 
     # Turn off *all* ticks & spines, not just the ones with colormaps.
     for ax in axs:
@@ -1733,5 +1757,7 @@ def example_plot_color_maps():
     plot_color_gradients('Diverging',
                      ['PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu', 'RdYlBu',
                       'RdYlGn', 'Spectral', 'coolwarm', 'bwr', 'seismic'])
+    
+    plot_color_gradients('Cyclic', ['twilight', 'twilight_shifted', 'hsv'])
     
 import matplotlib_utils as mu
