@@ -705,6 +705,11 @@ def csv_to_df(csv_filepath,remove_unnamed_columns=True):
         return_df = pu.remove_unnamed_columns(return_df)
     return return_df
 
+def feather_to_df(path,**kwargs):
+     return pd.read_feather(path,**kwargs)
+
+read_feather = feather_to_df
+    
 def json_to_df(filepath,lines=True):
     return pd.read_json(filepath,lines=lines) 
 
@@ -2771,6 +2776,35 @@ def randomly_sample_source_target_df(
     df_samp = pu.concat([source_df_samp,target_df_samp],axis = 1)
     return df_samp
     
+def replace_str_characters(
+    df,
+    replace_dict = None,
+    column = None,
+    to_replace = None,
+    value = None,
+    in_place = False,
+    ):
+    """
+    Purpose: want to replace a string
+    character with another in a column/columns
+    of a dataframe
+    """
+
+    if not in_place:
+        df = df.copy()
+    
+    if column is None:
+        column = list(df.columns)
+    
+    column = list(nu.array_like(column))
+    if replace_dict is None:
+        replace_dict = dict(to_replace=value)
+
+    for c in column:
+        for k,v in replace_dict.items():
+            df[c] = df[c].str.replace(k,v)
+
+    return df
     
     
 import pandas_utils as pu

@@ -20,7 +20,7 @@ def df_from_table_old(
             features = [k for k in features if "method" not in k]
     
     if features is not None:
-        features = nu.convert_to_array_like(features)
+        features = nu.convert_to_array_like(features,include_tuple = True)
         #table = table.proj(*features)
         #table = dj.U(*features) & table
         if len(features) == 1:
@@ -52,7 +52,7 @@ def df_from_table(
     if features is None:
         features = all_atts
     
-    features = nu.convert_to_array_like(features)
+    features = nu.convert_to_array_like(features,include_tuple = True)
     
     if primary_features:
         primary_features = list(primary_attribute_names_from_table(table))

@@ -1175,6 +1175,8 @@ def histograms_overlayed(
     outlier_buffer = 1,
     same_axis = True,
     
+    histtype = "bar",
+    
     
     
     ):
@@ -1272,6 +1274,7 @@ def histograms_overlayed(
                             color = color,
                              bins=bins,
                             alpha = alpha,
+                         histtype=histtype,
                             #zorder=zorder
             )
         else:
@@ -1287,6 +1290,7 @@ def histograms_overlayed(
                             #color = color,
                              bins=bins,
                             alpha = alpha,
+                             histtype=histtype,
                             #zorder=zorder
                 )
         curr_ax.legend()
