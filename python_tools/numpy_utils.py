@@ -1221,7 +1221,7 @@ def single_thread():
     os.environ["VECLIB_MAXIMUM_THREADS"] = "4" # export VECLIB_MAXIMUM_THREADS=4
     os.environ["NUMEXPR_NUM_THREADS"] = "6" # export NUMEXPR_NUM_THREADS=6
 
-def polar_3D_from_cartesian(x, y, z):
+def polar_3D_from_cartesian(x, y=None, z=None):
     """
     Purpose: To change x,y,z cartesian coordinates to 
     polar coordinates: 
@@ -1233,6 +1233,12 @@ def polar_3D_from_cartesian(x, y, z):
     nu.cart2sph(0.1,0,1)
 
     """
+    if y is None: 
+        x_ = x[:,0]
+        y = x[:,1]
+        z = x[:,2]
+        x = x_
+    
     xy = np.sqrt(x**2 + y**2) # sqrt(x² + y²)
     
     x_2 = x**2
@@ -1246,6 +1252,24 @@ def polar_3D_from_cartesian(x, y, z):
     theta = np.arctan2(xy, z) 
 
     return r, theta, phi
+def cartesian_3D_from_polar(
+    r,
+    theta,
+    phi,
+    return_array = False,):
+    return_value= (
+        r * np.sin(theta) * np.cos(phi),
+        r * np.sin(theta) * np.sin(phi),
+        r * np.cos(theta)
+    )
+    
+    if return_array:
+        return_value = np.vstack(return_value).T.reshape(len(r),3)
+    
+    return return_value
+    
+xyz_from_polar = cartesian_3D_from_polar
+    
 
 import math
 def polar2cart(r, theta, phi):
@@ -1754,5 +1778,8 @@ def angle_between_matrix_of_vectors_and_vector(
     else:
         return rad_angle
     
+    
+def mask_of_array_1_elements_in_array_2(array1,array2):
+    return dataset(array1,array2)
     
 import numpy_utils as nu

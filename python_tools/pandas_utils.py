@@ -2805,6 +2805,37 @@ def replace_str_characters(
             df[c] = df[c].str.replace(k,v)
 
     return df
+
+import numpy_utils as nu
+def keys_from_groupby_obj(obj):
+    """
+    Purpose: get the groupby object
+    keys
+    """
+    return obj.groups.keys()
+
+def split_df_by_groupby_column(
+    df,
+    column,
+    return_keys = False,
+    verbose = False,
+    ):
+    """
+    Purpose: Want to divide a dataset by a groupby statement
+    """
+    st = time.time()
+    column = list(nu.array_like(column))
+    gb = df.groupby(column)    
+    all_dfs = [gb.get_group(x) for x in gb.groups]
+    
+    if verbose:
+        print(f"# of groups = {len(all_dfs)} (total time = {time.time() - st})")
+        
+    if return_keys:
+        keys = gb.groups.keys()
+        return all_dfs,keys
+    else:
+        return all_dfs
     
     
 import pandas_utils as pu
