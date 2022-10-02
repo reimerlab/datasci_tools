@@ -2838,4 +2838,37 @@ def split_df_by_groupby_column(
         return all_dfs
     
     
+def append_to_column_names(
+    df,
+    append_str,
+    append_type = "prefix",
+    columns = None,
+    columns_to_omit = None,
+    verbose = False,
+    ):
+    if append_type == "prefix":
+        curr_str = 'f"{append_str}_{k}"'
+    elif append_type == "suffix":
+        curr_str = 'f"{k}_{append_str}"' 
+    else:
+        raise Exception("")
+        
+    if columns is None:
+        columns = list(df.columns)
+    if columns_to_omit is None:
+        columns_to_omit = []
+    
+    append_dict = {k:eval(curr_str,locals(),globals()) 
+                  for k,append_str in zip(columns,[append_str]*len(columns))
+                  if k not in columns_to_omit }
+    
+    if verbose:
+        print(f"append_dict= {append_dict}")
+    
+    return pu.rename_columns(
+        df,
+        append_dict
+    )
+    
+    
 import pandas_utils as pu

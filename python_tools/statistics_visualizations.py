@@ -26,6 +26,8 @@ def plot_pretty_confusion_matrix(y_true,
     Purpose: To take 2 arrays 
     
     """
+    if labels is None:
+        labels = list(np.union1d(np.unique(y_true),np.unique(y_pred)))
     p_cm.plot_confusion_matrix_from_data(y_true,
                                          y_pred,
                                          figsize=figsize,
