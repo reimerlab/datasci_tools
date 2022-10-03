@@ -60,3 +60,8 @@ os.environ['OPENBLAS_NUM_THREADS'] = '12`
 -r for recursive search down from current directory
 -I to ignore binary files
 -H to output filename where match is found
+
+
+# ---- to find out where module file is ----
+import [module_name]
+[module_name].__file__

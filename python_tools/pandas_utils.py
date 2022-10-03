@@ -2869,6 +2869,62 @@ def append_to_column_names(
         df,
         append_dict
     )
+
+
+def merge_dfs_with_same_columns(
+    df,
+    df_append,
+    on,
+    how = "inner",
+    append_str="2",
+    append_type='suffix',
+    ):
+    """
+    Purpose: to merge 2 dataframes
+    with same columns but want to keep them distinct
+    """
+    on = nu.array_like(on)
+    
+    df_append = pu.append_to_column_names(
+        df_append,
+        append_str=append_str,
+        append_type=append_type,
+        columns_to_omit = on ,
+        
+    )
+    
+    df_after_merge = pd.merge(
+        df,
+        df_append,
+        on = on,
+        how = how,
+    )
+    
+    return df_after_merge
+
+def dict_column_to_columns(
+    df,
+    column,
+    verbose = False,
+    return_new_columns = False,
+    ):
+    """
+    Purpose: to unpack a column that is a list of dicts
+    into columns themselves
+    """
+    
+    df_dicts = pd.DataFrame.from_records(df[column].to_list())
+    
+    if verbose:
+        print(f"New columns = {df_dicts.columns}")
+    df_with_dicts = pu.concat([
+        pu.delete_columns(df,column),df_dicts
+    ],axis=1)
+    
+    if return_new_columns:
+        return df_with_dicts,list(df_dicts.columns)
+    else:
+        return df_with_dicts
     
     
 import pandas_utils as pu
