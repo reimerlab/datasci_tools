@@ -220,6 +220,12 @@ def set_style(style="light"):
     """
     ipv.style.use(style)
     
+def set_dark_background():
+    ipv.style.use("dark")
+    
+def set_white_background():
+    ipv.style.use("light")
+    
 """
 Animations: if feed into a variable like x or y
 a 2D array, knows that the first component is time
@@ -468,29 +474,54 @@ def set_axes_visibility(visibility=True):
 def save_to_html(path):
     ipv.pylab.save(path)
     
+def get_xyz_lim():
+    fig = ipv.gcf()
+    return np.vstack([fig.xlim,fig.ylim,fig.zlim]).T
+
+def get_xyz_radius():
+    curr_ax = get_xyz_lim()
+    return np.abs(curr_ax[1] - curr_ax[0])/2
+
+def get_center_coordinate(flip_y = True):
+    coord = np.mean(get_xyz_lim(),axis=0)
+    if flip_y:
+        coord[...,1] = -coord[...,1]
+    return coord
+
+get_camera_center = get_center_coordinate
+
 def set_zoom(
-    center_coordinate,
-    radius=0,
+    center_coordinate=None,
+    radius=None,
     radius_xyz = None,
     show_at_end=False,
     flip_y = True,
-    axis_visibility=False):
+    axis_visibility=None):
     
     
+    if center_coordinate is None:
+        center_coordinate = get_center_coordinate(flip_y=flip_y)
+        
     coord = np.array(center_coordinate)
     
     if flip_y:
         coord[...,1] = -coord[...,1]
         
     if radius_xyz is None:
-        radius_xyz = np.array([radius,radius,radius])
+        if radius is None:
+            radius_xyz = get_xyz_radius()
+        else:
+            radius_xyz = np.array([radius,radius,radius])
+            
+        
         
     coord_radius = [k if k is not None else radius for k in radius_xyz]
     ipv_function = [ipv.xlim,ipv.ylim,ipv.zlim]
     for c,c_rad,ipvf in zip(coord,coord_radius,ipv_function):
         ipvf(c - c_rad, c + c_rad)
 
-    ipvu.set_axes_visibility(axis_visibility)
+    if axis_visibility is not None:
+        ipvu.set_axes_visibility(axis_visibility)
     if show_at_end:
         ipv.show()  
         
@@ -659,6 +690,8 @@ def plot_obj(
     new_figure = True,
     flip_y = False,
     axis_visibility = True,
+    individually_scale_each_axis = False,
+    alpha = None,
     **kwargs,
     ):
     """
@@ -752,11 +785,18 @@ def plot_obj(
     
     
     ipvu.set_axes_lim_from_fig(buffer,verbose = False)
+    
+    if alpha is not None:
+        scat.material.transparent = True
+        scat.color = mu.color_to_rgba(str(scat.color),alpha)
 
     if show_at_end:
         ipv.show()
         
     ipvu.set_axes_visibility(axis_visibility)
+    
+    if not individually_scale_each_axis:
+        ipvu.set_axes_lim_to_cube()
         
     return scat
     
@@ -789,12 +829,15 @@ def plot_mesh(
         show_at_end = show_at_end,
         new_figure = new_figure,
         flip_y = flip_y,
+        alpha = alpha,
          **kwargs
     )
     
-    if alpha is not None:
-        return_mesh.material.transparent = True
-        return_mesh.color = mu.color_to_rgba(str(return_mesh.color),alpha)
+#     if alpha is not None:
+#         return_mesh.material.transparent = True
+#         return_mesh.color = mu.color_to_rgba(str(return_mesh.color),alpha)
+#         print(f"return_mesh.color = {return_mesh.color}")
+#         ipv.show()
     return return_mesh
 
 
@@ -974,6 +1017,37 @@ def view_top_down(
     """
     ipvu.set_axes_visibility(axis_visibility)
     ipv.pylab.view(azimuth=-90, elevation=90, distance=2)
+    
+def set_view(
+    h_rotation = 0,
+    v_rotation = 0, #between -90 (down) and 90 (up)
+    distance = 1, #multiplier distance from axes
+    center = None,
+    radius = None,
+    axis_visibility = None,
+    ):
+    
+    """
+    Purpose: To set the
+    zoom level, and then 
+    the proper rotation of an ipyvolume
+    figure (to recreate )
+    """
+    
+    ipvu.set_zoom(
+        center_coordinate=center,
+        radius = radius,
+    )
+    
+    ipv.pylab.view(
+        azimuth=h_rotation,
+        elevation=v_rotation,
+        distance=distance
+    )
+    
+    if axis_visibility is not None:
+        ipvu.set_axes_visibility(axis_visibility)
+    
     
 show_top_down = view_top_down
 top_down = view_top_down
