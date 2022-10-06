@@ -128,5 +128,56 @@ def sample_surface(
         )
         
     return return_value
+# -------------- 11/21 More bounding box functions ----- #
+def bounding_box(mesh,oriented=False):
+    """
+    Returns the mesh of the bounding box
+    
+    Input: Can take in the corners of a bounding box as well
+    """
+    if nu.is_array_like(mesh):
+        mesh = np.array(mesh).reshape(-1,3)
+        if len(mesh) != 2:
+            raise Exception("did not recieve bounding box corners")
+        mesh = trimesh.Trimesh(vertices = np.vstack([mesh,mesh.mean(axis=0).reshape(-1,3)]).reshape(-1,3),
+                              faces=np.array([[0,1,2]]))
+        mesh = mesh.bounding_box
+    
+    if oriented:
+        return mesh.bounding_box_oriented
+    else:
+        return mesh.bounding_box
+
+def bounding_box_center(mesh,oriented=False):
+    """
+    Computed the center of the bounding box
+    
+    Ex:
+    ex_mesh = neuron_obj_with_web[axon_limb_name][9].mesh
+    nviz.plot_objects(ex_mesh,
+                      scatters=[tu.bounding_box_center(ex_mesh)],
+                      scatter_size=1)
+    """
+    bb_corners = bounding_box_corners(mesh,oriented = oriented)
+    return np.mean(bb_corners,axis=0)
+    
+def bounding_box_corners(mesh,bbox_multiply_ratio=1,
+                        oriented=False):
+    #bbox_verts = mesh.bounding_box.vertices
+    bbox_verts = bounding_box(mesh,oriented=oriented).vertices
+    bb_corners = np.array([np.min(bbox_verts,axis=0),np.max(bbox_verts,axis=0)]).reshape(2,3)
+    if bbox_multiply_ratio == 1:
+        return bb_corners
+    
+    bbox_center = np.mean(bb_corners,axis=0)
+    bbox_distance = np.max(bb_corners,axis=0)-bbox_center
+    new_corners = np.array([bbox_center - bbox_multiply_ratio*bbox_distance,
+                            bbox_center + bbox_multiply_ratio*bbox_distance
+                           ]).reshape(-1,3)
+    return new_corners
+
+def bounding_box_diagonal(mesh):
+    bbox_corners = bounding_box_corners(mesh)
+    return np.linalg.norm(bbox_corners[1]-bbox_corners[0])
     
 import mesh_utils as mhu
