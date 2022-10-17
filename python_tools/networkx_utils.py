@@ -3825,6 +3825,29 @@ def adjacency_matrix(G,dense = True,nodelist=None,return_nodelist = False,**kwar
     else:
         return adj_matrix
     
+def modularity_matrix(G,nodelist=None,**kwargs):
+    return nx.modularity_matrix(
+        G,
+        nodelist=nodelist,
+        **kwargs
+    )
+
+modularity = modularity_matrix
+
+def laplacian(G,nodelist=None,dense = True,**kwargs):
+    L = nx.laplacian_matrix(G,nodelist=nodelist,)
+    if dense:
+        L = L.todense()
+    return L
+
+def degree_matrix_from_adj(array):
+    return np.diag(np.sum(array,axis=1))
+
+def laplacian_from_adj(array):
+    return degree_matrix_from_adj(array) - array
+
+laplacian_matrix = laplacian
+    
 def G_from_adjacency_matrix(
     matrix,
     nodelist = None,

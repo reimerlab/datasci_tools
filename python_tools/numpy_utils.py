@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+import time
 """
 Notes on functionality: 
 np.concatenate: combines list of lists into one list like itertools does
@@ -132,10 +133,13 @@ def get_coordinate_distance_matrix(coordinates):
     return distance_matrix
 
 import scipy.spatial as spatial
-def distance_matrix(array1,array2,
-                    p=2, #which norm to use
-                    **kwargs
-                   ):
+def distance_matrix(
+    array1,
+    array2,
+    p=2, #which norm to use
+    verbose = False,
+    **kwargs
+    ):
     """
     Computes all pairwise distances between 2 arrays
     
@@ -143,7 +147,12 @@ def distance_matrix(array1,array2,
     --> returns M,N array
     
     """
-    return spatial.distance_matrix(array1,array2,p=p,**kwargs)
+    st = time.time()
+    return_matrix = spatial.distance_matrix(array1,array2,p=p,**kwargs)
+    if verbose:
+        print(f"Total time for distance matrix = {time.time() - st}")
+        
+    return return_matrix
 
 
 def get_matching_vertices(possible_vertices,ignore_diagonal=True,
@@ -1779,7 +1788,67 @@ def angle_between_matrix_of_vectors_and_vector(
         return rad_angle
     
     
-def mask_of_array_1_elements_in_array_2(array1,array2):
-    return dataset(array1,array2)
+def mask_of_array_1_elements_in_array_2(
+    array1,
+    array2,
+    ):
+    """
+    Purpose: To return a boolean mask of size
+    array1.shape that indicates which elements
+    of array1 are in array2
+    
+    Ex: 
+    x = np.array([1,2,3,4,5,6])
+    y = np.array([1,4,8,9,0,10,10,10,10,10])
+
+    >> output: array([ True, False, False,  True, False, False])
+    """
+    
+    return np.in1d(array1,array2)
+
+
+# --- computing eigenvalues ----
+"""
+Note: 
+eigh: eigenvalues are sorted, but only works for symmetric matricies
+
+eig: works on non-symmetric matricies, but eigenvalues not sorted
+"""
+def check_symmetric(a, rtol=1e-05, atol=1e-08):
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+is_symmetric = check_symmetric
+
+def eig_vals_vecs(
+    array,
+    verbose = True):
+    
+    if not check_symmetric(array):
+        raise Exception("")
+    
+    eigvals,eigvecs = np.linalg.eigh(array.astype('float'))
+    return eigvals,eigvecs 
+
+eig_vals_vecs_of_symmetric = eig_vals_vecs
+
+def eig_vals_vecs_of_nonsymmetric(
+    array,
+    verbose = False):
+    if verbose:
+        print(f"**warning: eigenvalues are not ordered")
+        print(f"Columns arae eigenvectors")
+    eigvals,eigvecs = np.linalg.eig(array.astype('float'))
+    
+    return eigvals,eigvecs 
+    
+
+def diagonal_vector_from_array(array):
+    return np.diag(array)
+def diagonal_matrix_from_array(array):
+    return np.diag(np.diag(array))
+    
+
+        
+    
+    
     
 import numpy_utils as nu
