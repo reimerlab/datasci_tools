@@ -436,7 +436,7 @@ def set_node_attributes_dict(G,attrs):
     nx.set_node_attributes(G, attrs)
 
 def relabel_node_names(G,mapping,copy=False):
-    nx.relabel_nodes(G, mapping, copy=copy)
+    G = nx.relabel_nodes(G, mapping, copy=copy)
     print("Finished relabeling nodes")
     return G
     
@@ -2138,11 +2138,13 @@ def graph_to_edges_and_weights(G):
 def edges(G):
     return np.array(list(G.edges()))
 
-def edges_and_weights_to_graph(edges_list,
-                              weights_list=None):
+def edges_and_weights_to_graph(
+    edges_list,
+    weights_list=None,
+    graph_type = "Graph"):
     if weights_list is None:
         weights_list = np.ones(len(edges_list))
-    G = nx.Graph()
+    G = getattr(nx,graph_type)()
     G.add_weighted_edges_from([list(k)+[v] for k,v in zip(edges_list,weights_list)])
     return G
 
@@ -2421,6 +2423,7 @@ def connected_components_subgraphs(G):
 
 # --------------------- 6/14: For help with queying graphs with datatables --------- #
 upstream_name = "u"
+node_id_default = upstream_name
 downstream_name = "v"
 import general_utils as gu
 def node_df(
@@ -3425,7 +3428,10 @@ def local_radius_conn_comps(G,nodes,radius,
 def expand_nodes_to_all_nodes_on_path_between_nodes(G,nodes):
     return xu.all_nodes_on_shortest_paths_between_nodes(G,nodes)
 
-def set_node_attributes_from_df(G,df,index_name):
+def set_node_attributes_from_df(
+    G,
+    df,
+    index_name=node_id_default):
     nx.set_node_attributes(G, df.set_index(index_name).to_dict('index'))
     return G
 
@@ -3866,8 +3872,10 @@ def G_from_adjacency_matrix(
     if nodelist is not None:
         if len(nodelist) != len(G_rec):
             raise Exception("")
-
-        G_rec = xu.relabel_node_names(G_rec,{i:k for i,k in enumerate(nodelist)})
+        #print(np.max(list(G_rec.nodes())))
+        #print(f"nodelist = {np.max(nodelist)}")
+        G_rec = xu.relabel_node_names(G_rec,{i:k for i,k in enumerate(nodelist)},copy=True)
+        #print(np.max(list(G_rec.nodes())))
 
     if plot:
         nx.draw(G_rec,with_labels = True)
@@ -4025,7 +4033,7 @@ def set_node_attribute(
 def nodes_with_non_none_attributes(
     G,
     attribute_name,
-    node_name = "u",
+    node_name = node_id_default,
     return_attribute_value=False,
     verbose=False):
     """
@@ -4667,6 +4675,50 @@ def shortest_path_graph_from_most_upstream(
     
     return G.subgraph(nodes).copy()
 
+
+def undirected_sym_G_from_DiG(
+    G,
+    keep_node_attributes=True,
+    verbose = False,):
+    """
+    Purpose: Want to construct a new graph with:
+    adjusted adjacency matrix, node features
+
+    Pseudocode: 
+    1) Export the adjacency matrix with the node names
+    2) Convert the adjacency matrix into a symmetric one
+    3) Use new adjacency matrix and node names to create a new graph
+
+    """
+    #1) Export the adjacency matrix with the node names
+    A, nodes = xu.adjacency_matrix(
+        G,
+        return_nodelist = True 
+    )
+
+    #2) Convert the adjacency matrix into a symmetric one
+    A_undir = (A + A.T)/2
+    
+    #3) Use new adjacency matrix and node names to create a new graph
+    G_undir = xu.G_from_adjacency_matrix(
+        A_undir,
+        nodelist = nodes,
+    )
+
+    if keep_node_attributes:
+        #1b) Export the node attributes
+        node_df = xu.node_df(G)
+
+        xu.set_node_attributes_from_df(
+            G_undir,
+            node_df,
+        )
+        
+    if verbose:
+        print(f"After symmmetric conversion to undirected graph")
+        xu.print_node_edges_counts(G_undir)
+
+    return G_undir
 
 
 
