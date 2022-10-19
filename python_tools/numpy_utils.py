@@ -1839,13 +1839,65 @@ def eig_vals_vecs_of_nonsymmetric(
     eigvals,eigvecs = np.linalg.eig(array.astype('float'))
     
     return eigvals,eigvecs 
-    
+
+def eigenvalue_max(array):
+    return np.max(np.linalg.eig(array)[0])
+def eigenvalue_max_sym(array):
+    return np.max(np.linalg.eigh(array)[0])
+def eigenvalue_min(array):
+    return np.min(np.linalg.eig(array)[0])
 
 def diagonal_vector_from_array(array):
     return np.diag(array)
 def diagonal_matrix_from_array(array):
     return np.diag(np.diag(array))
+
+
+def rows_columns_restriction(
+    array,
+    rows,
+    columns,
+    filter_away = False):
+    """
+    Purpose: To select only certain
+    rows and columns from an array
     
+    Ex: 
+    a = np.arange(20).reshape((5,4))
+    nu.rows_columns_restriction(
+        a,
+        rows = [0,1,3],
+        columns = [0,2]
+    )
+    
+    """
+    if filter_away:
+        rows = np.delete(np.arange(array.shape[0]),rows)
+        columns = np.delete(np.arange(array.shape[1]),columns)
+    return array[np.ix_(rows,columns)]
+    
+def rows_columns_delete(
+    array,
+    rows,
+    columns,
+    ):
+    """
+    Purpos: To delete rows and columns
+    from an array
+    
+    a = np.arange(20).reshape((5,4))
+    nu.rows_columns_delete(
+        a,
+        rows = [0,1,3],
+        columns = [0,2],
+
+    )
+    """
+    return rows_columns_restriction(
+    array,
+    rows,
+    columns,
+    filter_away = True)
 
         
     
