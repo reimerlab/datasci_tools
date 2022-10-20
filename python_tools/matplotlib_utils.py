@@ -1764,4 +1764,28 @@ def example_plot_color_maps():
     
     plot_color_gradients('Cyclic', ['twilight', 'twilight_shifted', 'hsv'])
     
+import matplotlib
+def set_default_settings():
+    matplotlib.rcParams.update(matplotlib.rcParamsDefault)
+reset_rcparams = set_default_settings
+    
+def example_change_axes_colors():
+    plt.plot([1,2,3])
+    ax = plt.gca()
+    ax.spines["bottom"].set_color("green")      # x axis line
+    ax.spines["top"].set_color("purple")
+    ax.spines["left"].set_color("brown")        # y axis line
+    ax.tick_params(axis="x", colors="red")      # x tick labels
+    ax.tick_params(axis="y", colors="orange")   # y tick labels
+    plt.show()
+    
+def set_axis_color(
+    ax,
+    color,
+    axis = "x",
+    border_side = "bottom"):
+    
+    ax.spines[border_side].set_color(color)
+    ax.tick_params(axis=axis, colors=color)
+    
 import matplotlib_utils as mu
