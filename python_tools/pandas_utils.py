@@ -862,6 +862,9 @@ def duplicated_col_value_rows(
     """
     col = nu.convert_to_array_like(col)
     return df[df.duplicated(subset=col,keep=False)]
+
+repeated_col_value_rows = duplicated_col_value_rows
+
 def filter_away_rows_with_duplicated_col_value(
     df,
     col,
