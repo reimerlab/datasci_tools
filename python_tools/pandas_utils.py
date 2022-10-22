@@ -2929,5 +2929,21 @@ def dict_column_to_columns(
     else:
         return df_with_dicts
     
+def map_column_with_dict(
+    df,
+    column,
+    dict_map,
+    default_value=None,
+    ):
+    
+    df[column] = pu.new_column_from_dict_mapping(
+        df,
+        dict_map=dict_map,
+        column_name=column,
+        default_value=default_value,
+    )
+    
+    return df
+    
     
 import pandas_utils as pu

@@ -967,14 +967,17 @@ def stacked_bar_graph(
     plot_twin_counts = False,
     twin_color = "blue",
     labels = None,
+    labels_map = None,
     fontsize_axes = None,
     x_multiplier = 1,
     legend = True,
     ):
     """
     Purpose: Plot a stacked bar graph
-
     """
+    if labels_map is None:
+        labels_map = dict()
+    
     df = df.query(f"({x} >= {x_min}) & ({x} <= {x_max})")
     fig,ax = plt.subplots(1,1,figsize = figsize)
 
@@ -1020,7 +1023,7 @@ def stacked_bar_graph(
         ax2.bar(x = x_range,
                height = height ,
                        bottom = previous_count,
-                        label=lab,
+                        label=labels_map.get(lab,lab),
                        alpha = alpha,
                        width = width,
                        color = color_dict.get(lab,None)
@@ -1030,7 +1033,7 @@ def stacked_bar_graph(
 
     if legend:
         ax2.legend()
-    ax2.set_xlim([np.min(x_range),np.max(x_range)])
+    ax2.set_xlim([np.min(x_range) - width,np.max(x_range)])
     ax2.set_ylim([0,np.max(previous_count)])
     ax2.tick_params(axis='y',)# labelcolor=twin_color)
         
