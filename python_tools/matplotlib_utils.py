@@ -1020,13 +1020,14 @@ def stacked_bar_graph(
         else:
             continue
 
+        curr_label = labels_map.get(lab,lab)
         ax2.bar(x = x_range,
                height = height ,
                        bottom = previous_count,
-                        label=labels_map.get(lab,lab),
+                        label=curr_label,
                        alpha = alpha,
                        width = width,
-                       color = color_dict.get(lab,None)
+                       color = color_dict.get(curr_label,None)
                        )
 
         previous_count += height
