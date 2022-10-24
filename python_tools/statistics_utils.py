@@ -4,6 +4,8 @@ import numpy_utils as nu
 def ensure_scalar(array):
     if nu.is_array_like(array):
         return len(array)
+    else:
+        return array
 
 def precision(TP,FP):
     TP = ensure_scalar(TP)

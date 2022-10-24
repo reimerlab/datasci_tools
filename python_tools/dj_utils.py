@@ -190,6 +190,117 @@ def append_table_to_pairwise_table(
     return final_table
 
 
+parameter_datatype_lists = [
+    "int unsigned",
+    "float",
+    "double",
+    "tinyint unsigned"
+]
+def parameter_datatype(
+    parameter,
+    int_default = "int",
+    default_type = None,
+    blob_type = "longblob"):
+    
+    if default_type in parameter_datatype_lists:
+        return default_type
+    
+    curr_type_str = str(type(parameter))
+    if default_type is not None:
+        curr_type_str = str(default_type)
+    
+    if "int" in curr_type_str:
+        try:
+            if parameter >= 0:
+                return f"{int_default} unsigned"
+            else:
+                return f"{int_default}"
+        except:
+            return f"{int_default}"
+    elif "str" in curr_type_str:
+        return f"varchar({len(parameter)+ 10})"
+    elif ("float" in curr_type_str) or ("double" in curr_type_str):
+        return "float"
+    elif "bool" in curr_type_str:
+        return "tinyint unsigned"
+    elif "tuple" or "blob" in curr_type_str:
+        return blob_type
+    else:
+        raise Exception(f"Unknown type: {type(parameter)}")
+        
+import data_struct_utils as dsu
+def parameter_datatype_description(kwargs_dict,
+                                  kwargs_datatype_dict = None,
+                                   add_null = True,
+                                  verbose = False,):
+    """
+    To generate the the datatype part of a parameter 
+    table definition
+    
+    --- Exmaple--
+    new_str = parameter_datatype_description(kwargs_dict,
+                                         kwargs_datatype_dict = dict(filter_by_volume_threshold="new datatype")
+                                        )
+    print(new_str)
+                                        
+    """
+    if kwargs_datatype_dict is None:
+        kwargs_datatype_dict = {}
+    total_str = []
+    for k,v in kwargs_dict.items():
+        if k in kwargs_datatype_dict:
+            datatype_str = kwargs_datatype_dict[k]
+        else:
+            if isinstance(kwargs_dict,dsu.DictType):
+                default_type = kwargs_dict._types.get(k,None)
+            else:
+                default_type = None
+            datatype_str = parameter_datatype(v,default_type=default_type)
+        
+        if add_null:
+            curr_str= f"{k}=NULL: {datatype_str}"
+        else:
+            curr_str= f"{k}: {datatype_str}"
+            
+        if verbose:
+            print(curr_str)
+        total_str.append(curr_str)
+        
+    return "\n".join(total_str)
+
+def table_definition_from_example_dict(
+    kwargs_dict,
+    kwargs_datatype_dict = None,
+    definition_description = None,
+    add_name_description_to_parameters = False,
+    verbose = False
+    ):
+    
+    total_str = []
+    if definition_description is not None:
+        if definition_description[0] != "#":
+            total_str.append(f"# {definition_description}")
+        else:
+            total_str.append(definition_description)
+            
+    total_str.append("->master\n---")
+    param_str = parameter_datatype_description(kwargs_dict,
+                                              kwargs_datatype_dict = kwargs_datatype_dict,
+                                              verbose = False)
+    total_str.append(param_str)
+    
+    if add_name_description_to_parameters:
+        if "name" not in kwargs_dict:
+            total_str.append("name=NULL: varchar(24)")
+        if "description" not in kwargs_dict:
+            total_str.append("description=NULL: varchar(120)")
+        
+    total_str_comb = "\n".join(total_str)
+    
+    if verbose:
+        print(total_str_comb)
+        
+    return total_str_comb
 
 
 restrict_table_from_list = pu.restrict_df_from_list
