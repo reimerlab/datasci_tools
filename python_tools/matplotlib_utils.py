@@ -1313,6 +1313,8 @@ def histograms_overlayed(
                   scatterpoints=1, 
                   fontsize=fontsize_legend)
         
+        mu.set_legend_outside_plot(curr_ax)
+        
         title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
         print(title)
         
@@ -1347,7 +1349,8 @@ def histogram_2D_overlayed(
     xlim = None,
     ylim = None,
     same_axis = False,
-    verbose = False
+    verbose = False,
+    bins = None,
     ):
     """
     Purpose: To plot a joint plot for different attributes
@@ -1358,7 +1361,15 @@ def histogram_2D_overlayed(
 
     if hue_order is None:
         hue_order = df[hue].unique()
+        
+    if xlim == "min_max":
+        xlim = [df[x].min(),df[x].max()]
+    if ylim == "min_max":
+        ylim = [df[y].min(),df[y].max()]
 
+    marginal_kws = dict()
+    if bins is not None:
+        marginal_kws["bins"]=bins
     if not same_axis:
         for ct in hue_order:
             if not pu.is_column_numeric(df,hue):
@@ -1379,6 +1390,9 @@ def histogram_2D_overlayed(
                     hue=hue_secondary,
                     xlim= xlim,
                     ylim =ylim,
+                    marginal_kws=marginal_kws,
+                    joint_kws = marginal_kws
+                    
                 )
 
             plt.show()

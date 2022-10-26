@@ -2944,7 +2944,75 @@ def map_column_with_dict(
     )
     
     return df
+
+def set_categorical_order_on_column(
+    df,
+    column,
+    order,
+    order_in_least_to_greatest = False,
+    ):
+    
+    if not order_in_least_to_greatest:
+        order = list(np.flip(order))
+    
+    df[column] = df[column].astype("category")
+    df[column] = df[column].cat.set_categories(order)
+    return df
+
+def sort_df_by_categorical_column(
+    df,
+    column,
+    order,
+    order_in_least_to_greatest = False,
+    ascending = False,
+    ):
+    
+    """
+    Purpose: To order a dataframe from 
+    a categorical column
+    """
+    
+    df_with_order = set_categorical_order_on_column(
+        df,
+        column,
+        order = order,
+        order_in_least_to_greatest=order_in_least_to_greatest,
+    )
+
+    return pu.sort_df_by_column(
+        df_with_order,
+        columns=column,
+        ascending = ascending)
     
 df_of_coordinates_and_labels_from_dict = nu.df_of_coordinates_and_labels_from_dict    
+
+def aggregate_over_column(
+    df,
+    group_column,
+    column,
+    aggregator = "sum",
+    divisor = None
+    ):
+    """
+    Purpose: to aggregate a column over
+    the dataframe
+    
+    Ex: 
+    pu.aggregate_over_column(
+        edits_df,
+        group_column = "split_type",
+        column = "error_branches_skeleton_length",
+        divisor = 1000,
+    )
+    """
+
+    aggregator = "sum"
+    column = "error_branches_skeleton_length"
+    group_column = "split_type"
+    divisor = 1000
+    aggr_df = getattr(df[[group_column,column]].groupby([group_column]),aggregator)()
+    if divisor is not None:
+        aggr_df[column] = aggr_df[column]/divisor
+    return aggr_df
 
 import pandas_utils as pu
