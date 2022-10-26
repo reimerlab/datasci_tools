@@ -2945,5 +2945,6 @@ def map_column_with_dict(
     
     return df
     
-    
+df_of_coordinates_and_labels_from_dict = nu.df_of_coordinates_and_labels_from_dict    
+
 import pandas_utils as pu

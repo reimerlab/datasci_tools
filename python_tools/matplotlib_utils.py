@@ -1792,4 +1792,63 @@ def set_axis_color(
     ax.spines[border_side].set_color(color)
     ax.tick_params(axis=axis, colors=color)
     
+def plot_jointplot_from_df_coordinates_with_labels(
+    df,
+    labels_column = "label",
+    x = "x",
+    y = "y",
+    kind="hist",
+    alpha = 0.7,
+    common_norm = False,
+    joint_kws = None,
+    marginal_kws = None,
+    title = None,
+    **kwargs
+    ):
+    """
+    Purpose: To plot a histogram of a 
+    dataframe  or dictionary of coordinates
+    with their labels
+    
+    
+    """
+    if marginal_kws is None:
+        marginal_kws = dict()
+    if joint_kws is None:
+        joint_kws = dict()
+
+    if type(df) == dict:
+        df = nu.df_of_coordinates_and_labels_from_dict(df,label_name = labels_column)
+    
+    ax = sns.jointplot(
+        data=df, 
+        x=x, 
+        y=y,
+        kind=kind,
+        hue=labels_column,
+        #cbar_kws=dict(shrink=.75),
+        joint_kws=dict(
+            joint_kws,
+            alpha = alpha,
+        ),
+        #joint_kws={'gridsize':100, 'bins':'log', 'xscale':'log', 'yscale':'log'}, 
+        marginal_kws=dict(
+            marginal_kws,
+            stat="density",
+            common_norm=common_norm
+            #"log_scale":True,
+        ),
+
+    )
+    
+    if title is not None:
+        ax.fig.suptitle(title)
+        ax.ax_joint.collections[0].set_alpha(0)
+        ax.fig.tight_layout()
+        ax.fig.subplots_adjust(top=0.95) # Reduce plot to make room 
+    
+    sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
+    plt.show()
+    return ax
+    
 import matplotlib_utils as mu

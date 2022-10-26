@@ -727,6 +727,8 @@ def convert_to_array_like(array,include_tuple=False):
     return array
 
 array_like = convert_to_array_like
+def to_list(array):
+    return convert_to_array_like(array,include_tuple = True)
 
 def original_array_indices_of_elements(original_array,
                                       matching_array):
@@ -1030,8 +1032,15 @@ def interpercentile_range(array,range_percentage,axis = None,verbose = False):
 def set_random_seed(seed):
     np.random.seed(seed)
     
+    
+"""
+Can also shuffle with 
+idx = np.random.shuffle(idx)
+"""
 def randomly_shuffle_array(array,**kwargs):
     return np.random.choice(array, len(array), replace=False,**kwargs)
+
+
 def randomly_sample_array(array,n_samples,replace = True,**kwargs):
     n_samples = int(n_samples)
     return np.random.choice(array,n_samples,replace = replace,**kwargs)
@@ -1900,7 +1909,40 @@ def rows_columns_delete(
     filter_away = True)
 
         
+import pandas as pd
+def array_of_coordinates_and_labels_from_dict(
+    coordinate_dict,
+    label_name = "label",
+    return_df = False):
+    """
+    Purpose: to convert a dictionary with a label
+    mapping to coordinates to an array of coordinaates
+    and an array of labels (can export df as well)
+    """
+
     
+    all_comp_scatters_comb = {k:np.vstack(v) for k,v in coordinate_dict.items()}
+    all_comp_scatters_array = np.vstack(list(all_comp_scatters_comb.values()))
+    compartment_labels = np.hstack([[k]*len(v) for k,v in all_comp_scatters_comb.items()])
+
+    if return_df:
+        df = pd.DataFrame(all_comp_scatters_array)
+        df.columns = ["x","y","z"]
+        df[label_name] = compartment_labels
+        return_value = df
+    else:
+        return_value = all_comp_scatters_array,compartment_labels
+
+    return return_value
     
+def df_of_coordinates_and_labels_from_dict(
+    coordinate_dict,
+    label_name = "label",
+    ):
+    
+    return nu.array_of_coordinates_and_labels_from_dict(
+        coordinate_dict,
+        label_name = label_name,
+        return_df = True)
     
 import numpy_utils as nu
