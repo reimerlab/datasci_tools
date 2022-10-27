@@ -2241,8 +2241,12 @@ def coordinates_from_df(
         suffix = f"_{suffix}"
     else:
         suffix = ""
-    return df[
-        [f"{name}_{a}{suffix}" for
+        
+    if name is not None:
+        prefix = f"{name}_"
+    else:
+        prefix = ""
+    return df[[f"{prefix}{a}{suffix}" for
         a in axes]].to_numpy().astype('float')
     
     
@@ -3014,5 +3018,30 @@ def aggregate_over_column(
     if divisor is not None:
         aggr_df[column] = aggr_df[column]/divisor
     return aggr_df
+
+
+def label_to_coordinate_dict_from_df(
+    df,
+    label_column = "label",
+    coordinate_prefix = None,
+    coordinate_suffix = None,):
+    """
+    Purpose: To convert a dataframe with coordinatea and labels
+    into a dictionary mapping the labels to the coordinates
+    """
+
+    df_divided, labels = pu.divide_dataframe_by_column_value(
+        df,
+        label_column
+    )
+    coord_dict = dict([(lab,pu.coordinates_from_df(
+        k,
+        name = coordinate_prefix,
+        suffix = coordinate_suffix))
+     for k,lab in zip(df_divided,labels)])
+
+    return coord_dict
+                  
+                  
 
 import pandas_utils as pu

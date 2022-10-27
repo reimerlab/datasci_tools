@@ -135,9 +135,11 @@ def get_coordinate_distance_matrix(coordinates):
 import scipy.spatial as spatial
 def distance_matrix(
     array1,
-    array2,
+    array2=None,
     p=2, #which norm to use
     verbose = False,
+    threshold = None,
+    default_value = np.inf,
     **kwargs
     ):
     """
@@ -147,8 +149,14 @@ def distance_matrix(
     --> returns M,N array
     
     """
+    if array2 is None:
+        array2 = array1.copy()
+#     if threshold is not None:
+#         kwargs["threshold"] = threshold
     st = time.time()
     return_matrix = spatial.distance_matrix(array1,array2,p=p,**kwargs)
+    if threshold is not None:
+        return_matrix[return_matrix > threshold] = default_value
     if verbose:
         print(f"Total time for distance matrix = {time.time() - st}")
         
@@ -1117,6 +1125,29 @@ def closest_dist_between_coordinates(
         return dist,array_1_idx,array_2_idx
     else:
         return dist
+    
+def closest_idx_for_each_coordinate(
+    array,
+    array_for_idx,
+    closest_idx_algorithm = "kdtree",
+    verbose = False,
+    ):
+    
+    if verbose:
+        st = time.time()
+
+    if closest_idx_algorithm == "kdtree":
+        dist,closest_idx = KDTree(array_for_idx).query(array)
+    elif closest_idx_algorithm == "linalg":
+        closest_idx = np.array([np.argmin(np.linalg.norm(array_for_idx - k, axis = 1))
+                               for k in array])
+    else:
+        raise Exception("")
+
+    if verbose:
+        print(f"Total time for closest matching algorithm = {time.time() - st}")
+        
+    return closest_idx
 
 def unravel_index(idx,array_shape):
     return np.unravel_index(idx, array_shape)
@@ -1914,6 +1945,7 @@ import pandas_utils as pu
 def array_of_coordinates_and_labels_from_dict(
     coordinate_dict,
     label_name = "label",
+    attributes_dict = None,
     return_df = False):
     """
     Purpose: to convert a dictionary with a label
@@ -1923,9 +1955,12 @@ def array_of_coordinates_and_labels_from_dict(
 
     
     all_comp_scatters_comb = {k:np.vstack(v) for k,v in coordinate_dict.items()}
+    
+        
     if len(all_comp_scatters_comb) > 0:
         all_comp_scatters_array = np.vstack(list(all_comp_scatters_comb.values()))
         compartment_labels = np.hstack([[k]*len(v) for k,v in all_comp_scatters_comb.items()])
+        
     else:
         all_comp_scatters_array = np.array([])
         compartment_labels = np.array([])
@@ -1952,5 +1987,46 @@ def df_of_coordinates_and_labels_from_dict(
         coordinate_dict,
         label_name = label_name,
         return_df = True)
+
+import networkx_utils as xu
+def mean_coordinates_from_radius_threshold_clustering(
+    array,
+    radius,
+    verbose = False,
+    return_clustering_idx = False,):
+    """
+    Purpose: To reduce a set of coordinates to 
+    the mean of the cluster of coordinates where
+    coordinates are clustered together if within
+    a certain threshold distance of another in the group
+
+    Pseudocode: 
+    1) get a radius threshold graph of the coordinates
+    2) Divide nodes of graph into connected components
+    3) For each connected component compute the mean coordinate
+    4) Stack coordinates
+    """
+
+    G_closest = xu.radius_threshold_graph_from_coordinates(
+        coordinates = array,
+        radius = radius,
+    )
+    
+    conn_comp = xu.connected_components(G_closest)
+    
+    if verbose:
+        print(f"# of conn_comp = {len(conn_comp)}")
+        
+    mean_coordinates = np.array([
+        np.mean(array[c].reshape(-1,3),axis=0)
+        for c in conn_comp]).reshape(-1,3)
+    
+    if verbose:
+        print(f"mean_coordinates = {mean_coordinates}")
+        
+    if return_clustering_idx:
+        return mean_coordinates,conn_comp
+    else:
+        return mean_coordinates
     
 import numpy_utils as nu

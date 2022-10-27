@@ -1196,10 +1196,15 @@ def n_downstream_nodes(G,node):
 def all_downstream_nodes(
     G,
     node,
-    include_self = False):
+    include_self = False,
+    return_empty_list_if_none=True):
     curr_nodes = np.unique(np.array(xu.downstream_edges(G,node)).ravel())
     if not include_self:
-        return list(curr_nodes[curr_nodes!=node])
+        return_list = list(curr_nodes[curr_nodes!=node])
+        if return_empty_list_if_none:
+            if nu.is_array_like(return_list[0]):
+                return_list = []
+        return return_list
     else:
         return_nodes = list(curr_nodes)
         if len(return_nodes) == 0:
@@ -1231,9 +1236,12 @@ def all_downstream_nodes_from_nodes(G,nodes):
 
 
 # ---- upstream version of all nodes ----------
-def all_upstream_nodes(G,node):
+def all_upstream_nodes(G,node,include_self=False):
     curr_nodes = np.unique(np.array(xu.upstream_edges(G,node)).ravel())
-    return list(curr_nodes[curr_nodes!=node])
+    if not include_self:
+        curr_nodes = curr_nodes[curr_nodes!=node]
+    return list(curr_nodes)
+
 def n_all_upstream_nodes(G,node):
     return len(all_upstream_nodes(G,node))
 def all_upstream_nodes_including_node(G,node):
@@ -4721,6 +4729,144 @@ def undirected_sym_G_from_DiG(
     return G_undir
 
 
+def radius_threshold_graph_from_coordinates(
+    coordinates,
+    radius,
+    ):
+    """
+    Purpose: Create a graph where the nodes of
+    the graph come from the coordinates and the 
+    edges are between any 2 coordinates that
+    are within a threshold distance of each other
+    """
+    adj_matrix = nu.distance_matrix(
+        coordinates,
+        threshold = radius,
+        default_value = -1,
+    )
+    
+    adj_matrix = adj_matrix + np.eye(len(adj_matrix))*-1
+    adj_matrix[adj_matrix >= 0] = 1
+    adj_matrix[adj_matrix==-1] = 0
+    
+    G = xu.G_from_adjacency_matrix(adj_matrix)
+    return G
+
+def filter_away_downstream_nodes(
+    G,
+    nodes,
+    verbose = False,
+    ):
+    """
+    Purpose: to eliminate any nodes
+    that are downstream of another in 
+    a group
+
+    Pseudocode: 
+    For each node in the list:
+    1) Compute the downstream nodes
+    2) Do a set difference between the list to check
+    and the downstream nodes to eliminate them
+    
+    Ex: 
+    xu.filter_away_downstream_nodes(
+        G,
+        ['L0_27', 'L1_17', 'L2_0', 'L3_1', 'L4_2', 'L5_9', 'L6_0',"S0"]
+    )
+    """
+    all_downstream = np.concatenate([xu.all_downstream_nodes(G,n,return_empty_list_if_none=True) for n in nodes])
+    nodes_no_downstream = np.setdiff1d(nodes,all_downstream)
+    
+    if verbose:
+        print(f"List filtered from {len(nodes)} nodes to {len(nodes_no_downstream)} nodes")
+        
+    return nodes_no_downstream
+
+def values_on_relative_nodes(
+    G,
+    node,
+    attribute = "skeletal_length",
+    default_value = 0,
+    direction = "downstream",
+    include_self = True,
+    aggr_func = np.sum,
+    verbose = False,
+    return_nodes = False,
+    ):
+    if type(aggr_func) == str:
+        aggr_func = getattr(np,aggr_func)
+
+    node_func = getattr(xu,f"all_{direction}_nodes")
+
+    #1) Get all of the directional nodes
+    nodes = node_func(G,node,include_self=include_self)
+    if verbose:
+        print(f"{direction} Nodes = {nodes}")
+
+    #2) Collect the attribute from all the nodes
+    attributes = [G.nodes[n].get(attribute,default_value) for n in nodes]
+    if verbose:
+        print(f"attributes = {attributes}")
+        
+    if return_nodes:
+        return attributes,nodes
+    else:
+        return attributes
+    
+def aggregate_values_on_relative_nodes(
+    G,
+    node,
+    attribute = "skeletal_length",
+    default_value = 0,
+    direction = "downstream",
+    include_self = True,
+    aggr_func = np.sum,
+    verbose = False,
+    ):
+    """
+    Purpose: To aggregate an attribute value
+    downstream of a node
+
+    Pseudocode: 
+    1) Get all of the directional nodes
+    2) Collect the attribute from all the nodes
+    3) Aggregate the attribute
+    """
+    attributes = values_on_relative_nodes(
+        G,
+        node,
+        attribute = attribute,
+        default_value = default_value,
+        direction = direction,
+        include_self = include_self,
+        aggr_func = aggr_func,
+        verbose = verbose,
+        return_nodes = False,
+        )
+    
+    #3) Aggregate the attribute
+    aggr_value = aggr_func(attributes)
+
+    if verbose:
+        print(f"Final value = {aggr_value}")
+    
+    return aggr_value
+
+def sum_downstream_attribute(
+    G,
+    node,
+    attribute,
+    include_self = True,
+    **kwargs
+    ):
+    return aggregate_values_on_relative_nodes(
+        G,
+        node,
+        attribute,
+        direction = "downstream",
+        include_self=include_self,
+        **kwargs
+    )
 
 import networkx_utils as xu
     
