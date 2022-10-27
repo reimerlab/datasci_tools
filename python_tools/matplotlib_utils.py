@@ -1351,6 +1351,7 @@ def histogram_2D_overlayed(
     same_axis = False,
     verbose = False,
     bins = None,
+    show_legend = True,
     ):
     """
     Purpose: To plot a joint plot for different attributes
@@ -1382,6 +1383,9 @@ def histogram_2D_overlayed(
             curr_df = df.query(query)
             if verbose:
                 print(f"len(query_df) = {len(curr_df)}")
+                
+            if not show_legend:
+                hue_secondary = None
             sns.jointplot(
                     data=curr_df,
                     x=x,
@@ -1401,6 +1405,9 @@ def histogram_2D_overlayed(
             curr_df = df.query(f"{hue} in {hue_order}")
         else:
             curr_df= df
+            
+        if not show_legend:
+            hue = None
         sns.jointplot(
                     data=curr_df,
                     x=x,
@@ -1411,7 +1418,8 @@ def histogram_2D_overlayed(
                     ylim =ylim,
                 )
         
-        plt.legend()
+        if show_legend:
+            plt.legend()
         
     
 
@@ -1806,6 +1814,7 @@ def set_axis_color(
     ax.spines[border_side].set_color(color)
     ax.tick_params(axis=axis, colors=color)
     
+from matplotlib.colors import LogNorm, Normalize
 def plot_jointplot_from_df_coordinates_with_labels(
     df,
     labels_column = "label",
@@ -1815,8 +1824,11 @@ def plot_jointplot_from_df_coordinates_with_labels(
     alpha = 0.7,
     common_norm = False,
     joint_kws = None,
+    bins = None,
     marginal_kws = None,
     title = None,
+    logscale_pixels = False,
+    cbar = False,
     **kwargs
     ):
     """
@@ -1834,24 +1846,42 @@ def plot_jointplot_from_df_coordinates_with_labels(
     if type(df) == dict:
         df = nu.df_of_coordinates_and_labels_from_dict(df,label_name = labels_column)
     
+    marginal_kws=dict(
+            marginal_kws,
+            stat="density",
+            common_norm=common_norm
+            #"log_scale":True,
+    )
+    joint_kws=dict(
+            joint_kws,
+            alpha = alpha,
+        )
+    if logscale_pixels:
+        #joint_kws["bins"]='log'
+        #kwargs["bins"] = 'log'
+        
+        joint_kws.update(dict(
+            cbar = cbar,
+            norm=LogNorm(), 
+            vmin=None, 
+            vmax=None,
+        ))
+    
+    if bins is not None:
+        marginal_kws["bins"]=bins
+        joint_kws["bins"] = bins
     ax = sns.jointplot(
         data=df, 
         x=x, 
         y=y,
         kind=kind,
+        
         hue=labels_column,
         #cbar_kws=dict(shrink=.75),
-        joint_kws=dict(
-            joint_kws,
-            alpha = alpha,
-        ),
         #joint_kws={'gridsize':100, 'bins':'log', 'xscale':'log', 'yscale':'log'}, 
-        marginal_kws=dict(
-            marginal_kws,
-            stat="density",
-            common_norm=common_norm
-            #"log_scale":True,
-        ),
+        marginal_kws=marginal_kws,
+        joint_kws = joint_kws,
+        **kwargs
 
     )
     
@@ -1861,8 +1891,43 @@ def plot_jointplot_from_df_coordinates_with_labels(
         ax.fig.tight_layout()
         ax.fig.subplots_adjust(top=0.95) # Reduce plot to make room 
     
-    sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
+    if labels_column is not None:
+        sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
     plt.show()
     return ax
+    
+import matplotlib as mpl
+def example_stacked_histogram():
+
+    sns.set_theme(style="ticks")
+
+    diamonds = sns.load_dataset("diamonds")
+
+    f, ax = plt.subplots(figsize=(7, 5))
+    sns.despine(f)
+
+    sns.histplot(
+        diamonds,
+        x="price", hue="cut",
+        multiple="stack",
+        palette="light:m_r",
+        edgecolor=".3",
+        linewidth=.5,
+        log_scale=True,
+    )
+    ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
+    ax.set_xticks([500, 1000, 2000, 5000, 10000])
+    
+def example_histogram_2d_log_scale_intensity(df):
+    sns.displot(
+        df, 
+        x = "x",
+        y = "y",
+        hue = "label",
+        cbar = True,
+        norm=LogNorm(), 
+        vmin=None, 
+        vmax=None
+    )
     
 import matplotlib_utils as mu

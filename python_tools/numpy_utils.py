@@ -1910,6 +1910,7 @@ def rows_columns_delete(
 
         
 import pandas as pd
+import pandas_utils as pu
 def array_of_coordinates_and_labels_from_dict(
     coordinate_dict,
     label_name = "label",
@@ -1922,14 +1923,21 @@ def array_of_coordinates_and_labels_from_dict(
 
     
     all_comp_scatters_comb = {k:np.vstack(v) for k,v in coordinate_dict.items()}
-    all_comp_scatters_array = np.vstack(list(all_comp_scatters_comb.values()))
-    compartment_labels = np.hstack([[k]*len(v) for k,v in all_comp_scatters_comb.items()])
+    if len(all_comp_scatters_comb) > 0:
+        all_comp_scatters_array = np.vstack(list(all_comp_scatters_comb.values()))
+        compartment_labels = np.hstack([[k]*len(v) for k,v in all_comp_scatters_comb.items()])
+    else:
+        all_comp_scatters_array = np.array([])
+        compartment_labels = np.array([])
 
     if return_df:
-        df = pd.DataFrame(all_comp_scatters_array)
-        df.columns = ["x","y","z"]
-        df[label_name] = compartment_labels
-        return_value = df
+        if len(all_comp_scatters_array) > 0:
+            df = pd.DataFrame(all_comp_scatters_array)
+            df.columns = ["x","y","z"]
+            df[label_name] = compartment_labels
+            return_value = df
+        else:
+            return_value = pu.empty_df()
     else:
         return_value = all_comp_scatters_array,compartment_labels
 
