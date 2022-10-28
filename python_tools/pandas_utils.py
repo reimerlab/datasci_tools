@@ -1861,12 +1861,29 @@ def count_unique_column_values(
     df,
     column,
     sort = False,
-    count_column_name = "unique_counts"):
+    count_column_name = "unique_counts",
+    add_percentage = False,):
     column = list(nu.convert_to_array_like(column))
     return_df =  pu.unique_row_counts(df[column],count_column_name=count_column_name)
     if sort:
         return_df = pu.sort_df_by_column(return_df,count_column_name)
+        
+    if add_percentage:
+        return_df = pu.add_percentage_column(return_df,column = count_column_name)
     return return_df
+
+def add_percentage_column(
+    df,
+    column,
+    percentage_column = None,# "percentage"
+    ):
+    
+    if percentage_column is None:
+        percentage_column = f"percentage ({column})"
+        
+    df[percentage_column] = 100*df[column]/df[column].sum()
+    return df
+    
 
 import numpy_utils as nu
 def intersect_columns(dfs):
@@ -3010,10 +3027,10 @@ def aggregate_over_column(
     )
     """
 
-    aggregator = "sum"
-    column = "error_branches_skeleton_length"
-    group_column = "split_type"
-    divisor = 1000
+#     aggregator = "sum"
+#     column = "error_branches_skeleton_length"
+#     group_column = "split_type"
+#     divisor = 1000
     aggr_df = getattr(df[[group_column,column]].groupby([group_column]),aggregator)()
     if divisor is not None:
         aggr_df[column] = aggr_df[column]/divisor
