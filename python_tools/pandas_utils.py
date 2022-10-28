@@ -2950,12 +2950,15 @@ def dict_column_to_columns(
     else:
         return df_with_dicts
     
-def map_column_with_dict(
+def map_column_with_dict_slow(
     df,
     column,
     dict_map,
     default_value=None,
+    verbose = False,
     ):
+    if verbose:
+        st = time.time()
     
     df[column] = pu.new_column_from_dict_mapping(
         df,
@@ -2963,7 +2966,39 @@ def map_column_with_dict(
         column_name=column,
         default_value=default_value,
     )
+    if verbose:
+        print(f"Total time = {time.time() - st}")
     
+    return df
+
+def map_column_with_dict(
+    df,
+    column,
+    dict_map,
+    default_value = None,
+    verbose = False
+    ):
+    if verbose:
+        st = time.time()
+    original_labels = df[column].to_numpy().copy()
+    for k,v in dict_map.items():
+        df = pu.set_column_subset_value_by_query(
+            df,
+            query = (f"{column} == '{k}'"),
+            column = column,
+            value = v
+
+        )
+
+    # # --- setting the default value ---
+    mask = np.invert(nu.mask_of_array_1_elements_in_array_2(
+        original_labels,
+        list(dict_map.keys())
+    ))  
+
+    df.loc[mask,column] = default_value
+    if verbose:
+        print(f"Total time = {time.time() - st}")
     return df
 
 def set_categorical_order_on_column(

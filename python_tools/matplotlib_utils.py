@@ -1822,6 +1822,7 @@ def plot_jointplot_from_df_coordinates_with_labels(
     y = "y",
     kind="hist",
     alpha = 0.7,
+    color_dict = None,
     common_norm = False,
     joint_kws = None,
     bins = None,
@@ -1838,6 +1839,7 @@ def plot_jointplot_from_df_coordinates_with_labels(
     
     
     """
+    
     if marginal_kws is None:
         marginal_kws = dict()
     if joint_kws is None:
@@ -1849,7 +1851,8 @@ def plot_jointplot_from_df_coordinates_with_labels(
     marginal_kws=dict(
             marginal_kws,
             stat="density",
-            common_norm=common_norm
+            common_norm=common_norm,
+            palette = color_dict,
             #"log_scale":True,
     )
     joint_kws=dict(
@@ -1875,7 +1878,7 @@ def plot_jointplot_from_df_coordinates_with_labels(
         x=x, 
         y=y,
         kind=kind,
-        
+        palette=color_dict,
         hue=labels_column,
         #cbar_kws=dict(shrink=.75),
         #joint_kws={'gridsize':100, 'bins':'log', 'xscale':'log', 'yscale':'log'}, 
@@ -1895,6 +1898,8 @@ def plot_jointplot_from_df_coordinates_with_labels(
         sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
     plt.show()
     return ax
+
+
     
 import matplotlib as mpl
 def example_stacked_histogram():
