@@ -53,6 +53,7 @@ def plot_heatmap(#need to order by
     fontsize_cell=None,
     
     y_label='Statistics',
+    x_label = "Type",
     title = "Autoproofreading Validation"):
 
 
@@ -70,6 +71,8 @@ def plot_heatmap(#need to order by
     """
     if input_row_names is None:
         input_row_names = list(df.index)
+    if input_col_names is None:
+        input_col_names = list(df.columns)
     synapse_types= [k.replace("_"," ") for k in input_row_names]
     score_types = input_col_names
     if df is not None:
@@ -82,7 +85,7 @@ def plot_heatmap(#need to order by
         median_accuracies = data
     #setting the text size
     
-
+    
     accuracies = median_accuracies.T
     cm = accuracies
     normalize = True
@@ -100,7 +103,7 @@ def plot_heatmap(#need to order by
            xticklabels=synapse_types, yticklabels=score_types,
            title=title,
            ylabel=y_label,
-           xlabel='Type')
+           xlabel=x_label)
 
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right",

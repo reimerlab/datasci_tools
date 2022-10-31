@@ -3096,6 +3096,18 @@ def label_to_coordinate_dict_from_df(
      for k,lab in zip(df_divided,labels)])
 
     return coord_dict
+
+
+def xlim_ylim_from_coordinate_df(
+    df,
+    x = "x",
+    y = "y"
+    ):
+    
+    xlim = [df[x].min(),df[x].max()]
+    ylim = [df[y].min(),df[y].max()]
+    
+    return xlim,ylim
                   
                   
 

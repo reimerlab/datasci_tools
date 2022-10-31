@@ -44,6 +44,12 @@ reds = ["coral","red","rosybrown"],
 greys = ["silver","grey","black"],
 )
 
+import seaborn as sns
+colorblind_blue = sns.color_palette("colorblind")[0]
+colorblind_orange = sns.color_palette("colorblind")[3]
+colorblind_green = sns.color_palette("colorblind")[2]
+colorblind_grey = sns.color_palette("colorblind")[-3]
+
 
 def generate_random_color(print_flag=False,colors_to_omit=[]):
     if not nu.is_array_like(colors_to_omit):
@@ -655,6 +661,14 @@ def set_axes_title_size(
     
     return ax
     
+    
+def set_legend_size(
+    ax,
+    fontsize = 20,
+    ):
+    
+    ax.legend(fontsize=fontsize) # using a size in points
+    #plt.legend(fontsize="x-large") # using a named size
 
 
     
@@ -1814,6 +1828,11 @@ def set_axis_color(
     ax.spines[border_side].set_color(color)
     ax.tick_params(axis=axis, colors=color)
     
+    
+def example_invert_axes():
+    plt.gca().invert_yaxis()
+    plt.gca().invert_xaxis()
+    
 from matplotlib.colors import LogNorm, Normalize
 def plot_jointplot_from_df_coordinates_with_labels(
     df,
@@ -1830,6 +1849,14 @@ def plot_jointplot_from_df_coordinates_with_labels(
     title = None,
     logscale_pixels = False,
     cbar = False,
+    flip_y=True,
+    xlim = None,
+    ylim = None,
+    xlabel = None,
+    ylabel = None,
+    fontsize_axes = None,
+    no_tickmarks = False,
+    move_legend_outside = True,
     **kwargs
     ):
     """
@@ -1888,14 +1915,35 @@ def plot_jointplot_from_df_coordinates_with_labels(
 
     )
     
+    if xlim is not None:
+        ax.ax_joint.set_xlim(xlim)
+    if ylim is not None:
+        ax.ax_joint.set_ylim(ylim)
+        
+    if no_tickmarks:
+        xlabel = ""
+        ylabel = ""
+    if xlabel is not None:
+        ax.ax_joint.set_xlabel(xlabel,fontsize = fontsize_axes)
+    if ylabel is not None:
+        ax.ax_joint.set_ylabel(ylabel,fontsize = fontsize_axes)
+    
+    #print(f"flip_y = {flip_y}")
+    if flip_y:
+        ax.ax_joint.invert_yaxis()
+        #ax.ax_marg_y.invert_yaxis()
+    
     if title is not None:
         ax.fig.suptitle(title)
         ax.ax_joint.collections[0].set_alpha(0)
         ax.fig.tight_layout()
         ax.fig.subplots_adjust(top=0.95) # Reduce plot to make room 
     
-    if labels_column is not None:
+    if labels_column is not None and move_legend_outside:
         sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
+        
+    if no_tickmarks:
+        ax.ax_joint.set(xticklabels=[],yticklabels = [])
     plt.show()
     return ax
 
