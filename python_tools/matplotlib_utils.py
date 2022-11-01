@@ -586,7 +586,7 @@ def set_font_size(font_size):
     
     matplotlib.rc('font', **font)
     
-def set_axes_font_size(
+def set_axes_font_size_old(
     ax,
     fontsize = 20,
     x_fontsize = None,
@@ -600,7 +600,11 @@ def set_axes_font_size(
         x_fontsize = fontsize
     if y_fontsize is None:
         y_fontsize = fontsize
+        
+    #ax.set_yticks(ax.get_yticks().tolist())
+    #ax.set_xticks(ax.get_xticks().tolist())
     
+    print(f"fontsize = {fontsize}")
     getattr(ax,f"set_x{attribute}")(
         ax.get_xmajorticklabels(),
         fontsize = x_fontsize,
@@ -614,6 +618,23 @@ def set_axes_font_size(
     
     return ax
 
+def set_axes_font_size(
+    ax,
+    fontsize = 20,
+    x_fontsize = None,
+    y_fontsize = None,
+    x_rotation = 0,#45,
+    ):
+    if x_fontsize is None:
+        x_fontsize = fontsize
+    if y_fontsize is None:
+        y_fontsize = fontsize
+    
+    #print(f"x_fontsize = {x_fontsize}")
+    ax.tick_params(axis='x', which='major', labelsize=x_fontsize,labelrotation=x_rotation)
+    ax.tick_params(axis='y', which='major', labelsize=y_fontsize)
+    return ax
+
 def set_axes_title_size(
     ax,
     fontsize = 20,
@@ -638,28 +659,28 @@ def set_axes_title_size(
     return ax
 
 
-def set_axes_title_size(
-    ax,
-    fontsize = 20,
-    x_fontsize = None,
-    y_fontsize = None,):
+# def set_axes_title_size(
+#     ax,
+#     fontsize = 20,
+#     x_fontsize = None,
+#     y_fontsize = None,):
     
-    if x_fontsize is None:
-        x_fontsize = fontsize
-    if y_fontsize is None:
-        y_fontsize = fontsize
+#     if x_fontsize is None:
+#         x_fontsize = fontsize
+#     if y_fontsize is None:
+#         y_fontsize = fontsize
         
         
-    attribute = "label"
-    getattr(ax,f"set_x{attribute}")(
-        getattr(ax,f"get_x{attribute}")(),
-        fontsize = x_fontsize)
+#     attribute = "label"
+#     getattr(ax,f"set_x{attribute}")(
+#         getattr(ax,f"get_x{attribute}")(),
+#         fontsize = x_fontsize)
 
-    getattr(ax,f"set_y{attribute}")(
-        getattr(ax,f"get_y{attribute}")(),
-        fontsize = y_fontsize)
+#     getattr(ax,f"set_y{attribute}")(
+#         getattr(ax,f"get_y{attribute}")(),
+#         fontsize = y_fontsize)
     
-    return ax
+#     return ax
     
     
 def set_legend_size(
@@ -1854,7 +1875,8 @@ def plot_jointplot_from_df_coordinates_with_labels(
     ylim = None,
     xlabel = None,
     ylabel = None,
-    fontsize_axes = None,
+    fontsize_axes = 40,
+    fontsize_ticks = None,
     no_tickmarks = False,
     move_legend_outside = True,
     **kwargs
@@ -1942,9 +1964,12 @@ def plot_jointplot_from_df_coordinates_with_labels(
     if labels_column is not None and move_legend_outside:
         sns.move_legend(ax.ax_joint, "upper left", bbox_to_anchor=(1.2,1.2))
         
+    if fontsize_ticks is not None:
+        ax.ax_joint = mu.set_axes_font_size(ax.ax_joint,fontsize = fontsize_ticks)
+        
     if no_tickmarks:
         ax.ax_joint.set(xticklabels=[],yticklabels = [])
-    plt.show()
+    #plt.show()
     return ax
 
 
