@@ -2978,11 +2978,17 @@ def map_column_with_dict(
     df,
     column,
     dict_map,
+    use_default_value = True,
     default_value = None,
+    in_place = False,
     verbose = False
     ):
     if verbose:
         st = time.time()
+        
+    if not in_place:
+        df = df.copy()
+        
     original_labels = df[column].to_numpy().copy()
     for k,v in dict_map.items():
         df = pu.set_column_subset_value_by_query(
@@ -2993,13 +2999,15 @@ def map_column_with_dict(
 
         )
 
-    # # --- setting the default value ---
-    mask = np.invert(nu.mask_of_array_1_elements_in_array_2(
-        original_labels,
-        list(dict_map.keys())
-    ))  
+    if use_default_value:
+        # # --- setting the default value ---
+        mask = np.invert(nu.mask_of_array_1_elements_in_array_2(
+            original_labels,
+            list(dict_map.keys())
+        ))  
 
-    df.loc[mask,column] = default_value
+        df.loc[mask,column] = default_value
+        
     if verbose:
         print(f"Total time = {time.time() - st}")
     return df
@@ -3108,6 +3116,32 @@ def xlim_ylim_from_coordinate_df(
     ylim = [df[y].min(),df[y].max()]
     
     return xlim,ylim
+
+def order_columns(
+    df,
+    columns_at_front=None,
+    columns_at_back=None,
+    ):
+    """
+    Purpose: To order the columns of  
+    a dataframe
+    
+    Pseudocode: 
+    
+    """
+    if columns_at_front is None:
+        columns_at_front = []
+    if columns_at_back is None:
+        columns_at_back= []
+        
+    columns_at_front = list(columns_at_front)
+    columns_at_back = list(columns_at_back)
+    
+    columns = list(df.columns)
+    columns_left_over = np.setdiff1d(columns,columns_at_front)
+    columns_left_over = np.setdiff1d(columns,columns_at_back)
+
+    return df[columns_at_front + list(columns_left_over) + columns_at_back]
                   
                   
 

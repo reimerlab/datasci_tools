@@ -1181,7 +1181,7 @@ def bar_plot_parallel_features_by_labels(
                 title += f" \n {title_append}"
         ax.set_title(title)
         
-        
+from collections import Counter
 def histograms_overlayed(
     df,
     column,
@@ -1215,7 +1215,7 @@ def histograms_overlayed(
     same_axis = True,
     
     histtype = "bar",
-    
+    bar_graph_align = "edge",
     
     
     ):
@@ -1242,14 +1242,18 @@ def histograms_overlayed(
         verbose=verbose,
     )
     
-    if outlier_buffer is not None:
+    numeric_flag = not ("str" in str(type(df.loc[0,column])))
+    if outlier_buffer is not None and numeric_flag:
         df = pu.filter_df_by_column_percentile(
             df,
             columns=column,
             percentile_buffer=outlier_buffer,
         )
         
-    
+    if not numeric_flag and not nu.is_array_like(bins):
+        bins = list(df[column].unique())
+        
+    #print(f"bins = {bins}")
     
     if hue is not None:
         if hue_order is None:
@@ -1274,7 +1278,7 @@ def histograms_overlayed(
     else:
         new_fig_size = np.array(figsize)
         new_fig_size[1] = new_fig_size[1]*len(cats)
-        fig,axes = plt.subplots(len(cats),1,figsize=new_fig_size,sharex=True)
+        fig,axes = plt.subplots(len(cats),1,figsize=new_fig_size,sharex=numeric_flag)
         
     if xlabel is None:
         xlabel = column
@@ -1307,15 +1311,25 @@ def histograms_overlayed(
             cat = "None"
             
         if hue_secondary is None:
-            curr_ax.hist(curr_df[column],
-                            density = density,
-                             label = cat,
-                            color = color,
-                             bins=bins,
-                            alpha = alpha,
-                         histtype=histtype,
-                            #zorder=zorder
-            )
+            if numeric_flag:
+                curr_ax.hist(curr_df[column],
+                                density = density,
+                                 label = cat,
+                                color = color,
+                                 bins=bins,
+                                alpha = alpha,
+                             histtype=histtype,
+                                #zorder=zorder
+                )
+            else:
+                curr_dict = Counter(curr_df[column])
+                curr_ax.bar(
+                    bins,
+                    height = [curr_dict.get(k,0) for k in bins],
+                    align = bar_graph_align,
+                    label = c2,
+                    alpha = alpha,
+                )
         else:
             for c2 in cats_secondary:
                 curr_query = f"{hue_secondary} == '{c2}'"
@@ -1323,21 +1337,31 @@ def histograms_overlayed(
                 curr_df_local = curr_df.query(curr_query)
                 
                 #print(f"curr_df_local = {len(curr_df_local)}")
-                curr_ax.hist(curr_df_local[column],
-                            density = density,
-                             label = c2,
-                            #color = color,
-                             bins=bins,
-                            alpha = alpha,
-                             histtype=histtype,
-                            #zorder=zorder
-                )
+                if numeric_flag:
+                    curr_ax.hist(curr_df_local[column],
+                                density = density,
+                                 label = c2,
+                                #color = color,
+                                 bins=bins,
+                                alpha = alpha,
+                                 histtype=histtype,
+                                #zorder=zorder
+                    )
+                else:
+                    curr_dict = Counter(curr_df_local[column])
+                    curr_ax.bar(
+                        bins,
+                        height = [curr_dict.get(k,0) for k in bins],
+                        align = bar_graph_align,
+                        label = c2,
+                        alpha = alpha,
+                    )
         curr_ax.legend()
         
         curr_ax.set_xlabel(f"{xlabel}",fontsize = fontsize)
         total_colors.append(color)
         
-        if density:
+        if density and numeric_flag :
             curr_ax.set_ylabel("Density",fontsize=fontsize)
         else:
             curr_ax.set_ylabel("Frequency",fontsize = fontsize)
@@ -1350,16 +1374,24 @@ def histograms_overlayed(
         
         mu.set_legend_outside_plot(curr_ax)
         
-        title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
+        if numeric_flag:
+            title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
+        else:
+            curr_dict = Counter(curr_df[column].to_list())
+            curr_dict = {k:curr_dict[k] for k in bins}
+            title = f"{cat} ({len(curr_df)}  datapoints: {curr_dict}"
+            
         print(title)
         
         if include_mean_std_in_title:
             curr_ax.set_title(title)
+            
+    fig.tight_layout()
         
     #print(f"total_colors = {total_colors}")
     title = f"{title_prefix.title()}\n{column.title()} Distribution"
         
-    if include_mean_std_in_title:
+    if include_mean_std_in_title and numeric_flag:
         title += f"\nMean = {np.round(df[column].mean(),2):.2f}, Std Dev = {np.round(df[column].std(),2):.2f}"
 
     if same_axis:
