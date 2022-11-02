@@ -455,7 +455,7 @@ def set_axes_lim_to_cube(
         bbox = ipvu.get_axes_lim() 
     new_bbox = nu.bbox_cube_from_bbox(
         bbox = bbox,
-        verbose = True,
+        verbose = False,
     )
 
     ipvu.set_axes_lim(
