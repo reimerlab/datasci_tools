@@ -2348,6 +2348,7 @@ def query_str_from_list(
     """
     Purpose: To turn any list of restrictions into a restriction str
     """
+    restrictions= nu.to_list(restrictions)
     if len(restrictions) == 0:
         return None
 
@@ -2417,7 +2418,9 @@ def query_table_from_list(
     table,
     restrictions,
     verbose = False,
-    joiner = "AND"
+    verbose_filtering = False,
+    joiner = "AND",
+    return_idx = False
     ):
     
     if len(restrictions) == 0:
@@ -2431,7 +2434,11 @@ def query_table_from_list(
         joiner=joiner,)
     st = time.time()
     return_df =  pu.query_table_from_query_str(table,query)
+    if verbose_filtering:
+        print(f"Reduced table to {len(return_df)}/{len(table)} entries ")
     #print(f"Time for query = {time.time() - st}")
+    if return_idx:
+        return return_df.index.to_numpy()
     return return_df
 
 restrict_df_from_list = query_table_from_list
@@ -3139,7 +3146,7 @@ def order_columns(
     
     columns = list(df.columns)
     columns_left_over = np.setdiff1d(columns,columns_at_front)
-    columns_left_over = np.setdiff1d(columns,columns_at_back)
+    columns_left_over = np.setdiff1d(columns_left_over,columns_at_back)
 
     return df[columns_at_front + list(columns_left_over) + columns_at_back]
                   
