@@ -427,6 +427,10 @@ def angle_between_vectors(v1, v2, acute=True,degrees=True,verbose=False):
     
     return return_angle
 
+import trimesh
+def angle_between_vectors_simple(v1,v2):
+    return trimesh.geometry.vector_angle([v1,v2])
+
 
 def intersecting_array_components(arrays,sort_components=True,verbose=False,perfect_match=False):
     """
