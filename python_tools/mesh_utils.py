@@ -179,6 +179,45 @@ def bounding_box_corners(mesh,bbox_multiply_ratio=1,
 def bounding_box_diagonal(mesh):
     bbox_corners = bounding_box_corners(mesh)
     return np.linalg.norm(bbox_corners[1]-bbox_corners[0])
+
+def bounding_box_side_lengths(
+    mesh,
+    oriented = False,
+    sort_by_length = False,
+    sort_descending = True,
+    verbose = False,):
+    
+    bbox_corners = bounding_box_corners(mesh,oriented=oriented)
+    side_lengths = [np.abs(bbox_corners[0][ax] - bbox_corners[1][ax])
+                   for ax in [0,1,2]]
+    
+    
+    
+    if sort_by_length:
+        side_lengths = np.sort(side_lengths)
+        if sort_descending:
+            side_lengths = np.flip(side_lengths)
+            
+    if verbose:
+        print(f"Side lengths = {side_lengths}")
+            
+    return side_lengths
+
+def bounding_box_side_lengths_sorted(
+    mesh,
+    oriented = False,
+    sort_descending = True,
+    verbose = False,
+    ):
+    return bounding_box_side_lengths(
+    mesh,
+    oriented = oriented,
+    sort_by_length = True,
+    sort_descending = sort_descending,
+    verbose = verbose,)
+    
+    
+    
     
 def normal_vector_from_face_idx(mesh,face_idx):
     return mesh.face_normals[face_idx]
