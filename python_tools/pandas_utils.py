@@ -2253,6 +2253,7 @@ def coordinates_from_df(
     name="synapse",
     suffix = "nm",
     axes = ("x","y","z"),
+    filter_away_nans = False,
     ):
     if suffix is not None and len(suffix) > 0:
         suffix = f"_{suffix}"
@@ -2263,8 +2264,13 @@ def coordinates_from_df(
         prefix = f"{name}_"
     else:
         prefix = ""
-    return df[[f"{prefix}{a}{suffix}" for
-        a in axes]].to_numpy().astype('float')
+        
+    columns = [f"{prefix}{a}{suffix}" for
+        a in axes]
+    
+    if filter_away_nans:
+        df = pu.filter_away_rows_with_nan_in_columns(df,columns)
+    return df[columns].to_numpy().astype('float')
     
     
 def flatten_column_multi_index(df):
@@ -2963,7 +2969,11 @@ def map_column_with_dict_slow(
     dict_map,
     default_value=None,
     verbose = False,
+    in_place = False,
+    **kwargs
     ):
+    if not in_place:
+        df = df.copy()
     if verbose:
         st = time.time()
     
@@ -2988,7 +2998,7 @@ def map_column_with_dict(
     use_default_value = True,
     default_value = None,
     in_place = False,
-    verbose = False
+    verbose = False,
     ):
     if verbose:
         st = time.time()
@@ -2998,9 +3008,14 @@ def map_column_with_dict(
         
     original_labels = df[column].to_numpy().copy()
     for k,v in dict_map.items():
+        if type(k) == str:
+            query = (f"{column} == '{k}'")
+        else:
+            print(f"int query")
+            query = (f"{column} == {k}")
         df = pu.set_column_subset_value_by_query(
             df,
-            query = (f"{column} == '{k}'"),
+            query=query,
             column = column,
             value = v
 
