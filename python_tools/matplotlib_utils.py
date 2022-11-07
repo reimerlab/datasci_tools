@@ -624,6 +624,7 @@ def set_axes_font_size(
     x_fontsize = None,
     y_fontsize = None,
     x_rotation = 0,#45,
+    y_rotation = 0,
     ):
     if x_fontsize is None:
         x_fontsize = fontsize
@@ -632,8 +633,10 @@ def set_axes_font_size(
     
     #print(f"x_fontsize = {x_fontsize}")
     ax.tick_params(axis='x', which='major', labelsize=x_fontsize,labelrotation=x_rotation)
-    ax.tick_params(axis='y', which='major', labelsize=y_fontsize)
+    ax.tick_params(axis='y', which='major', labelsize=y_fontsize,labelrotation = y_rotation)
     return ax
+
+set_axes_tick_font_size = set_axes_font_size
 
 def set_axes_title_size(
     ax,
@@ -1775,7 +1778,19 @@ def gradient_from_array(
     
     return curr_color_map
 
-
+def cmap_from_color_a_to_b(
+    color_a,
+    color_b,
+    color_middle = None,
+    name = ""
+    ):
+    if color_middle is not None:
+        colors = [color_a,color_middle,color_b]
+    else:
+        colors = [color_a,color_b]
+    return matplotlib.colors.LinearSegmentedColormap.from_list(
+        name,colors
+    )
 
 cmaps = {}
 
@@ -2031,6 +2046,7 @@ def example_stacked_histogram():
 def example_histogram_2d_log_scale_intensity(df):
     sns.displot(
         df, 
+        fig = None,
         x = "x",
         y = "y",
         hue = "label",
@@ -2039,5 +2055,66 @@ def example_histogram_2d_log_scale_intensity(df):
         vmin=None, 
         vmax=None
     )
+    
+def plot_colorbar(
+    plot,
+    fig = None,
+    colorbar_label = None,
+    colorbar_labelpad = 30,
+    colorbar_label_fontsize = 20):
+    
+    if fig is None:
+        fig = plt.gcf()
+    cbar = fig.colorbar(plot)
+    cbar.ax.get_yaxis().labelpad = colorbar_labelpad
+    if colorbar_label is not None:
+        cbar.set_label(
+            colorbar_label, 
+            rotation=270,
+            fontsize=colorbar_label_fontsize
+        )
+    return cbar
+
+def plot_contour(
+    XX,
+    YY,
+    Z,
+    cmap = "Blues",
+    ax = None,
+    fig=None,
+    n_lines = 100,
+    alpha = 1,
+    
+    # colorbar
+    plot_colorbar = True,
+    colorbar_label = None,
+    colorbar_labelpad = 30,
+    colorbar_label_fontsize = 20,
+    ):
+    """
+    Purpose: Plot a contour plot
+    """
+    Z = Z.reshape(*XX.shape)
+    if ax is None:
+        ax = ax.gca()
+    cs = ax.contourf(XX, YY, Z,n_lines, cmap=cmap,alpha = alpha)
+    
+    if plot_colorbar:
+        mu.plot_colorbar(
+        cs,
+        colorbar_label = colorbar_label,
+        colorbar_labelpad = colorbar_labelpad,
+        colorbar_label_fontsize = colorbar_label_fontsize
+        )
+        
+    return cs
+    
+def set_axes_ticklabels(ax,xlabels=None,ylabels=None):
+    if ylabels is None:
+        ylabels = xlabels
+    if xlabels is None:
+        ylabels = xlabels
+    ax.set_xticklabels(xlabels)
+    ax.set_yticklabels(xlabels)
     
 import matplotlib_utils as mu
