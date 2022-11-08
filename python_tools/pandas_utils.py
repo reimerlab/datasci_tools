@@ -2387,6 +2387,19 @@ def query_str_from_list(
         print(f"query_str = {restr_str}")
     return restr_str
 
+def query_str(restrictions,
+    table_type="dj",
+    verbose = False,
+    joiner = "AND"):
+    
+    restrictions = nu.to_list(restrictions)
+    return query_str_from_list(
+        restrictions,
+        table_type=table_type,
+        verbose = verbose,
+        joiner = joiner,
+    )
+
 restriction_str_from_list = query_str_from_list
 
 dj_to_pandas_query_map = {" = ":" == ","AND":"and","OR":"or","NOT":"not","SQRT":"sqrt"}
