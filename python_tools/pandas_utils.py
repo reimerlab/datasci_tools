@@ -924,20 +924,32 @@ def normalize_df(
     df,
     column_means = None,
     column_stds = None,
+    columns = None,
+    in_place = False,
     ):
     """
     Purpose: To normalize a pandas table with
     means and standard deviations of the columns
     """
-
+    if columns is None:
+        columns = list(df.columns)
     if column_means is None:
-        column_means = df.mean(axis=0).to_numpy()
+        column_means = df[columns].mean(axis=0).to_numpy()
 
     if column_stds is None:
-        column_stds = df.std(axis=0).to_numpy()
+        column_stds = df[columns].std(axis=0).to_numpy()
 
-    normalized_df=(df-column_means)/column_stds
-    return normalized_df
+    norm_columns = (df[columns]-column_means)/column_stds
+    if in_place:
+        df[columns] = norm_columns
+        return df
+    else:
+        if len(columns) == len(df.columns):
+            return norm_columns
+        else:
+            normalized_df = df.copy()
+            normalized_df[columns]=norm_columns
+            return normalized_df
 
 def normalize_df_with_df(
     df,
@@ -1299,8 +1311,8 @@ def set_max_colwidth(width=400):
 import numpy_utils as nu
 def filter_df_by_column_percentile(
     df,
-    columns,
-    percentile_buffer=None,
+    columns=None,
+    percentile_buffer=1,
     percentile_lower = None,
     percentile_upper = None,
     verbose = False,
@@ -1317,6 +1329,8 @@ def filter_df_by_column_percentile(
         verbose = True
     )
     """
+    if columns is None:
+        columns= list(df.columns)
     columns = nu.convert_to_array_like(columns)
     if percentile_lower is None:
         if percentile_buffer is not None:
@@ -1348,6 +1362,7 @@ def filter_df_by_column_percentile(
             
     return df
 
+percentile_filter = filter_df_by_column_percentile
 
 def filter_away_rows_with_nan_in_columns(
     df,
@@ -3165,6 +3180,72 @@ def order_columns(
 
     return df[columns_at_front + list(columns_left_over) + columns_at_back]
                   
+def normalize_to_sum_1(
+    df,
+    axis = 1):
+    
+    return df.div(df.sum(axis=axis), axis=1-axis)
+
+def restrict_df_by_min_max(
+    df,
+    verbose = False,
+    plot = False,
+    columns_to_plot = None,
+    **kwargs):
+    """
+    Purpose: To restrict a dataframe
+    by min and max of columns and just
+    tell which columns and what min through 
+    arguments
+    
+    Ex: 
+    pu.restrict_df_by_min_max(
+        spine_df_trans_umap,
+        verbose = True,
+        umap_1_max = -2.5,
+        umap_0_max = 5,
+        umap_0_min = 0
+    )
+    """
+    restrictions = []
+    columns_used = []
+    for k,v in kwargs.items():
+        col = k[:-4]
+        if k[-4:] == "_min":
+            restrictions.append(f"{col} >= {v}")
+        elif k[-4:] == "_max":
+            restrictions.append(f"{col} <= {v}")
+        else:
+            raise Exception("")
+            
+        if col not in columns_used:
+            columns_used.append(col)
+
+    if verbose:
+        print(f"restrictions = {restrictions}")
+    df_restr = pu.query_table_from_list(
+        df,
+        restrictions,
+        verbose_filtering=verbose
+    ).reset_index(drop=True)
+    
+    if plot:
+        if columns_to_plot is None:
+            columns_to_plot = columns_used
+        area_coords = df_restr[columns_to_plot].to_numpy()
+        whole_coords = df[columns_to_plot].to_numpy()
+        fig,ax = plt.subplots(1,1,)
+        ax.scatter(whole_coords[:,0],whole_coords[:,1],label = "unrestricted")
+        ax.scatter(area_coords[:,0],area_coords[:,1],label = "restricted")
+        ax.legend()
+        ax.set_xlabel(columns_to_plot[0])
+        ax.set_ylabel(columns_to_plot[1])
+        plt.show()
+    
+    return df_restr
+
+import matplotlib_utils as mu
+plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
 
 import pandas_utils as pu

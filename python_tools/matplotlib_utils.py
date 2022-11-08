@@ -1631,6 +1631,7 @@ def scatter_with_gradient(
     column_gradient = None,
     coordinates = None,
     gradient = None,
+    df_coordinate_buffer = None,
     percentile_buffer = None,
     cmap = 'RdYlBu',
     alpha = 0.5,
@@ -1638,12 +1639,21 @@ def scatter_with_gradient(
     vmax = None,
     figsize = (10,10),
     title = None,
+    verbose = False
     ):
     
     if df is not None:
         df = pu.replace_None_with_default(df,0,columns=gradient)
         df = pu.replace_nan_with_default(df,0,)
 
+    if df_coordinate_buffer is not None and df is not None:
+        df = df = pu.percentile_filter(
+            df,
+            columns = column_coordinates,
+            percentile_buffer = df_coordinate_buffer,
+            verbose = verbose,
+        )
+        
     cmap = mu.get_cmap(cmap)
     
     if gradient is None:
@@ -1674,9 +1684,9 @@ def scatter_with_gradient(
             vmin = np.percentile(gradient,percentile_buffer)
         if vmax is None:
             vmax = np.percentile(gradient,100-percentile_buffer)
-            
-        print(f"vmin = {vmin}")
-        print(f"vmax = {vmax}")
+        if verbose:
+            print(f"vmin = {vmin}")
+            print(f"vmax = {vmax}")
 
     #fig,ax = plt.subplots(1,1,projection_type=projection_type)
     fig = plt.figure(figsize=figsize)
@@ -1719,9 +1729,34 @@ def scatter_with_gradient(
     
     return ax
 
+def plot_gradients_over_coordiante_columns(
+    df,
+    coordinate_columns,
+    gradient_columns,
+    gradient_percentile_buffer = 2,
+    coordinate_percentile_buffer = 1,
+    ):
+    """
+    Purpose: Given a dataframe with the coordinates
+    to plot want to plot certain column features
+    as a gradient over the coordinates
+    """
+    gradient_columns = nu.to_list(gradient_columns)
+
+    for f in gradient_columns:
+        ax = mu.scatter_with_gradient(
+            df,
+            column_coordinates = coordinate_columns,
+            column_gradient = f,
+            percentile_buffer = gradient_percentile_buffer,
+            df_coordinate_buffer = coordinate_percentile_buffer, 
+        )
+
+        ax.set_title(f)
+
 def scatter_with_gradient_3D_simple(
     array,
-    gradient,
+    gradient=None,
     color_map = "coolwarm",
     axes_names = None,
     ):
