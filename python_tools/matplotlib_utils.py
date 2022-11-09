@@ -2096,18 +2096,30 @@ def plot_colorbar(
     fig = None,
     colorbar_label = None,
     colorbar_labelpad = 30,
-    colorbar_label_fontsize = 20):
+    colorbar_label_fontsize = 20,
+    colorbar_tick_fontsize = None,
+    rotation= 270,
+    ticks_side = "right",
+    pad = 0.5,
+    
+    ):
     
     if fig is None:
         fig = plt.gcf()
-    cbar = fig.colorbar(plot)
+    cbar = fig.colorbar(plot,pad=pad)
     cbar.ax.get_yaxis().labelpad = colorbar_labelpad
+    #cbar.ax.set_ylim([vmin,vmax])
     if colorbar_label is not None:
         cbar.set_label(
             colorbar_label, 
-            rotation=270,
-            fontsize=colorbar_label_fontsize
+            rotation=rotation,
+            fontsize=colorbar_label_fontsize,
+            
         )
+        
+    if colorbar_tick_fontsize is not None:
+        cbar.ax.tick_params(labelsize=colorbar_tick_fontsize)
+    cbar.ax.yaxis.set_ticks_position(ticks_side)
     return cbar
 
 def plot_contour(
@@ -2125,6 +2137,9 @@ def plot_contour(
     colorbar_label = None,
     colorbar_labelpad = 30,
     colorbar_label_fontsize = 20,
+    colorbar_tick_fontsize = None,
+    vmin = 0,
+    vmax = 1,
     ):
     """
     Purpose: Plot a contour plot
@@ -2132,17 +2147,91 @@ def plot_contour(
     Z = Z.reshape(*XX.shape)
     if ax is None:
         ax = ax.gca()
-    cs = ax.contourf(XX, YY, Z,n_lines, cmap=cmap,alpha = alpha)
+        
+    if n_lines is not None and not nu.is_array_like(n_lines):
+        n_lines = np.linspace(0,1,n_lines)
+        
+    if n_lines is not None:
+        cs = ax.contourf(
+            XX, YY, Z,n_lines, cmap=cmap,alpha = alpha,
+            vmin = vmin,vmax = vmax
+        )
+    else:
+        cs = ax.contourf(
+            XX, YY, Z, cmap=cmap,alpha = alpha,
+            vmin = vmin,vmax = vmax
+        )
     
     if plot_colorbar:
         mu.plot_colorbar(
         cs,
         colorbar_label = colorbar_label,
         colorbar_labelpad = colorbar_labelpad,
-        colorbar_label_fontsize = colorbar_label_fontsize
+        colorbar_label_fontsize = colorbar_label_fontsize,
+        colorbar_tick_fontsize = colorbar_tick_fontsize,
         )
         
+    
+        
     return cs
+"""
+Note: To prevent aliasing makes sure the
+number of points on the grid is high enough
+"""
+def plot_heatmap(
+    XX,
+    YY,
+    Z,
+    cmap = "Blues",
+    ax = None,
+    fig=None,
+    n_lines = 100,
+    alpha = 0.5,
+    
+    # colorbar
+    plot_colorbar = True,
+    colorbar_label = None,
+    colorbar_labelpad = 30,
+    colorbar_label_fontsize = 20,
+    colorbar_tick_fontsize = None,
+    colorbar_label_rotation= 270,
+    vmin = 0,
+    vmax = 1,
+    **kwargs
+    ):
+    
+    Z = Z.reshape(*XX.shape)
+    print(f"alpha = {alpha}")
+    cs = ax.pcolormesh(
+        XX,
+        YY,
+        Z,
+        cmap = cmap,
+        vmin=vmin,
+        vmax = vmax,
+        alpha = alpha,
+        #antialiased = True,
+        linewidth=0,
+        rasterized=True,
+        antialiased=True,
+    )
+    
+    if plot_colorbar:
+        mu.plot_colorbar(
+        cs,
+        colorbar_label = colorbar_label,
+        colorbar_labelpad = colorbar_labelpad,
+        colorbar_label_fontsize = colorbar_label_fontsize,
+        colorbar_tick_fontsize = colorbar_tick_fontsize,
+        rotation = colorbar_label_rotation,
+            **kwargs
+        )
+
+    return ax
+    
+
+def turn_off_axes_tickmarks(ax):
+    mu.set_axes_ticklabels(ax,xlabels=[],ylabels=[])
     
 def set_axes_ticklabels(ax,xlabels=None,ylabels=None):
     if ylabels is None:

@@ -2033,9 +2033,9 @@ def mean_coordinates_from_radius_threshold_clustering(
     else:
         return mean_coordinates
     
-def grid_array(xmin,xmax,ymin,ymax,zmin=None,zmax = None):
+def grid_array(xmin,xmax,ymin,ymax,zmin=None,zmax = None,n_intervales = 200):
     if zmin is None:
-        return np.mgrid[xmin:xmax:200j, ymin:ymax:200j]
+        return np.mgrid[xmin:xmax:n_intervales*1j, ymin:ymax:n_intervales*1j]
     else:
-        return np.mgrid[xmin:xmax:200j, ymin:ymax:200j, zmin:zmax:200j]
+        return np.mgrid[xmin:xmax:n_intervales*1j, ymin:ymax:n_intervales*1j, zmin:zmax:n_intervales*1j]
 import numpy_utils as nu
