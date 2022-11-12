@@ -1139,6 +1139,9 @@ def closest_idx_for_each_coordinate(
     
     if verbose:
         st = time.time()
+        
+    array = np.array(array).reshape(-1,3)
+    array_for_idx = np.array(array_for_idx).reshape(-1,3)
 
     if closest_idx_algorithm == "kdtree":
         dist,closest_idx = KDTree(array_for_idx).query(array)

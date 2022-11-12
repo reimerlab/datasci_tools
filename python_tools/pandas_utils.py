@@ -3257,6 +3257,59 @@ def restrict_df_by_min_max(
     
     return df_restr
 
+def closest_row_to_coordinate(
+    df,
+    coordinate,
+    coordinate_name = "mesh_center",
+    return_df = False,
+    verbose = False,
+    **kwargs
+    ):
+    """
+    Purpose: To find the row idx of the 
+    rows that have the closest coordinate to 
+    a coordinate
+
+    Pseudocode: 
+    1) Export the coordinates of dataframe
+    2) Find the closest idx to each coordinate
+    3) return the idx or a dataframe
+    
+    Ex: 
+    pu.closest_row_to_coordinate(
+        df = spine_df,
+        coordinate_name = "mesh_center",
+        coordinate = np.array([829181.89697582, 494363.38581494, 899399.53232649]),
+        return_df = True,
+    )
+    """
+
+
+
+    
+    if coordinate.ndim == 1:
+        single_flag = True
+    else:
+        single_flag = False
+
+    coords = pu.coordinates_from_df(
+        df,
+        name=coordinate_name,
+        **kwargs
+    )
+
+    idx = nu.closest_idx_for_each_coordinate(coordinate,array_for_idx=coords)
+
+    if verbose:
+        print(f"Closest rows = {idx}")
+
+    if return_df:
+        return df.iloc[idx,:]
+    else:
+        if single_flag:
+            return idx[0]
+        return idx
+
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
