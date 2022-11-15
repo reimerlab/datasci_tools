@@ -1345,7 +1345,7 @@ def filter_df_by_column_percentile(
             percentile_upper = 100
     
     for attribute in columns:
-        att_vals = df[attribute].to_numpy()
+        att_vals = df.query(f"{attribute} == {attribute}")[attribute].to_numpy()
         min_value = np.percentile(att_vals,percentile_lower)
         max_value = np.percentile(att_vals,percentile_upper)
         if verbose:
