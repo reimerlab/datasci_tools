@@ -1406,6 +1406,7 @@ def randomly_sample_df(
     replace = False,
     verbose = False,):
     
+    #print(f"seed = {seed}")
     if seed is not None:
         np.random.seed(seed)
         
@@ -2361,6 +2362,8 @@ def table_type_from_table(table):
     else:
         raise Exception("")
 
+
+
 def query_str_from_list(
     restrictions,
     table_type="dj",
@@ -3309,6 +3312,74 @@ def closest_row_to_coordinate(
         if single_flag:
             return idx[0]
         return idx
+    
+def randomly_sample_classes_from_df(
+    df,
+    column,
+    n_samples=None,
+    classes = None,
+    seed = None,
+    verbose = False,):
+    """
+    Purpose: To randomly sample from each
+    class from a column and concatenate the results
+    """
+    if n_samples is None:
+        n_samples = len(df)
+        
+    if type(n_samples) == dict:
+        samples_dict = n_samples
+    else:
+        samples_dict = dict()
+
+    df = pu.shuffle_df(df,seed=seed)
+    if classes is None:
+        classes = df[column].unique()
+
+    all_dfs = []
+    for ct in classes:
+        curr_df = df.query(f"{column} == '{ct}'"
+            ).reset_index(drop=True).iloc[:samples_dict.get(ct,n_samples),:]
+        if verbose:
+            print(f"{ct}: # of samples = {len(curr_df)}")
+        all_dfs.append(curr_df)
+
+    all_dfs = pu.concat(all_dfs,axis = 0).reset_index(drop=True)
+    return all_dfs
+
+def min_max_from_column(
+    df,
+    column = None,
+    return_dict = False,
+    buffer_perc = 0):
+    if column is None:
+        column= df.columns
+        
+    if not nu.is_array_like(column):
+        column = [column]
+        single_flag = True
+    else:
+        single_flag = False
+        
+    min_maxes = dict()
+    for c in column:
+        min_v,max_v = df[c].min(),df[c].max()
+        if buffer_perc is not None and buffer_perc > 0:
+            buffer_v = (max_v - min_v)*(buffer_perc/100)
+            min_v = min_v - buffer_v
+            max_v = max_v + buffer_v
+        min_maxes[c] = (min_v,max_v)
+        
+    min_maxes_values = list(min_maxes.values())
+    
+    if single_flag:
+        return min_maxes_values[0]
+    else:
+        if return_dict:
+            return min_maxes
+        else:
+            return min_maxes_values
+    
 
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns

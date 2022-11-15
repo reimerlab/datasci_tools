@@ -2241,4 +2241,77 @@ def set_axes_ticklabels(ax,xlabels=None,ylabels=None):
     ax.set_xticklabels(xlabels)
     ax.set_yticklabels(xlabels)
     
+def plot_jointplot_for_each_class(
+    df,
+    column,
+    features,
+    column_order = None,
+    bins = 50,
+    kind = "hist",
+    xlim = None,
+    ylim = None,
+    verbose = True,
+    ):
+    """
+    Purpose: to plot multiply 
+    jointplots for each class
+    given coordinate emeddings
+    (making sure to keep all axes the same)
+    """
+
+    if column_order is None:
+        column_order = df[column].unique()
+
+    if xlim is None and ylim is None:
+        xlim,ylim = pu.min_max_from_column(
+            df,
+            column=features,
+            buffer_perc = 3,
+    )
+
+    for ct in column_order:
+        curr_df = df.query(f"{column} == '{ct}'")
+        if verbose:
+            print(f"-- {ct}--")
+        axes = sns.jointplot(
+            data=curr_df,
+            x= features[0],
+            y= features[1],  
+            hue = column,
+            kind = kind,
+            joint_kws = dict(bins = bins)
+        )
+        plt.show()
+
+        ax = axes.ax_joint
+        if xlim is not None:
+            ax.set_xlim(xlim)
+
+        if ylim is not None:
+            ax.set_ylim(ylim)
+
+def plot_embedding_for_each_class(
+    df,
+    column,
+    embeddings,
+    column_order = None,
+    bins = 50,
+    kind = "hist",
+    xlim = None,
+    ylim = None,
+    verbose = True,
+    ):
+    
+    return plot_jointplot_for_each_class(
+    df,
+    column,
+    features=embeddings,
+    column_order = column_order,
+    bins = bins,
+    kind = kind,
+    xlim = xlim,
+    ylim = ylim,
+    verbose = verbose,
+    )
+    
 import matplotlib_utils as mu

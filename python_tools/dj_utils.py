@@ -302,6 +302,11 @@ def table_definition_from_example_dict(
         
     return total_str_comb
 
+def dj_query_from_pandas_query(query):
+    query = query.replace("==","=")
+    for joiner in [" and "," or "," not "]:
+        query = query.replace(joiner,joiner.upper())
+    return query
 
 restrict_table_from_list = pu.restrict_df_from_list
 
