@@ -2262,7 +2262,30 @@ def df_to_index_dict(
     my_dict = {k:v for k,v in zip(keys,values)}
     return my_dict
 
+def coordinate_columns(
+    name="synapse",
+    suffix = "nm",
+    axes = ("x","y","z"),
+    verbose = False,
+    ):
+    
+    if suffix is not None and len(suffix) > 0:
+        suffix = f"_{suffix}"
+    else:
+        suffix = ""
 
+    if name is not None:
+        prefix = f"{name}_"
+    else:
+        prefix = ""
+
+    columns = [f"{prefix}{a}{suffix}" for
+        a in axes]
+    
+    if verbose:
+        print(f"columns = {columns}")
+    
+    return columns
 
 def coordinates_from_df(
     df,
@@ -2270,19 +2293,15 @@ def coordinates_from_df(
     suffix = "nm",
     axes = ("x","y","z"),
     filter_away_nans = False,
+    columns = None,
     ):
-    if suffix is not None and len(suffix) > 0:
-        suffix = f"_{suffix}"
-    else:
-        suffix = ""
-        
-    if name is not None:
-        prefix = f"{name}_"
-    else:
-        prefix = ""
-        
-    columns = [f"{prefix}{a}{suffix}" for
-        a in axes]
+    
+    if columns is None:
+        columns = coordinate_columns(
+            name=name,
+            suffix = suffix,
+            axes = axes,
+        )
     
     if filter_away_nans:
         df = pu.filter_away_rows_with_nan_in_columns(df,columns)
@@ -3379,8 +3398,92 @@ def min_max_from_column(
             return min_maxes
         else:
             return min_maxes_values
+        
+        
+def weighted_average_df(
+    df,
+    group_by_columns,
+    weight_column,
+    columns_to_delete = None,
+    verbose = False,
+    flatten = True,
+    ):
+    """
+    Purpose: Compose a weighted average
+    dataframe from a column in a dataframe 
+    serving as the weights and 
+    all the rest of the columns being averaged
     
+    Ex: 
+    curr_df = df.query(f"compartment == 'basal'").reset_index(drop=True)
+    print(len(curr_df))
+    curr_df_w = pu.weighted_average_df(
+        curr_df,
+        weight_column = "width",
+        columns_to_delete = ["node",],
+        group_by_columns = ["segment_id","split_index","compartment"],
+        verbose = True,
+    )
+    """
+    if verbose:
+        st = time.time()
+        
+    df_to_group = df
+    df_to_group = df_to_group.query(f"{weight_column} > 0").reset_index(drop=True)
+    if columns_to_delete is not None:
+        df_to_group = pu.delete_columns(df_to_group,columns_to_delete)
 
+    wm = lambda x: np.average(x,weights = df_to_group.loc[x.index,weight_column])
+    df_weight = df_to_group.groupby(group_by_columns).agg(
+        wm
+    )
+    
+    if verbose:
+        print(f"Total time for weighted average = {time.time() - st}")
+        
+    if flatten:
+        df_weight = pu.flatten_row_multi_index(df_weight)
+
+    return df_weight
+    
+def normalize_vector_magnitude(
+    df,
+    name="synapse",
+    suffix = "nm",
+    axes = ("x","y","z"),
+    columns = None,
+    in_place = False,
+    ):
+
+    """
+    Purpose: Want to vector noramlize
+    a group of columns in a dataframe
+
+    Psuedocode: 
+    1) Construct the column names that will be extracted
+    2) extract the coordinates
+    3) Compute the norm
+    4) Divide column by the norm
+    """
+    
+    if not in_place:
+        df = df.copy()
+
+    columns = pu.coordinate_columns(
+        name=name,
+        suffix = suffix,
+        axes = axes,
+        )
+
+    coordinates = pu.coordinates_from_df(
+        df,
+        columns = columns,
+    )
+
+    magn = np.linalg.norm(coordinates,axis = 1).reshape(-1,1)
+    df[columns] = coordinates/magn
+    return df
+    
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
