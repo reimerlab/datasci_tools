@@ -50,6 +50,12 @@ colorblind_orange = sns.color_palette("colorblind")[3]
 colorblind_green = sns.color_palette("colorblind")[2]
 colorblind_grey = sns.color_palette("colorblind")[-3]
 
+seaborn_blue = sns.color_palette()[0]
+seaborn_orange = sns.color_palette()[1]
+seaborn_green = sns.color_palette()[2]
+seaborn_red = sns.color_palette()[3]
+seaborn_brown = sns.color_palette()[5]
+
 
 def generate_random_color(print_flag=False,colors_to_omit=[]):
     if not nu.is_array_like(colors_to_omit):
@@ -2251,6 +2257,7 @@ def plot_jointplot_for_each_class(
     xlim = None,
     ylim = None,
     verbose = True,
+    **kwargs
     ):
     """
     Purpose: to plot multiply 
@@ -2279,7 +2286,8 @@ def plot_jointplot_for_each_class(
             y= features[1],  
             hue = column,
             kind = kind,
-            joint_kws = dict(bins = bins)
+            joint_kws = dict(bins = bins),
+            **kwargs
         )
         plt.show()
 
@@ -2300,6 +2308,7 @@ def plot_embedding_for_each_class(
     xlim = None,
     ylim = None,
     verbose = True,
+    **kwargs
     ):
     
     return plot_jointplot_for_each_class(
@@ -2312,6 +2321,14 @@ def plot_embedding_for_each_class(
     xlim = xlim,
     ylim = ylim,
     verbose = verbose,
+    **kwargs
     )
+
+
+def move_axes_outside_seaborn(ax):
+    sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+    return ax
+
+set_axes_outside_seaborn = move_axes_outside_seaborn
     
 import matplotlib_utils as mu

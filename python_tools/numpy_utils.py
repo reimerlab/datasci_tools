@@ -2041,4 +2041,11 @@ def grid_array(xmin,xmax,ymin,ymax,zmin=None,zmax = None,n_intervales = 200):
         return np.mgrid[xmin:xmax:n_intervales*1j, ymin:ymax:n_intervales*1j]
     else:
         return np.mgrid[xmin:xmax:n_intervales*1j, ymin:ymax:n_intervales*1j, zmin:zmax:n_intervales*1j]
+    
+def rotation_matrix(degrees):
+    theta = np.radians(degrees)
+    c, s = np.cos(theta), np.sin(theta)
+    R = np.array(((c, -s), (s, c)))
+    return R
+
 import numpy_utils as nu
