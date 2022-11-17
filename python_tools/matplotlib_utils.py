@@ -1384,7 +1384,7 @@ def histograms_overlayed(
         mu.set_legend_outside_plot(curr_ax)
         
         if numeric_flag:
-            title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.2f}, std = {curr_df[column].std():.2f})"
+            title = f"{cat} ({len(curr_df)}  datapoints, mean = {curr_df[column].mean():.4f}, std = {curr_df[column].std():.4f})"
         else:
             curr_dict = Counter(curr_df[column].to_list())
             curr_dict = {k:curr_dict[k] for k in bins}
@@ -1401,7 +1401,7 @@ def histograms_overlayed(
     title = f"{title_prefix.title()}\n{column.title()} Distribution"
         
     if include_mean_std_in_title and numeric_flag:
-        title += f"\nMean = {np.round(df[column].mean(),2):.2f}, Std Dev = {np.round(df[column].std(),2):.2f}"
+        title += f"\nMean = {np.round(df[column].mean(),4):.4f}, Std Dev = {np.round(df[column].std(),4):.4f}"
 
     if same_axis:
         ax.set_title(f"{title}",fontsize = fontsize_title)

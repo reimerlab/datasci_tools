@@ -371,8 +371,8 @@ def query(df,query,**kwargs):
     return return_df
     
 
-def turn_off_scientific_notation(n_decimal_places=3):
-    pd.set_option('display.float_format', lambda x: '%.0f' % x)
+def turn_off_scientific_notation(n_decimal_places=4):
+    pd.set_option('display.float_format', lambda x: f'%.{n_decimal_places}f' % x)
     
 def find_all_rows_with_nan(df,return_indexes=True,return_non_nan_rows=False):
     if return_indexes:
