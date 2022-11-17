@@ -1860,7 +1860,8 @@ def set_column_subset_value_by_query(
     df,
     query,
     column,
-    value,
+    value=None,
+    column_for_value = None,
     verbose = False):
     """
     Purpose: Set column
@@ -1870,7 +1871,10 @@ def set_column_subset_value_by_query(
     if verbose:
         print(f"Number of rows in query = {curr_map.sum()}")
         
-    df.loc[curr_map,column] = value
+    if column_for_value is None:
+        df.loc[curr_map,column] = value
+    else:
+        df.loc[curr_map,column] = df.loc[curr_map,column_for_value]
     return df
 
 def count_unique_column_values(
@@ -2479,9 +2483,10 @@ def query_table_from_list(
     return_idx = False
     ):
     
+    
     if len(restrictions) == 0:
         return table
-    
+
     table_type = pu.table_type_from_table(table)
     query = pu.query_str_from_list(
         restrictions,
@@ -3483,6 +3488,80 @@ def normalize_vector_magnitude(
     magn = np.linalg.norm(coordinates,axis = 1).reshape(-1,1)
     df[columns] = coordinates/magn
     return df
+
+def reorder_levels(df,order,axis = 0):
+    """
+    Purpose: Will reorder the columns or row indexes
+    if multi level
+    """
+    return df.reorder_levels(order,axis = axis)
+
+def unstack(df,level = -1):
+    """
+    Can cnvert a index to a column index
+    """
+    return df.unstack(level=level)
+
+def convert_series_to_df(s):
+    return s.to_frame()
+
+def unravel_df_into_single_row_with_col_prefixes(
+    df,
+    columns,
+    ):
+    """
+    Purpose: If did a groupby and have columns that represent
+    unique combinations then can make dataframe one row dataframe
+    and put those column combinations as prefixes to columns
+    """
+    columns = nu.to_list(columns)
+    new_order = list(range(1,len(columns)+1)) + [0]
+    v = df.set_index(columns).unstack(columns).to_frame().reorder_levels(order = new_order).T
+    v.columns = v.columns.map('_'.join)
+    return v
+
+def group_df_for_count_and_average(
+    df,
+    columns,
+    default_value = 0,
+    return_one_row_df = False,):
+    """
+    Purpose: To group columns by averaging and counting
+    """
+    columns = nu.to_list(columns)
+    df_lite = df
+    
+    features = [k for k in df_lite.columns if k not in columns]
+    df_lite = pu.replace_nan_with_default(df_lite,default=default_value)
+    df_lite = pu.replace_None_with_default(df_lite,default=default_value)
+    df_lite[features] = df_lite[features].astype('float')
+
+#     reduced_df = pu.flatten_row_multi_index(df_lite.groupby(
+#         columns
+#     ).mean())
+
+    reduced_df = df_lite.groupby(
+        columns
+    ).mean()  
+
+    cont_df = pu.count_unique_column_values(df_lite,columns)
+
+    stats_df = pd.merge(
+        reduced_df,
+        cont_df,
+        how = "left",
+        on = columns,
+    )
+    
+    if return_one_row_df:
+        stats_df = unravel_df_into_single_row_with_col_prefixes(
+            stats_df,
+            columns
+        )
+    
+    return stats_df
+
+
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
