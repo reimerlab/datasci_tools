@@ -1257,7 +1257,32 @@ def movie(
         os.system(cmd)
     return tempdir
 
-
+def save_fig(
+    filename = None,
+    scale = 1,
+    default_dim = 1024,
+    width = None,
+    height = None):
+    
+    if width is None:
+        width = default_dim*scale
+    if height is None:
+        height = default_dim*scale
+    save_config_ex = dict(
+        width = width,
+        height = height
+    )
+    
+    if filename is None:
+        filename = f"./{np.random.randint(10000)}_ipv_pic.png"
+    if filename[-4] != ".":
+        filename = f"{filename}.png"
+    ipv.savefig(
+        filename,
+        **save_config_ex,
+    )
+    
+    
 """
 Example of how to use ipvu.movie to make a movie about a neuron: 
 
