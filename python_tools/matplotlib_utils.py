@@ -1259,8 +1259,11 @@ def histograms_overlayed(
             percentile_buffer=outlier_buffer,
         )
         
+
     if not numeric_flag and not nu.is_array_like(bins):
         bins = list(df[column].unique())
+
+        
         
     #print(f"bins = {bins}")
     
@@ -1509,7 +1512,7 @@ def histograms_over_intervals(
     
     bins = 30,
     outlier_buffer = 1,
-    intervals = None,
+    intervals = None,#equal_width,#equal_depth
     
     hue = None,
     color_dict = None,
@@ -1538,6 +1541,13 @@ def histograms_over_intervals(
     c. Label the title the continuous value range
     """
 
+    if type(intervals) == str:
+        intervals = nu.bin_array(
+            df[interval_attribute].to_numpy(),
+            n_bins = n_intervals,
+            bin_type = intervals
+        )
+        intervals = np.vstack([intervals[:-1],intervals[1:]]).T
     
     sum_stats = []
     std_stats = []
@@ -2323,6 +2333,25 @@ def plot_embedding_for_each_class(
     verbose = verbose,
     **kwargs
     )
+
+def set_legend_fontsizes(
+    ax,
+    fontsize = 20,
+    label_fontsize = None,
+    title_fontsize = None):
+
+    if label_fontsize is None:
+        label_fontsize = fontsize
+    if title_fontsize is None:
+        title_fontsize = fontsize
+
+    plt.setp(ax.get_legend().get_texts(), fontsize=label_fontsize) 
+
+    # for legend title
+    plt.setp(ax.get_legend().get_title(), fontsize=title_fontsize) 
+    return ax
+
+
 
 
 def move_axes_outside_seaborn(ax):
