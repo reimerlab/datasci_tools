@@ -2048,4 +2048,7 @@ def rotation_matrix(degrees):
     R = np.array(((c, -s), (s, c)))
     return R
 
+def histogram(array,bins = 10,**kwargs):
+    return np.np.histogram(array,bins = bins,**kwargs)
+
 import numpy_utils as nu

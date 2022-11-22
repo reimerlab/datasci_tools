@@ -1343,6 +1343,7 @@ def filter_df_by_column_percentile(
             percentile_upper = 100 - percentile_buffer
         else:
             percentile_upper = 100
+            
     
     for attribute in columns:
         att_vals = df.query(f"{attribute} == {attribute}")[attribute].to_numpy()
@@ -3561,7 +3562,150 @@ def group_df_for_count_and_average(
     
     return stats_df
 
+def divide_df_by_column_bins(
+    df,
+    column,
+    bins = None,#equal_width,#equal_depth
+    n_bins = 10,
+    #arguments for filtering
+    percentile_buffer=None,
+    percentile_lower=None,
+    percentile_upper=None,
 
+    overlap = 0,
+    verbose = True,
+    return_bins = False,
+    flatten_return_bins = False,
+    ):
+    """
+    Purpose: Want to split up a dataframe
+    with bins or number of bins perscribed
+    over a column value
+    """
+    intervals = bins
+    n_intervals = n_bins
+    interval_attribute = column
+
+    if type(intervals) == str:
+        intervals = nu.bin_array(
+            df[interval_attribute].to_numpy(),
+            n_bins = n_intervals,
+            bin_type = intervals
+        )
+        intervals = np.vstack([intervals[:-1],intervals[1:]]).T
+
+
+
+    df = df.query(f"{interval_attribute} == {interval_attribute}")
+
+    df = pu.filter_df_by_column_percentile(
+        df,
+        columns=interval_attribute,
+        percentile_buffer=percentile_buffer,
+        percentile_lower = percentile_lower,
+        percentile_upper = percentile_upper,
+        verbose = verbose,
+        )
+
+    #2) Get the continuous value you will bin and divide it up intervals
+    interval_vals = df[interval_attribute]
+    if intervals is None:
+        intervals = nu.interval_bins_covering_array(
+            array = interval_vals,
+            n_intervals = n_intervals,
+            overlap = overlap, #if this is a percentage then it is a proportion of the interval
+            outlier_buffer = 0,
+            verbose = False,
+        )
+
+    all_dfs = []
+    for j,(lower,upper) in enumerate(intervals):
+        df_curr = df.query(
+            f"({interval_attribute} >= {lower})"
+            f"and ({interval_attribute} <= {upper})"
+        )
+
+        all_dfs.append(df_curr)
+        if verbose:
+            print(f"[{lower:.2f},{upper:.2f}]: {len(df_curr)} samples ")
+
+
+    if return_bins:
+        if flatten_return_bins:
+            intervals = np.hstack([intervals[:,0],[intervals[-1,-1]]])
+        return [all_dfs,intervals]
+    else:
+        return all_dfs
+
+    
+import seaborn as sns
+def histogram_2d(
+    df,
+    x,
+    y,
+    n_x_bins = 10,
+    n_y_bins = 10,
+    x_bins = None,
+    y_bins = None,
+    verbose = False,
+    return_bins = True,
+    normalize_rows = True,
+    plot = False,
+    return_df = False,
+    **kwargs
+    ):
+    """
+    Purpose: compute a 2D
+    histogram array of 2 columns
+    in a dataframe
+    """
+    if x_bins is None:
+        x_bins = nu.equal_width_bins(
+            df[x].to_numpy(),
+            n_x_bins
+        )
+
+    ret_dfs,y_bins = pu.divide_df_by_column_bins(
+        df = df,
+        column = y,
+        bins=y_bins,
+        n_bins=n_y_bins,
+        verbose = verbose,
+        return_bins=True,
+        flatten_return_bins = True,
+        **kwargs
+    )
+
+    hists = []
+    for curr_df in ret_dfs:
+        hist_values,_ = np.histogram(
+            curr_df[x].to_numpy(),
+            bins = x_bins,
+        )
+
+        hists.append(hist_values)
+
+    hists = np.vstack(hists)
+
+    if normalize_rows:
+        hists = (hists/(hists.sum(axis=1).reshape(-1,1)))
+        
+    stat_df = pd.DataFrame(hists)
+    stat_df.columns = np.vstack([x_bins[1:],x_bins[:-1]]).mean(axis = 0)
+    stat_df.index = np.vstack([y_bins[1:],y_bins[:-1]]).mean(axis = 0)
+    if plot:
+        sns.heatmap(
+            data = stat_df,
+            cmap = "Blues"
+        )
+    
+    if return_df:
+        hists = stat_df
+    if return_bins:
+        return hists,x_bins,y_bins
+    else:
+        return hists
+        
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns

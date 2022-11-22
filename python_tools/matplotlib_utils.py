@@ -2255,7 +2255,7 @@ def set_axes_ticklabels(ax,xlabels=None,ylabels=None):
     if xlabels is None:
         ylabels = xlabels
     ax.set_xticklabels(xlabels)
-    ax.set_yticklabels(xlabels)
+    ax.set_yticklabels(ylabels)
     
 def plot_jointplot_for_each_class(
     df,
@@ -2358,6 +2358,23 @@ def move_axes_outside_seaborn(ax):
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     return ax
 
+def set_colorbar_tick_fontsize(ax,fontsize=20):
+    cbar = ax.collections[0].colorbar
+    cbar.ax.tick_params(labelsize=fontsize)
+
 set_axes_outside_seaborn = move_axes_outside_seaborn
+
+def hide_tick_marks(ax,left = False,bottom = False):
+    ax.tick_params(left=left, bottom=bottom)
+    
+def set_xaxis_ticklabel_alignment(alignment = "right")
+    for tick in ax.xaxis.get_majorticklabels():
+        tick.set_horizontalalignment("right")
+        
+def set_yaxis_ticklabel_alignment(alignment = "bottom")
+    for tick in ax.yaxi.get_majorticklabels():
+        tick.set_verticalalignment(alignment)
+        
+
     
 import matplotlib_utils as mu
