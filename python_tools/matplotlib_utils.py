@@ -2357,24 +2357,38 @@ def set_legend_fontsizes(
 def move_axes_outside_seaborn(ax):
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     return ax
+set_axes_outside_seaborn = move_axes_outside_seaborn
 
 def set_colorbar_tick_fontsize(ax,fontsize=20):
     cbar = ax.collections[0].colorbar
     cbar.ax.tick_params(labelsize=fontsize)
+    
+def set_colorbar_title(
+    ax,
+    title,
+    labelpad = 15,
+    rotation = 270,
+    fontsize = None):
+    cbar = ax.collections[0].colorbar
+    cbar.ax.get_yaxis().labelpad = labelpad
+    cbar.ax.set_ylabel(title, rotation=rotation,fontsize = fontsize)
 
-set_axes_outside_seaborn = move_axes_outside_seaborn
 
 def hide_tick_marks(ax,left = False,bottom = False):
     ax.tick_params(left=left, bottom=bottom)
     
-def set_xaxis_ticklabel_alignment(alignment = "right")
+def set_xaxis_ticklabel_alignment(ax,alignment = "right"):
     for tick in ax.xaxis.get_majorticklabels():
         tick.set_horizontalalignment("right")
         
-def set_yaxis_ticklabel_alignment(alignment = "bottom")
+def set_yaxis_ticklabel_alignment(ax,alignment = "bottom"):
     for tick in ax.yaxi.get_majorticklabels():
         tick.set_verticalalignment(alignment)
         
-
+def set_legend_title(ax,title=None):
+    ax.legend_.set_title(title)
+    
+def hide_legend_title(ax):
+    ax.legend_.set_title(None)
     
 import matplotlib_utils as mu

@@ -1863,6 +1863,7 @@ def set_column_subset_value_by_query(
     column,
     value=None,
     column_for_value = None,
+    function_for_value = None,
     verbose = False):
     """
     Purpose: Set column
@@ -1872,10 +1873,16 @@ def set_column_subset_value_by_query(
     if verbose:
         print(f"Number of rows in query = {curr_map.sum()}")
         
-    if column_for_value is None:
+    if value is not None:
         df.loc[curr_map,column] = value
+    elif function_for_value is not None:
+        df.loc[curr_map,column] = function_for_value(
+            df = df,
+            idx_map = curr_map,
+        )
     else:
         df.loc[curr_map,column] = df.loc[curr_map,column_for_value]
+    
     return df
 
 def count_unique_column_values(
