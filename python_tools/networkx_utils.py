@@ -226,6 +226,13 @@ def get_nodes_with_attributes_dict(G,attribute_dict):
                 node_list.append(x)
     return node_list
 
+def get_nodes_with_attribute_value(G,attribute,value,verbose = False):
+    nodesAt5 = [x for x,y in G.nodes(data=True) if y[attribute]==value]
+    if verbose:
+        print(f"{len(nodesAt5)} nodes with {attribute} = {value}")
+        
+    return nodesAt5
+
 def get_graph_node_by_coordinate_old(G,coordinate):
     match_nodes = get_nodes_with_attributes_dict(G,dict(coordinates=coordinate))
     #print(f"match_nodes = {match_nodes}")
@@ -3647,6 +3654,15 @@ def edge_and_node_df(G,
 def print_node_edges_counts(G,G_prefix=""):
     print(f"{G_prefix} Graph: # of nodes = {len(G.nodes())}, # of edges = {len(G.edges())}")
     
+def n_nodes(G,nodes = None):
+    if nodes is not None:
+        G = G.subgraph(nodes)
+    return G.number_of_nodes()
+def n_edges(G,nodes=None):
+    if nodes is not None:
+        G = G.subgraph(nodes)
+    return G.number_of_edges()
+
 
 
     
@@ -4162,9 +4178,15 @@ def n_connected_components(G):
 
 def get_node_attribute_for_all_nodes(
     G,name,
-    return_list = False):
+    return_list = False,
+    nodes = None,
+    ):
     
-    atts = nx.get_node_attributes(G,name)
+    atts = get_node_attributes(
+        G,
+        name,
+        node_list=nodes
+    )
     if return_list:
         return list(atts.values())
     return atts
