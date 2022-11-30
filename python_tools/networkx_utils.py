@@ -1179,20 +1179,29 @@ print(upstream_edges_neighbors(G,"B"))
 """
 def downstream_edges(G,node):
     return list(nx.dfs_edges(G,node))
-def downstream_edges_neighbors(G,node):
+def downstream_edges_neighbors_not_exact(G,node):
     return [k for k in list(nx.dfs_edges(G,node)) if node in k]
 
 def upstream_edges(G,node):
     return [k[:2] for k in list(nx.edge_dfs(G,node, orientation='reverse'))]
-def upstream_edges_neighbors(G,node):
+def upstream_edges_neighbors_slow(G,node):
     return [k for k in list(nx.edge_dfs(G,node, orientation='reverse')) if node in k]
+
+def upstream_edges_neighbors(G,node):
+    return list(G.predecessors(node))
     
+def downstream_edges_neighbors(G,node):
+    neighb = list(dict(G[node]).keys())
+    return list(np.vstack([[node]*len(neighb),neighb]).T)
+
 def downstream_nodes(G,node):
     downstream_results = np.array(downstream_edges_neighbors(G,node))
     if len(downstream_results) > 0:
         return downstream_results[:,1]
     else:
         return downstream_results
+    
+
     
 def n_downstream_nodes(G,node):
     """
@@ -1519,7 +1528,8 @@ def shortest_path_between_two_sets_of_nodes(
     node_list_2,
     return_node_pairs=True,
     return_path_distance = False,
-    weight = "weight"):
+    weight = "weight",
+    verbose = False,):
     """
     Algorithm that will find the shortest path from a set of one
     list of nodes on a graph and another set of nodes:
@@ -1547,6 +1557,7 @@ def shortest_path_between_two_sets_of_nodes(
     
     will return [ 2, 3, 4, 5],2,5
     """
+    st = time.time()
     #0) Make a copy of the graph
     G_copy = deepcopy(G)
     #node_number_max = np.max(G.nodes())
@@ -1573,6 +1584,10 @@ def shortest_path_between_two_sets_of_nodes(
     
     if return_path_distance:
         curr_shortest_path = xu.path_distance(G,curr_shortest_path,weight=weight)
+        
+    if verbose:
+        print(f"Shortest path = {curr_shortest_path}")
+        print(f"Total time: {time.time() - st}")
     
     if return_node_pairs:
         return curr_shortest_path,end_node_1,end_node_2
@@ -2646,6 +2661,9 @@ def is_graph(G):
         return True
     else:
         return False
+    
+def is_graph_any(G):
+    return xu.is_digraph(G) or xu.is_multigraph(G) or xu.is_graph(G)
 
 import pandas_utils as pu
 import tqdm_utils as tqu
@@ -3286,6 +3304,8 @@ def copy_G_without_data(G):
     new_G.add_edges_from(G.edges())
     return new_G
 
+nodes_edges_only_G = copy_G_without_data
+
 def subgraph_within_radius(G,node,radius,distance="weight",plot_subgraph=False):
     """
     Purpose: Will return the subgraph surrounding a certain
@@ -3654,14 +3674,7 @@ def edge_and_node_df(G,
 def print_node_edges_counts(G,G_prefix=""):
     print(f"{G_prefix} Graph: # of nodes = {len(G.nodes())}, # of edges = {len(G.edges())}")
     
-def n_nodes(G,nodes = None):
-    if nodes is not None:
-        G = G.subgraph(nodes)
-    return G.number_of_nodes()
-def n_edges(G,nodes=None):
-    if nodes is not None:
-        G = G.subgraph(nodes)
-    return G.number_of_edges()
+
 
 
 
@@ -4889,6 +4902,148 @@ def sum_downstream_attribute(
         include_self=include_self,
         **kwargs
     )
+
+def n_nodes(G,nodes = None):
+    if nodes is not None:
+        G = G.subgraph(nodes)
+    return G.number_of_nodes()
+
+def n_edges(G,nodes=None):
+    if nodes is not None:
+        G = G.subgraph(nodes)
+    return G.number_of_edges()
+
+def n_edges_out(G,nodes=None):
+    import graph_statistics as gstat
+    degree_distr = gstat.degree_distribution(G,nodes=nodes,degree_type="out")
+    return np.sum(degree_distr)
+
+def n_edges_in(G,nodes=None):
+    import graph_statistics as gstat
+    degree_distr = gstat.degree_distribution(G,nodes=nodes,degree_type="in")
+    return np.sum(degree_distr)
+
+def shortest_path_along_node_subset_old(
+    G,
+    start,
+    end,
+    node_subset,
+    verbose = False,
+    verbose_time = False,
+    weight = "weight",
+    ):
+    """
+    Purpose: To find the shortest path between
+    two nodes but the intermediate nodes
+    can only be from a certain subset of nodes
+
+    Pseudocode: 
+    1) Get all of the nodes connected to start
+    and end node (that are in subset)
+    and make them group 1, group 2
+    respectively
+    2) Find the shortest distance between the 
+    subgraph of the subset
+    3) Concatenate on the whole path
+    """
+
+    if verbose_time:
+        st = time.time()
+
+    start_neighbors = np.concatenate([np.intersect1d(
+        xu.downstream_nodes(G,start),
+        node_subset
+    ),[start]])
+
+    if verbose_time:
+        print(f"Time for start neighbors: {time.time() - st}")
+        st = time.time()
+
+    end_neighbors = np.concatenate([np.intersect1d(
+        xu.upstream_node(G,end,return_single=False),
+        node_subset
+    ),[end]])
+
+    if verbose_time:
+        print(f"Time for end neighbors: {time.time() - st}")
+        st = time.time()
+
+    #node_subset = np.setdiff1d(node_subset,[start,end])
+    shortest_path = xu.shortest_path_between_two_sets_of_nodes(
+        G.subgraph(node_subset).copy(),
+        node_list_1=start_neighbors,
+        node_list_2 = end_neighbors,
+        verbose = verbose_time,
+        return_node_pairs = False,
+        weight = weight,
+    )
+
+    shortest_path = list(shortest_path)
+    if shortest_path[0] != start:
+        shortest_path = [start] + shortest_path
+
+    if shortest_path[-1] != end:
+        shortest_path.append(end)
+
+    if verbose:
+        print(f"shortest_path from {start} to {end} = {shortest_path}")
+        
+    return shortest_path
+        
+    
+def shortest_path_along_node_subset(
+    G,
+    start,
+    end,
+    node_subset,
+    verbose = False,
+    verbose_time = False,
+    weight = None,
+    ):
+    """
+    Purpose: Find the path between two nodes
+    but the path can only occur through a subset 
+    of the nodes
+    
+    -- Example: 
+    xu.shortest_path_along_node_subset(
+        G,
+        start = '864691135939275265_0',
+        end = '864691135454090602_0',
+        node_subset = conu.excitatory_nodes(G_auto),
+        verbose = True,
+        verbose_time = True,
+    )
+    """
+    global_time = time.time()
+    st = time.time()
+    curr_G = G.subgraph(list(node_subset) + [start,end])
+    if verbose_time:
+        print(f"total time for subgraph = {time.time() - st}")
+        st = time.time()
+    shortest_path = nx.shortest_path(curr_G,start,end,weight = weight)
+    if verbose_time:
+        print(f"total time for shortest_path = {time.time() - st}")
+        st = time.time()
+    
+    if verbose:
+        print(f"shortest_path from {start} to {end} = {shortest_path}")
+        
+    if verbose_time:
+        print(f"total time for shortest path along nodes = {time.time() - global_time}")
+        
+    return shortest_path
+
+def largest_connected_component(
+    G,
+    verbose = False):
+    conn_comp = list(connected_components(G))
+    largest_idx = np.argmax([len(k) for k in conn_comp])
+    if verbose:
+        print(f"Largest connected component size = {len(conn_comp[largest_idx])}")
+        
+    return G.subgraph(list(conn_comp[largest_idx]))
+
 
 import networkx_utils as xu
     
