@@ -1880,8 +1880,10 @@ def set_column_subset_value_by_query(
             df = df,
             idx_map = curr_map,
         )
-    else:
+    elif column_for_value is not None:
         df.loc[curr_map,column] = df.loc[curr_map,column_for_value]
+    else:
+        df.loc[curr_map,column] = value
     
     return df
 

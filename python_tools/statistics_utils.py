@@ -218,6 +218,7 @@ def correlation_scores_all(
     correlation_funcs = None,
     return_dict = True,
     return_p_value= False,
+    verbose = False,
     df = None,
     ):
     """
@@ -225,8 +226,12 @@ def correlation_scores_all(
     scores for all the functions
     """
     if df is not None:
+        df = df.query(f"({x}=={x}) and ({y}=={y})")
         x = df[x].to_numpy().astype('float')
         y = df[y].to_numpy().astype('float')
+    else:
+        x = np.array(x).astype('float')
+        y = np.array(x).astype('float')
     
     if correlation_funcs is None:
         correlation_funcs = corr_funcs
@@ -234,9 +239,14 @@ def correlation_scores_all(
     corr_scores = {k.__name__:k(
         x,y,return_p_value=return_p_value) 
                    for k in correlation_funcs}
+    
+    if verbose:
+        for k,v in corr_scores.items():
+            print(f"{k}:{v}")
     if not return_dict:
         return list(corr_scores.values())
     return corr_scores
+    
     
 
 
