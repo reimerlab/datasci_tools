@@ -2042,12 +2042,20 @@ def bin_df_by_column(
     verbose = False,
     return_bins = False,
     equal_depth_bins = False,
+    percentile_upper = None,
     ):
     """
     Purpose: To calculate sub dataframe
     after binning a certain column
     """
-
+    if percentile_upper is not None:
+        df = pu.filter_df_by_column_percentile(
+            df,
+            columns=column,
+            percentile_lower=0,
+            percentile_upper=percentile_upper,
+            verbose=False,
+        )
     
 
     if bins is None:
@@ -2091,6 +2099,7 @@ def bin_df_by_column_stat(
     func,
     bins=None,
     equal_depth_bins = False,
+    percentile_upper = None,
     n_bins = 10,
     verbose = False,
     return_bins = True,
@@ -2099,13 +2108,17 @@ def bin_df_by_column_stat(
     func_std = None,
     plot = False,
     plot_n_data_points = True,
-    
-    
+    plot_errorbars = False,
     ):
     """
     Purpose: to compute a statistic over
     binned sub dfs (where bins are determined by column)
     """
+    if plot:
+        twin_color = "blue"
+        fontsize = 20
+
+        figsize = (10,5)
 
     df_bins,bins = pu.bin_df_by_column(
         df=df,
@@ -2115,26 +2128,32 @@ def bin_df_by_column_stat(
         verbose = verbose,
         return_bins = True,
         equal_depth_bins=equal_depth_bins,
+        percentile_upper=percentile_upper,
         )
     
     if type(func) == str:
-        df_stats = [k[func].mean() for k in df_bins]
-        df_std = [k[func].std() for k in df_bins]
+        curr_values = [np.array(k[func]).astype('float') for k in df_bins]
+        df_stats = [k.mean() for k in curr_values]
+        df_std = [k.std() for k in curr_values]
     else:
         df_stats = [func(k) for k in df_bins]
-        df_std = [func_std(k) for k in df_bins]
+        if func_std is not None:
+            df_std = [func_std(k) for k in df_bins]
+        else:
+            df_std = None
     df_len = [len(k) for k in df_bins]
     
     
     if plot:
-        twin_color = "blue"
-        fontsize = 20
-
-        figsize = (10,5)
         mid_bins = (bins[1:] + bins[:-1])/2
 
         fig,ax = plt.subplots(1,1,figsize=figsize)
-        ax.plot(mid_bins,df_stats,)
+        
+        #ax.plot(mid_bins,df_stats,)
+        if df_std is None or not plot_errorbars:
+            ax.plot(mid_bins,df_stats,)
+        else:
+            ax.errorbar(mid_bins,df_stats,yerr = df_std)
         ax.set_xlabel(f"{column}")
         if type(func) == str:
             ax.set_ylabel(f"{func}")
@@ -2146,7 +2165,7 @@ def bin_df_by_column_stat(
             ax2.set_ylabel('# of Data Points',fontsize=fontsize,color=twin_color)  # we already handled the x-label with ax1
             ax2.tick_params(axis='y', labelcolor=twin_color)
             ax2.plot(mid_bins, df_len, color=twin_color)
-        plt.show()
+        #plt.show()
 
     if (not return_bins) and (not return_df_len) and (not return_std):
         return df_stats
