@@ -5044,6 +5044,32 @@ def largest_connected_component(
         
     return G.subgraph(list(conn_comp[largest_idx]))
 
+def from_pandas_edgelist(
+    df,
+    source='source',
+    target='target',
+    edge_attr=None,
+    create_using=None,#nx.Graph,nx.MultiDiGraph
+    verbose = True,
+    **kwargs
+    ):
+    if verbose:
+        st = time.time()
+        
+    G = nx.from_pandas_edgelist(
+        df,
+        source=source,
+        target=target,
+        edge_attr=edge_attr,
+        create_using=create_using,
+        verbose = verbose,
+        **kwargs
+    )
+    
+    if verbose:
+        print(f"Time for Graph creating = {time.time() - st}")
+        
+    return G
 
 import networkx_utils as xu
     
