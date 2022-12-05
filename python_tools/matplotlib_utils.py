@@ -598,6 +598,8 @@ def set_axes_font_size_old(
     x_fontsize = None,
     y_fontsize = None,
     x_rotation = 45,
+    x_tick_alignment = None,
+    y_tick_alignment = None,
     ):
     
     attribute = "ticklabels"
@@ -614,11 +616,13 @@ def set_axes_font_size_old(
     getattr(ax,f"set_x{attribute}")(
         ax.get_xmajorticklabels(),
         fontsize = x_fontsize,
-        rotation=x_rotation)
+        rotation=x_rotation,
+        ha = x_tick_alignment)
 
     getattr(ax,f"set_y{attribute}")(
         ax.get_ymajorticklabels(),
         fontsize = y_fontsize,
+        ha = y_tick_alignment
         #rotation=45
     )
     
@@ -631,6 +635,8 @@ def set_axes_font_size(
     y_fontsize = None,
     x_rotation = 0,#45,
     y_rotation = 0,
+    x_tick_alignment = None,
+    y_tick_alignment = None,
     ):
     if x_fontsize is None:
         x_fontsize = fontsize
@@ -638,8 +644,8 @@ def set_axes_font_size(
         y_fontsize = fontsize
     
     #print(f"x_fontsize = {x_fontsize}")
-    ax.tick_params(axis='x', which='major', labelsize=x_fontsize,labelrotation=x_rotation)
-    ax.tick_params(axis='y', which='major', labelsize=y_fontsize,labelrotation = y_rotation)
+    ax.tick_params(axis='x', which='major', labelsize=x_fontsize,labelrotation=x_rotation,right = True,)#ha = x_tick_alignment)
+    ax.tick_params(axis='y', which='major', labelsize=y_fontsize,labelrotation = y_rotation,)#ha = y_tick_alignment)
     return ax
 
 set_axes_tick_font_size = set_axes_font_size

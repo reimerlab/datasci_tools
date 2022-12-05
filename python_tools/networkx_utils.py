@@ -5062,7 +5062,6 @@ def from_pandas_edgelist(
         target=target,
         edge_attr=edge_attr,
         create_using=create_using,
-        verbose = verbose,
         **kwargs
     )
     
@@ -5070,6 +5069,12 @@ def from_pandas_edgelist(
         print(f"Time for Graph creating = {time.time() - st}")
         
     return G
+
+def graph_type_from_G(G):
+    for gt in ["Graph","DiGraph","MultiGraph","MultiDiGraph"]:
+        if eval(f"type(G) == getattr(nx,'{gt}')"):
+            return gt
+    return None
 
 import networkx_utils as xu
     
