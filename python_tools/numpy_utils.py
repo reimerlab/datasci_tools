@@ -585,6 +585,8 @@ def all_subarrays (l):
 
     return lists
 
+
+    
 def random_2D_subarray(array,n_samples,
                       replace=False,
                       verbose=False):
@@ -606,6 +608,8 @@ def random_2D_subarray(array,n_samples,
         print(f"Sampling {n_samples} rows from array of length {len(array)} with replacement = {replace}")
     random_indexes = np.random.choice(np.arange(len(array)),size=n_samples,replace=replace)
     return array[random_indexes]
+
+random_subarray = random_2D_subarray
 
 def comma_str(num):
     return f"{num:,}"
@@ -2050,5 +2054,33 @@ def rotation_matrix(degrees):
 
 def histogram(array,bins = 10,**kwargs):
     return np.np.histogram(array,bins = bins,**kwargs)
+
+def array_size(array):
+    return array.size * array.itemsize
+
+def random_idx(
+    n_samples=None,
+    array = None,
+    array_len = None,
+    seed = None,
+    samples_perc = None,
+    replace = False,
+    verbose = False,
+    **kwargs):
+    
+    if seed is not None:
+        np.random.seed(seed)
+    if array_len is None:
+        array_len = len(array)
+        
+    if n_samples is None:
+        n_samples = np.ceil(array_len*samples_perc/100).astype('int')
+        
+    n_samples = int(n_samples)
+    if verbose:
+        print(f"Sampling {n_samples} rows from array of length {len(array)} with replacement = {replace}")
+ 
+    random_indexes = np.random.choice(np.arange(array_len),size=n_samples,replace=replace)
+    return random_indexes
 
 import numpy_utils as nu

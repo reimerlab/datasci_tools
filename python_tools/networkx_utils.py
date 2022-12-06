@@ -5076,5 +5076,161 @@ def graph_type_from_G(G):
             return gt
     return None
 
+def empty_graph_type_from_G(G):
+    return getattr(nx,graph_type_from_G(G))()
+
+
+def edge_subgraph(G,edges):
+    return G.edge_subgraph(edges)
+
+
+def nodes(G):
+    return np.array(list(G.nodes()))
+
+def random_edges_from_existing_edges(
+    G,
+    edges = None,
+    random_idx = None,
+    n_samples = None,
+    samples_perc = None,
+    seed = None,
+    verbose = False,
+    **kwargs
+    ):
+    
+    st = time.time()
+    
+    if edges is None:
+        edges = xu.edges(G)
+        
+    if random_idx is None:
+        random_idx = nu.random_idx(
+        n_samples=n_samples,
+        array_len = len(edges),
+        seed = seed,
+        samples_perc = samples_perc,
+        **kwargs
+        )
+        
+    new_edges = edges[random_idx,:]
+    
+    if verbose:
+        print(f"Total time for random edges from existing edges: {time.time() - st}")
+    
+    return new_edges
+
+def random_edges_from_existing_nodes(
+    G,
+    n_samples=None,
+    samples_perc = None,
+    nodes = None,
+    seed = None,
+    buffer_multiplier = 4,
+    no_self_loops = True,
+    unique_edges = True,
+    error_if_not_enough_edges = True,
+    verbose = False,
+    **kwargs
+    ):
+    """
+    Purpose: To generate a random 
+    list of edges by sampling the
+    nodes
+    """
+    
+    st = time.time()
+    
+    if nodes is None:
+        nodes = xu.nodes(G)
+    
+    if n_samples is None:
+        n_samples = np.ceil(len(G.edges())*samples_perc).astype('int')
+    curr_samples = n_samples*buffer_multiplier
+
+    if seed is not None:
+        seed_1 = seed
+        seed_2 = seed + 1
+    else:
+        seed_1 = None
+        seed_2 = None
+    nodes_idx_1 = nu.random_idx(
+        n_samples = curr_samples,
+        array_len=len(nodes),
+        replace=True,
+        seed=seed_1,
+    )
+    
+    nodes_idx_2 = nu.random_idx(
+        n_samples = curr_samples,
+        array_len=len(nodes),
+        replace=True,
+        seed=seed_2,
+    )
+    
+    if no_self_loops:
+        good_map  = nodes_idx_1 != nodes_idx_2
+        nodes_idx_1 = nodes_idx_1[good_map]
+        nodes_idx_2 = nodes_idx_2[good_map]
+    new_edges = np.vstack([nodes_idx_1,nodes_idx_2]).T
+    if unique_edges:
+        new_edges = np.unique(new_edges,axis = 0)
+        
+    if len(new_edges) < n_samples and error_if_not_enough_edges:
+        raise Exception("")
+        
+    return_value = nodes[new_edges][:n_samples]
+    
+    if verbose:
+        print(f"Total time for random edges from existing nodes: {time.time() - st}")
+        
+    return return_value
+
+def random_edges_subgraph(
+    G,
+    edges_func = None,
+    random_idx = None,
+    n_samples = None,
+    samples_perc = None,
+    seed = None,
+    verbose = False,
+    verbose_edge_generation = False,
+    **kwargs
+    ):
+    st = time.time()
+    
+    
+    
+    if edges_func is None:
+        edges_func = random_edges_from_existing_edges
+    elif edges_func == "edges":
+        edges_func = random_edges_from_existing_edges
+    elif edges_func == "nodes":
+        edges_func = random_edges_from_existing_nodes
+    else:
+        pass
+
+    new_edges = edges_func(
+        G = G,
+        random_idx = random_idx,
+        n_samples = n_samples,
+        samples_perc = samples_perc,
+        seed = seed,
+        verbose = verbose_edge_generation,
+        **kwargs
+    )
+    
+    if edges_func == random_edges_from_existing_edges:
+        new_edges = set([tuple(k) for k in new_edges])
+        G_new = xu.edge_subgraph(G,new_edges)
+    else:
+        G_new = empty_graph_type_from_G(G)
+        G_new.add_edges_from(new_edges)
+    if verbose:
+        print(f"Total time for random subgraph: {time.time() - st}")
+        xu.print_node_edges_counts(G_new)
+        
+    return G_new
+
+
 import networkx_utils as xu
     
