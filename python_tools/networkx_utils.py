@@ -5185,6 +5185,55 @@ def random_edges_from_existing_nodes(
         
     return return_value
 
+def remove_self_loops(G):
+    G.remove_edges_from(nx.selfloop_edges(G))
+    return G
+
+def configuration_model(
+    G=None,
+    degree_sequence=None,
+    create_using = "Graph",
+    self_loops = False,
+    seed = None,
+    ):
+    
+    if type(create_using) == str:
+        create_using = getattr(nx,create_using)
+    
+    if degree_sequence is None:
+        degree_sequence = degree_sequence(G)
+    G_new=nx.configuration_model(degree_sequence,seed = seed,create_using = create_using)
+    if not self_loops:
+        G_new = remove_self_loops(G_new)
+    return G_new
+
+def directed_configuration_model(
+    G = None,
+    in_degree_sequence = None,
+    out_degree_sequence = None,
+    create_using = "MultiDiGraph",
+    self_loops = False,
+    seed = None,
+    ):
+    
+    if type(create_using) == str:
+        create_using = getattr(nx,create_using)
+        
+    if out_degree_sequence is None:
+        out_degree_sequence = xu.out_degree_sequence(G)
+    if in_degree_sequence is None:
+        in_degree_sequence = xu.in_degree_sequence(G)
+    
+    G_new=nx.directed_configuration_model(
+        in_degree_sequence=in_degree_sequence,
+        out_degree_sequence=out_degree_sequence,
+        seed = seed,
+        create_using = create_using
+    )
+    if not self_loops:
+        G_new = remove_self_loops(G_new)
+    return G_new
+
 def random_edges_subgraph(
     G,
     edges_func = None,
@@ -5194,42 +5243,72 @@ def random_edges_subgraph(
     seed = None,
     verbose = False,
     verbose_edge_generation = False,
+    in_degree_sequence = None,
+    out_degree_sequence = None,
     **kwargs
     ):
     st = time.time()
     
     
-    
-    if edges_func is None:
-        edges_func = random_edges_from_existing_edges
-    elif edges_func == "edges":
-        edges_func = random_edges_from_existing_edges
-    elif edges_func == "nodes":
-        edges_func = random_edges_from_existing_nodes
+    if edges_func == "degree_config_model":
+        G_new = directed_configuration_model(
+            G=G,
+            in_degree_sequence = in_degree_sequence,
+            out_degree_sequence = out_degree_sequence,
+            self_loops = False,
+            create_using = "DiGraph",
+            seed = seed,
+        )
     else:
-        pass
+        if edges_func is None:
+            edges_func = random_edges_from_existing_edges
+        elif edges_func == "edges":
+            edges_func = random_edges_from_existing_edges
+        elif edges_func == "nodes":
+            edges_func = random_edges_from_existing_nodes
 
-    new_edges = edges_func(
-        G = G,
-        random_idx = random_idx,
-        n_samples = n_samples,
-        samples_perc = samples_perc,
-        seed = seed,
-        verbose = verbose_edge_generation,
-        **kwargs
-    )
-    
-    if edges_func == random_edges_from_existing_edges:
-        new_edges = set([tuple(k) for k in new_edges])
-        G_new = xu.edge_subgraph(G,new_edges)
-    else:
-        G_new = empty_graph_type_from_G(G)
-        G_new.add_edges_from(new_edges)
+
+        new_edges = edges_func(
+            G = G,
+            random_idx = random_idx,
+            n_samples = n_samples,
+            samples_perc = samples_perc,
+            seed = seed,
+            verbose = verbose_edge_generation,
+            **kwargs
+        )
+
+        if edges_func == random_edges_from_existing_edges:
+            new_edges = set([tuple(k) for k in new_edges])
+            G_new = xu.edge_subgraph(G,new_edges)
+        else:
+            G_new = empty_graph_type_from_G(G)
+            G_new.add_edges_from(new_edges)
+            
     if verbose:
         print(f"Total time for random subgraph: {time.time() - st}")
         xu.print_node_edges_counts(G_new)
         
     return G_new
+
+def degree_sequence(G):
+    return np.array([d for n, d in G.degree()])
+    
+def out_degree_sequence(G):
+    return np.array([d for n, d in G.out_degree()])
+    
+def in_degree_sequence(G):
+    return np.array([d for n, d in G.in_degree()])
+    
+def degree_sequence_from_adj(array):
+    return np.sum(array,axis=1)
+
+def out_degree_sequence_from_adj(array):
+    return np.sum(array,axis=1)
+
+def in_degree_sequence_from_adj(array):
+    return np.sum(array,axis=0)
+
 
 
 import networkx_utils as xu
