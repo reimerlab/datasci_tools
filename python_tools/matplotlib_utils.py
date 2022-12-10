@@ -2364,6 +2364,8 @@ def move_axes_outside_seaborn(ax):
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     return ax
 set_axes_outside_seaborn = move_axes_outside_seaborn
+set_legend_outside_seaborn = move_axes_outside_seaborn
+move_legend_outside_seaborn = move_axes_outside_seaborn
 
 def set_colorbar_tick_fontsize(ax,fontsize=20):
     cbar = ax.collections[0].colorbar

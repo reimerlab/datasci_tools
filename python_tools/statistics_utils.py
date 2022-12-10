@@ -117,11 +117,17 @@ def df_to_confusion_matrix(df,
 
 from sklearn.metrics import precision_recall_fscore_support
 
-def true_and_pred_labels_to_precision_recall_f1score(y_true,
-                                                     y_pred,
-                                                    labels=None,
-                                                    positive_value=None,
-                                                    average=None,):
+def true_and_pred_labels_to_precision_recall_f1score(
+    y_true,
+    y_pred,
+    labels=None,
+    positive_value=None,
+    average=None,
+    verbose = False,
+    return_dict = False,
+    binary = False,
+    pos_label = None,
+    ):
     """
     Arguments for average
     average:
@@ -135,13 +141,35 @@ def true_and_pred_labels_to_precision_recall_f1score(y_true,
         lables = np.unique(y_true)
         print(f"Using labels : {lables}")
         
-    precision,recall,f1,_ = precision_recall_fscore_support(y_true,y_pred,labels=labels,average=average)
+    if binary:
+        average = "binary"
+        if pos_label is None:
+            pos_label = labels[0]
+    precision,recall,f1,_ = precision_recall_fscore_support(
+        y_true,
+        y_pred,
+        labels=labels,
+        average=average,
+        pos_label = pos_label)
+    
+    
     
     if positive_value is None or average is not None:
-        return precision,recall,f1
+        pass 
     else:
         positive_idx = np.where(np.array(labels) == positive_value)[0][0]
-        return precision[positive_idx],recall[positive_idx],f1[positive_idx]
+        precision,recall,f1 = precision[positive_idx],recall[positive_idx],f1[positive_idx]
+        
+#     if binary:
+#         precision,recall,f1 = precision[0],recall[0],f1[0]
+        
+    if verbose:
+        print(f"precision = {precision}, recall = {recall}, f1 = {f1} (# of datapoints = {len(y_true)})")
+
+    if return_dict:
+        return {k:v for k,v in zip(["precision","recall","f1"],[precision,recall,f1])}
+    else:
+        return precision,recall,f1
 
     
     
