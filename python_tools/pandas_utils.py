@@ -3733,6 +3733,30 @@ def histogram_2d(
         return hists,x_bins,y_bins
     else:
         return hists
+    
+    
+def new_column_from_str_func(
+    df,
+    funcs):
+
+    if type(funcs)== dict:
+        funcs = [f"{k}={v}"for k,v in funcs.items()]
+    if type(funcs) == str:
+        funcs = [funcs]
+        
+    curr_df = df
+    for func in funcs:
+        curr_df = curr_df.eval(func)
+        
+    return curr_df
+
+def new_column_from_name_to_str_func_dict(
+    df,
+    func_dict):
+    
+    return new_column_from_str_func(
+    df,
+    func_dict)
         
     
 import matplotlib_utils as mu

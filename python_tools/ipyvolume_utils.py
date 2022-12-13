@@ -1327,6 +1327,14 @@ ipvu.movie(
 
 """
 
+def lighting_parameters():
+    print("""
+    ambient_coefficient – lighting parameter
+    diffuse_coefficient – lighting parameter
+    specular_coefficient – lighting parameter
+    specular_exponent – lighting parameter
+    """)
+
 import ipyvolume_utils as ipvu
     
     
