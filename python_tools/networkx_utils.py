@@ -5309,6 +5309,99 @@ def out_degree_sequence_from_adj(array):
 def in_degree_sequence_from_adj(array):
     return np.sum(array,axis=0)
 
+def all_pairs_shortest_path_matrix(
+    G,
+    nodes=None,
+    self_path_value = None,
+    dist_func = None,
+    dist_func_weight = "weight",
+    undirected = True,
+    verbose = False,
+    suppress_errors = False,
+    ):
+    """
+    Purpose: to find the shortest path between all combinations of nodes
+
+    """
+    if verbose:
+        st = time.time()
+    if nodes is None:
+        nodes = xu.nodes(G)
+        
+    if self_path_value is None:
+        self_path_value = []
+    shortest_path_matrix = nu.empty_n_by_m_default_matrix(n = len(nodes))
+    
+    
+    for i,n1 in enumerate(nodes):
+        for j,n2 in enumerate(nodes):
+            if i == j:
+                shortest_path_matrix[i,j] = self_path_value
+                if dist_func is not None:
+                    shortest_path_matrix[i,j] = dist_func(G,shortest_path_matrix[i,j],weight = dist_func_weight)
+            elif i>=j and undirected:
+                shortest_path_matrix[i,j] = shortest_path_matrix[j,i]
+            else:
+                try:
+                    shortest_path_matrix[i,j] = xu.shortest_path(G,n1,n2)
+                except:
+                    if suppress_errors:
+                        shortest_path_matrix[i,j] = self_path_value
+                    else:
+                        raise Exception("")
+
+                if dist_func is not None:
+                    shortest_path_matrix[i,j] = dist_func(G,shortest_path_matrix[i,j],weight = dist_func_weight)
+
+    if verbose:
+        print(f"Total time for all_pairs_shortest_path_matrix= {time.time() - st}")
+        
+    return shortest_path_matrix
+
+from networkx.classes.function import path_weight as pw
+
+def path_weight(
+    G,
+    path,
+    weight = "weight",
+    empty_path_value=0):
+    if len(path) == 0:
+        return empty_path_value
+    return pw(G,path,weight = weight)
+path_length_from_path = path_weight
+
+def all_pairs_shortest_path_length_matrix(
+    G,
+    dist_func = None,
+    nodes=None,
+    self_path_value = np.inf,
+    undirected = True,
+    verbose = False,
+    weight = "weight",
+    suppress_errors = True,
+    ):
+    
+    if dist_func is None:
+        dist_func = path_weight
+        
+    path_matrix = all_pairs_shortest_path_matrix(
+        G,
+        nodes=nodes,
+        self_path_value = None,
+        dist_func = dist_func,
+        dist_func_weight = weight,
+        undirected = undirected,
+        verbose = verbose,
+        suppress_errors=suppress_errors,
+        )
+    
+    path_matrix[path_matrix == 0] = self_path_value
+    return path_matrix
+    
+    
+
+
+
 
 
 import networkx_utils as xu

@@ -2083,4 +2083,9 @@ def random_idx(
     random_indexes = np.random.choice(np.arange(array_len),size=n_samples,replace=replace)
     return random_indexes
 
+def empty_n_by_m_default_matrix(n,m=None,default_value = None):
+    if m is None:
+        m = n
+    return np.repeat([default_value]*m,n).reshape(n,m)
+
 import numpy_utils as nu
