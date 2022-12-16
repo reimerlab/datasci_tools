@@ -1307,7 +1307,10 @@ def upstream_node(G,node,return_single=True):
         else:
             return [k[0] for k in curr_upstream_nodes]
     else:
-        return curr_upstream_nodes[0][0]
+        try:
+            return curr_upstream_nodes[0][0]
+        except:
+            return curr_upstream_nodes[0]
     
 def all_parent_nodes(G,n,depth_limit = 1):
     """
