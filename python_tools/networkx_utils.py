@@ -5399,8 +5399,32 @@ def all_pairs_shortest_path_length_matrix(
     return path_matrix
     
     
+def largest_component_subgraph(
+    G,
+    verbose = False):
+    """
+    Purpose: Find the percentage of neurons not in the
+    largest component
 
+    Pseudocode: 
+    1) compute the connected components
+    2) Find the largest idx
+    3) Divide the sum of all those not the largest idx by the
+    largest idx
+    """
+    conn_comps = xu.connected_components(G)
+    conn_comps_len = np.array([len(k) for k in conn_comps])
+    giant_component_idx = np.argmax(conn_comps_len)
+    if verbose:
+        print(f"giant_component_size = {conn_comps_len[giant_component_idx]}")
+        
+    return G.subgraph(conn_comps[giant_component_idx]).copy()
 
+def largest_component_n_nodes(G,verbose=False):
+    return n_nodes(largest_component_subgraph(G,verbose = verbose))
+
+def largest_component_node_perc(G):
+    return largest_component_n_nodes(G)/n_nodes(G)
 
 
 
