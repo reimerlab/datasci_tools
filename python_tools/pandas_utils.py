@@ -606,7 +606,8 @@ from pathlib import Path
 def save_df(df,filename):
     filename = Path(filename)
     filename_str = str(filename.absolute())
-    if filename_str[:-4] != ".pkl":
+    #print(f"{filename_str[-4]}") 
+    if filename_str[-4:] != ".pkl":
         filename_str += ".pkl"
         
     df.to_pickle(filename_str)
