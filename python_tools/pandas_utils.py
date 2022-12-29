@@ -3761,6 +3761,61 @@ def new_column_from_name_to_str_func_dict(
     return new_column_from_str_func(
     df,
     func_dict)
+
+import matplotlib_utils as mu
+import numpy_utils as nu
+import ipyvolume_utils as ipvu
+def plot_class_coordinates(
+    df,
+    column,
+    classes = None,
+    centroid_column = "centroid",
+    suffix = "nm",
+    classes_colors = None,
+    verbose = True,
+    size = 0.5,
+    ):
+    """
+    Purpose: to plot the excitatory and inhibitory cells
+    in a dataframe that has their coordinates
+    """
+
+    if classes is None:
+        classes = df[column].unique()
+
+    if classes_colors is None:
+        classes_colors = mu.generate_non_randon_named_color_list(len(classes))
+    elif type(classes_colors) == dict:
+        classes_colors = [classes_colors[k] for k in classes]
+    else:
+        classes_colors = nu.to_list(classes_colors)
+
+    scatters = []
+    scatters_colors = []
+
+    for cl,col in zip(classes,classes_colors):
+        coords = pu.coordinates_from_df(
+                df.query(f"{column} == '{cl}'"),
+                name = centroid_column,
+                suffix=suffix,
+        )
+        if verbose:
+            print(f"# of coords for {cl} ({col}) = {len(coords)}")
+
+        scatters.append(
+            coords
+        )
+
+        scatters_colors.append(col)
+    
+    
+    ipvu.plot_multi_scatters(
+        scatters=scatters,
+        color=scatters_colors,
+        size = size,
+        
+
+    )
         
     
 import matplotlib_utils as mu

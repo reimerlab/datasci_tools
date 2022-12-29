@@ -923,6 +923,7 @@ def plot_multi_scatters(
     verbose = False,
     show_at_end = True,
     new_figure = True,
+    alpha = 1,
     ):
     
     """

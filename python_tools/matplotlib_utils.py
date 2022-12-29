@@ -1095,11 +1095,21 @@ def stacked_bar_graph(
             scale_down=0.8,
             bbox_to_anchor=(1.2, 0.5),
             loc='center left')
+        
+    ax2 = set_legend_order(ax2,all_ys)
 
     return ax2,ax
 
+def set_legend_order(ax,labels, order = None):
+    handles, labels = ax.get_legend_handles_labels()
+    if order is None:
+        labels = np.array(labels)
+        order = [np.where(labels == lab)[0][0] for lab in labels]
+    new_label_order = [labels[idx] for idx in order]
+    print(f"new_label_order = {new_label_order}")
+    ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+    return ax
 
-  
 import matplotlib.pyplot as plt
 def bar_plot_parallel_features_by_labels(
     df,
