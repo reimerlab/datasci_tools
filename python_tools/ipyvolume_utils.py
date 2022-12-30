@@ -418,8 +418,16 @@ def set_axes_lim(
     xlim = None,
     ylim = None,
     zlim = None,
+    debug = False,
     ):
     
+    if debug:
+        print(f"Start func")
+        print(f"xlim = {xlim}")
+        print(f"ylim = {ylim}")
+        print(f"zlim = {zlim}")
+        
+
     if min is not None and max is not None:
         ipv.xlim(min[0],max[0])
         ipv.ylim(min[1],max[1])
@@ -435,9 +443,16 @@ def set_axes_lim(
     if zlim is None:
         zlim = lim
         
+    if debug:
+        print(f"Inside func")
+        print(f"xlim = {xlim}")
+        print(f"ylim = {ylim}")
+        print(f"zlim = {zlim}")
     ipv.xlim(xlim[0],xlim[1])
     ipv.ylim(ylim[0],ylim[1])
     ipv.zlim(zlim[0],zlim[1])
+    
+    set_view(distance = 2)
     
 def get_axes_lim(fig = None):
     if fig is None:
@@ -1281,6 +1296,26 @@ def save_fig(
     ipv.savefig(
         filename,
         **save_config_ex,
+    )
+    
+def set_axes_lim_equal_width_from_array(
+    array,
+    flip_y = True,
+    verbose = False,
+    buffer = 0,
+    ):
+    
+    axes_lim = nu.axes_lim_equal_width(
+        array = array,
+        flip_y = flip_y,
+        verbose = verbose,
+        buffer=buffer,
+    ).T
+
+    set_axes_lim(
+        xlim=axes_lim[0],
+        ylim=axes_lim[1],
+        zlim=axes_lim[2],
     )
     
     

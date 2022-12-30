@@ -2088,4 +2088,61 @@ def empty_n_by_m_default_matrix(n,m=None,default_value = None):
         m = n
     return np.repeat([default_value]*m,n).reshape(n,m)
 
+
+def axes_max_radius(array):
+    lims = np.vstack([
+        np.min(array,axis=0),
+        np.max(array,axis=0)
+    ])
+
+    radii = np.abs(
+        lims[1,:] - lims[0,:],
+    )/2
+
+    max_radii = np.max(radii)
+    return max_radii
+    
+def axes_lim_equal_width(
+    array,
+    buffer=0,
+    flip_y = False,
+    verbose = False,
+    ):
+    """
+    Purpose: calculate axes limits
+    so that the scaling is consistent across
+    all axes (all axes limits have same width)
+    """
+
+    lims = np.vstack([
+        np.min(array,axis=0),
+        np.max(array,axis=0)
+    ])
+
+    radii = np.abs(
+        lims[1,:] - lims[0,:],
+    )/2
+
+    max_radii = np.max(radii)
+
+    midpoint = lims.mean(axis=0)
+
+    if flip_y:
+        midpoint[1] = -1*midpoint[1] 
+
+    axes_lims  = np.vstack([
+        [-1*(max_radii + buffer)]*lims.shape[-1],
+        [1*(max_radii + buffer)]*lims.shape[-1],
+    ]
+    )
+    new_lim = axes_lims + midpoint
+
+
+    if verbose:
+        print(f"midpoint = {midpoint}")
+        print(f"new_lim = {new_lim}")
+
+    return new_lim
+
+
 import numpy_utils as nu

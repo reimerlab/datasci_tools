@@ -3774,6 +3774,7 @@ def plot_class_coordinates(
     classes_colors = None,
     verbose = True,
     size = 0.5,
+    **kwargs
     ):
     """
     Purpose: to plot the excitatory and inhibitory cells
@@ -3813,6 +3814,7 @@ def plot_class_coordinates(
         scatters=scatters,
         color=scatters_colors,
         size = size,
+        **kwargs
         
 
     )
