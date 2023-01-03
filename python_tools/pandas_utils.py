@@ -3085,35 +3085,41 @@ def map_column_with_dict(
     in_place = False,
     verbose = False,
     ):
+    
+    
+    
     if verbose:
         st = time.time()
         
     if not in_place:
         df = df.copy()
         
-    original_labels = df[column].to_numpy().copy()
-    for k,v in dict_map.items():
-        if type(k) == str:
-            query = (f"{column} == '{k}'")
-        else:
-            print(f"int query")
-            query = (f"{column} == {k}")
-        df = pu.set_column_subset_value_by_query(
-            df,
-            query=query,
-            column = column,
-            value = v
+    columns = nu.to_list(column)
+    
+    for column in columns:
+        original_labels = df[column].to_numpy().copy()
+        for k,v in dict_map.items():
+            if type(k) == str:
+                query = (f"{column} == '{k}'")
+            else:
+                print(f"int query")
+                query = (f"{column} == {k}")
+            df = pu.set_column_subset_value_by_query(
+                df,
+                query=query,
+                column = column,
+                value = v
 
-        )
+            )
 
-    if use_default_value:
-        # # --- setting the default value ---
-        mask = np.invert(nu.mask_of_array_1_elements_in_array_2(
-            original_labels,
-            list(dict_map.keys())
-        ))  
+        if use_default_value:
+            # # --- setting the default value ---
+            mask = np.invert(nu.mask_of_array_1_elements_in_array_2(
+                original_labels,
+                list(dict_map.keys())
+            ))  
 
-        df.loc[mask,column] = default_value
+            df.loc[mask,column] = default_value
         
     if verbose:
         print(f"Total time = {time.time() - st}")

@@ -1993,6 +1993,7 @@ def plot_jointplot_from_df_coordinates_with_labels(
     fontsize_ticks = None,
     no_tickmarks = False,
     move_legend_outside = True,
+    plot_marginals = True,
     **kwargs
     ):
     """
@@ -2084,6 +2085,11 @@ def plot_jointplot_from_df_coordinates_with_labels(
     if no_tickmarks:
         ax.ax_joint.set(xticklabels=[],yticklabels = [])
     #plt.show()
+    
+    if not plot_marginals:
+        ax.ax_marg_x.remove()
+        ax.ax_marg_y.remove()
+        
     return ax
 
 
