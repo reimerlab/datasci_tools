@@ -2104,12 +2104,14 @@ def bin_df_by_column_stat(
     n_bins = 10,
     verbose = False,
     return_bins = True,
+    return_bins_mid = False,
     return_df_len = True,
     return_std = True,
     func_std = None,
     plot = False,
     plot_n_data_points = True,
     plot_errorbars = False,
+    return_plot = False,
     ):
     """
     Purpose: to compute a statistic over
@@ -2161,17 +2163,24 @@ def bin_df_by_column_stat(
         else:
             ax.set_ylabel(f"{func.__name__}")
 
-        if plot_n_data_points and not equal_depth_bins:
+        if plot_n_data_points: #and not equal_depth_bins:
             ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
             ax2.set_ylabel('# of Data Points',fontsize=fontsize,color=twin_color)  # we already handled the x-label with ax1
             ax2.tick_params(axis='y', labelcolor=twin_color)
             ax2.plot(mid_bins, df_len, color=twin_color)
         #plt.show()
+        
+        if return_plot:
+            return ax
 
     if (not return_bins) and (not return_df_len) and (not return_std):
         return df_stats
     return_list = [df_stats]
-    if return_bins:
+    
+    if return_bins_mid:
+        mid_bins = (bins[1:] + bins[:-1])/2
+        return_list.append(mid_bins)
+    elif return_bins:
         return_list.append(bins)
     if return_df_len:
         return_list.append(df_len)
