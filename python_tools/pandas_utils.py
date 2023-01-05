@@ -999,7 +999,7 @@ def normalize_df_with_names(df):
     return df_standardization
 
 # Filter away rows with infinity
-def filter_away_non_finite_rows(df):
+def filter_away_non_finite_rows(df,columns = None):
     return df[df.replace([np.inf, -np.inf], np.nan).notnull().all(axis=1)]
 
 def replace_None_with_default(df,default=0,columns=None):
@@ -1400,6 +1400,51 @@ def filter_away_rows_with_nan_in_columns(
         pass
     
     return df_filt
+
+def filter_away_rows_with_nan_only_in_columns(
+    df,
+    columns):
+    
+    for c in columns:
+        df = df.query(f"{c}=={c}")
+        
+    try:
+        df = df.reset_index(drop=True)
+    except:
+        pass
+    
+    return df
+    
+def filter_away_rows_with_inf_only_in_columns(
+    df,
+    columns,
+    in_place = False,):
+    
+    if not in_place:
+        df = df.copy()
+        
+    df_filt = df[columns].replace([np.inf, -np.inf], np.nan)
+    idx = pu.find_all_rows_without_nan(df_filt)
+    df_filt = df.iloc[idx,:]
+    try:
+        df_filt = df_filt.reset_index(drop=True)
+    except:
+        pass
+    
+    return df_filt
+
+def filter_away_rows_with_inf_or_nan_only_in_columns(df,columns):
+    df = pu.filter_away_rows_with_nan_only_in_columns(
+        df,
+        columns=columns,
+    )
+    
+    df = pu.filter_away_rows_with_inf_only_in_columns(
+        df,
+        columns=columns,
+    )
+    
+    return df
 
 def randomly_sample_df(
     df,

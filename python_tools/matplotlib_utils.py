@@ -2415,4 +2415,7 @@ def set_legend_title(ax,title=None):
 def hide_legend_title(ax):
     ax.legend_.set_title(None)
     
+    
+def line_width_thin_hist_seaborn():
+    print(f"linewidth = 0.05 for seaborn")
 import matplotlib_utils as mu
