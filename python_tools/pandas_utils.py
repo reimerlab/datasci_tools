@@ -874,9 +874,21 @@ def filter_away_rows_with_duplicated_col_value(
     col = nu.convert_to_array_like(col)
     return df[~df.duplicated(subset=col,keep=False)]
 
-def filter_to_first_instance_of_unique_column(df,column_name):
+def filter_to_first_instance_of_unique_column(
+    df,
+    column_name,
+    reset_index = False,
+    verbose = False,):
     column_name = nu.convert_to_array_like(column_name) 
-    return df.groupby(column_name).first()
+    if verbose:
+        print(f"Before filtering for unique {column_name}: {len(df)}")
+    return_df = df.groupby(column_name).first()
+    if verbose:
+        print(f"AFTER filtering for unique {column_name}: {len(return_df)}")
+    if reset_index:
+        return_df = return_df.reset_index(drop=False)
+        
+    return return_df
 
 def filter_df_rows_with_df(df,df_filter):
     keys = list(df_filter.columns.values)
