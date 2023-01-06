@@ -2412,6 +2412,10 @@ def set_yaxis_ticklabel_alignment(ax,alignment = "bottom"):
 def set_legend_title(ax,title=None):
     ax.legend_.set_title(title)
     
+def set_legend_marker_size(ax,size):
+    for handle in ax.legend_.legendHandles:
+        handle.set_sizes([size])
+    
 def hide_legend_title(ax):
     ax.legend_.set_title(None)
     
