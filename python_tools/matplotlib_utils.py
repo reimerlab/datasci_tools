@@ -2383,6 +2383,24 @@ set_axes_outside_seaborn = move_axes_outside_seaborn
 set_legend_outside_seaborn = move_axes_outside_seaborn
 move_legend_outside_seaborn = move_axes_outside_seaborn
 
+def move_legend_location_seaborn(ax,loc):
+    """
+    Purpose: To move the legend location to another spot
+    
+    possibilities:
+    upper right
+    upper left
+    lower left
+    lower right
+    right
+    center left
+    center right
+    lower center
+    upper center
+    center
+    """
+    sns.move_legend(ax, loc=loc,)
+    return ax
 def set_colorbar_tick_fontsize(ax,fontsize=20):
     cbar = ax.collections[0].colorbar
     cbar.ax.tick_params(labelsize=fontsize)
