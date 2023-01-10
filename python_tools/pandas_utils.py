@@ -1415,7 +1415,10 @@ def filter_away_rows_with_nan_in_columns(
 
 def filter_away_rows_with_nan_only_in_columns(
     df,
-    columns):
+    columns,
+    verbose = False,):
+    if verbose:
+        print(f"Before nan filtering in columns: {len(df)}")
     
     for c in columns:
         df = df.query(f"{c}=={c}")
@@ -1425,13 +1428,19 @@ def filter_away_rows_with_nan_only_in_columns(
     except:
         pass
     
+    if verbose:
+        print(f"-> After nan filtering in columns: {len(df)}")
+    
     return df
     
 def filter_away_rows_with_inf_only_in_columns(
     df,
     columns,
-    in_place = False,):
+    in_place = False,
+    verbose = False,):
     
+    if verbose:
+        print(f"Before inf filtering in columns: {len(df)}")
     if not in_place:
         df = df.copy()
         
@@ -1443,17 +1452,25 @@ def filter_away_rows_with_inf_only_in_columns(
     except:
         pass
     
+    if verbose:
+        print(f"-> After inf filtering in columns: {len(df_filt)}")
+    
     return df_filt
 
-def filter_away_rows_with_inf_or_nan_only_in_columns(df,columns):
+def filter_away_rows_with_inf_or_nan_only_in_columns(
+    df,
+    columns,
+    verbose = False,):
     df = pu.filter_away_rows_with_nan_only_in_columns(
         df,
         columns=columns,
+        verbose=verbose,
     )
     
     df = pu.filter_away_rows_with_inf_only_in_columns(
         df,
         columns=columns,
+        verbose=verbose,
     )
     
     return df
