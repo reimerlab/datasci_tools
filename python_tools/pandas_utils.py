@@ -3907,6 +3907,76 @@ def plot_class_coordinates(
         
 
     )
+    
+def bin_idx_for_column(
+    df,
+    column,
+    n_bins = 20,
+    add_bin_idx = True,
+    bin_idx_name = None,
+    add_bin_midpoint = True,
+    bin_midpoint_name = None,
+    in_place = False,
+    verbose = False,
+    return_df = True,
+    ):
+    """
+    Purpose: to assign a bin value for a column
+    in a dataframe
+    """
+
+    if return_df and (not add_bin_idx and not add_bin_midpoint):
+        raise Exception("Doing nothing")
+
+
+    if not in_place and (add_bin_idx or add_bin_midpoint):
+        df = df.copy()
+
+    column_data = df[column].to_numpy()
+    bins = nu.bin_array(
+        column_data,
+        n_bins = n_bins,
+    )
+
+    bin_assignment = np.digitize(
+        column_data,
+        bins = bins
+    ) - 1
+
+    bin_assignment[bin_assignment >= n_bins ] = n_bins-1
+    bin_mids = (bins[1:] + bins[:-1])/2
+
+    if add_bin_idx:
+        if bin_idx_name is None:
+            bin_idx_name= f"{column}_bin_idx"
+        df[bin_idx_name] = bin_assignment
+
+    if add_bin_midpoint:
+        if bin_midpoint_name is None:
+            bin_midpoint_name= f"{column}_bin_midpoint"
+        df[bin_midpoint_name] = bin_mids[bin_assignment]
+
+    if verbose:
+        display(pu.count_unique_column_values(df,bin_idx_name))
+    # if plot:
+    #     dummy_name = f"{bin_midpoint_name} "
+    #     df[dummy_name] = [
+    #         str(np.round(k,2)) for k in df[bin_midpoint_name].to_list()]
+    #     df["count"] = 1
+    #     sns.barplot(
+    #         data=df,
+    #         y = dummy_name,
+    #         x = column,
+    #         color = "blue"
+    #     )
+
+    #     df = pu.delete_columns(df,dummy_name)
+
+    if return_df:
+        return df
+    else:
+        return bin_assignment,bin_mids
+
         
     
 import matplotlib_utils as mu

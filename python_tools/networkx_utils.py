@@ -1307,6 +1307,8 @@ def upstream_node(G,node,return_single=True):
         else:
             return [k[0] for k in curr_upstream_nodes]
     else:
+        if not nu.is_array_like(curr_upstream_nodes[0]):
+            return curr_upstream_nodes[0]
         try:
             return curr_upstream_nodes[0][0]
         except:
@@ -3770,7 +3772,8 @@ import networkx as nx
 def remove_edge_reattach_children_di(
     G,
     node,
-    inplace = True):
+    inplace = True,
+    verbose = False,):
     """
     Purpose: To remove a node and reattach any children to the parents
     
@@ -3799,7 +3802,13 @@ def remove_edge_reattach_children_di(
     children = xu.downstream_nodes(G,node)
     
     G.remove_nodes_from([node])
-    G.add_edges_from([(parent,k) for k in children])
+    new_edges = [(parent,k) for k in children]
+    G.add_edges_from(new_edges)
+    
+    if verbose:
+        print(f"For node {node}")
+        print(f"parent = {parent}, children = {children}")
+        print(f"new_edges = {new_edges}")
     return G
 
 remove_node_reattach_children_di = remove_edge_reattach_children_di

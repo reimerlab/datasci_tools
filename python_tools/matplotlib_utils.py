@@ -2401,6 +2401,7 @@ def move_legend_location_seaborn(ax,loc):
     """
     sns.move_legend(ax, loc=loc,)
     return ax
+set_legend_location_seaborn = move_legend_location_seaborn
 def set_colorbar_tick_fontsize(ax,fontsize=20):
     cbar = ax.collections[0].colorbar
     cbar.ax.tick_params(labelsize=fontsize)
@@ -2440,4 +2441,14 @@ def hide_legend_title(ax):
     
 def line_width_thin_hist_seaborn():
     print(f"linewidth = 0.05 for seaborn")
+    
+from matplotlib.ticker import MaxNLocator
+def set_axes_ticklabels_as_int(ax,axes="x"):
+    axes= nu.to_list(axes)
+    for curr_ax in axes:
+        getattr(ax,f"{curr_ax}axis").set_major_locator(MaxNLocator(integer=True))
+    return ax
+
+def set_y_ticklabels_as_int(ax):
+    return set_axes_ticklabels_as_int(ax,"y")
 import matplotlib_utils as mu
