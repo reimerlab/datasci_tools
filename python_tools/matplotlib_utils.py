@@ -2360,7 +2360,10 @@ def set_legend_fontsizes(
     ax,
     fontsize = 20,
     label_fontsize = None,
-    title_fontsize = None):
+    title_fontsize = None,
+    ncol = None,
+    handleheight = None,
+    labelspacing = None):
 
     if label_fontsize is None:
         label_fontsize = fontsize
@@ -2371,6 +2374,8 @@ def set_legend_fontsizes(
 
     # for legend title
     plt.setp(ax.get_legend().get_title(), fontsize=title_fontsize) 
+    if ncol is not None:
+        plt.legend(ncol=ncol,handleheight=handleheight, labelspacing=labelspacing)
     return ax
 
 
