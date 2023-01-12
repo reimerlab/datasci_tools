@@ -2451,4 +2451,130 @@ def set_axes_ticklabels_as_int(ax,axes="x"):
 
 def set_y_ticklabels_as_int(ax):
     return set_axes_ticklabels_as_int(ax,"y")
+
+def fig_width_from_ax(ax):
+    return ax.fig.get_figwidth()
+def fig_height_from_ax(ax):
+    return ax.fig.get_figheight()
+def fig_from_ax(ax):
+    return ax.fig
+
+def set_fig_height_width_from_ax(
+    ax,
+    width = None,
+    height = None,
+    ):
+    if width is not None:
+        ax.fig.set_figwidth(width)
+    if height is not None:
+        ax.fig.set_figheight(height)
+        
+def ax_main(ax):
+    if hasattr(ax,"ax_joint"):
+        return ax.ax_joint
+    else:
+        return ax
+def get_axes_lim(ax,axis = "x",sort = False):
+    ax = ax_main(ax)
+    curr_lim = getattr(ax,f"get_{axis}lim")()
+    if sort:
+        curr_lim= tuple(np.sort(curr_lim))
+    return curr_lim
+
+
+def get_xlim(ax):
+    return get_axes_lim(ax,axis = "x")
+def get_ylim(ax):
+    return get_axes_lim(ax,axis = "y")
+
+def flip_axis_lim(ax,axis):
+    ax = ax_main(ax)
+    axis_lims = get_xlim
+    getattr(ax,f"set_{axis}lim")(list(np.flip(get_axes_lim(ax,axis,sort=False))))
+    
+def flip_ylim(ax):
+    return flip_axis_lim(ax,"y")
+def flip_xlim(ax):
+    return flip_axis_lim(ax,"x")
+    
+def scale_axes_lim_isotropic(
+    ax,
+    width = None,
+    height = None,
+    verbose = False,
+    ):
+    """
+    Purpose: To scale any figure to be isotropic based (after
+    potentially scaling the height and width)
+
+    Pseudocode: 
+    0) optionally set the width and height
+    1) Get the current fig width height
+    2) Get current axes limits
+    -- now want to scale the axes limits
+    so that axes limits divided by fig limits
+    is the same scale ---
+
+    """
+    mu.set_fig_height_width_from_ax(
+        ax,
+        width = width,
+        height = height
+    )
+    
+    ax_m = ax_main(ax)
+    
+
+    width = fig_width_from_ax(ax)
+    height = fig_height_from_ax(ax)
+
+    if verbose:
+        print(f"height = {height}")
+        print(f"width = {width}")
+
+    xlim = get_xlim(ax)
+    ylim = get_ylim(ax)
+
+    if verbose:
+        print(f"xlim = {xlim}")
+        print(f"ylim = {ylim}")
+
+    """
+    Would rather expand than shrink if could
+    """
+    x_range = xlim[1] - xlim[0]
+    x_density = x_range/width
+
+    y_range = ylim[1] - ylim[0]
+    y_density = y_range/height
+    
+    if verbose:
+        print(f"x_range = {x_range}")
+        print(f"y_range = {y_range}")
+        
+    if np.abs(y_density) < np.abs(x_density):
+        if verbose:
+            print(f"y density smaller than x")
+        mid = ylim[0] + y_range/2
+        new_radius = height/2*np.abs(x_density)
+        if y_range < 0:
+            new_radius = -1*new_radius
+        ylim_new = (mid -new_radius,mid + new_radius )
+        if verbose:
+            print(f"ylim_new= {ylim_new}")
+        ax_m.set_ylim(ylim_new)
+    else:
+        if verbose:
+            print(f"x density smaller than y")
+        mid = xlim[0] + x_range/2
+        new_radius = width/2*np.abs(y_density)
+        if x_range < 0:
+            new_radius = -1*new_radius
+        xlim_new = (mid -new_radius,mid + new_radius )
+        if verbose:
+            print(f"xlim_new= {xlim_new}")
+        ax_m.set_xlim(xlim_new)
+
+    return ax
+
 import matplotlib_utils as mu
