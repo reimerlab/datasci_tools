@@ -1106,7 +1106,7 @@ def set_legend_order(ax,labels, order = None):
         labels = np.array(labels)
         order = [np.where(labels == lab)[0][0] for lab in labels]
     new_label_order = [labels[idx] for idx in order]
-    print(f"new_label_order = {new_label_order}")
+    #print(f"new_label_order = {new_label_order}")
     ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
     return ax
 
