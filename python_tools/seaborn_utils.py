@@ -39,8 +39,14 @@ class SeabornFig2Grid():
         self.subgrid = gridspec.GridSpecFromSubplotSpec(r+1,r+1, subplot_spec=self.subplot)
 
         self._moveaxes(self.sg.ax_joint, self.subgrid[1:, :-1])
-        self._moveaxes(self.sg.ax_marg_x, self.subgrid[0, :-1])
-        self._moveaxes(self.sg.ax_marg_y, self.subgrid[1:, -1])
+        try:
+            self._moveaxes(self.sg.ax_marg_x, self.subgrid[0, :-1])
+        except:
+            pass
+        try:
+            self._moveaxes(self.sg.ax_marg_y, self.subgrid[1:, -1])
+        except:
+            pass
 
     def _moveaxes(self, ax, gs):
         #https://stackoverflow.com/a/46906599/4124317
@@ -96,4 +102,30 @@ def example_SeabornFig2Grid():
     gs.tight_layout(fig)
     #gs.update(top=0.7)
 
+    plt.show()
+    
+def example_gridspec_from_existing_ax():
+    """
+    Pseudocode: 
+    1) Create the figure
+    2) Great the gripspec
+    3) Use the seabornfig2grid to add the ax to figure 
+    and reference the certain gripspec
+    """
+    fig = plt.figure(figsize=figsize)
+    gs = gridspec.GridSpec(nrows=n_rows,ncols=col_width)
+    for ax_i,ax_obs in enumerate(axes_objs):
+        row_idx = n_rows_per_ax*(ax_i)+1
+        start_idx = col_width*(row_idx-1) + 1
+        for i,ax in enumerate(ax_obs):
+            mu.set_n_ticks_from_ax(ax,x_nticks=x_nticks,y_nticks=y_nticks)
+            row_i,idx = row_idx + int(np.floor(i/col_width)),start_idx + i
+            #print(f"{(n_rows,col_width,start_idx + i)}")
+            snsu.SeabornFig2Grid(ax, fig, gs[start_idx + i-1])
+
+            if plot_figure_letters:
+                ax.ax_joint.text(letter_x, letter_y, string.ascii_lowercase[start_idx + i-1], transform=ax.ax_joint.transAxes, 
+                    size=letters_fontsize, weight='bold')
+
+    gs.tight_layout(fig)
     plt.show()

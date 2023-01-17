@@ -2364,6 +2364,8 @@ def set_legend_fontsizes(
     ncol = None,
     handleheight = None,
     labelspacing = None):
+    
+    ax = ax_main(ax)
 
     if label_fontsize is None:
         label_fontsize = fontsize
@@ -2434,6 +2436,7 @@ def set_yaxis_ticklabel_alignment(ax,alignment = "bottom"):
         tick.set_verticalalignment(alignment)
         
 def set_legend_title(ax,title=None):
+    ax = ax_main(ax)
     ax.legend_.set_title(title)
     
 def set_legend_marker_size(ax,size):
@@ -2644,5 +2647,47 @@ def set_frame_off(ax):
     ax.set_frame_on(False)
     
 hide_frame = set_frame_off
+
+def set_n_ticks_from_ax(ax,x_nticks=None,y_nticks=None):
+    """
+    Purpose: set the number of tick marks
+    """
+    ax_m = ax_main(ax)
+    if x_nticks is not None:
+        ax_m.xaxis.set_major_locator(plt.MaxNLocator(x_nticks))
+    if y_nticks is not None:
+        ax_m.yaxis.set_major_locator(plt.MaxNLocator(y_nticks))
+    return ax_m
+
+def add_text_to_pos(ax,x,y,text,fontsize=None,weight = "bold"):
+    ax_m = ax_main(ax)
+    ax_m.text(
+        x,
+        y,
+        text,
+        size = fontsize,
+        weight=weight,
+        transform=ax_m.transAxes,
+    )
+    
+import string_utils as stru
+def add_letter_to_ax(
+    ax,
+    letter=None,
+    idx=None,
+    lowercase = True,
+    x = -0.15,
+    y = 1.35,
+    fontsize = 40,
+    **kwargs):
+    if letter is None:
+        letter = stru.number_to_letter(idx,upper=not lowercase)
+    add_text_to_pos(
+        ax,
+        x,
+        y,
+        text=letter,
+        fontsize=fontsize,
+        **kwargs)
 
 import matplotlib_utils as mu
