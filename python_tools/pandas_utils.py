@@ -548,11 +548,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import six
 
-def df_to_render_table(data, col_width=3.0, row_height=0.625, font_size=14,
-                     header_color='#40466e', row_colors=['#f1f1f2', 'w'], edge_color='w',
-                     bbox=[0, 0, 1, 1], header_columns=0,
-                       fontsize_header=None,
-                     ax=None,transpose=True,**kwargs):
+def df_to_render_table(
+    data, 
+    col_width=3.0, 
+    row_height=0.625, 
+    font_size=14,
+    header_color='#40466e', 
+    row_colors=['#f1f1f2', 'w'],
+    edge_color='w',
+    bbox=[0, 0, 1, 1],
+    header_columns=0,
+    fontsize_header=None,
+    ax=None,
+    transpose=True,
+    **kwargs):
     """
     Purpose: To render a dataframe nicely that can be put in a figure
     
@@ -576,9 +585,19 @@ def df_to_render_table(data, col_width=3.0, row_height=0.625, font_size=14,
         ax.axis('off')
 
     if not transpose:
-        mpl_table = ax.table(cellText=data.values, bbox=bbox, colLabels=data.columns, **kwargs)
+        mpl_table = ax.table(
+            cellText=data.values, 
+            bbox=bbox, 
+            colLabels=data.columns, 
+            **kwargs
+        )
     else:
-        mpl_table = ax.table(cellText=data.values, bbox=bbox, rowLabels=data.index, **kwargs)
+        mpl_table = ax.table(
+            cellText=data.values, 
+            bbox=bbox, 
+            rowLabels=data.index, 
+            **kwargs
+        )
 
     mpl_table.auto_set_font_size(False)
     mpl_table.set_fontsize(font_size)
@@ -3976,7 +3995,52 @@ def bin_idx_for_column(
         return df
     else:
         return bin_assignment,bin_mids
+def col_to_datatype_dict(df):
+    cols = list(df.columns)
+    dtypes = [str(k) for k in df.dtypes.to_list()]
+    return {col:dt for col,dt in zip(cols,dtypes)}
 
+def columns_of_datatype(
+    df,
+    datatype="float",
+    verbose = False,):
+    col_dt_dict = pu.col_to_datatype_dict(df)
+    cols = [col for col,dt in col_dt_dict.items() if datatype in dt]
+    if verbose:
+        print(f"Columns of {datatype} datatype: \n{cols}")
+    return cols
+
+def float_columns(df,verbose = False,):
+    return columns_of_datatype(
+        df,
+        datatype="float",
+        verbose=verbose,
+    )
+
+def round_float_cols(
+    df,
+    precision = 2,
+    column_precision_dict = None,
+    verbose = False,
+    cols_to_ignore = None):
+    """
+    Purpose: To round all float columns
+    to a specified precision
+    """
+
+    if cols_to_ignore is None:
+        cols_to_ignore = []
+    if column_precision_dict is None:
+        column_precision_dict= {}
+
+    float_cols = pu.float_columns(df,verbose=verbose,)
+    for k in float_cols:
+        if k not in column_precision_dict:
+            if k in cols_to_ignore:
+                continue
+            column_precision_dict[k] = precision
+            
+    return df.round(column_precision_dict)
         
     
 import matplotlib_utils as mu

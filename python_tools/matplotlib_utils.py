@@ -2406,7 +2406,7 @@ def move_legend_location_seaborn(ax,loc):
     upper center
     center
     """
-    sns.move_legend(ax, loc=loc,)
+    sns.move_legend(mu.ax_main(ax), loc=loc,)
     return ax
 set_legend_location_seaborn = move_legend_location_seaborn
 def set_colorbar_tick_fontsize(ax,fontsize=20):
@@ -2689,5 +2689,34 @@ def add_letter_to_ax(
         text=letter,
         fontsize=fontsize,
         **kwargs)
+    
+def plot_df(
+    df,
+    col_width=3.0, 
+    row_height=0.625, 
+    font_size=14,
+    header_color='#40466e', 
+    row_colors=['#f1f1f2', 'w'],
+    edge_color='w',
+    bbox=[0, 0, 1, 1],
+    header_columns=1,
+    fontsize_header=None,
+    ax=None,
+    transpose=False,
+    **kwargs):
+    return pu.df_to_render_table(
+        df,
+        col_width=col_width, 
+        row_height=row_height, 
+        font_size=font_size,
+        header_color=header_color, 
+        row_colors=row_colors,
+        edge_color=edge_color,
+        bbox=bbox,
+        header_columns=header_columns,
+        fontsize_header=fontsize_header,
+        ax=ax,
+        transpose=transpose,
+    )
 
 import matplotlib_utils as mu
