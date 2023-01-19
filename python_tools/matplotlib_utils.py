@@ -2590,9 +2590,9 @@ def mappable_from_ax(ax):
 
 def plot_confusion_matrix(
     cf_matrix,
-    annot = True,
+    annot = True, # could send an array to use as annotations
     annot_fontsize = 30,
-    cell_fmt = ".2f",
+    cell_fmt = ".2f",#"d" would format as int
     cmap = "Blues",
     vmin = 0,
     vmax = 1,
@@ -2610,6 +2610,7 @@ def plot_confusion_matrix(
     colobar_tick_fontsize = 25,
     
     ax = None,
+    **kwargs
     ):
 #     if vmax == 1 and np.max(cf_matrix) > 1:
 #         cf_matrix = normalize_confusion_matrix(cf_matrix)
@@ -2626,6 +2627,7 @@ def plot_confusion_matrix(
         vmin=vmin, 
         vmax=vmax,
         ax = ax,
+        **kwargs
     )
 
     ax = mu.set_axes_font_size(
