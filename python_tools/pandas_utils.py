@@ -2028,6 +2028,9 @@ def intersect_df(
     if restriction_columns is None:
         restriction_columns = pu.intersect_columns([df,df_restr])
         
+    if verbose:
+        print(f"restriction_columns= {restriction_columns}")
+        
     if append_restr_columns:
         cols = list(df_restr.columns)
     else:
@@ -4044,6 +4047,18 @@ def round_float_cols(
         
 def flip_rows(df):
     return df.iloc[::-1]
+    
+def mode_aggr_groupby(
+    df,
+    groupby_columns,
+    column,
+    ):
+    
+    groupby_columns= list(nu.to_list(groupby_columns))
+    #columns= list(nu.to_list(columns))
+    
+    return df.groupby(groupby_columns)[column].agg(lambda x: pd.Series.mode(x)[0]).to_frame().reset_index()
+    
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
