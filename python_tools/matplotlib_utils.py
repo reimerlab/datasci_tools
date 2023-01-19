@@ -2719,4 +2719,14 @@ def plot_df(
         transpose=transpose,
     )
 
+def set_axes_scale(ax,axis,scale = "log"):
+    getattr(ax,f"set_{axis}scale")(scale)
+    
+def set_x_logscale(ax,):
+    set_axes_scale(ax,"x",scale = "log")
+def set_y_logscale(ax):
+    set_axes_scale(ax,"y",scale="log")
+
+plot_table = plot_df
+
 import matplotlib_utils as mu

@@ -4042,6 +4042,8 @@ def round_float_cols(
             
     return df.round(column_precision_dict)
         
+def flip_rows(df):
+    return df.iloc[::-1]
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
