@@ -421,9 +421,11 @@ import numpy_utils as nu
 import matplotlib.pyplot as plt
 import numpy as np
 
-def divide_dataframe_by_column_value(df,
-                                column,
-                                ):
+def divide_dataframe_by_column_value(
+    df,
+    column,
+    return_names = True
+    ):
     """
     Purpose: To divide up the dataframe into 
     multiple dataframes
@@ -433,15 +435,21 @@ def divide_dataframe_by_column_value(df,
                                 column="cell_type_predicted")
     
     """
+    column = nu.to_list(column)
     tables = []
     table_names = []
     for b,x in df.groupby(column):
         table_names.append(b)
         tables.append(x)
         
-    return tables,table_names
+    if return_names:
+        return tables,table_names
+    else:
+        return tables
 
-
+def split_df_by_columns(df,columns,return_names = False):
+    return divide_dataframe_by_column_value(df,columns,return_names = return_names)
+    
 def plot_histogram_of_differnt_tables_overlayed(tables_to_plot,
                           tables_labels,
                           columns=None,
@@ -4059,6 +4067,30 @@ def mode_aggr_groupby(
     
     return df.groupby(groupby_columns)[column].agg(lambda x: pd.Series.mode(x)[0]).to_frame().reset_index()
     
+def filter_df_splits_by_column_percentile(
+    df,
+    column,
+    split_columns,
+    percentile_upper=99.5,
+    percentile_lower = 0,
+    verbose = False,
+    ):
+    """
+    Purpose: To filter multiple dataframe splits
+    to a certain percentage and then stack into dataframe
+    """
+    if verbose:
+        print(f"Before filtering {split_columns} column to {[percentile_lower,percentile_upper]} perc = {len(df)}")
+    df = pu.concat(
+        [pu.filter_df_by_column_percentile(k,columns = column,percentile_lower=percentile_lower,percentile_upper=percentile_upper)
+         for k in pu.split_df_by_columns(df,columns = split_columns)],
+    axis = 0
+    ).reset_index(drop=True)
+
+    if verbose:
+        print(f"AFTER filtering {split_columns} column to {[percentile_lower,percentile_upper]} perc = {len(df)}")
+
+    return df
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
