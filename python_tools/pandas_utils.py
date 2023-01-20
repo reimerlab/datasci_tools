@@ -901,6 +901,39 @@ def filter_away_rows_with_duplicated_col_value(
     col = nu.convert_to_array_like(col)
     return df[~df.duplicated(subset=col,keep=False)]
 
+
+def filter_to_extrema_k_of_group(
+    df,
+    group_columns,
+    sort_columns,
+    k,
+    extrema = "first"):
+    if extrema == 'first':
+        ascending = False
+    elif extrema == 'last':
+        ascending = True
+        
+    df_sort = pu.sort_df_by_column(
+        df,sort_columns,
+        ascending=ascending,
+    )
+    
+    return df.groupby(group_columns).head(k)
+
+def filter_to_first_k_of_group(
+    df,
+    group_columns,
+    sort_columns,
+    k,
+    ):
+    
+    return filter_to_extrema_k_of_group(
+    df,
+    group_columns=group_columns,
+    sort_columns=sort_columns,
+    k=k,
+    extrema = "first")
+
 def filter_to_first_instance_of_unique_column(
     df,
     column_name,
