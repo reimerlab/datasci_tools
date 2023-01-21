@@ -907,10 +907,10 @@ def filter_to_extrema_k_of_group(
     group_columns,
     sort_columns,
     k,
-    extrema = "first"):
-    if extrema == 'first':
+    extrema = "largest"):
+    if extrema == 'largest':
         ascending = False
-    elif extrema == 'last':
+    elif extrema == 'smallest':
         ascending = True
         
     df_sort = pu.sort_df_by_column(
@@ -932,7 +932,7 @@ def filter_to_first_k_of_group(
     group_columns=group_columns,
     sort_columns=sort_columns,
     k=k,
-    extrema = "first")
+    extrema = "largest").reset_index(drop=True)
 
 def filter_to_first_instance_of_unique_column(
     df,
@@ -4124,6 +4124,91 @@ def filter_df_splits_by_column_percentile(
         print(f"AFTER filtering {split_columns} column to {[percentile_lower,percentile_upper]} perc = {len(df)}")
 
     return df
+
+def cumulative_count_within_groupby(
+    df,
+    group_columns,
+    base_idx = 0,
+    ):
+    """
+    Purpose: To cumutatively count
+    the rows in a groupby
+    """
+    return df.groupby(group_columns).cumcount() + base_idx
+
+def flatten_pivot_df(
+    df,
+    index_name = "index"):
+    """
+    Purpose: To flatten the results of a pivot table
+
+    Pseudocode: 
+    1) Rename the 
+    """
+
+    curr_df = df
+
+    try:
+        curr_df = pu.flatten_column_multi_index(curr_df)
+    except:
+        pass
+    cols = curr_df.columns
+    rename_dict = {k:f"{cols.name}_{k}" for k in cols}
+    rename_dict
+
+    curr_df = pu.flatten_row_multi_index(curr_df)
+    curr_df = pu.delete_columns(
+        (pu.rename_columns(curr_df,rename_dict)),
+        columns_to_delete=[cols.name]
+    )
+    curr_df.columns.names = [index_name]
+    return curr_df
+
+def top_k_extrema_attributes_as_columns_by_group(
+    df,
+    column,
+    group_columns,
+    extrema = "largest",
+    k = 2,
+    suffix = "_idx",
+    ):
+    """
+    Purpose: To create colums that are the k
+    extrema of a certain attribute within a group
+
+    Pseudocode: 
+    1) Filter df to k extrema of column inside group
+    2) Label the idx of each row inside the group
+    3) Create a pivot table to make those rows as columns
+    4) Flatten pivot table
+    """
+    sort_column = column
+
+    # Purpose: Want to collapse to the top k widths of a certain compartment
+    df_sort_top_k = pu.filter_to_extrema_k_of_group(
+        df,
+        group_columns=group_columns,
+        sort_columns=sort_column,
+        k = k,
+        extrema=extrema,
+
+    )
+
+    df_sort_top_k[f"{sort_column}{suffix}"] = pu.cumulative_count_within_groupby(
+        df = df_sort_top_k,
+        group_columns = group_columns,
+    )
+
+    df_sort_pivot = df_sort_top_k.pivot(
+        index = group_columns,
+        columns = f"{sort_column}{suffix}",
+        values=sort_column
+    )
+    df_sort_pivot = pu.flatten_pivot_df(
+        df_sort_pivot,
+    )
+
+    return df_sort_pivot
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
