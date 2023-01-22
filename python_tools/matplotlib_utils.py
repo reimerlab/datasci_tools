@@ -2461,11 +2461,18 @@ def set_y_ticklabels_as_int(ax):
     return set_axes_ticklabels_as_int(ax,"y")
 
 def fig_width_from_ax(ax):
-    return ax.fig.get_figwidth()
+    fig = fig_from_ax(ax)
+    return fig.get_figwidth()
 def fig_height_from_ax(ax):
-    return ax.fig.get_figheight()
+    fig = fig_from_ax(ax)
+    return fig.get_figheight()
 def fig_from_ax(ax):
-    return ax.fig
+    if hasattr(ax,"fig"):
+        return ax.fig
+    elif hasattr(ax,"get_figure"):
+        return ax.get_figure()
+    else:
+        raise Exception("")
 
 def set_fig_height_width_from_ax(
     ax,
