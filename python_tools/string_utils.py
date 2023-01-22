@@ -81,4 +81,12 @@ def letter_to_number(letter):
     """
     return ord(letter) - ord('a')
 
+def example_curly_braces_inside_fstring():
+    """
+    https://stackoverflow.com/questions/42521230/how-to-escape-curly-brackets-in-f-strings
+    """
+    x = "hi"
+    print(f"{x} is better than {{hello}}")
+    
+
 import string_utils as stru

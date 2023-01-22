@@ -569,6 +569,7 @@ def df_to_render_table(
     fontsize_header=None,
     ax=None,
     transpose=True,
+    float_fmt = ".3f",
     **kwargs):
     """
     Purpose: To render a dataframe nicely that can be put in a figure
@@ -584,6 +585,14 @@ def df_to_render_table(
     
     df_to_render_table(df, header_columns=0, col_width=2.0)
     """
+    new_float_fmt = f'{{:,{float_fmt}}}'
+    print(f"new_float_fmt = {new_float_fmt}")
+    if float_fmt is not None:
+        data = data.copy()
+        data.update(data[pu.float_columns(data)].applymap(new_float_fmt.format))
+
+    
+    
     if transpose:
         data = data.transpose()
     

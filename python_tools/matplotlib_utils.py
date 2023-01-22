@@ -2712,6 +2712,7 @@ def plot_df(
     fontsize_header=None,
     ax=None,
     transpose=False,
+    float_fmt = ".3f",
     **kwargs):
     return pu.df_to_render_table(
         df,
@@ -2726,6 +2727,8 @@ def plot_df(
         fontsize_header=fontsize_header,
         ax=ax,
         transpose=transpose,
+        float_fmt=float_fmt,
+        **kwargs
     )
 
 def set_axes_scale(ax,axis,scale = "log"):
