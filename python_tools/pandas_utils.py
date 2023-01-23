@@ -3786,8 +3786,10 @@ def divide_df_by_column_bins(
             bin_type = intervals
         )
         intervals = np.vstack([intervals[:-1],intervals[1:]]).T
-
-
+    elif intervals is not None:
+        intervals = np.array(intervals)
+        if intervals.ndim <= 1:
+            intervals = np.vstack([intervals[:-1],intervals[1:]]).T
 
     df = df.query(f"{interval_attribute} == {interval_attribute}")
 

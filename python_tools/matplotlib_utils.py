@@ -2427,6 +2427,15 @@ def set_colorbar_title(
 def hide_tick_marks(ax,left = False,bottom = False):
     ax.tick_params(left=left, bottom=bottom)
     
+def hide_axis_tick_labels(ax,axis,hide_marks = True,):
+    getattr(ax,f"get_{axis}axis")().set_ticks([])
+    if hide_marks:
+        hide_tick_marks(ax,bottom=axis=='x',left=axis=="y")
+def hide_y_tick_labels(ax,hide_marks=True):
+    hide_axis_tick_labels(ax,"y",hide_marks=hide_marks,)
+def hide_x_tick_labels(ax,hide_marks = True,):
+    hide_axis_tick_labels(ax,"x",hide_marks=hide_marks,)
+    
 def set_xaxis_ticklabel_alignment(ax,alignment = "right"):
     for tick in ax.xaxis.get_majorticklabels():
         tick.set_horizontalalignment("right")
