@@ -3993,6 +3993,8 @@ def bin_idx_for_column(
     in_place = False,
     verbose = False,
     return_df = True,
+    bin_idx_name_default = "bin_idx",
+    bin_midpoint_name_default = "bin_midpoint"
     ):
     """
     Purpose: to assign a bin value for a column
@@ -4022,12 +4024,12 @@ def bin_idx_for_column(
 
     if add_bin_idx:
         if bin_idx_name is None:
-            bin_idx_name= f"{column}_bin_idx"
+            bin_idx_name= f"{column}_{bin_idx_name_default}"
         df[bin_idx_name] = bin_assignment
 
     if add_bin_midpoint:
         if bin_midpoint_name is None:
-            bin_midpoint_name= f"{column}_bin_midpoint"
+            bin_midpoint_name= f"{column}_{bin_midpoint_name_default}"
         df[bin_midpoint_name] = bin_mids[bin_assignment]
 
     if verbose:
@@ -4220,6 +4222,47 @@ def top_k_extrema_attributes_as_columns_by_group(
     )
 
     return df_sort_pivot
+
+def bin_for_column(
+    df,
+    column,
+    n_bins = 10,
+    as_str = True,
+    generate_color_palette = True,
+    bin_name = "bin",
+    divisor = 1,
+    #as_str_precision = 2
+    ):
+    
+    df_to_plot = pu.bin_idx_for_column(
+        df = df,
+        column = column,
+        n_bins=n_bins,
+    )
+    
+    bin_to_plot = bin_name
+    
+    df_to_plot[bin_to_plot] = [
+        float(k)/divisor for k in df_to_plot[f"{column}_bin_midpoint"]
+    ]
+
+    df_to_plot = pu.sort_df_by_column(
+        df_to_plot,
+        columns=bin_to_plot,
+        ascending=True
+    )
+
+    if as_str:
+        df_to_plot[bin_to_plot] = [f"{k:.2f}" for k in df_to_plot[bin_to_plot]]
+    
+    if generate_color_palette:
+        unique_bins = df_to_plot[bin_to_plot].unique()
+        color_palette = {k:v for k,v in zip(
+            unique_bins,mu.generate_non_randon_named_color_list(len(unique_bins))
+        )}
+        
+        return df_to_plot,color_palette
+    return df_to_plot
     
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns

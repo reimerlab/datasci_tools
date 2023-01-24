@@ -2601,6 +2601,8 @@ def scale_axes_lim_isotropic(
 
     return ax
 
+set_isotropic = scale_axes_lim_isotropic
+
 def mappable_from_ax(ax):
     return ax.collections[0]
 
