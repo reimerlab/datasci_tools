@@ -2802,6 +2802,11 @@ def turn_ax_off(ax):
     #ax.set_visible(False)
     #ax.set_axis_off()
     ax.axis('off')
+    
+def remove_legend(ax):
+    ax.get_legend().remove()
+    
+legend_off = remove_legend
 
 hide_ax = turn_ax_off
 import matplotlib_utils as mu
