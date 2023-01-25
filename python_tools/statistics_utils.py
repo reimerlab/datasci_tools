@@ -271,9 +271,19 @@ def correlation_scores_all(
     if verbose:
         for k,v in corr_scores.items():
             print(f"{k}:{v}")
+            
+    dic = dict()
+    for k,v in corr_scores.items():
+        if "float" in str(type(v)):
+            dic[k] = dict(correlation = v,pvalue = None)
+        elif type(v) == tuple:
+            dic[k] = dict(correlation = v[0],pvalue = v[1])
+        else:
+            dic[k] = dict(correlation = v.correlation,pvalue = v.pvalue)
+            
     if not return_dict:
-        return list(corr_scores.values())
-    return corr_scores
+        return list(dic.values())
+    return dic
     
     
 

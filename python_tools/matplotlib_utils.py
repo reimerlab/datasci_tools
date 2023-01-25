@@ -2749,7 +2749,59 @@ def set_x_logscale(ax,):
     set_axes_scale(ax,"x",scale = "log")
 def set_y_logscale(ax):
     set_axes_scale(ax,"y",scale="log")
+    
+def text_box_on_ax(
+    ax,
+    text,
+    x = 0.95,
+    y = 0.95,
+    fontsize = 14,
+    horizontalalignment = "right",
+    verticalalignment='top',
+    boxstyle='round',
+    facecolor='white',
+    alpha=0.5,
+    ):
+    """
+    Purpose: plot a text box on 
+    an ax object
+    """
+    props = dict(
+        boxstyle=boxstyle,
+        facecolor=facecolor,
+        alpha=alpha
+    )
+    # place a text box in lower left in axes coords
 
+    ax.text(
+        x,
+        y,
+        text,
+        transform=ax.transAxes,
+        fontsize=fontsize,
+        horizontalalignment = horizontalalignment,
+        verticalalignment=verticalalignment,
+        bbox=props,
+    )
+
+    return ax
 plot_table = plot_df
 
+def example_text_box():
+
+    fig,ax = plt.subplots(1,1)
+    text = "hello\nthere\ngirl"
+    mu.text_box_on_ax(
+        ax,
+        text = text
+    )
+
+
+
+def turn_ax_off(ax):
+    #ax.set_visible(False)
+    #ax.set_axis_off()
+    ax.axis('off')
+
+hide_ax = turn_ax_off
 import matplotlib_utils as mu
