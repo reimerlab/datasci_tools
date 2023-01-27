@@ -2806,6 +2806,26 @@ def turn_ax_off(ax):
 def remove_legend(ax):
     ax.get_legend().remove()
     
+def example_kde_plot(
+    df,
+    ax,
+    kde_thresh = 0.2,
+    kde_levels = 4,
+    palette=None,
+    hue = "Connection Type",
+    ):
+    ax = sns.kdeplot(
+        data = df,#.query(f"{column}=='{k}'"),
+        x = x,
+        y = y,#features_to_plot[1],
+        hue = hue,
+        common_norm = False,
+        thresh=kde_thresh,
+        levels = kde_levels,
+        palette=palette,
+        ax = ax,
+    )
+    
 legend_off = remove_legend
 
 hide_ax = turn_ax_off
