@@ -704,6 +704,7 @@ def set_legend_size(
     ):
     
     ax.legend(fontsize=fontsize) # using a size in points
+    #ax.legend_.fontsize = fontsize
     #plt.legend(fontsize="x-large") # using a named size
 
 
@@ -749,6 +750,8 @@ def set_legend_outside_plot(
     # Put a legend to the right of the current axis
     ax.legend(loc=loc, bbox_to_anchor=bbox_to_anchor)
     return ax
+
+set_legend_outside = set_legend_outside_plot
     
 def scatter_2D_with_labels(
     X,
@@ -2826,7 +2829,87 @@ def example_kde_plot(
         ax = ax,
     )
     
+def set_legend_labels_with_dict(
+    ax,
+    dict_map,
+    ):
+    """
+    Purpose: To set new legend labels
+    with a dictionary mapping
+    """
+    label_list = []
+    for t in ax.get_legend_handles_labels():
+        # the first result will be all handles, i.e. the dots in the legend
+        # the second result will be all legend text
+        label_list.append(t)
+
+    label_list[1] = [dict_map[k] for k in label_list[1]]
+    
+    #ax.legend_.legendHandles = label_list
+
+    L = ax.legend(handles = label_list[0],labels = label_list[1],)
+    return ax
+    
 legend_off = remove_legend
+
+import statistics_utils as stu
+def add_correlation_text_box(
+    ax,
+    x=None,
+    y=None,
+    df = None,
+    corr_dict = None,
+    text_box_fontsize = 20,
+    correlation_type = "pearson",
+    text_box_x = 0.95,
+    text_box_y = 0.05,
+    text_box_horizontalalignment = "right",
+    text_box_verticalalignment = "bottom",
+    text_box_alpha = 1,
+    verbose = False,
+    ):
+    """
+    Purpose: Want to plot a certain correlation
+    statistic and the p value in a location on 
+    an axis
+
+    Pseudocode: 
+    1) Calculate the correlation
+    2) Plot the correlation in a textbox
+    """
+    
+    if corr_dict is None:
+        corr_dict = stu.correlation_scores_all(
+                    df = df,
+                    x = x,
+                    y = y,
+                    verbose = False,
+                    return_p_value=True,
+        )
+
+    correlation_type = "pearson"
+    try:
+        curr_value = corr_dict[f"corr_{correlation_type.lower()}"]
+    except:
+        curr_value = corr_dict[f"{correlation_type.lower()}"]
+
+    corr_str = (f"Corr = {curr_value['correlation']:.3f}"
+        f"\n(P = {curr_value['pvalue']:.2f})")
+    
+    if verbose:
+        print(f"corr_str = {corr_str}")
+    mu.text_box_on_ax(
+        ax,
+        x = text_box_x,
+        y = text_box_y,
+        horizontalalignment = text_box_horizontalalignment,
+        verticalalignment = text_box_verticalalignment,
+        text =corr_str,
+        fontsize = text_box_fontsize,
+        alpha = text_box_alpha
+    )
+    
+    return ax
 
 hide_ax = turn_ax_off
 import matplotlib_utils as mu
