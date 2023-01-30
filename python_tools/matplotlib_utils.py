@@ -2378,7 +2378,7 @@ def set_legend_fontsizes(
     plt.setp(ax.get_legend().get_texts(), fontsize=label_fontsize) 
 
     # for legend title
-    plt.setp(ax.get_legend().get_title(), fontsize=title_fontsize) 
+    plt.setp(ax.get_legend().get_title(), fontsize=title_fontsize)
     if ncol is not None:
         plt.legend(ncol=ncol,handleheight=handleheight, labelspacing=labelspacing)
     return ax
