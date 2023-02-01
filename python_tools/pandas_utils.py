@@ -2820,11 +2820,13 @@ def distance_between_coordinates(
     coordinate_column_2,
     coordinate_column_1_suffix="nm",
     coordinate_column_2_suffix="nm",
+    axes = ('x','y','z')
     ):
 
+    axes = list(axes)
     return np.sqrt(
         np.sum(np.array([(df[f"{coordinate_column_1}_{ax}_{coordinate_column_1_suffix}"]-df[f"{coordinate_column_2}_{ax}_{coordinate_column_2_suffix}"])**2
-               for ax in ["x","y","z"]]).T.astype('float'),axis = 1)
+               for ax in axes]).T.astype('float'),axis = 1)
     )
 
 def vector_between_coordinates(
