@@ -49,6 +49,9 @@ def ignore_warnings():
     warnings.filterwarnings('ignore')
     logging.disable(sys.maxsize)
     
+suppress_warnings = ignore_warnings
+turn_off_warnings = ignore_warnings
+    
 
 from contextlib import contextmanager,redirect_stderr,redirect_stdout
 from os import devnull
