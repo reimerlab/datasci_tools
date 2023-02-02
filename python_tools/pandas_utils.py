@@ -402,8 +402,12 @@ def display_df(df):
 def dicts_to_dataframe(list_of_dicts):
     return pd.DataFrame.from_dict(list_of_dicts)
 
-def rename_columns(df,columns_name_map):
-    return df.rename(columns=columns_name_map)
+def rename_columns(df,columns_name_map,in_place = False,):
+    return_value = df.rename(columns=columns_name_map,inplace = in_place)
+    if in_place:
+        return df
+    else:
+        return return_value
 
 def unique_rows(df,columns=None):
     return df.drop_duplicates(subset = columns)
@@ -2369,6 +2373,7 @@ def merge_df_to_source_target(
         columns = list(df_append.columns)
 
     if not in_place:
+        #print(f"Trying to copy")
         df = df.copy(deep=True)
 
     for k in [source_name,target_name]:
@@ -2406,26 +2411,36 @@ def merge_df_to_source_target(
                 curr_on = k
                 rename_dict[on] = k
                 
-        
+        #print(f"rename_dict = {rename_dict}")
         try:
-            df = pd.merge(
+            return_value = pd.merge(
                 df,
                 pu.rename_columns(df_append[columns],
-                                  rename_dict),
+                                  rename_dict,
+                                 in_place = in_place),
                 on=curr_on,
                 how=how,
+                copy = not in_place,
             )
         except:
             rename_dict.update({v:eval(name_str) for kk,v in zip([k],[on])})
             curr_on = rename_dict[on]
             
-            df = pd.merge(
+            return_value = pd.merge(
                 df,
                 pu.rename_columns(df_append[columns],
-                                  rename_dict),
+                                  rename_dict,
+                                      in_place = in_place),
                 on=curr_on,
                 how=how,
+                copy = not in_place,
             )
+            
+        
+        if not in_place or return_value is not None:
+            df = return_value
+        #print(f"df.columns = {df.columns}")
+        #print(f"return_value.columns = {return_value.columns}")
             
     return df
 
