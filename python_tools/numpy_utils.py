@@ -1581,12 +1581,15 @@ def angle_from_xy_vec(xy):
 
 from scipy import stats
 def equal_depth_bins(array,n_bins=10):
+    array = remove_nans(array)
     return stats.mstats.mquantiles(array, np.linspace(0,1,n_bins+1))
 
 def equal_width_bins(array,n_bins = 10):
+    array = remove_nans(array)
     return  np.linspace(np.min(array),np.max(array),n_bins+1)
 
 def bin_array(array,n_bins = 10,bin_type = "equal_width"):
+    array = remove_nans(array)
     return getattr(nu,f"{bin_type}_bins")(array,n_bins = n_bins)
     
 
@@ -2144,5 +2147,11 @@ def axes_lim_equal_width(
 
     return new_lim
 
+def midpoints_from_array(arr):
+    """
+    Purpose: To find the midpoints between neighbors
+    in an array
+    """
+    return np.mean(np.vstack([arr[:-1],arr[1:]]),axis = 0)
 
 import numpy_utils as nu

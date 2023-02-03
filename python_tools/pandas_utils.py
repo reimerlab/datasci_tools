@@ -2192,8 +2192,10 @@ def bin_df_by_column(
     n_bins = 10,
     verbose = False,
     return_bins = False,
+    return_bins_midpoints = False,
     equal_depth_bins = False,
     percentile_upper = None,
+    
     ):
     """
     Purpose: To calculate sub dataframe
@@ -2223,7 +2225,7 @@ def bin_df_by_column(
             )
 
     if verbose:
-        print(f"bins = {bins}")
+        print(f"bins = {repr(bins)}")
 
     df_list = []
     for i in range(1,len(bins)):
@@ -2240,9 +2242,14 @@ def bin_df_by_column(
             print(f"   -> length of sub df = {len(curr_df)}")
         df_list.append(curr_df)
 
+    if (not return_bins) and (not return_bins_midpoints):
+        return df_list
+    return_value = [df_list]
     if return_bins:
-        return df_list,bins
-    return df_list
+        return_value.append(bins)
+    if return_bins_midpoints:
+        return_value.append(nu.midpoints_from_array(bins))
+    return return_value
 
 def bin_df_by_column_stat(
     df,
@@ -2253,6 +2260,7 @@ def bin_df_by_column_stat(
     percentile_upper = None,
     n_bins = 10,
     verbose = False,
+    verbose_bins = False,
     return_bins = True,
     return_bins_mid = False,
     return_df_len = True,
@@ -2283,6 +2291,9 @@ def bin_df_by_column_stat(
         equal_depth_bins=equal_depth_bins,
         percentile_upper=percentile_upper,
         )
+    
+    if verbose_bins:
+        print(f"bins = {bins}")
     
     if type(func) == str:
         curr_values = [np.array(k[func]).astype('float') for k in df_bins]
