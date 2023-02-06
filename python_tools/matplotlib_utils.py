@@ -2911,5 +2911,21 @@ def add_correlation_text_box(
     
     return ax
 
+def get_legend(ax):
+    return ax.legend_
+def set_legend_loc(
+    ax,
+    loc="best",
+    #horizontalalignment = "left",
+    #verticalalignment = "bottom",
+    ):
+    legend = get_legend(ax)
+    legend._set_loc(
+        loc,
+        #horizontalalignment = horizontalalignment,
+        #verticalalignment = verticalalignment,
+    )
+    return ax
+
 hide_ax = turn_ax_off
 import matplotlib_utils as mu

@@ -2263,6 +2263,7 @@ def bin_df_by_column_stat(
     verbose_bins = False,
     return_bins = True,
     return_bins_mid = False,
+    bins_mid_type = "min_max_mean",#weighted
     return_df_len = True,
     return_std = True,
     func_std = None,
@@ -2307,10 +2308,14 @@ def bin_df_by_column_stat(
             df_std = None
     df_len = [len(k) for k in df_bins]
     
+    if bins_mid_type == "min_max_mean":
+        mid_bins = (bins[1:] + bins[:-1])/2
+    elif bins_mid_type == "weighted":
+        mid_bins = [curr_df[column].mean() for curr_df in df_bins]
+    else:
+        raise Exception("")
     
     if plot:
-        mid_bins = (bins[1:] + bins[:-1])/2
-
         fig,ax = plt.subplots(1,1,figsize=figsize)
         
         #ax.plot(mid_bins,df_stats,)
@@ -2339,7 +2344,6 @@ def bin_df_by_column_stat(
     return_list = [df_stats]
     
     if return_bins_mid:
-        mid_bins = (bins[1:] + bins[:-1])/2
         return_list.append(mid_bins)
     elif return_bins:
         return_list.append(bins)
