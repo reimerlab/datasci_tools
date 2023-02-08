@@ -2154,4 +2154,63 @@ def midpoints_from_array(arr):
     """
     return np.mean(np.vstack([arr[:-1],arr[1:]]),axis = 0)
 
+def bin_ndim_array(
+    array,
+    n_bins = 10,
+    bin_width = None,
+    return_bin_centers =False,
+    eta = 0.00001,
+    verbose = False,
+    ):
+    """
+    Purpose: Want to bin data in n dimensions
+    (for each datapoint have an n size vector
+    that has n indexes of bins in each direction)
+
+    Can return the bin centers as well
+
+    Pseudocode: 
+    a_idx,a_mid = nu.bin_ndim_array(
+        array = leaf_df_with_vec[pu.coordinate_columns("centroid")].to_numpy(),
+        bin_width=100_000,
+        return_bin_centers=True,
+        verbose = False
+    )
+    """
+    if bin_width is not None:
+        if not nu.is_array_like(bin_width):
+            bin_width = [bin_width]*(array.shape[-1])
+        n_bins = [None]*(array.shape[-1])
+    else:
+        bin_width = [None]*(array.shape[-1])
+
+    if "int" in str(type(n_bins)):
+        n_bins = [n_bins]*(array.shape[-1])
+
+    bins_by_axes = []
+    arr_idx = np.zeros(array.shape).astype('int')
+    for j,(nb,bw,arr) in enumerate(zip(n_bins,bin_width,array.T)):
+        if nb is None:
+            dist = arr.max() - arr.min()
+            nb = np.ceil(dist/bw).astype('int')
+        if verbose:
+            print(f"Axis {j}: nbins = {nb}")
+
+        curr_bins = np.linspace(arr.min(),arr.max() + eta,nb+1)
+        bins_by_axes.append(curr_bins)
+        arr_idx[:,j] = np.digitize(arr,curr_bins) - 1
+
+        
+    if return_bin_centers:
+        # now to get the bin midpoints
+        bins_mid_by_axes = [nu.midpoints_from_array(ba) for ba in bins_by_axes ]
+
+        arr_idx_mid = np.vstack([
+            bmid[arri] for bmid,arri in zip(bins_mid_by_axes,arr_idx.T)
+        ]).T
+        return arr_idx,arr_idx_mid
+
+    return arr_idx
+
+
 import numpy_utils as nu

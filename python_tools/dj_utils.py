@@ -39,13 +39,17 @@ def df_from_table_old(
 #         return_df = return_df[features]
     return return_df
 
+import time
 def df_from_table(
     table,
     features=None,
     remove_method_features = False,
     features_to_remove = None,
     features_substr_to_remove = None,
-    primary_features = False):
+    primary_features = False,
+    verbose = False):
+    
+    st = time.time()
     
     all_atts = list(all_attribute_names_from_table(table))
     
@@ -82,6 +86,9 @@ def df_from_table(
         curr_data = np.array(table.fetch(*features)).T
     return_df = pd.DataFrame(curr_data)
     return_df.columns = features
+    
+    if verbose:
+        print(f"Time for fetch = {time.time() - st}")
     
     return return_df
 
@@ -307,6 +314,20 @@ def dj_query_from_pandas_query(query):
     for joiner in [" and "," or "," not "]:
         query = query.replace(joiner,joiner.upper())
     return query
+
+def query_table_from_kwargs(
+    table,
+    **kwargs):
+    """
+    Purpose: To query a datajoint table
+    with keywords that may be None
+    """
+    key = dict()
+    key = {k:v for k,v in kwargs.items() if v is not None}
+    if len(key) == 0:
+        return table
+    else:
+        return table & key
 
 restrict_table_from_list = pu.restrict_df_from_list
 

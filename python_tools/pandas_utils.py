@@ -187,6 +187,15 @@ aggfun: can be a list of things on how you want that combination to be combined
 columns: if you wanted to break the data further by columns and then the value
 in the boxes is just what you specify
 
+--- applying a function to split dataframe ---
+.agg is just a way of applying something to columns of a grouped dataframe
+.apply runs a function on the split grouped dataframe
+
+
+.apply is a function that is very adaptable to the input given but usually
+better to send data to vectorized function
+ --> link: https://towardsdatascience.com/avoiding-apply-ing-yourself-in-pandas-a6ade4569b7f
+
 
 """
 pd_source = "pandas"
@@ -401,6 +410,7 @@ def display_df(df):
     
 def dicts_to_dataframe(list_of_dicts):
     return pd.DataFrame.from_dict(list_of_dicts)
+dicts_to_df = dicts_to_dataframe
 
 def rename_columns(df,columns_name_map,in_place = False,):
     return_value = df.rename(columns=columns_name_map,inplace = in_place)
@@ -2527,8 +2537,8 @@ def coordinates_from_df(
     return df[columns].to_numpy().astype('float')
     
     
-def flatten_column_multi_index(df):
-    df.columns = ["_".join(k) for k in df.columns.to_flat_index()]
+def flatten_column_multi_index(df,join_str = "_"):
+    df.columns = [join_str.join(k) for k in df.columns.to_flat_index()]
     return df
 
 def flatten_row_multi_index(df):
@@ -4296,6 +4306,74 @@ def bin_for_column(
         return df_to_plot,color_palette
     return df_to_plot
     
+def apply_func_to_grouped_df(
+    df,
+    group_columns,
+    func,
+    verbose = False
+    ):
+    """
+    Purpose: to apply a function to the dataframes
+    that are the result of grouping a dataframe
+    (and returns the resultant dataframe)
+    
+    Requirements: 
+    func must return a dataframe
+    """
+    st = time.time()
+    return_df =  df.groupby(group_columns).apply(func).droplevel(-1).reset_index(drop=False)
+    return_df=flatten_column_multi_index(return_df,join_str = "")
+    
+    if verbose:
+        print(f"Time for apply_func = {time.time() - st}")
+    return return_df
+
+def bin_array_column(
+    df,
+    column = "centroid",
+    suffix = "nm",
+    axes = ['x','y','z'],
+    bin_suffix = "bin",
+    bin_mid_suffix = "bin_mid",
+    bin_width = None,
+    n_bins = 10,
+    verbose = False,
+    add_bin_mid = True,
+    add_bin_idx = True,
+    in_place = False,
+    ):
+    """
+    Purpose: bin coordinates of dataframe
+    into n dimensions and add the bins
+    and the midpoints of the bins to dataframe
+
+    Pseudocode: 
+    1) Extract the coordinates
+    2) bin the coordinates
+    3) assign the bin idx and bin midpoints
+    to the dataframe
+    """
+    if not in_place:
+        df = df.copy()
+
+    bin_names = [f"{column}_{bin_suffix}_{ax}" for ax in axes]
+    bin_mid_names = [f"{column}_{bin_mid_suffix}_{ax}" for ax in axes]
+    a_idx,a_mid = nu.bin_ndim_array(
+        array = pu.coordinates_from_df(df,name=column,suffix = suffix,axes=axes),
+        bin_width=bin_width,
+        n_bins=n_bins,
+        return_bin_centers=True,
+        verbose = verbose
+    )
+
+    if add_bin_idx:
+        df[bin_names] = a_idx.astype('int')
+    if add_bin_idx:
+        df[bin_mid_names] = a_mid.astype('float')
+    
+
+    return df
+
 import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
