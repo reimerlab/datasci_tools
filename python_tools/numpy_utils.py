@@ -2212,5 +2212,26 @@ def bin_ndim_array(
 
     return arr_idx
 
+def osi_from_directions(directions,verbose = False):
+    """
+    Purpose: Orientational Selectivity Index (between 0 and 1)
+    """
+    f1 = np.exp(directions / 90 * np.pi * 1j).sum()
+    f0 = len(directions)
+    osi = np.abs(f1) / f0
+    if verbose:
+        print(f"osi = {osi}")
+    return osi
+
+def dsi_from_directions(directions,verbose = False):
+    """
+    Purpose: Directional Selectivity Index (between 0 and 1)
+    """
+    f1 = np.exp(directions / 180 * np.pi * 1j).sum()
+    f0 = len(directions)
+    dsi = np.abs(f1) / f0
+    if verbose:
+        print(f"dsi = {dsi}")
+    return dsi
 
 import numpy_utils as nu
