@@ -460,6 +460,8 @@ def divide_dataframe_by_column_value(
         return tables,table_names
     else:
         return tables
+    
+divide_df_by_column = divide_dataframe_by_column_value
 
 def split_df_by_columns(df,columns,return_names = False):
     return divide_dataframe_by_column_value(df,columns,return_names = return_names)
@@ -2110,6 +2112,7 @@ def intersect_df(
         restr_df = restr_df.reset_index(drop=True)
         
     if verbose:
+        print(f"Before df restricting ({len(df)})")
         print(f"Length of df after restriction using ({restriction_columns}): {len(restr_df)}")
         
     return restr_df
