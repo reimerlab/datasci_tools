@@ -1087,6 +1087,7 @@ def plot_quiver(
     vectors,
     color_array = None,
     plot_colormap = True,
+    size = 2,
     size_array = None,
     flip_y = True,
     new_figure = True,
@@ -1121,8 +1122,9 @@ def plot_quiver(
     if size_array is not None:
         quiver.size = size_array
     else:
-        slider = widgets.FloatSlider(min=0,max=10,description = "size")
+        slider = widgets.FloatSlider(min=0,max=10,value = size,description = "size")
         widgets.link((quiver,"size"),(slider,"value"))
+        slider.value = size
         display(slider)
 
     if show_at_end:
