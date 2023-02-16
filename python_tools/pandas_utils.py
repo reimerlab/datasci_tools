@@ -2024,10 +2024,13 @@ def set_column_subset_value_by_query(
     value=None,
     column_for_value = None,
     function_for_value = None,
-    verbose = False):
+    verbose = False,
+    in_place = True,):
     """
     Purpose: Set column
     """
+    if not in_place:
+        df = df.copy()
     
     curr_map = df.eval(query)
     if verbose:

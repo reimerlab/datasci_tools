@@ -1575,6 +1575,8 @@ def angle_from_xy_vec(xy):
     Ex
     nu.angle_from_xy_vec(np.array([[1,0],[0,1],[-1,0]]).T)
     """
+    if xy.shape[0] != 2:
+        xy = xy.T
     angle = np.arctan2(xy[1],xy[0])
     return np.degrees(angle) % 360.0  
 
@@ -2233,5 +2235,8 @@ def dsi_from_directions(directions,verbose = False):
     if verbose:
         print(f"dsi = {dsi}")
     return dsi
+
+def normalize_axis(array,axis = -1):
+    return array/np.linalg.norm(array,axis = axis).reshape(-1,1)
 
 import numpy_utils as nu
