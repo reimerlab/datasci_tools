@@ -1139,7 +1139,16 @@ def closest_idx_for_each_coordinate(
     array_for_idx,
     closest_idx_algorithm = "kdtree",
     verbose = False,
+    return_dists = False,
     ):
+    """
+    closest_idx,closest_dist = nu.closest_idx_for_each_coordinate(
+        np.array([[0,1,0],[0,2,0],[0,3,0]]),
+        np.array([[0,1,0],[0,2,0]]),
+        return_dists = True
+    )
+    -> Returns: (array([0, 1, 1], dtype=uint32), array([0., 0., 1.]))
+    """
     
     if verbose:
         st = time.time()
@@ -1150,6 +1159,9 @@ def closest_idx_for_each_coordinate(
     if closest_idx_algorithm == "kdtree":
         dist,closest_idx = KDTree(array_for_idx).query(array)
     elif closest_idx_algorithm == "linalg":
+        if return_dists:
+            dist = closest_idx = np.array([np.min(np.linalg.norm(array_for_idx - k, axis = 1))
+                               for k in array])
         closest_idx = np.array([np.argmin(np.linalg.norm(array_for_idx - k, axis = 1))
                                for k in array])
     else:
@@ -1158,7 +1170,10 @@ def closest_idx_for_each_coordinate(
     if verbose:
         print(f"Total time for closest matching algorithm = {time.time() - st}")
         
-    return closest_idx
+    if return_dists:
+        return closest_idx,dist
+    else:
+        return closest_idx
 
 def unravel_index(idx,array_shape):
     return np.unravel_index(idx, array_shape)
@@ -2238,5 +2253,68 @@ def dsi_from_directions(directions,verbose = False):
 
 def normalize_axis(array,axis = -1):
     return array/np.linalg.norm(array,axis = axis).reshape(-1,1)
+
+def min_unique_pairing(
+    array_1,
+    array_2,
+    closest_idx_algorithm = "linalg",
+    verbose = False,
+    return_dist = False,
+    ):
+    """
+    Purpose: Want to find the closest idx
+    for each coordinate where no 
+    2 coordinates can be paired up to the
+    same idx
+
+    Pseudocode: 
+    0) Create a mask of those already paired and 
+    those paired (set all as false)
+    1) Iterate through number of points to pair
+    -- 
+    a) Compute the shortest dist to all points
+    (not already paired)
+    b) Get the min distance and add the pairing 
+    to the mask and paired list
+    c) Continue until all are paired or have 
+    been paired to
+
+
+    """
+    array = array_1
+    array_for_idx = array_2
+    
+    idx_mask = np.arange(array_for_idx.shape[0])
+    array_mask = np.arange(array.shape[0])
+    pairings = []
+    pairings_dist = []
+    
+
+    for i in range(len(array_mask)):
+        if len(array_mask) == 0 or len(idx_mask) == 0:
+            break
+        closest_idx,closest_dist = nu.closest_idx_for_each_coordinate(
+            array[array_mask],
+            array_for_idx[idx_mask],
+            closest_idx_algorithm=closest_idx_algorithm,
+            return_dists = True
+        )
+
+        idx = np.argmin(closest_dist)
+        pairings_dist.append(closest_dist[idx])
+        array_win = array_mask[idx]
+        idx_win = idx_mask[closest_idx[idx]]
+        pairings.append([array_win,idx_win])
+        
+        if verbose:
+            print(f"pair {i}: {(array_win,idx_win)} (dist = {closest_dist[idx]})")
+
+        array_mask = array_mask[array_mask!= array_win]
+        idx_mask = idx_mask[idx_mask != idx_win]
+
+    if return_dist:
+        return pairings,pairings_dist
+    else:
+        return pairings
 
 import numpy_utils as nu
