@@ -2860,13 +2860,15 @@ def add_correlation_text_box(
     df = None,
     corr_dict = None,
     text_box_fontsize = 20,
-    correlation_type = "pearson",
+    #correlation_type = "pearson",
+    correlation_type = "spearman",
     text_box_x = 0.95,
     text_box_y = 0.05,
     text_box_horizontalalignment = "right",
     text_box_verticalalignment = "bottom",
     text_box_alpha = 1,
     verbose = False,
+    min_p_value = 0.001,
     ):
     """
     Purpose: Want to plot a certain correlation
@@ -2886,15 +2888,18 @@ def add_correlation_text_box(
                     verbose = False,
                     return_p_value=True,
         )
-
-    correlation_type = "pearson"
     try:
         curr_value = corr_dict[f"corr_{correlation_type.lower()}"]
     except:
         curr_value = corr_dict[f"{correlation_type.lower()}"]
+        
+    #print(f"correlation_type = {correlation_type}")
 
+#     corr_str = (f"Corr = {curr_value['correlation']:.3f}"
+#         f"\n(P = {curr_value['pvalue']:.2f})")
+    
     corr_str = (f"Corr = {curr_value['correlation']:.3f}"
-        f"\n(P = {curr_value['pvalue']:.2f})")
+        f"\n(P < {np.max([curr_value['pvalue'],min_p_value]):.3f})")
     
     if verbose:
         print(f"corr_str = {corr_str}")
