@@ -3730,7 +3730,9 @@ def closest_k_leaf_neighbors_in_binary_tree(
     return neighbor_leaves
     
        
-def remove_nodes_from(G,nodes):
+def remove_nodes_from(G,nodes,copy = False):
+    if copy:
+        G = G.copy()
     G.remove_nodes_from(nodes)
     return G
        
@@ -5438,6 +5440,15 @@ def largest_component_n_nodes(G,verbose=False):
 def largest_component_node_perc(G):
     return largest_component_n_nodes(G)/n_nodes(G)
 
+def nodes_with_no_edges(G):
+    return list(nx.isolates(G))
+
+def remove_nodes_with_no_edges(G,copy = False):
+    nodes = nodes_with_no_edges(G)
+    if copy:
+        G = G.copy()
+    G.remove_nodes_from(nodes)
+    return G
 
 
 import networkx_utils as xu
