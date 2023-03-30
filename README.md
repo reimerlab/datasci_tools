@@ -1,2 +1,2 @@
 # python_tools
-Repo that has generic modules for basic python and datascience functionality
+Modules to help faciliatate basic python programming and wrappers for common packages (numpy, matplotib, scipy, pandas, networkx, etc.)
