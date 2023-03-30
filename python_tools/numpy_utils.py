@@ -2316,5 +2316,13 @@ def min_unique_pairing(
         return pairings,pairings_dist
     else:
         return pairings
+    
+    
+def loadtxt(filepath,dtype = "float",delimiter=" ",**kwargs):
+    filepath = str(Path(filepath).absolute())
+    return np.loadtxt(filepath,dtype = dtype,delimiter = delimiter,**kwargs)
+
+array_from_txt = loadtxt
+read_txt = loadtxt
 
 import numpy_utils as nu
