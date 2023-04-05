@@ -1005,10 +1005,10 @@ def print_ipv_cheatsheet():
     s = """
     Ipyvolume Cheat sheet: 
 
-    1) Alt + Click and Hold: Can drag neuron
+    1) Alt + Click and Hold: Can drag object
     2) Pinch: zoom in and Out
     3) Magnifying glass on + pinch: Zoom in and Out on place mouse hovering
-    4) Double click and move mouse: rotate neuron
+    4) Double click and move mouse: rotate object
     5) gear icon: different resolutions
     6) Shift + Picture: Copies screenshot to clipboard
     """

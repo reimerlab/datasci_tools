@@ -3367,7 +3367,8 @@ def sort_df_by_categorical_column(
         columns=column,
         ascending = ascending)
     
-df_of_coordinates_and_labels_from_dict = nu.df_of_coordinates_and_labels_from_dict    
+def df_of_coordinates_and_labels_from_dict(**kwargs):
+    return nu.df_of_coordinates_and_labels_from_dict(**kwargs)
 
 def aggregate_over_column(
     df,
