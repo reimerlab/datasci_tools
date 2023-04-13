@@ -152,6 +152,11 @@ def merge_dicts(dicts):
         super_dict.update(d)
     return super_dict
 
+import itertools
+def merge_dicts_simple(dicts):
+    return dict(itertools.chain(*[k.items() for k in dicts]))
+
+
 def is_function(obj):
     """
     Ex: 

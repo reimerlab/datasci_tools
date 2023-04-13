@@ -89,3 +89,7 @@ Usefule link
 debugging: https://docs.github.com/en/authentication/troubleshooting-ssh/error-permission-denied-publickey
 
 adding new ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+
+--- reset 1 commit 
+git reset --soft HEAD~1
