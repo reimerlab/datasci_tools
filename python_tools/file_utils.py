@@ -80,3 +80,110 @@ def search_directory_files_for_str(
             all_files.append(cur_path)
             
     return all_files
+
+
+import re
+from pathlib import Path
+
+def file_regex_replace(
+    pattern,
+    replacement,
+    filepath,
+    overwrite_file = False,
+    output_filepath = None,# "text_revised.txt",
+    default_suffix = "_replaced",
+    verbose = False,
+    regex = True,
+    **kwargs
+    ):
+    """
+    Purpose: To replace certain text 
+    in a file and either write changes
+    back to same file or to a new one
+
+    Pseudocode:
+    1) open the file
+    2) read in the contents of the file
+    3) using the regex replace function (with potential to use captured groups)
+    """
+    if overwrite_file:
+        output_filepath = filepath
+    
+    if output_filepath is None:
+        p = Path(filepath)
+        output_filepath = f"{p.with_suffix('')}{default_suffix}{p.suffix}"
+
+
+    # Opening our text file in read only
+    # mode using the open() function
+    data = filu.read_file(filepath)
+    # Searching and replacing the text
+    # using the replace() function
+    if regex:
+        data,count = re.subn(pattern, replacement, data)
+        if verbose:
+            print(f"# of substitutions = {count}")
+    else:
+        data = data.replace(pattern,replacement)
+
+    # Opening our text file in write only
+    # mode to write the replaced content
+    filu.write_file(output_filepath,data)
+        
+    #return output_file
+    
+import io
+def read_file(
+    filepath,
+    encoding="utf-8"
+    ):
+    d = None
+    with io.open(filepath, "r", encoding=encoding) as my_file:
+        d = my_file.read()
+        
+    return d
+
+def write_file(filepath,data,encoding="utf-8"):
+    with io.open(filepath, "w", encoding=encoding) as my_file:
+        my_file.write(data)
+    
+    
+    
+def file_regex_add_prefix(
+    pattern,
+    prefix,
+    filepath,
+    overwrite_file = False,
+    output_filepath = None,# "text_revised.txt",
+    default_suffix = "_replaced",
+    verbose = False,
+    regex = True,
+    **kwargs,
+    ):
+    """
+    Purpose: Add a prefix in front of certain patterns in file
+    
+    Ex:
+    file_regex_replace(
+        pattern = "(new hello)",
+        prefix = "from . ",
+        filepath = "test.txt",
+        overwrite_file=False,
+        verbose = True
+    )
+    """
+
+    return filu.file_regex_replace(
+        pattern = pattern,
+        replacement = fr"{prefix}" + r"\1",
+        filepath=filepath,
+        overwrite_file = overwrite_file,
+        output_filepath = output_filepath,# "text_revised.txt",
+        default_suffix = default_suffix,
+        verbose = verbose,
+        regex = regex,
+        **kwargs
+    )
+    
+    
+import file_utils as filu

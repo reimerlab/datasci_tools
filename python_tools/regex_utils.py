@@ -163,6 +163,11 @@ def sub_str_for_pattern(
     replacement):
     return re.sub(pattern,replacement,s)
 
+def sub_str_for_pattern_with_count(
+    s,
+    pattern,
+    replacement):
+    return re.subn(pattern,replacement,s)
 
 def match_pattern_in_str(
     string,
@@ -188,3 +193,4 @@ def match_pattern_in_str(
         return found_strings[0]
     else:
         return found_strings
+    

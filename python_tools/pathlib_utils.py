@@ -43,5 +43,20 @@ def create_folder(folder_path):
 import shutil
 def copy_file(filepath,destination):
     shutil.copy(str(filepath), str(destination))
+    
+def files_of_ext_type(
+    directory,
+    ext,
+    verbose = False,
+    ):
+    """
+    Purpose: Get all files with a certain extension
+    """
+    files = [k for k in Path(directory).iterdir() if k.suffix == f".{ext}"]
+    if verbose:
+        print(f"# of {ext} files = {len(files)}")
+    return files
+    
+
 
 import pathlib_utils as plu
