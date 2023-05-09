@@ -153,6 +153,7 @@ def file_regex_add_prefix(
     pattern,
     prefix,
     filepath,
+    replacement= None,
     overwrite_file = False,
     output_filepath = None,# "text_revised.txt",
     default_suffix = "_replaced",
@@ -172,10 +173,12 @@ def file_regex_add_prefix(
         verbose = True
     )
     """
+    if replacement is None:
+        replacement = fr"{prefix}" + r"\1",
 
     return filu.file_regex_replace(
         pattern = pattern,
-        replacement = fr"{prefix}" + r"\1",
+        replacement = replacement,
         filepath=filepath,
         overwrite_file = overwrite_file,
         output_filepath = output_filepath,# "text_revised.txt",

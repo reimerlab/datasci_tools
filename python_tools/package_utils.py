@@ -9,6 +9,7 @@ def prefix_module_imports_in_files(
     modules_directory = "../python_tools",
     modules = None,
     prefix = "from . ",
+    prevent_double_prefix = True,
     overwrite_file = False,
     output_filepath = None,# "text_revised.txt",
     verbose = False,
@@ -50,6 +51,11 @@ def prefix_module_imports_in_files(
     #2) Construct a regex pattern ORing the potential list
     pattern = f"(import ({'|'.join(modules)}))"
     #replacement = fr"{prefix} import \1"
+    if prevent_double_prefix:
+        pattern = f"(?<!{prefix}){pattern}"
+        replacement = fr"{prefix}" + r"\2"
+    else:
+        replacement = None
 
     filepaths = nu.to_list(filepaths)
 
@@ -61,6 +67,7 @@ def prefix_module_imports_in_files(
             pattern=pattern,
             prefix=prefix,
             filepath=f,
+            replacement=replacement,
             overwrite_file = overwrite_file,
             output_filepath = output_filepath,# "text_revised.txt",
             verbose = verbose,
