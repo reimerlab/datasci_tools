@@ -7,6 +7,34 @@ import io
 def example_func():
     print('hello')
 
+def module_names_from_directories(
+    directories,
+    ignore_files = ("__init__",),
+    return_regex_or = False,
+    verbose = False):
+    """
+    Purpose: come up with an or string for module names from a module directory
+    """
+    directories = nu.to_list(directories)
+    modules = []
+
+    for directory in directories:
+
+        if verbose:
+            print(f"--Getting files from {directory}")
+
+        modules += plu.files_of_ext_type(
+            directory = directory,
+            ext = "py",
+            verbose = verbose
+        )
+        
+    modules = [k.stem for k in modules if k.stem not in ignore_files]
+    if return_regex_or:
+        return f"({'|'.join(modules)}))"
+    else:
+        return modules
+    
 def prefix_module_imports_in_files(
     filepaths,
     modules_directory = "../python_tools",

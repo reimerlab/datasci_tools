@@ -2,6 +2,9 @@ Good link on how to create automatic documentation landing page
 
 https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
 
+-- explains need to change the docs.yml to "main" instead of master or else it won't trigger anything
+https://stackoverflow.com/questions/61989951/github-action-workflow-not-running
+
 Process:
 1) pip3 install -U sphinx
 2) Within project create docs folder, go into folder and run "sphinx-quickstart"
@@ -17,3 +20,7 @@ Process:
 9) add some more code to the conf.py and rerun the html
     make clean html
     make html
+    
+    
+For publishing to github pages:
+1) make sure branch is gh-pages and make sure directory is /(root)
