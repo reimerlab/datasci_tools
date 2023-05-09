@@ -1,5 +1,0 @@
-pip install -e /path/to/install #will install and add to path so still reflects the changes
-
-#show where a package is installed 
-pip3 show [package-name]
-

@@ -1,5 +1,0 @@
-to build an image: 
-docker image build . -t "tag_name:latest"
-
-to run it:
-docker container run -it ubuntu:latest /bin/bash

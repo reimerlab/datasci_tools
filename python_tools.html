@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools package &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="python_tools" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">python_tools</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">python_tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-algorithms-utils-module">python_tools.algorithms_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-argparse-utils-module">python_tools.argparse_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-data-struct-utils-module">python_tools.data_struct_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-dict-utils-module">python_tools.dict_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-file-utils-module">python_tools.file_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-filtering-utils-module">python_tools.filtering_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-function-utils-module">python_tools.function_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-general-utils-module">python_tools.general_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-hash-utils-module">python_tools.hash_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-ipyvolume-movie-utils-module">python_tools.ipyvolume_movie_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-ipyvolume-utils-module">python_tools.ipyvolume_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-json-utils-module">python_tools.json_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-linalg-utils-module">python_tools.linalg_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-matlab-utils-module">python_tools.matlab_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-matplotlib-utils-module">python_tools.matplotlib_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-mesh-utils-module">python_tools.mesh_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-networkx-utils-module">python_tools.networkx_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-numpy-utils-module">python_tools.numpy_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-package-utils-module">python_tools.package_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-pandas-utils-module">python_tools.pandas_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-pathlib-utils-module">python_tools.pathlib_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-pretty-print-confusion-matrix-module">python_tools.pretty_print_confusion_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-regex-utils-module">python_tools.regex_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-requirement-utils-module">python_tools.requirement_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-scipy-utils-module">python_tools.scipy_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-seaborn-utils-module">python_tools.seaborn_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-statistics-utils-module">python_tools.statistics_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-statistics-visualizations-module">python_tools.statistics_visualizations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-string-utils-module">python_tools.string_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-system-utils-module">python_tools.system_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-tqdm-utils-module">python_tools.tqdm_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-widget-utils-module">python_tools.widget_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">python_tools</a></li>
+      <li class="breadcrumb-item active">python_tools package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/python_tools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-tools-package">
+<h1>python_tools package<a class="headerlink" href="#python-tools-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-algorithms-utils-module">
+<h2>python_tools.algorithms_utils module<a class="headerlink" href="#python-tools-algorithms-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-argparse-utils-module">
+<h2>python_tools.argparse_utils module<a class="headerlink" href="#python-tools-argparse-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-data-struct-utils-module">
+<h2>python_tools.data_struct_utils module<a class="headerlink" href="#python-tools-data-struct-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-dict-utils-module">
+<h2>python_tools.dict_utils module<a class="headerlink" href="#python-tools-dict-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-dj-utils-module">
+<h2>python_tools.dj_utils module<a class="headerlink" href="#python-tools-dj-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-file-utils-module">
+<h2>python_tools.file_utils module<a class="headerlink" href="#python-tools-file-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-filtering-utils-module">
+<h2>python_tools.filtering_utils module<a class="headerlink" href="#python-tools-filtering-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-function-utils-module">
+<h2>python_tools.function_utils module<a class="headerlink" href="#python-tools-function-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-general-utils-module">
+<h2>python_tools.general_utils module<a class="headerlink" href="#python-tools-general-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-hash-utils-module">
+<h2>python_tools.hash_utils module<a class="headerlink" href="#python-tools-hash-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-ipyvolume-movie-utils-module">
+<h2>python_tools.ipyvolume_movie_utils module<a class="headerlink" href="#python-tools-ipyvolume-movie-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-ipyvolume-utils-module">
+<h2>python_tools.ipyvolume_utils module<a class="headerlink" href="#python-tools-ipyvolume-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-json-utils-module">
+<h2>python_tools.json_utils module<a class="headerlink" href="#python-tools-json-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-linalg-utils-module">
+<h2>python_tools.linalg_utils module<a class="headerlink" href="#python-tools-linalg-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-matlab-utils-module">
+<h2>python_tools.matlab_utils module<a class="headerlink" href="#python-tools-matlab-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-matplotlib-utils-module">
+<h2>python_tools.matplotlib_utils module<a class="headerlink" href="#python-tools-matplotlib-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-mesh-utils-module">
+<h2>python_tools.mesh_utils module<a class="headerlink" href="#python-tools-mesh-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-networkx-utils-module">
+<h2>python_tools.networkx_utils module<a class="headerlink" href="#python-tools-networkx-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-numpy-utils-module">
+<h2>python_tools.numpy_utils module<a class="headerlink" href="#python-tools-numpy-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-package-utils-module">
+<h2>python_tools.package_utils module<a class="headerlink" href="#python-tools-package-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-pandas-utils-module">
+<h2>python_tools.pandas_utils module<a class="headerlink" href="#python-tools-pandas-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-pathlib-utils-module">
+<h2>python_tools.pathlib_utils module<a class="headerlink" href="#python-tools-pathlib-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-pretty-print-confusion-matrix-module">
+<h2>python_tools.pretty_print_confusion_matrix module<a class="headerlink" href="#python-tools-pretty-print-confusion-matrix-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-regex-utils-module">
+<h2>python_tools.regex_utils module<a class="headerlink" href="#python-tools-regex-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-requirement-utils-module">
+<h2>python_tools.requirement_utils module<a class="headerlink" href="#python-tools-requirement-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-scipy-utils-module">
+<h2>python_tools.scipy_utils module<a class="headerlink" href="#python-tools-scipy-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-seaborn-utils-module">
+<h2>python_tools.seaborn_utils module<a class="headerlink" href="#python-tools-seaborn-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-statistics-utils-module">
+<h2>python_tools.statistics_utils module<a class="headerlink" href="#python-tools-statistics-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-statistics-visualizations-module">
+<h2>python_tools.statistics_visualizations module<a class="headerlink" href="#python-tools-statistics-visualizations-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-string-utils-module">
+<h2>python_tools.string_utils module<a class="headerlink" href="#python-tools-string-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-system-utils-module">
+<h2>python_tools.system_utils module<a class="headerlink" href="#python-tools-system-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-tqdm-utils-module">
+<h2>python_tools.tqdm_utils module<a class="headerlink" href="#python-tools-tqdm-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="python-tools-widget-utils-module">
+<h2>python_tools.widget_utils module<a class="headerlink" href="#python-tools-widget-utils-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="python_tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
