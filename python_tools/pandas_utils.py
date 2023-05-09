@@ -343,7 +343,7 @@ def query(df,query,**kwargs):
     that would work with sql
     
     Ex:
-    import pandas_utils as pu
+    from python_tools import pandas_utils as pu
     import pandas as pd
 
     curr_dicts = [dict(x = 5,y=10),dict(x = 7,y=11)]
@@ -431,7 +431,7 @@ def delete_columns(df,columns_to_delete):
         return df
     
 # ----------- 1/25 Additon: Used for helping with clustering ----------- #
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -819,7 +819,7 @@ def reset_pd_display():
     pd.reset_option('display.float_format')
     pd.reset_option('display.max_colwidth')
     
-from tqdm_utils import tqdm
+from python_tools.tqdm_utils import tqdm
 def flatten_nested_dict_df_slow(df):
     """
     Purpose: Will faltten a dataframe if columns contain nested dicts
@@ -897,7 +897,7 @@ def filter_away_columns_by_data_type(df,
     else:
         return df.loc[:,df.columns[df.dtypes != data_type]]
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def duplicated_col_value_rows(
     df,
     col,
@@ -989,7 +989,7 @@ def combine_columns_as_str(
     
     return df[columns].astype('str').agg(join_str.join,axis=1)
 
-import general_utils as gu
+from python_tools import general_utils as gu
 def filter_away_characters_from_column(
     df,
     column=None,
@@ -1218,7 +1218,7 @@ def expand_array_column_to_separate_columns(
     row to moving the values to each with its own column
     
     Ex: 
-    import pandas_utils as pu
+    from python_tools import pandas_utils as pu
     pu.expand_array_column_to_separate_columns(
     use_previous_column_name = False,
     columns = "embedding",
@@ -1360,7 +1360,7 @@ def histogram_of_discrete_labels(
     #print(f"df_counts = {len(df_counts)}")
     
     if plot:
-        import matplotlib_utils as mu
+        from python_tools import matplotlib_utils as mu
         mu.stacked_bar_graph(
            df_counts,
             verbose = verbose,
@@ -1406,7 +1406,7 @@ def unique_row_counts(
 def set_max_colwidth(width=400):
     pd.set_option('max_colwidth', width)
     
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def filter_df_by_column_percentile(
     df,
     columns=None,
@@ -1588,7 +1588,7 @@ def shuffle_df(df,seed=None,**kwargs):
         seed=seed,
         **kwargs)
 
-import general_utils as gu
+from python_tools import general_utils as gu
 def expand_array_column_to_separate_rows(
     df,
     array_columns,
@@ -1700,8 +1700,8 @@ def is_dataframe(df):
 def is_series(df):
     return isinstance(df, pd.Series)
 
-import numpy_utils as nu
-import pandas_utils as pu
+from python_tools import numpy_utils as nu
+from python_tools import pandas_utils as pu
 
 def summary_statistic_over_columns(
     df,
@@ -1726,7 +1726,7 @@ def summary_statistic_over_columns(
     over all rows of dataframe
     
     Ex: 
-    import pandas_utils as pu
+    from python_tools import pandas_utils as pu
     pu.summary_statistic_over_columns(
         columns = ["n_synapses"],#["","n_synapses_pre"],
         df = node_df,
@@ -1830,7 +1830,7 @@ def summary_statistic_over_columns(
         return summary_df
     
     
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def summary_statistics_over_columns_by_category(
     df,
     category_columns,
@@ -2078,7 +2078,7 @@ def add_percentage_column(
     return df
     
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def intersect_columns(dfs):
     return list(nu.intersect1d_multi_list([list(df.columns) for df in dfs]))
 
@@ -2383,7 +2383,7 @@ def empty_df(columns=None):
 
 
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def merge_df_to_source_target(
     df,
     df_append,
@@ -2565,7 +2565,7 @@ def restrict_df_to_coordinates_within_radius_old(
     Purpose: Restrict df by radius and a center point
     
     Ex: 
-    import pandas_utils as pu
+    from python_tools import pandas_utils as pu
 
     center_df = hdju.seg_split_centroid(
         table = hdju.proofreading_neurons_with_gnn_cell_type_fine,
@@ -2606,7 +2606,7 @@ def restrict_df_to_coordinates_within_radius_old(
     return df.iloc[idx_map,:].reset_index(drop=True)
 
 # ------------- datajoint and pandas interface -------
-import regex_utils as reu
+from python_tools import regex_utils as reu
 
 def table_type_from_table(table):
     if pu.is_dataframe(table):
@@ -3131,7 +3131,7 @@ def replace_str_characters(
 
     return df
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 def keys_from_groupby_obj(obj):
     """
     Purpose: get the groupby object
@@ -3974,9 +3974,9 @@ def new_column_from_name_to_str_func_dict(
     df,
     func_dict)
 
-import matplotlib_utils as mu
-import numpy_utils as nu
-import ipyvolume_utils as ipvu
+from python_tools import matplotlib_utils as mu
+from python_tools import numpy_utils as nu
+from python_tools import ipyvolume_utils as ipvu
 def plot_class_coordinates(
     df,
     column,
@@ -4381,8 +4381,8 @@ def bin_array_column(
 
     return df
 
-import matplotlib_utils as mu
+from python_tools import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
 
-import pandas_utils as pu
+from python_tools import pandas_utils as pu

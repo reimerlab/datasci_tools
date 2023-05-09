@@ -42,7 +42,7 @@ algorithm = "split"
 data_type = "h01"
 search_string = fr"{dict_type}.*{algorithm}.*{data_type}"
 test_str = "global_parameters_hi_split_h01"
-import regex_utils as ru
+from python_tools import regex_utils as ru
 ru.match_substring_in_str(search_string,
             test_str)
 
@@ -115,6 +115,10 @@ pattern = (
     "([a-zA-Z0-9])-([a-zA-Z0-9])")
 re.sub(pattern,r"\1\2",s)
 
+# --- captured groups vs uncaptured groups
+(?: something) this is an uncaptured group, where group something together but not save for named
+():captured group
+
 """
 
 def multiple_replace(
@@ -125,7 +129,7 @@ def multiple_replace(
     Purpose: To replace multiple strings with a dictionary apping
     
     Ex: 
-    import regex_utils as ru
+    from python_tools import regex_utils as ru
     query = "u in [1,2,3,4]"
     dict_mapping = dict(u="v",v="u")
     ru.multiple_replace(query,dict_mapping)

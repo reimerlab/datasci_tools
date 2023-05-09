@@ -5,8 +5,8 @@ generate the requirements of a folder
 """
 
 
-import system_utils as su
-import numpy_utils as nu
+from python_tools import system_utils as su
+from python_tools import numpy_utils as nu
 import tqdm
 from pathlib import Path
 

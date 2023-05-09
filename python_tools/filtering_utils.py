@@ -7,7 +7,7 @@ computed over that object
 
 Example on how to query objects:
 
-import filtering_utils as flu
+from python_tools import filtering_utils as flu
 C = flu.Comparator(shaft_candidates_filtered,neuron_obj=neuron_obj)
 
 def n_branches_from_candidate(candidate):
@@ -22,13 +22,13 @@ Good example of this usage is:
 
 """
 
-import networkx_utils as xu
+from python_tools import networkx_utils as xu
 import networkx as nx
 import numpy as np
-import tqdm_utils as tqu
+from python_tools import tqdm_utils as tqu
 default_attribute_name = "obj"
 node_arguments_name = "arguments"
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 class Comparator:
     """
     Purpose: To store objects in a relational way and to
@@ -135,7 +135,7 @@ def objects_from_node_query(G,query,
     
     
 
-import general_utils as gu
+from python_tools import general_utils as gu
 def G_from_objects(objects,
                   attribute_name=default_attribute_name,
                    object_attributes = None,
@@ -201,7 +201,7 @@ def compute_node_property_with_obj(func,
     return func_value
     
     
-import general_utils as gu
+from python_tools import general_utils as gu
 
 def compute_node_properties(G,node_functions,
                             object_argument_name=None,
@@ -378,7 +378,7 @@ def diff_from_min(G,node,attribute_name):
 def distance_above_soma_diff_from_max(G,node):
     return diff_from_max(G,node,attribute_name="distance_above_soma")
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu
 import numpy as np
 
 def compute_global_functions(
@@ -444,7 +444,7 @@ def compute_global_functions(
 
 # ------------- Examples of how to use the filtering ------------- #
 
-import filtering_utils as flu
+from python_tools import filtering_utils as flu
 def filter_candidates_by_query(neuron_obj,
                               candidates,
                               functions_list,
@@ -625,4 +625,4 @@ def filter_candidates_to_one_by_query(neuron_obj,
     
         
         
-import filtering_utils as flu
+from python_tools import filtering_utils as flu

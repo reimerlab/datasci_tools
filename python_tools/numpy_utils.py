@@ -269,7 +269,7 @@ def sort_multidim_array_by_rows(edge_array,order_row_items=False,):
     (with possibly sorting the individual elements along a row)
     
     Example: On how to get sorted edges
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu = reload(nu)
     nu.sort_multidim_array_by_rows(limb_concept_network.edges(),order_row_items=True)
     
@@ -561,7 +561,7 @@ def mode_1d(array):
 def all_subarrays (l): 
     """
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.all_subarrays([[1,"a"],[2,"b"],[3,"c"]])
     
     Output:
@@ -595,7 +595,7 @@ def random_2D_subarray(array,n_samples,
     a 2D array
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     import numpy as np
 
     y = np.array([[1,3],[3,2],[5,6]])
@@ -618,7 +618,7 @@ def array_split(array,n_splits):
     """Split an array into multiple sub-arrays
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.array_split(np.arange(0,10),3)
     """
     return np.array_split(array,n_splits)
@@ -719,7 +719,7 @@ def polyfit(x,y,degree):
 def weighted_average(array,weights):
     """
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.weighted_average(d_widths,d_sk_lengths)
     """
     return np.average(array,weights=weights)
@@ -867,7 +867,7 @@ def divide_data_into_classes(classes_array,data_array,unique_classes=None):
 def concatenate_arrays_along_last_axis_after_upgraded_to_at_least_2D(arrays):
     """
     Example: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     arrays = [np.array([1,2,3]), np.array([4,5,6])]
     nu.concatenate_arrays_along_last_axis_after_upgraded_to_at_least_2D(arrays)
     
@@ -1394,7 +1394,7 @@ def interval_bins_covering_array(
     of overlap in between each 
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.interval_bins_covering_array(
         array = interval_vals,
         n_intervals = 10,
@@ -1491,7 +1491,7 @@ def arange_with_leftover(stop,start=0,step = 1,dtype=None,tol=0.0001):
     little part that might be left over
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.arange_with_leftover(10.1)
     """
     curr_array = np.arange(stop=stop,start=start,step=step,dtype=dtype)
@@ -1543,7 +1543,7 @@ def edge_list_from_adjacency_matrix(
     if bidirectional and len(return_edges) > 0:
         return_edges = np.vstack([return_edges,return_edges[:,[1,0]]])
     if add_self_loops:
-        import networkx_utils as xu
+        from python_tools import networkx_utils as xu
         return_edges = np.vstack([return_edges.reshape(-1,2),xu.self_loop_edges(len(array))])
     return return_edges.astype('int')
 
@@ -1639,7 +1639,7 @@ def circle_intersect_by_line_semgment(
     circle and a line
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.circle_intersect_by_line_semgment(
         array = np.array([(0,0), (10,10)]),
         circle_center=(5,5),
@@ -1683,7 +1683,7 @@ def cdiff(alpha, beta, period=2*np.pi,rad=True,):
     Returns the cirvular difference between two orientations given the period
     
     Ex: 
-    import numpy_utils as nu
+    from python_tools import numpy_utils as nu
     nu.cdist(180,20,rad=False)
     """
     if not rad:
@@ -1972,7 +1972,7 @@ def rows_columns_delete(
 
         
 import pandas as pd
-import pandas_utils as pu
+from python_tools import pandas_utils as pu
 def array_of_coordinates_and_labels_from_dict(
     coordinate_dict,
     label_name = "label",
@@ -2019,7 +2019,7 @@ def df_of_coordinates_and_labels_from_dict(
         label_name = label_name,
         return_df = True)
 
-import networkx_utils as xu
+from python_tools import networkx_utils as xu
 def mean_coordinates_from_radius_threshold_clustering(
     array,
     radius,
@@ -2325,4 +2325,4 @@ def loadtxt(filepath,dtype = "float",delimiter=" ",**kwargs):
 array_from_txt = loadtxt
 read_txt = loadtxt
 
-import numpy_utils as nu
+from python_tools import numpy_utils as nu

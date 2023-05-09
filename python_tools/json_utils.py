@@ -2,7 +2,7 @@
 Purpose: to help parse json files
 
 """
-import pandas_utils as pu
+from python_tools import pandas_utils as pu
 import pandas as pd
 import json
 
@@ -36,4 +36,4 @@ def json_from_file(filepath,multiple_objs = True):
             studentDict = json.loads(f)
         return studentDict
     
-import json_utils as ju
+from python_tools import json_utils as ju

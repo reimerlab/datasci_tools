@@ -55,8 +55,8 @@ turn_off_warnings = ignore_warnings
 
 from contextlib import contextmanager,redirect_stderr,redirect_stdout
 from os import devnull
-import tqdm_utils as tqu
-from tqdm_utils import tqdm
+from python_tools import tqdm_utils as tqu
+from python_tools.tqdm_utils import tqdm
 import copy
 
 @contextmanager
@@ -434,6 +434,6 @@ def rm_dir(directory,ignore_errors = False):
     
 
 
-import system_utils as su
+from python_tools import system_utils as su
 
 

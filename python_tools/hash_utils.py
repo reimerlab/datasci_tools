@@ -12,7 +12,7 @@ def hash_str(string,max_length = 10):
     length
     
     Example:
-    import hash_utils as shu
+    from python_tools import hash_utils as shu
     shu.hash_str("The quick brown fox")
     """
     hasher = hashlib.sha1((string).encode('utf-8'))
@@ -27,4 +27,4 @@ test comment
 test 2
 test 5
 """
-import hash_utils as hashu
+from python_tools import hash_utils as hashu

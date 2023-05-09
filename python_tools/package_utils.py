@@ -1,8 +1,11 @@
-import pathlib_utils as plu
-import numpy_utils as nu
-import file_utils as filu
+from python_tools import pathlib_utils as plu
+from python_tools import numpy_utils as nu
+from python_tools import file_utils as filu
 import io
 
+
+def example_func():
+    print('hello')
 
 def prefix_module_imports_in_files(
     filepaths,
@@ -50,12 +53,14 @@ def prefix_module_imports_in_files(
 
     #2) Construct a regex pattern ORing the potential list
     pattern = f"(import ({'|'.join(modules)}))"
-    #replacement = fr"{prefix} import \1"
+    replacement = fr"{prefix}import \2"
     if prevent_double_prefix:
         pattern = f"(?<!{prefix}){pattern}"
-        replacement = fr"{prefix}" + r"\2"
     else:
         replacement = None
+        
+    #print(f"pattern = {pattern}")
+    #print(f"replacement = {replacement}")
 
     filepaths = nu.to_list(filepaths)
 
@@ -75,4 +80,4 @@ def prefix_module_imports_in_files(
         )
 
 
-import package_utils as pku
+from python_tools import package_utils as pku

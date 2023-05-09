@@ -1,4 +1,4 @@
-import ipyvolume_utils as ipvu
+from python_tools import ipyvolume_utils as ipvu
 
 import numpy as np
 def start_end_frame_from_start_end_frac(
@@ -79,4 +79,4 @@ def example_rotating_motif():
     )
     
     
-import ipyvolume_movie_utils as ipvm
+from python_tools import ipyvolume_movie_utils as ipvm

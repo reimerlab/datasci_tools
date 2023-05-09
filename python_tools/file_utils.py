@@ -108,10 +108,14 @@ def file_regex_replace(
     """
     if overwrite_file:
         output_filepath = filepath
+        
+    #print(f"output_filepath = {output_filepath}")
     
     if output_filepath is None:
         p = Path(filepath)
         output_filepath = f"{p.with_suffix('')}{default_suffix}{p.suffix}"
+        
+    #print(f"output_filepath = {output_filepath}")
 
 
     # Opening our text file in read only
@@ -125,6 +129,9 @@ def file_regex_replace(
             print(f"# of substitutions = {count}")
     else:
         data = data.replace(pattern,replacement)
+        
+    if verbose:
+        print(f"  --> output_filepath = {output_filepath}")
 
     # Opening our text file in write only
     # mode to write the replaced content
@@ -189,4 +196,4 @@ def file_regex_add_prefix(
     )
     
     
-import file_utils as filu
+from python_tools import file_utils as filu

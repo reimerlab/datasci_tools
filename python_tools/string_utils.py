@@ -18,7 +18,7 @@ def abbreviate_phrase(
     certain character
     
     Ex: 
-    import string_utils as stru
+    from python_tools import string_utils as stru
     stru.abbreviate_phrase(
         s = "ais_syn_density_max_backup_excitatory",
         verbose = True,
@@ -48,7 +48,7 @@ import difflib
 def str_overlap(s1, s2):
     """
     Ex: 
-    import string_utils as stru
+    from python_tools import string_utils as stru
     stru.str_overlap("my name is Brendan","helloBrend")
     """
     s = difflib.SequenceMatcher(None, s1, s2)
@@ -89,4 +89,4 @@ def example_curly_braces_inside_fstring():
     print(f"{x} is better than {{hello}}")
     
 
-import string_utils as stru
+from python_tools import string_utils as stru

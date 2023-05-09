@@ -34,7 +34,7 @@ def create_folder(folder_path):
     """
     To create a new folder
     
-    import pathlib_utils as plu
+    from python_tools import pathlib_utils as plu
     plu.create_folder("/mnt/dj-stor01/platinum/minnie65/02/graphs")
     """
     p = Path(folder_path)
@@ -48,15 +48,30 @@ def files_of_ext_type(
     directory,
     ext,
     verbose = False,
+    return_stem = False,
     ):
     """
     Purpose: Get all files with a certain extension
     """
+    if ext[0] == ".":
+        ext = ext[1:]
     files = [k for k in Path(directory).iterdir() if k.suffix == f".{ext}"]
     if verbose:
         print(f"# of {ext} files = {len(files)}")
+        
+    if return_stem:
+        files = [k.stem for k in files]
     return files
+
+def py_files(
+    directory,ext = "py",verbose = False,return_stem = False,):
+    return files_of_ext_type(
+    directory,
+    ext=ext,
+    verbose = verbose,
+    return_stem=return_stem,
+    )
     
 
 
-import pathlib_utils as plu
+from python_tools import pathlib_utils as plu
