@@ -1,0 +1,19 @@
+Good link on how to create automatic documentation landing page
+
+https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
+
+Process:
+1) pip3 install -U sphinx
+2) Within project create docs folder, go into folder and run "sphinx-quickstart"
+3) Will automatically create a lot of files
+- Makefile: builds the proect
+- conf.py: specifies the build
+- index.rst (reStructuredText): entry point for the website
+4) to make website, run: make html
+5) pip3 install sphinx-rtd-theme
+6) add some more stuff to the conf.py
+7) Generate more .rst files in the doc folder: sphinx-apidoc -o . ../autos
+8) link the .rst files
+9) add some more code to the conf.py and rerun the html
+    make clean html
+    make html
