@@ -1,3 +1,11 @@
+"""
+
+Link on how to change parameters of nx.draw:
+https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
+
+
+"""
+
 from . import general_utils as gu
 from . import numpy_utils as nu
 from . import pandas_utils as pu
@@ -18,13 +26,7 @@ import pandas as pd
 import pydot
 import random
 import time
-"""
 
-Link on how to change parameters of nx.draw:
-https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
-
-
-"""
 
 
 #import networkx as nx

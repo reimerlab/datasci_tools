@@ -200,6 +200,7 @@ def file_regex_add_prefix(
         **kwargs
     )
 
+from . import regex_utils as ru
 def import_pattern_str(
     start = None,
     beginning_of_line = True):
@@ -208,7 +209,7 @@ def import_pattern_str(
     
     if start is None:
         if beginning_of_line:
-            start = "\n"
+            start = ru.start_of_line_pattern
         else:
             start = ""
     return (f"{start}("

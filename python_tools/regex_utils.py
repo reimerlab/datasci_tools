@@ -199,6 +199,10 @@ def match_pattern_in_str(
     else:
         return found_strings
     
+start_of_file_pattern = r"\A"
+end_of_file_pattern = r"\Z"
 
+start_of_line_pattern = fr"(?:{start_of_file_pattern}|\n)"
+multiline_str_pattern = r"""(['"])\1\1(.*?)\1{3}"""
 
 from . import regex_utils as ru

@@ -11,6 +11,14 @@ def filename_no_ext(path):
 def ext(path):
     return Path(path).suffix
 
+def resolve(path):
+    return Path(path).resolve()
+relative_to_absolute_path = resolve
+
+def parents(path):
+    path = Path(path).resolve()
+    return list(path.parents)
+
 
 """
 How to search and unlink files: 
@@ -75,7 +83,48 @@ def py_files(
     verbose = verbose,
     return_stem=return_stem,
     )
+
+def inside_directory(directory,filepath):
+    """
+    Ex: 
+    from pathlib import Path
+    from python_tools import pathlib_utils as plu
+
+    root = Path("/python_tools/python_tools/")#.resolve()
+    child = Path("../python_tools/numpy_utils.py")#.resolve()
+    plu.inside_directory(root,child)
+    """
+    return Path(directory).resolve() in parents(filepath)
+
     
+def relative_path_of_parent(parent,filepath):
+    """
+    Purpose: Find the relative path to parent
+    """
+    return str(Path(filepath).relative_to(Path(parent))).replace("//","/")
+
+import regex as re
+def n_levels_parent_above(parent,filepath,verbose = False):
+    """
+    Purpose: Find the number of levels a parent
+    directory is above a filepath
+
+    Pseudocode:
+    1) get the relative path
+    2) count the number of backslashes
+    
+    Ex: 
+    plu.n_levels_parent_above(
+        filepath = Path("/python_tools/python_tools/dj_utils.py"),
+        parent = "/python_tools/",
+        verbose = True
+    )
+    """
+    relative_path = plu.relative_path_of_parent(parent,filepath)
+    n_levels = len(re.findall(re.compile("/"),relative_path))
+    if verbose:
+        print(f"n_levels above = {n_levels}")
+    return n_levels
 
 
 #from python_tools import pathlib_utils as plu
