@@ -1,7 +1,24 @@
-from matplotlib import colors
+from . import numpy_utils as nu
+from . import pandas_utils as pu
+from . import statistics_utils as stu
+from . import string_utils as stru
+from IPython.display import display
+from collections import Counter
+from copy import copy
+from matplotlib import cm
+from matplotlib import colors as mcolors
+from matplotlib.colors import LogNorm
+from matplotlib.ticker import MaxNLocator
+import matplotlib
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 import numpy as np
-from python_tools import numpy_utils as nu
-from python_tools import pandas_utils as pu
+import seaborn as sns
+import webcolors
+from matplotlib import colors
+#import numpy as np
+#from python_tools import numpy_utils as nu
+#from python_tools import pandas_utils as pu
 """
 Notes on other functions: 
 eventplot #will plot 1D data as lines, can stack multiple 1D events
@@ -44,7 +61,7 @@ reds = ["coral","red","rosybrown"],
 greys = ["silver","grey","black"],
 )
 
-import seaborn as sns
+#import seaborn as sns
 colorblind_blue = sns.color_palette("colorblind")[0]
 colorblind_orange = sns.color_palette("colorblind")[3]
 colorblind_green = sns.color_palette("colorblind")[2]
@@ -99,7 +116,7 @@ def generate_non_randon_named_color_list(n_colors,
                                   colors_to_omit=colors_to_omit,
                       return_named_colors=True)
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def generate_color_list(
                         user_colors=[], #if user sends a prescribed list
                         n_colors=-1,
@@ -167,7 +184,7 @@ def color_to_rgba(current_color,alpha=0.2):
     curr_rgb = color_to_rgb(current_color)
     return apply_alpha_to_color_list(curr_rgb,alpha=alpha)
     
-from copy import copy
+#from copy import copy
 def get_graph_color_list():
     return copy(graph_color_list)
 
@@ -177,7 +194,7 @@ def generate_random_rgba(print_flag=False):
         print(f"random color chosen = {rand_color}")
     return colors.to_rgb(rand_color[0])
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def generate_color_list_no_alpha_change(
                         user_colors=[], #if user sends a prescribed list
                         n_colors=-1,
@@ -269,8 +286,8 @@ def apply_alpha_to_color_list(color_list,alpha=0.2,print_flag=False):
 
 
 
-import webcolors
-import numpy as np
+#import webcolors
+#import numpy as np
 
 def closest_colour(requested_colour):
     min_colours = {}
@@ -347,8 +364,8 @@ def convert_dict_rgb_values_to_names(color_dict):
     return dict([(k,convert_rgb_to_name(v)) for k,v in color_dict.items()])
     
 
-import matplotlib.pyplot as plt
-from matplotlib import colors as mcolors
+#import matplotlib.pyplot as plt
+#from matplotlib import colors as mcolors
 
 base_colors_dict = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
@@ -461,7 +478,7 @@ def get_axes_layout_from_figure(fig):
     return np.max(np.array(get_axes_locations_from_figure(fig)),axis=0) + np.array([1,1])
 
 # plotting the BIC curve
-from matplotlib.ticker import MaxNLocator
+#from matplotlib.ticker import MaxNLocator
 def plot_graph(title,
                 y_values,
                 x_values,
@@ -498,11 +515,11 @@ def plot_graph(title,
     else:
         plt.show()
 
-import matplotlib
+#import matplotlib
 def color_to_hex(color):
     return matplotlib.colors.to_hex(color, keep_alpha=False)
         
-from IPython.display import display
+#from IPython.display import display
 def display_figure(fig):
     display(fig)
     
@@ -578,9 +595,9 @@ def histogram(data,
     else:
         return ax
     
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import matplotlib
+#import matplotlib as mpl
+#import matplotlib.pyplot as plt
+#import matplotlib
 def reset_default_settings():
     mpl.rcParams.update(mpl.rcParamsDefault)
     
@@ -856,7 +873,7 @@ except:
     Color = None
 
 
-import numpy as np
+#import numpy as np
 def divided_data_into_color_gradient(
     data,
     n_bins = 5,
@@ -919,8 +936,8 @@ def divided_data_into_color_gradient(
         return data_as_bins,colors_dict
     
     
-import matplotlib as mpl
-import matplotlib.pyplot as plt
+#import matplotlib as mpl
+#import matplotlib.pyplot as plt
 def color_mix(color_1,color_2,mix):
     c1=np.array(mpl.colors.to_rgb(color_1))
     c2=np.array(mpl.colors.to_rgb(color_2))
@@ -945,7 +962,7 @@ def color_transition(
     
     return total_colors
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def text_overlay(
     ax,
     #dictionary mapping text to coordinate  
@@ -1005,7 +1022,7 @@ def text_overlay(
     return ax
         
         
-from python_tools import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
 def stacked_bar_graph(
     df,
     x = "x",
@@ -1113,7 +1130,7 @@ def set_legend_order(ax,labels, order = None):
     ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
     return ax
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 def bar_plot_parallel_features_by_labels(
     df,
     features,
@@ -1209,7 +1226,7 @@ def bar_plot_parallel_features_by_labels(
                 title += f" \n {title_append}"
         ax.set_title(title)
         
-from collections import Counter
+#from collections import Counter
 def histograms_overlayed(
     df,
     column,
@@ -1433,9 +1450,9 @@ def histograms_overlayed(
         return axes
     
     
-import seaborn as sns
-import matplotlib.pyplot as plt
-from python_tools import pandas_utils as pu
+#import seaborn as sns
+#import matplotlib.pyplot as plt
+#from python_tools import pandas_utils as pu
 
 def histogram_2D_overlayed(
     df,
@@ -1522,8 +1539,8 @@ def histogram_2D_overlayed(
     
 
 
-import numpy as np
-from python_tools import numpy_utils as nu
+#import numpy as np
+#from python_tools import numpy_utils as nu
 def histograms_over_intervals(
     df,
     attribute,
@@ -1817,7 +1834,7 @@ def scatter_with_gradient_3D_simple(
     return ax
 
 
-from matplotlib import cm
+#from matplotlib import cm
 def gradient_from_array(
     array,
     colormap = cm.coolwarm,
@@ -1942,7 +1959,7 @@ def example_plot_color_maps():
     
     plot_color_gradients('Cyclic', ['twilight', 'twilight_shifted', 'hsv'])
     
-import matplotlib
+#import matplotlib
 def set_default_settings():
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 reset_rcparams = set_default_settings
@@ -1971,7 +1988,7 @@ def example_invert_axes():
     plt.gca().invert_yaxis()
     plt.gca().invert_xaxis()
     
-from matplotlib.colors import LogNorm, Normalize
+#from matplotlib.colors import LogNorm, Normalize
 def plot_jointplot_from_df_coordinates_with_labels(
     df,
     labels_column = "label",
@@ -2097,7 +2114,7 @@ def plot_jointplot_from_df_coordinates_with_labels(
 
 
     
-import matplotlib as mpl
+#import matplotlib as mpl
 def example_stacked_histogram():
 
     sns.set_theme(style="ticks")
@@ -2462,7 +2479,7 @@ def hide_legend_title(ax):
 def line_width_thin_hist_seaborn():
     print(f"linewidth = 0.05 for seaborn")
     
-from matplotlib.ticker import MaxNLocator
+#from matplotlib.ticker import MaxNLocator
 def set_axes_ticklabels_as_int(ax,axes="x"):
     axes= nu.to_list(axes)
     for curr_ax in axes:
@@ -2693,7 +2710,7 @@ def add_text_to_pos(ax,x,y,text,fontsize=None,weight = "bold"):
         transform=ax_m.transAxes,
     )
     
-from python_tools import string_utils as stru
+#from python_tools import string_utils as stru
 def add_letter_to_ax(
     ax,
     letter=None,
@@ -2852,7 +2869,7 @@ def set_legend_labels_with_dict(
     
 legend_off = remove_legend
 
-from python_tools import statistics_utils as stu
+#from python_tools import statistics_utils as stu
 def add_correlation_text_box(
     ax,
     x=None,
@@ -2933,4 +2950,7 @@ def set_legend_loc(
     return ax
 
 hide_ax = turn_ax_off
-from python_tools import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
+
+
+from . import matplotlib_utils as mu

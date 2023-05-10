@@ -1,3 +1,9 @@
+from matplotlib.collections import QuadMesh
+from pandas import DataFrame
+import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sn
 # -*- coding: utf-8 -*-
 """
 plot a pretty confusion matrix with seaborn
@@ -13,12 +19,12 @@ REFerences:
 """
 
 #imports
-from pandas import DataFrame
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-from matplotlib.collections import QuadMesh
-import seaborn as sn
+#from pandas import DataFrame
+#import numpy as np
+#import matplotlib.pyplot as plt
+#import matplotlib.font_manager as fm
+#from matplotlib.collections import QuadMesh
+#import seaborn as sn
 
 
 def get_new_fig(fn, figsize=[9,9]):
@@ -307,3 +313,5 @@ if(__name__ == '__main__'):
     plt.pause(5)
     print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
     _test_data_class()
+
+

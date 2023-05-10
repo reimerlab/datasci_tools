@@ -1,3 +1,4 @@
+import argparse
 """
 Purpose: Go through the specifics 
 of how to enable commmand line interface for a python script
@@ -5,7 +6,7 @@ of how to enable commmand line interface for a python script
 Tutorial: https://realpython.com/command-line-interfaces-python-argparse/
 """
 
-import argparse
+#import argparse
 
 general_notes = """
 - when using argparse get the help (-h) for free and will automatically tell you the variables you are missing
@@ -68,3 +69,4 @@ def example_basic_argparse_test():
     
 def print_help_str(parser):
     parser.print_help()
+

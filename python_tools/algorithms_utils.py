@@ -1,8 +1,9 @@
+import numpy as np
 """
 Purpose: defining general algorithms that help with processing
 
 """
-import numpy as np
+#import numpy as np
 
 def compare_uneven_groups(group1,
                           group2,
@@ -96,3 +97,4 @@ def compare_uneven_groups(group1,
         return return_boolean,differences
     else:
         return return_boolean
+

@@ -1,6 +1,23 @@
-import numpy as np
+from . import networkx_utils as xu
+from . import pandas_utils as pu
+from functools import reduce
+from pathlib import Path
+from pykdtree.kdtree import KDTree
+from scipy import stats
+from scipy.spatial.distance import pdist
+from shapely.geometry import LineString
+from shapely.geometry import Point
+import datetime
+import itertools
+import math
 import networkx as nx
+import pandas as pd
+import scipy.spatial as spatial
 import time
+import trimesh
+import numpy as np
+#import networkx as nx
+#import time
 """
 Notes on functionality: 
 np.concatenate: combines list of lists into one list like itertools does
@@ -67,7 +84,7 @@ def concatenate_lists(list_of_lists):
     except:
         return []
 
-import trimesh
+#import trimesh
 def is_array_like(current_data,include_tuple=False):
     types_to_check = [type(np.ndarray([])),type(np.array([])),list,trimesh.caching.TrackedArray]
     if include_tuple:
@@ -117,7 +134,7 @@ def array_after_exclusion(
     #print(f"mask = {mask}")
     return original_array[mask]
 
-from pathlib import Path
+#from pathlib import Path
 def load_dict(file_path):
     if file_path == type(Path()):
         file_path = str(file_path.absolute())
@@ -126,13 +143,13 @@ def load_dict(file_path):
     return my_dict[my_dict.files[0]][()]
 
 
-from scipy.spatial.distance import pdist,squareform
+#from scipy.spatial.distance import pdist,squareform
 def get_coordinate_distance_matrix(coordinates):
     distance_matrix_condensed = pdist(coordinates,'euclidean')
     distance_matrix = squareform(distance_matrix_condensed)
     return distance_matrix
 
-import scipy.spatial as spatial
+#import scipy.spatial as spatial
 def distance_matrix(
     array1,
     array2=None,
@@ -218,8 +235,8 @@ ex_skeleton = example_skeleton.reshape(-1,3)
 
 #sk.convert_skeleton_to_graph(ex_skeleton)
 
-from scipy.spatial.distance import pdist
-import time 
+#from scipy.spatial.distance import pdist
+#import time 
 start_time = time.time()
 distance_matrix = pdist(ex_skeleton,'euclidean')
 print(f"Total time for pdist = {time.time() - start_time}")
@@ -318,7 +335,7 @@ def sort_rows_by_column(array,column_idx,largest_to_smallest=True):
 #         array =  nu.sort_rows_by_column(array,column_idx,largest_to_smallest=largest_to_smallest)
 #     return array
 
-from functools import reduce
+#from functools import reduce
 
 def function_over_multi_lists(arrays,set_function):
     return reduce(set_function,arrays)
@@ -427,7 +444,7 @@ def angle_between_vectors(v1, v2, acute=True,degrees=True,verbose=False):
     
     return return_angle
 
-import trimesh
+#import trimesh
 def angle_between_vectors_simple(v1,v2):
     return trimesh.geometry.vector_angle([v1,v2])
 
@@ -506,7 +523,7 @@ def unique_non_self_pairings(array):
     array = array[array[:,0] != array[:,1]]
     return array
 
-import itertools
+#import itertools
 
 def choose_k_combinations(array,k):
     return list(itertools.combinations(array,k))
@@ -554,7 +571,7 @@ def unique_pairings_between_2_arrays(array1,array2):
 def remove_indexes(arr1,arr2):
     return np.delete(arr1,arr2)
 
-from scipy import stats
+#from scipy import stats
 def mode_1d(array):
     return stats.mode(array)[0][0]
     
@@ -684,7 +701,7 @@ def all_partitions(array,
 
     return all_partitions
 
-import datetime
+#import datetime
 def float_to_datetime(fl):
     return datetime.datetime.fromtimestamp(fl)
 
@@ -1085,7 +1102,7 @@ def aligning_matrix_3D(starting_vector,target_vector):
     R[:2,:2] = R[:2,:2]*-1
     return R
 
-from pykdtree.kdtree import KDTree
+#from pykdtree.kdtree import KDTree
 def closest_dist_between_coordinates(
     array1,
     array2,
@@ -1346,7 +1363,7 @@ def cartesian_3D_from_polar(
 xyz_from_polar = cartesian_3D_from_polar
     
 
-import math
+#import math
 def polar2cart(r, theta, phi):
     return [
          r * math.sin(theta) * math.cos(phi),
@@ -1373,7 +1390,7 @@ def reject_outliers(array, m=2,return_mask = False):
         return mask
     return array[mask]
 
-import itertools
+#import itertools
 def binary_permutation_matrix(n):
     """
     Purpose: to get a binary matrix of n number of variables
@@ -1500,7 +1517,7 @@ def arange_with_leftover(stop,start=0,step = 1,dtype=None,tol=0.0001):
         
     return curr_array
 
-import itertools
+#import itertools
 def all_combinations_of_lists(*args):
     """
     Purpose: Given a list of attributes and their possible attribute
@@ -1596,7 +1613,7 @@ def angle_from_xy_vec(xy):
     return np.degrees(angle) % 360.0  
 
 
-from scipy import stats
+#from scipy import stats
 def equal_depth_bins(array,n_bins=10):
     array = remove_nans(array)
     return stats.mstats.mquantiles(array, np.linspace(0,1,n_bins+1))
@@ -1610,7 +1627,7 @@ def bin_array(array,n_bins = 10,bin_type = "equal_width"):
     return getattr(nu,f"{bin_type}_bins")(array,n_bins = n_bins)
     
 
-from scipy import stats
+#from scipy import stats
 def mode(array,axis=0,return_counts = False):
     """
     Purpos: To get the mode of an array
@@ -1624,8 +1641,8 @@ def mode(array,axis=0,return_counts = False):
     else:
         return mode
     
-from shapely.geometry import LineString
-from shapely.geometry import Point
+#from shapely.geometry import LineString
+#from shapely.geometry import Point
 
 def circle_intersect_by_line_semgment(
     array,
@@ -1971,8 +1988,8 @@ def rows_columns_delete(
     filter_away = True)
 
         
-import pandas as pd
-from python_tools import pandas_utils as pu
+#import pandas as pd
+#from python_tools import pandas_utils as pu
 def array_of_coordinates_and_labels_from_dict(
     coordinate_dict,
     label_name = "label",
@@ -2019,7 +2036,7 @@ def df_of_coordinates_and_labels_from_dict(
         label_name = label_name,
         return_df = True)
 
-from python_tools import networkx_utils as xu
+#from python_tools import networkx_utils as xu
 def mean_coordinates_from_radius_threshold_clustering(
     array,
     radius,
@@ -2325,4 +2342,7 @@ def loadtxt(filepath,dtype = "float",delimiter=" ",**kwargs):
 array_from_txt = loadtxt
 read_txt = loadtxt
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
+
+
+from . import numpy_utils as nu

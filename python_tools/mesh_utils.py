@@ -1,7 +1,20 @@
-import copy
-import trimesh
+from . import ipyvolume_utils as ipvu
+from . import numpy_utils as nu
+from scipy.spatial import Delaunay
+import math
+import numpy
 import numpy as np
-from python_tools import numpy_utils as nu
+import scipy.cluster
+import scipy.linalg
+import scipy.sparse
+import scipy.sparse.csgraph
+import scipy.sparse.linalg
+import time
+import trimesh
+import copy
+#import trimesh
+#import numpy as np
+#from python_tools import numpy_utils as nu
 
 
 def mesh_center_vertex_average(mesh_list):
@@ -75,9 +88,9 @@ def center_mesh_at_origin(mesh,center=None):
     
 
 
-import trimesh
-from python_tools import ipyvolume_utils as ipvu
-from scipy.spatial import Delaunay
+#import trimesh
+#from python_tools import ipyvolume_utils as ipvu
+#from scipy.spatial import Delaunay
 def mesh_from_delauny_3d(
     tri,
     plot = False,):
@@ -228,13 +241,13 @@ def normal_vector_from_face_idx(mesh,face_idx):
 Source Code: https://github.com/kugelrund/mesh_segmentation
 Reference paper: https://www.cs.sfu.ca/~haoz/pubs/liu_zhang_pg04.pdf
 """
-import math
-import numpy
-import scipy.linalg
-import scipy.cluster
-import scipy.sparse
-import scipy.sparse.csgraph
-import scipy.sparse.linalg
+#import math
+#import numpy
+#import scipy.linalg
+#import scipy.cluster
+#import scipy.sparse
+#import scipy.sparse.csgraph
+#import scipy.sparse.linalg
 
 delta_default = 0.03
 eta_default = 0.15
@@ -374,7 +387,7 @@ def create_affinity_matrix(
 
     return W
 
-import time
+#import time
 """
 Conclusion: Didn't do a better job of segmenting the head from the mesh
 """
@@ -482,4 +495,6 @@ def segment_mesh(
         
     return idx
 
-from python_tools import mesh_utils as meshu
+#from python_tools import mesh_utils as meshu
+
+from . import mesh_utils as meshu

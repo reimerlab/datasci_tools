@@ -1,10 +1,13 @@
+from . import pandas_utils as pu
+import json
+import pandas as pd
 """
 Purpose: to help parse json files
 
 """
-from python_tools import pandas_utils as pu
-import pandas as pd
-import json
+#from python_tools import pandas_utils as pu
+#import pandas as pd
+#import json
 
 def df_from_json_file(filepath):
     return pu.json_to_df(filepath)
@@ -36,4 +39,6 @@ def json_from_file(filepath,multiple_objs = True):
             studentDict = json.loads(f)
         return studentDict
     
-from python_tools import json_utils as ju
+#from python_tools import json_utils as ju
+
+from . import json_utils as ju

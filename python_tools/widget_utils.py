@@ -1,11 +1,14 @@
+from IPython.display import YouTubeVideo
+from IPython.display import display
+import ipywidgets as widgets
 """
 How to install the widget for ipynb
 
 !pip3 install ipywidgets
 !jupyter nbextension enable --py widgetsnbextension
 
-import ipywidgets as widgets
-from IPython.display import display
+#import ipywidgets as widgets
+#from IPython.display import display
 
 
 
@@ -127,8 +130,8 @@ multi_container_widgets = [
     "Accordian", #have the arrows that can control if displays or not
 ]
 
-import ipywidgets as widgets
-from IPython.display import display
+#import ipywidgets as widgets
+#from IPython.display import display
 
 def set_label(w,label):
     w.description = label
@@ -187,8 +190,8 @@ def example_accordian():
     titles=('Slider', 'Text'))
     return accordion
 
-from IPython.display import YouTubeVideo
-from IPython.display import display
+#from IPython.display import YouTubeVideo
+#from IPython.display import display
 def example_display_youtube_video(
     link = 'eWzY2nGfkXk'
     ):
@@ -328,3 +331,5 @@ def example_link_directional():
     
 def unlink(link):
     link.unlink()
+
+

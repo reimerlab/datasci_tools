@@ -1,10 +1,12 @@
+import base
+import hashlib
 """
 Purpose: functions for quick hashing
 
 """
 
-import base64
-import hashlib
+#import base64
+#import hashlib
 
 def hash_str(string,max_length = 10):
     """
@@ -27,4 +29,6 @@ test comment
 test 2
 test 5
 """
-from python_tools import hash_utils as hashu
+#from python_tools import hash_utils as hashu
+
+from . import hash_utils as hashu

@@ -1,5 +1,12 @@
+from . import numpy_utils as nu
+from . import pandas_utils as pu
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import precision_recall_fscore_support
+import pandas as pd
+import scipy
+import sklearn
 import numpy as np
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 
 def ensure_scalar(array):
     if nu.is_array_like(array):
@@ -41,8 +48,8 @@ def calculate_scores(TP,FP,FN):
                recall=recall(TP,FN),
                f1=f1(TP,FP,FN))
 
-from python_tools import pandas_utils as pu
-import pandas as pd
+#from python_tools import pandas_utils as pu
+#import pandas as pd
 def add_false_true_positive_negative_labels(
     df,
     y_true_label,
@@ -74,7 +81,7 @@ def add_false_true_positive_negative_labels(
     
     return df
 
-from sklearn.metrics import confusion_matrix
+#from sklearn.metrics import confusion_matrix
 
 def true_and_pred_labels_to_confusion_matrix(y_true,
                                              y_pred,
@@ -115,7 +122,7 @@ def df_to_confusion_matrix(df,
                                          df[y_pred_label],
                                         labels)
 
-from sklearn.metrics import precision_recall_fscore_support
+#from sklearn.metrics import precision_recall_fscore_support
 
 def true_and_pred_labels_to_precision_recall_f1score(
     y_true,
@@ -176,7 +183,7 @@ def true_and_pred_labels_to_precision_recall_f1score(
 # ----------- probability distributions --------------
 
 # ----- binomial distribution ----
-import scipy
+#import scipy
 
 def binomial_probability(sample,n,p):
     """
@@ -195,7 +202,7 @@ def binomial_probability_from_samples(samples,n,p,log = True):
     else:
         return np.prod(probs)
     
-import sklearn
+#import sklearn
 
 def roc_curve(
     y_true,
@@ -288,4 +295,6 @@ def correlation_scores_all(
     
 
 
-from python_tools import statistics_utils as stu
+#from python_tools import statistics_utils as stu
+
+from . import statistics_utils as stu

@@ -1,3 +1,7 @@
+from tqdm.notebook import tqdm
+import os
+import re
+import shutil
 from pathlib import Path
 
 def filename(path):
@@ -11,10 +15,10 @@ def ext(path):
 """
 How to search and unlink files: 
 
-import os
-import re
+#import os
+#import re
 
-from tqdm.notebook import tqdm
+#from tqdm.notebook import tqdm
 
 rootdir = Path("/mnt/dj-stor01/platinum/minnie65/02/decomposition/")
 pattern = 'pipe_v7'
@@ -40,7 +44,7 @@ def create_folder(folder_path):
     p = Path(folder_path)
     p.mkdir(parents=True, exist_ok=True)
     
-import shutil
+#import shutil
 def copy_file(filepath,destination):
     shutil.copy(str(filepath), str(destination))
     
@@ -74,4 +78,6 @@ def py_files(
     
 
 
-from python_tools import pathlib_utils as plu
+#from python_tools import pathlib_utils as plu
+
+from . import pathlib_utils as plu

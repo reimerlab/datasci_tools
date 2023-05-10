@@ -1,3 +1,4 @@
+
 from collections import UserDict
 
 def parse_type_from_entry(v,default_type=None):
@@ -129,4 +130,6 @@ class DictType():
     
     
 
-from python_tools import data_struct_utils as dsu
+#from python_tools import data_struct_utils as dsu
+
+from . import data_struct_utils as dsu

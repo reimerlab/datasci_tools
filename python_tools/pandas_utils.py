@@ -1,3 +1,23 @@
+from . import general_utils as gu
+from . import ipyvolume_utils as ipvu
+from . import matplotlib_utils as mu
+from . import numpy_utils as nu
+from . import regex_utils as reu
+from .tqdm_utils import tqdm
+from IPython.display import display
+from functools import reduce
+from pandas import util
+from pathlib import Path
+import json
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandasql
+import re
+import seaborn as sns
+import six
+import time
 """
 Purpose: To make pandas table manipulation easier
 """
@@ -200,7 +220,7 @@ better to send data to vectorized function
 """
 pd_source = "pandas"
 
-from pandas import util
+#from pandas import util
 
 def random_dataframe():
     return util.testing.makeDataFrame()
@@ -236,8 +256,8 @@ def n_nans_total(df):
 def surpress_scientific_notation():
     pd.set_option('display.float_format', lambda x: '%.3f' % x)
     
-import pandas as pd
-import pandasql
+#import pandas as pd
+#import pandasql
 
 def set_pd_from_modin():
     """
@@ -302,7 +322,7 @@ def restrict_pandas(df,index_restriction=[],column_restriction=[],value_restrict
     
     return new_df
 
-import re
+#import re
 def rewrite_sql_functions_in_query(query,
                                   function_names = None,
                                    verbose = False,
@@ -336,7 +356,7 @@ def rewrite_sql_functions_in_query(query,
     
     
         
-import math
+#import math
 def query(df,query,**kwargs):
     """
     PUrpose: To query a dataframe using an query 
@@ -404,7 +424,7 @@ def find_all_rows_without_nan(df,return_indexes=True,):
 def filter_away_nan_rows(df):
     return df[~(df.isna().any(axis=1))]
     
-from IPython.display import display
+#from IPython.display import display
 def display_df(df):
     display(df)
     
@@ -431,9 +451,9 @@ def delete_columns(df,columns_to_delete):
         return df
     
 # ----------- 1/25 Additon: Used for helping with clustering ----------- #
-from python_tools import numpy_utils as nu
-import matplotlib.pyplot as plt
-import numpy as np
+#from python_tools import numpy_utils as nu
+#import matplotlib.pyplot as plt
+#import numpy as np
 
 def divide_dataframe_by_column_value(
     df,
@@ -568,9 +588,9 @@ def reset_index(df):
     return df.reset_index(drop=True)
     
 
-import numpy as np
-import matplotlib.pyplot as plt
-import six
+#import numpy as np
+#import matplotlib.pyplot as plt
+#import six
 
 def df_to_render_table(
     data, 
@@ -654,7 +674,7 @@ def example_df_to_render_table(transpose=False):
 
     return df_to_render_table(df, header_columns=0, col_width=2.0)
 
-from pathlib import Path
+#from pathlib import Path
 def save_df(df,filename):
     filename = Path(filename)
     filename_str = str(filename.absolute())
@@ -673,7 +693,7 @@ def read_pickle(filepath):
 def concat(df_list,**kwargs):
     return pd.concat(df_list,**kwargs)
 
-from pathlib import Path
+#from pathlib import Path
 def df_to_csv(df,
               output_filename="df.csv",
               output_folder = "./",
@@ -735,7 +755,7 @@ def gzip_to_df(filepath):
                        compression='gzip', header=0, sep=',', quotechar='"', error_bad_lines=False)
 
     
-import numpy as np
+#import numpy as np
 def filter_away_columns(df,
                        column_list):
     """
@@ -819,7 +839,7 @@ def reset_pd_display():
     pd.reset_option('display.float_format')
     pd.reset_option('display.max_colwidth')
     
-from python_tools.tqdm_utils import tqdm
+#from python_tools.tqdm_utils import tqdm
 def flatten_nested_dict_df_slow(df):
     """
     Purpose: Will faltten a dataframe if columns contain nested dicts
@@ -831,8 +851,8 @@ def flatten_nested_dict_df_slow(df):
         dicts_flattened.append(curr_flat)
     return pd.DataFrame.from_records(dicts_flattened)
 
-import time
-import json
+#import time
+#import json
 def flatten_nested_dict_df(df,verbose = False):
     st = time.time()
     json_struct = json.loads(df.to_json(orient="records"))    
@@ -862,7 +882,7 @@ def convert_columns_to_numeric(df,columns):
         
     return df
 
-from functools import reduce
+#from functools import reduce
 def restrict_df_by_dict(df,dict_restriction,return_indexes=False):
     mask = reduce(lambda x,y: x & y, [df[k] == v for k,v in dict_restriction.items()])
     if return_indexes:
@@ -897,7 +917,7 @@ def filter_away_columns_by_data_type(df,
     else:
         return df.loc[:,df.columns[df.dtypes != data_type]]
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def duplicated_col_value_rows(
     df,
     col,
@@ -989,7 +1009,7 @@ def combine_columns_as_str(
     
     return df[columns].astype('str').agg(join_str.join,axis=1)
 
-from python_tools import general_utils as gu
+#from python_tools import general_utils as gu
 def filter_away_characters_from_column(
     df,
     column=None,
@@ -1406,7 +1426,7 @@ def unique_row_counts(
 def set_max_colwidth(width=400):
     pd.set_option('max_colwidth', width)
     
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def filter_df_by_column_percentile(
     df,
     columns=None,
@@ -1588,7 +1608,7 @@ def shuffle_df(df,seed=None,**kwargs):
         seed=seed,
         **kwargs)
 
-from python_tools import general_utils as gu
+#from python_tools import general_utils as gu
 def expand_array_column_to_separate_rows(
     df,
     array_columns,
@@ -1700,8 +1720,8 @@ def is_dataframe(df):
 def is_series(df):
     return isinstance(df, pd.Series)
 
-from python_tools import numpy_utils as nu
-from python_tools import pandas_utils as pu
+#from python_tools import numpy_utils as nu
+#from python_tools import pandas_utils as pu
 
 def summary_statistic_over_columns(
     df,
@@ -1830,7 +1850,7 @@ def summary_statistic_over_columns(
         return summary_df
     
     
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def summary_statistics_over_columns_by_category(
     df,
     category_columns,
@@ -2078,7 +2098,7 @@ def add_percentage_column(
     return df
     
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def intersect_columns(dfs):
     return list(nu.intersect1d_multi_list([list(df.columns) for df in dfs]))
 
@@ -2383,7 +2403,7 @@ def empty_df(columns=None):
 
 
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def merge_df_to_source_target(
     df,
     df_append,
@@ -2550,7 +2570,7 @@ def flatten_column_multi_index(df,join_str = "_"):
 def flatten_row_multi_index(df):
     return df.reset_index()
 
-import numpy as np
+#import numpy as np
 def restrict_df_to_coordinates_within_radius_old(
     df,
     name,
@@ -2606,7 +2626,7 @@ def restrict_df_to_coordinates_within_radius_old(
     return df.iloc[idx_map,:].reset_index(drop=True)
 
 # ------------- datajoint and pandas interface -------
-from python_tools import regex_utils as reu
+#from python_tools import regex_utils as reu
 
 def table_type_from_table(table):
     if pu.is_dataframe(table):
@@ -3131,7 +3151,7 @@ def replace_str_characters(
 
     return df
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def keys_from_groupby_obj(obj):
     """
     Purpose: get the groupby object
@@ -3882,7 +3902,7 @@ def divide_df_by_column_bins(
         return all_dfs
 
     
-import seaborn as sns
+#import seaborn as sns
 def histogram_2d(
     df,
     x,
@@ -3974,9 +3994,9 @@ def new_column_from_name_to_str_func_dict(
     df,
     func_dict)
 
-from python_tools import matplotlib_utils as mu
-from python_tools import numpy_utils as nu
-from python_tools import ipyvolume_utils as ipvu
+#from python_tools import matplotlib_utils as mu
+#from python_tools import numpy_utils as nu
+#from python_tools import ipyvolume_utils as ipvu
 def plot_class_coordinates(
     df,
     column,
@@ -4381,8 +4401,11 @@ def bin_array_column(
 
     return df
 
-from python_tools import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
 plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
                   
 
-from python_tools import pandas_utils as pu
+#from python_tools import pandas_utils as pu
+
+
+from . import pandas_utils as pu

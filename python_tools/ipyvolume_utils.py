@@ -1,3 +1,14 @@
+from . import matplotlib_utils as mu
+from . import mesh_utils as mhu
+from . import numpy_utils as nu
+from IPython.display import display
+from ipyvolume.moviemaker import MovieMaker
+import ipyvolume as ipv
+import ipywebrtc as webrtc
+import ipywidgets
+import ipywidgets as widgets
+import numpy as np
+import os
 """
 Purpose: To summarize and expose ipyvolume functionality
 
@@ -14,10 +25,10 @@ The upper left controls:
 (180 or 360 degrees)
 """
 
-import ipyvolume as ipv
-import ipywidgets as widgets
-from IPython.display import display
-import numpy as np
+#import ipyvolume as ipv
+#import ipywidgets as widgets
+#from IPython.display import display
+#import numpy as np
 
 def print_selection_hotkeys():
     s = """
@@ -115,7 +126,7 @@ def example_mesh():
     ipv.show()
     return new_mesh
     
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def example_plot_line_segments(array = None):
     if array is None:
         array = np.array([[[0,0,0],[1,1,1]],
@@ -292,7 +303,7 @@ Making movies:
 
 
 """
-from ipyvolume.moviemaker import MovieMaker
+#from ipyvolume.moviemaker import MovieMaker
 def example_movie():
     ipvu.example_animation_through_time()
     fig = ipv.gcf()
@@ -300,7 +311,7 @@ def example_movie():
     mm = MovieMaker(stream = fig,camera = fig.camera)
     display(mm.widget_main)
     
-import ipywebrtc as webrtc
+#import ipywebrtc as webrtc
 def example_movie_recorded(filename="bc_example"):
     """
     Hit the begin record button, then stop the record button
@@ -311,7 +322,7 @@ def example_movie_recorded(filename="bc_example"):
     display(webrtc.VideoRecorder(stream=fig,filename=filename))
     
 # ------------- utils to help with plotting ---- 
-import ipywidgets as widgets
+#import ipywidgets as widgets
 def add_attribute_widget(
     obj,
     widget,
@@ -688,7 +699,7 @@ def trisurf_plot_func(
 
 mesh_plot_func = trisurf_plot_func
 
-from python_tools import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
     
 def plot_obj(
     array,
@@ -820,8 +831,8 @@ def xyz_from_array(array):
     array = np.array(array).astype('float')
     return array[:,0],array[:,1],array[:,2]
 
-from python_tools import matplotlib_utils as mu
-from python_tools import mesh_utils as mhu
+#from python_tools import matplotlib_utils as mu
+#from python_tools import mesh_utils as mhu
 def plot_mesh(
     mesh,
     alpha = None,
@@ -925,7 +936,7 @@ def plot_scatter(
     
 
 
-from python_tools import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 
 def plot_multi_scatters(
     scatters,
@@ -1208,9 +1219,9 @@ def rotation_movie_export():
         #s.size = size * (2+0.5*np.sin(fraction * 6 * np.pi))
     ipv.movie('wave.mp4', set_view, fps=20, frames=40)
     
-import ipywidgets
+#import ipywidgets
  
-import os
+#import os
 def movie(
     func,
     filename="movie.mp4", 
@@ -1373,8 +1384,10 @@ def lighting_parameters():
     specular_exponent – lighting parameter
     """)
 
-from python_tools import ipyvolume_utils as ipvu
+#from python_tools import ipyvolume_utils as ipvu
     
     
     
     
+
+from . import ipyvolume_utils as ipvu

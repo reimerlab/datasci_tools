@@ -1,11 +1,15 @@
+from . import data_struct_utils as dsu
+from . import hash_utils as hashu
+from . import string_utils as stru
+import copy
 """
 Utility functions for manipulating strings
 
 """
-from python_tools import hash_utils as hashu
-from python_tools import string_utils as stru
-import copy
-from python_tools import data_struct_utils as dsu
+#from python_tools import hash_utils as hashu
+#from python_tools import string_utils as stru
+#import copy
+#from python_tools import data_struct_utils as dsu
 
 def abbreviate_str_keys(
     d,
@@ -101,5 +105,7 @@ def abbreviate_str_keys(
         return my_dict,key_mapping
     else:
         return my_dict
+
+
 
 

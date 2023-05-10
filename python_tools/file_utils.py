@@ -1,9 +1,14 @@
+from pathlib import Path
+import io
+import numpy as np
+import os
+import re
 """
 Utils functions for helping to work with files
 
 """
 
-from pathlib import Path
+#from pathlib import Path
 
 def file_from_dicts(
     dicts,
@@ -40,7 +45,7 @@ def file_from_dicts(
     return filepath
 
 
-import os
+#import os
 def str_in_filepath(
     search_str,
     filepath,
@@ -82,8 +87,8 @@ def search_directory_files_for_str(
     return all_files
 
 
-import re
-from pathlib import Path
+#import re
+#from pathlib import Path
 
 def file_regex_replace(
     pattern,
@@ -139,7 +144,7 @@ def file_regex_replace(
         
     return output_filepath
     
-import io
+#import io
 def read_file(
     filepath,
     encoding="utf-8"
@@ -256,8 +261,8 @@ def find_import_modules_in_file(
 
     return str_finds
 
-from pathlib import Path
-import numpy as np
+#from pathlib import Path
+#import numpy as np
 def clean_module_imports(
     filename,
     overwrite_file = False,
@@ -322,4 +327,6 @@ def clean_module_imports(
 
     
     
-from python_tools import file_utils as filu
+#from python_tools import file_utils as filu
+
+from . import file_utils as filu

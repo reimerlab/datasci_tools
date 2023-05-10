@@ -1,8 +1,10 @@
+from inspect import getmembers
+import inspect
 """
 methods for helping inspect functions
 """
 
-import inspect
+#import inspect
 
 def arg_names(func):
     """
@@ -14,7 +16,7 @@ def arg_names(func):
     return inspect.getfullargspec(func).args
 
 
-from inspect import getmembers, isfunction
+#from inspect import getmembers, isfunction
 
 def all_functions_from_module(
     module,
@@ -74,3 +76,4 @@ for f in [myfunc1,myfunc2]:
     new_funcs.append(make_func(f))
     
 new_funcs'''
+

@@ -1,7 +1,10 @@
-from python_tools import pathlib_utils as plu
-from python_tools import numpy_utils as nu
-from python_tools import file_utils as filu
+from . import file_utils as filu
+from . import numpy_utils as nu
 import io
+from python_tools import pathlib_utils as plu
+#from python_tools import numpy_utils as nu
+#from python_tools import file_utils as filu
+#import io
 
 
 def example_func():
@@ -108,4 +111,6 @@ def prefix_module_imports_in_files(
         )
 
 
-from python_tools import package_utils as pku
+#from python_tools import package_utils as pku
+
+from . import package_utils as pku

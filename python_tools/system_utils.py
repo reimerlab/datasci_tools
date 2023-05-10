@@ -1,3 +1,25 @@
+from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
+from contextlib import contextmanager
+from neuron import Neuron
+from os import devnull
+from pathlib import Path
+from zipfile import ZipFile
+import _pickle as cPickle
+import bz
+import contextlib
+import copy
+import logging
+import neuron
+import numpy as np
+import os
+import pickle
+import shutil
+import signal
+import subprocess
+import sys
+import time
+import warnings
 import sys, os
 
 # # ************ warning this will disable all printing until turned off *************
@@ -14,12 +36,12 @@ import sys, os
 """
 How to get a reference to the current module
 
-import sys
+#import sys
 current_module = sys.modules[__name__]
 """
     
 #better way of turning off printing: 
-import os, sys
+#import os, sys
 
 
 class HiddenPrints:
@@ -39,8 +61,8 @@ class HiddenPrints:
         sys.stdout.close()
         sys.stdout = self._original_stdout
     
-import warnings
-import logging, sys
+#import warnings
+#import logging, sys
 def ignore_warnings():
     """
     This will ignore warnings but not the meshlab warnings
@@ -53,11 +75,11 @@ suppress_warnings = ignore_warnings
 turn_off_warnings = ignore_warnings
     
 
-from contextlib import contextmanager,redirect_stderr,redirect_stdout
-from os import devnull
-from python_tools import tqdm_utils as tqu
-from python_tools.tqdm_utils import tqdm
-import copy
+#from contextlib import contextmanager,redirect_stderr,redirect_stdout
+#from os import devnull
+#from python_tools import tqdm_utils as tqu
+#from python_tools.tqdm_utils import tqdm
+#import copy
 
 @contextmanager
 def suppress_stdout_stderr(suppress_tqdm=True):
@@ -127,7 +149,7 @@ class dummy_context_mgr():
     def __exit__(self, exc_type, exc_value, traceback):
         return False
 
-import contextlib
+#import contextlib
 
 @contextlib.contextmanager
 def dummy_context_mgr():
@@ -147,20 +169,20 @@ Example:
 
 su = reload(su)
 
-from neuron import Neuron
+#from neuron import Neuron
 another_neuron = Neuron(new_neuron)
 su.save_object(another_neuron,"inhibitory_saved_neuron")
 
 ---Way that doesn't work---
 su = reload(su)
 
-import neuron
+#import neuron
 another_neuron = neuron.Neuron(new_neuron)
 su.save_object(another_neuron,"inhibitory_saved_neuron")
 
 """
-from pathlib import Path
-import pickle
+#from pathlib import Path
+#import pickle
 def save_object(obj, filename,return_size=False):
     """
     Purpose: to save a pickled object of a neuron
@@ -207,8 +229,8 @@ load_pkl = load_object
 
 #--------------- Less memory pickling options -----------------
 # Pickle a file and then compress it into a file with extension 
-import bz2
-import _pickle as cPickle
+#import bz2
+#import _pickle as cPickle
 def compressed_pickle(obj,filename,return_size=False,verbose=False,
                      return_filepath=False,
                      folder = None):
@@ -254,7 +276,7 @@ def decompress_pickle(filename):
     return data
 
 
-import os
+#import os
 def get_file_size(filepath,MB=False):
     curr_size = os.path.getsize(filepath)
     if MB:
@@ -264,10 +286,10 @@ def get_file_size(filepath,MB=False):
 
 
 # ----------- How to make copies -------------- #
-import shutil
+#import shutil
 
-import os
-from pathlib import Path
+#import os
+#from pathlib import Path
 
 def is_path_obj(obj):
     return isinstance(obj,Path)
@@ -311,8 +333,8 @@ def copy_file_and_create_shell_script(original_file,num_copies,new_dir=False):
     f.close()
     
     
-import signal
-from contextlib import contextmanager
+#import signal
+#from contextlib import contextmanager
 
 class TimeoutException(Exception): pass
 
@@ -338,7 +360,7 @@ def time_limit(seconds):
         signal.alarm(0)
         
         
-from pathlib import Path
+#from pathlib import Path
 def filter_folder_for_substring(path,substring_query):
     """
     PUrpose: To filter a directory for certain files
@@ -355,7 +377,7 @@ def filter_folder_for_substring(path,substring_query):
     return 
 
 # ---------------- 10/19 ---------------------
-import subprocess
+#import subprocess
 def bash_command(command,split_by_line = False):
     file_outputs = subprocess.check_output(command.split())
     if split_by_line:
@@ -367,9 +389,9 @@ def bash_command(command,split_by_line = False):
     
     
 #--------------- 2/1 Saving off zipped files -------------
-from zipfile import ZipFile
-import time
-import numpy as np
+#from zipfile import ZipFile
+#import time
+#import numpy as np
 
 def zip_write_from_file_paths(
     zip_file_path,
@@ -426,7 +448,7 @@ def zip_extract(
 def environment_variables():
     return os.environ
 
-import shutil
+#import shutil
 def rm_dir(directory,ignore_errors = False):
     shutil.rmtree(directory, ignore_errors=ignore_errors)
     
@@ -434,6 +456,9 @@ def rm_dir(directory,ignore_errors = False):
     
 
 
-from python_tools import system_utils as su
+#from python_tools import system_utils as su
 
 
+
+
+from . import system_utils as su

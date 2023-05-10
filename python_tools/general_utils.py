@@ -1,3 +1,7 @@
+from . import data_struct_utils as dsu
+from . import numpy_utils as nu
+import itertools
+import numpy as np
 
 """
 How to recieve a single values tuple 
@@ -29,9 +33,9 @@ out2 = [eval(cmd,globs,locs) for cmd in ['self.b']]
 """
 
 
-from python_tools import numpy_utils as nu
-import numpy as np
-import itertools
+#from python_tools import numpy_utils as nu
+#import numpy as np
+#import itertools
 def invert_mapping(my_map,total_keys=None,one_to_one=False):
     """
     Will invert a dictionary mapping that is not unique
@@ -109,7 +113,7 @@ def flip_key_orders_for_dict(curr_dict):
                 flipped_dict[l_idx].update({sm_idx:sm_dict[l_idx]})
     return flipped_dict
 
-import itertools
+#import itertools
 def combine_list_of_lists(list_of_lists):
     return list(itertools.chain.from_iterable(list_of_lists))
 
@@ -128,7 +132,7 @@ def dict_to_array(current_dict):
 def add_prefix_to_keys(data,prefix):
     return {f"{prefix}_{k}":v for k,v in data.items()}
 
-from python_tools import data_struct_utils as dsu
+#from python_tools import data_struct_utils as dsu
 def merge_dicts(dicts):
     """
     Purpose: To combine multiple dictionaries
@@ -152,7 +156,7 @@ def merge_dicts(dicts):
         super_dict.update(d)
     return super_dict
 
-import itertools
+#import itertools
 def merge_dicts_simple(dicts):
     return dict(itertools.chain(*[k.items() for k in dicts]))
 
@@ -168,7 +172,7 @@ def is_function(obj):
     """
     return callable(obj)
 
-import numpy as np
+#import numpy as np
 def sub_dict(obj,keys_to_include=None,
             keys_to_exclude=None):
     """
@@ -237,3 +241,4 @@ def add_prefix_to_dict_keys(data,prefix):
         
         
         
+

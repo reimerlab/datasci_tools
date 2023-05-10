@@ -1,3 +1,4 @@
+import difflib
 """
 Utility functions for manipulating strings
 
@@ -43,7 +44,7 @@ def abbreviate_phrase(
     return comb_s
 
 
-import difflib
+#import difflib
 
 def str_overlap(s1, s2):
     """
@@ -89,4 +90,7 @@ def example_curly_braces_inside_fstring():
     print(f"{x} is better than {{hello}}")
     
 
-from python_tools import string_utils as stru
+#from python_tools import string_utils as stru
+
+
+from . import string_utils as stru

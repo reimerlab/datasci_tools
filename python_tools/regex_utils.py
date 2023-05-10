@@ -1,3 +1,4 @@
+import re
 import re 
 
 """
@@ -42,7 +43,7 @@ algorithm = "split"
 data_type = "h01"
 search_string = fr"{dict_type}.*{algorithm}.*{data_type}"
 test_str = "global_parameters_hi_split_h01"
-from python_tools import regex_utils as ru
+#from python_tools import regex_utils as ru
 ru.match_substring_in_str(search_string,
             test_str)
 
@@ -57,7 +58,7 @@ Basic process:
 3) Do something with the results
 
 ------------Example 1: shows how to find start and end ------------
-import re
+#import re
 s = "hello there 12345 hig pig"
 pattern = re.compile(r"\b(\w{3})\b")
 s_find = pattern.finditer(s)
@@ -69,7 +70,7 @@ for st in s_find:
     
     
 --------- Example 2: How to replace expression with function ------
-import re
+#import re
 s = "hello there 12345 hig pig"
 pattern = re.compile(r"\b(\w{3})\b")
 
@@ -198,3 +199,6 @@ def match_pattern_in_str(
     else:
         return found_strings
     
+
+
+from . import regex_utils as ru

@@ -1,7 +1,11 @@
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+#import matplotlib.gridspec as gridspec
+#import seaborn as sns
+#import numpy as np
 
 class SeabornFig2Grid():
     """
@@ -68,10 +72,10 @@ class SeabornFig2Grid():
         
 
         
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import seaborn as sns;# sns.set()
-from seaborn_utils import SeabornFig2Grid
+#import matplotlib.pyplot as plt
+#import matplotlib.gridspec as gridspec
+#import seaborn as sns;# sns.set()
+#from seaborn_utils import SeabornFig2Grid
 
 def example_SeabornFig2Grid():
     iris = sns.load_dataset("iris")
@@ -129,3 +133,5 @@ def example_gridspec_from_existing_ax():
 
     gs.tight_layout(fig)
     plt.show()
+
+from seaborn_utils import SeabornFig

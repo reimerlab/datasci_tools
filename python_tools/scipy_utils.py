@@ -1,7 +1,11 @@
-from scipy.spatial import Delaunay
+from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
+from scipy.spatial import Delaunay
+#import matplotlib.pyplot as plt
+#import numpy as np
+#import scipy
 
 # ------ 3/10: Delauny Triangulation -------#
 """
@@ -61,7 +65,7 @@ Example of how to use polyfit----
 ****NOTE: makes ure the data doesn't have to have any vertical or horizontal shifts *****
 
 """
-from scipy.optimize import curve_fit
+#from scipy.optimize import curve_fit
 def model_fit(
     y,
     x=None,
@@ -144,4 +148,6 @@ def model_fit(
     
     
     return func(x, *popt)
+
+
 

@@ -1,3 +1,7 @@
+from . import numpy_utils as nu
+from . import system_utils as su
+from pathlib import Path
+import tqdm
 """
 utilizies the pipreqs tool to automatically
 generate the requirements of a folder
@@ -5,10 +9,10 @@ generate the requirements of a folder
 """
 
 
-from python_tools import system_utils as su
-from python_tools import numpy_utils as nu
-import tqdm
-from pathlib import Path
+#from python_tools import system_utils as su
+#from python_tools import numpy_utils as nu
+#import tqdm
+#from pathlib import Path
 
 
 def requirements_dict_from_directories(
@@ -61,3 +65,4 @@ def requirements_dict_from_directories(
         pack_includes[k] = requirement_dict
         
     return pack_includes
+
