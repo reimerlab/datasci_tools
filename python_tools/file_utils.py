@@ -257,6 +257,7 @@ def find_import_modules_in_file(
     return str_finds
 
 from pathlib import Path
+import numpy as np
 def clean_module_imports(
     filename,
     overwrite_file = False,
@@ -305,9 +306,12 @@ def clean_module_imports(
 
     if relative_package is not None:
         #4) Replace any requested modules in from [] with another prefix
-        finds_top = [k.replace(relative_package,relative_replacement) for k in finds_top]
+        finds_top = [k.replace(relative_package,relative_replacement) if "." not in k else
+                     k.replace(relative_package,"") for k in finds_top]
+        
         ending_import = [k.replace(relative_package,relative_replacement) for k in ending_import]
 
+    finds_top = list(np.sort(finds_top))
     #5) That is list need to copy and paste at top
     finds_top_str = "\n".join(finds_top)
     ending_import = f"\n\n{''.join(ending_import)}"
