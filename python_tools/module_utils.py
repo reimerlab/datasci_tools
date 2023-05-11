@@ -598,13 +598,27 @@ def all_modules_set_global_parameters_and_attributes(
             
 # ----------- more general module functions
 
+def multiline_str_text(obj):
+    """
+    Purpose: To extract the inside string from a multiline str regex.Match object
+
+    """
+    return obj.groups()[1]
+
 def multiline_str(
     filepath,
     beginning_of_line = True,
     verbose = False,
+    return_text = False,
     ):
     """
     Purpose: find multiline strings in a module
+    
+    Ex: 
+    multiline_str(
+        filepath = "/python_tools/python_tools/example_re.py",
+        verbose = True
+    )
     """
 
     pattern = ru.multiline_str_pattern
@@ -619,9 +633,13 @@ def multiline_str(
     data = filu.read_file(filepath)
 
     total_results = list(pattern.finditer(data))
+    if return_text:
+        total_results = [multiline_str_text(k) for k in total_results]
     if verbose:
         print(f"# of multi-line strings = {len(total_results)}")
     return total_results
+
+
 
 
 from . import regex_utils as ru
@@ -630,27 +648,45 @@ import regex as re
 
 def import_pattern_str(
     start = None,
-    beginning_of_line = True):
+    beginning_of_line = True,
+    modules = None,
+    verbose = False,
     
-    word_comb = "[a-zA-Z._]+"
+    ):
+    
+    
+    if modules is None:
+        modules = ru.word_pattern
+    else:
+        modules = f"({'|'.join(modules)})"
     
     if start is None:
         if beginning_of_line:
             start = ru.start_of_line_pattern
         else:
             start = ""
-    return (f"{start}("
-        f"(?:import {word_comb} as {word_comb})"
-        f"|(?:from {word_comb} import {word_comb} as {word_comb})"
-        f"|(?:import {word_comb})"
-        f"|(?:from {word_comb} import {word_comb})"          
+            
+    word_comb =  ru.word_pattern
+    import_str = (f"{start}("
+        f"(?:import {modules} as {word_comb})"
+        f"|(?:from {word_comb} import {modules} as {word_comb})"
+        f"|(?:import {modules})"
+        f"|(?:from {word_comb} import {modules})"  
+        f"|(?:from [.]+{modules} import {word_comb})"
     ")"
     )
+    
+    if verbose:
+        print(f"import_str = {import_str}")
+    return import_str
 
 def find_import_modules_in_file(
     filename,
     unique = True,
     verbose = False,
+    verbose_import_pattern = False,
+    pattern = None,
+    modules = None,
     beginning_of_line = True,
     ):
     """
@@ -670,13 +706,14 @@ def find_import_modules_in_file(
     data = filu.read_file(filename)
 
     #2) create the pattern to recognize imports
-    
+    if pattern is None:
+        pattern = modu.import_pattern_str(
+            modules=modules,
+            beginning_of_line=beginning_of_line,
+            verbose = verbose_import_pattern,
+        )
 
-    
-
-    pattern = filu.import_pattern_str(beginning_of_line=beginning_of_line)
-
-    re.compile(pattern)
+    pattern = re.compile(pattern)
     finds = list(re.finditer(pattern,string=data))
 
     str_finds = [f.string[f.start():f.end()].replace('\n',"") for f in finds]
@@ -753,6 +790,31 @@ def clean_module_imports(
     filu.write_file(filepath=output_file,data=finds_top_str + f"\n" + data + ending_import)
     return output_file
 
+from . import pathlib_utils as plu
+def modules_from_directory(
+    directory,
+    verbose = False,
+    ignore_files = ("__init__",),
+    ):
+    """
+    Purpose: Get all modules from directory
+
+    Pseudocode:
+    1) Get all of the py files in folder
+    2) ignore the 
+    """
+    modules = plu.files_of_ext_type(
+                        directory = directory,
+                        ext = "py",
+                        verbose = False
+    )
+
+    modules = [k.stem for k in modules if k.stem not in ignore_files]
+
+    if verbose:
+        print(f"# of modules = {len(modules)}")
+
+    return modules
     
     
 #from python_tools import file_utils as filu
