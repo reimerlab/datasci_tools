@@ -1,16 +1,14 @@
 from . import tqdm_utils as tqu
 from .tqdm_utils import tqdm
 from contextlib import contextmanager
-from neuron import Neuron
 from os import devnull
 from pathlib import Path
 from zipfile import ZipFile
 import _pickle as cPickle
-import bz
+import bz2
 import contextlib
 import copy
 import logging
-import neuron
 import numpy as np
 import os
 import pickle
