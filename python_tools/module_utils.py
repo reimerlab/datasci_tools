@@ -610,6 +610,7 @@ def multiline_str(
     beginning_of_line = True,
     verbose = False,
     return_text = False,
+    above_first_func_def = False,
     ):
     """
     Purpose: find multiline strings in a module
@@ -620,6 +621,8 @@ def multiline_str(
         verbose = True
     )
     """
+    
+    
 
     pattern = ru.multiline_str_pattern
     if beginning_of_line:
@@ -633,6 +636,15 @@ def multiline_str(
     data = filu.read_file(filepath)
 
     total_results = list(pattern.finditer(data))
+    
+    if above_first_func_def:
+        idx = index_of_first_func_def(
+            filepath = filepath
+        )
+        
+        total_results = [k for k in total_results
+                        if k.end() < idx]
+    
     if return_text:
         total_results = [multiline_str_text(k) for k in total_results]
     if verbose:
@@ -681,13 +693,15 @@ def import_pattern_str(
     return import_str
 
 def find_import_modules_in_file(
-    filename,
+    filename=None,
+    data = False,
     unique = True,
     verbose = False,
     verbose_import_pattern = False,
     pattern = None,
     modules = None,
     beginning_of_line = True,
+    
     ):
     """
     Purpose: Find all imports (optionally outside of functions)
@@ -703,8 +717,9 @@ def find_import_modules_in_file(
 
 
     #1) read in file data
-    data = filu.read_file(filename)
-
+    if data is None:
+        data = filu.read_file(filename)
+        
     #2) create the pattern to recognize imports
     if pattern is None:
         pattern = modu.import_pattern_str(
@@ -815,6 +830,33 @@ def modules_from_directory(
         print(f"# of modules = {len(modules)}")
 
     return modules
+
+
+import regex as re
+def index_of_first_func_def(
+    string=None,
+    filepath = None):
+    """
+    Purpose: Want to identify location of the first
+    function definition
+
+    Application: 
+    1) only keep docstrings above the first function
+    -> would eliminate the possibility of copying a function that is commented out
+    """
+    if string is None:
+        string = filu.read_file(filepath)
+    
+    pattern=re.compile(fr"{ru.start_of_line_pattern}def ")
+    curr_match = re.search(
+        pattern = pattern,
+        string=string,
+    )
+
+    if curr_match is not None:
+        curr_match = curr_match.start()
+    
+    return curr_match
     
     
 #from python_tools import file_utils as filu

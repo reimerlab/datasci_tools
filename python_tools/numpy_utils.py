@@ -2339,6 +2339,58 @@ def loadtxt(filepath,dtype = "float",delimiter=" ",**kwargs):
     filepath = str(Path(filepath).absolute())
     return np.loadtxt(filepath,dtype = dtype,delimiter = delimiter,**kwargs)
 
+import itertools
+def remove_range_list(
+    obj,
+    range_list,
+    remove = True,
+    verbose = False):
+    """
+    Purpose: To select or remove a list of ranges
+    from string
+
+    Source: https://www.geeksforgeeks.org/python-remove-index-ranges-from-string/
+
+    Ex:
+    remove_range_list(
+        obj = 'geeksforgeeks is best for geeks',
+        range_list = [(3, 6), (7, 10), (14, 17)],
+        remove = True,
+        verbose = True,
+    )
+    """
+    if verbose:
+        print(f"Original obj: {obj}")
+    range_list = nu.to_list(range_list)
+
+    res = ""
+
+    indices = [remove] * len(obj)
+
+    for start_idx, end_idx in range_list:
+        for i in range(start_idx, end_idx):
+            indices[i] = not remove
+
+    res = ''.join(itertools.compress(obj, indices))
+
+    # printing result
+    if verbose:
+        print("The reconstructed obj : " + str(res))
+
+    return res
+
+def keep_range_list(
+    obj,
+    range_list,
+    verbose = False):
+    
+    return remove_range_list(
+        obj=obj,
+        range_list=range_list,
+        remove = False,
+        verbose = verbose
+    )
+
 array_from_txt = loadtxt
 read_txt = loadtxt
 

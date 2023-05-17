@@ -89,6 +89,43 @@ def example_curly_braces_inside_fstring():
     x = "hi"
     print(f"{x} is better than {{hello}}")
     
+from python_tools import numpy_utils as nu
+def remove_range_list(
+    string,
+    range_list,
+    verbose = False):
+    
+    """
+    Ex: 
+    from python_tools import string_utils as stru
+    stru.remove_range_list(
+        string = 'geeksforgeeks is best for geeks',
+        range_list = [(3, 6), (7, 10), (14, 17)],
+        verbose = True
+    )
+    """
+    
+    return nu.remove_range_list(
+        obj=string,
+        range_list=range_list,
+        remove = True,
+        verbose = verbose
+    )
+
+def keep_range_list(
+    string,
+    range_list,
+    verbose = False):
+    
+    return nu.remove_range_list(
+        obj=string,
+        range_list=range_list,
+        remove = False,
+        verbose = verbose
+    )
+
+
+    
 
 #from python_tools import string_utils as stru
 

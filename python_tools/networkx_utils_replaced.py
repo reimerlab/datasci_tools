@@ -1,18 +1,12 @@
-"""
+'''
 
 Link on how to change parameters of nx.draw:
 https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
 
 
-"""
 
-from python_tools import general_utils as gu
-from python_tools import numpy_utils as nu
-from python_tools import pandas_utils as pu
-from python_tools import regex_utils as ru
-from python_tools import string_utils as stru
-from python_tools import tqdm_utils as tqu
-from python_tools.tqdm_utils import tqdm
+'''
+
 from copy import deepcopy
 from networkx.classes.function import path_weight as pw
 from networkx.drawing.nx_pydot import graphviz_layout
@@ -26,6 +20,9 @@ import pandas as pd
 import pydot
 import random
 import time
+
+
+
 
 
 
@@ -5475,5 +5472,13 @@ def remove_nodes_with_no_edges(G,copy = False):
 
 #from python_tools import networkx_utils as xu
     
+--- from python_tools ---
+from . import general_utils as gu
+from . import numpy_utils as nu
+from . import pandas_utils as pu
+from . import regex_utils as ru
+from . import string_utils as stru
+from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
 
-from python_tools import networkx_utils as xu
+from . import networkx_utils as xu

@@ -155,8 +155,10 @@ def read_file(
         
     return d
 
-def write_file(filepath,data,encoding="utf-8"):
+def write_file(filepath,data,encoding="utf-8",replace = False):
     with io.open(filepath, "w", encoding=encoding) as my_file:
+        if replace:
+            my_file.truncate(0)
         my_file.write(data)
     
     
