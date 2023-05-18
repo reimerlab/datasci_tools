@@ -19,10 +19,14 @@ explanation: https://stackoverflow.com/questions/62665924/python-program-importi
 --> could technically put at the top
 
 """
-
-
-def example_func():
-    print('hello')
+user_packages = (
+        "/python_tools/python_tools/",
+        "/machine_learning_tools/machine_learning_tools/",
+        "/pytorch_tools/pytorch_tools/",
+        "/graph_tools/graph_tools/",
+        "/meshAfterParty/meshAfterParty/",
+        "/neuron_morphology_tools/neuron_morphology_tools/",
+)
 
 def module_names_from_directories(
     directories,
@@ -141,6 +145,36 @@ def prefix_module_imports_in_files(
             
             f = output_filepath
 
+            
+from python_tools import pathlib_utils as plu
+def package_name_from_path(path):
+    return path.split("/")[1]
+def package_from_filepath_and_package_list(
+    filepath,
+    packages,
+    return_package_name = False,
+    ):
+    """
+    packages = (
+            "/python_tools/python_tools/",
+            "/machine_learning_tools/machine_learning_tools/",
+            "/pytorch_tools/pytorch_tools/",
+            "/graph_tools/graph_tools/",
+            "/meshAfterParty/meshAfterParty/",
+            "/neuron_morphology_tools/neuron_morphology_tools/",
+    )
+    pku.package_from_filepath_and_package_list(
+        filepath = "../python_tools/networkx_utils.py",
+        packages=packages
+    )
+    
+    """
+    for p in packages:
+        if plu.inside_directory(p,filepath):
+            if return_package_name:
+                return package_name_from_path(p)
+            return p
+    return None
 
 #from python_tools import package_utils as pku
 

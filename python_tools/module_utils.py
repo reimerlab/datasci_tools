@@ -694,7 +694,7 @@ def import_pattern_str(
 
 def find_import_modules_in_file(
     filename=None,
-    data = False,
+    data = None,
     unique = True,
     verbose = False,
     verbose_import_pattern = False,
@@ -857,6 +857,318 @@ def index_of_first_func_def(
         curr_match = curr_match.start()
     
     return curr_match
+
+
+from pathlib import Path
+from python_tools import system_utils as su
+from python_tools import regex_utils as ru
+from python_tools import module_utils as modu
+from python_tools import file_utils as filu
+from python_tools import string_utils as stru
+from python_tools import package_utils as pku
+from python_tools import pathlib_utils as plu
+import numpy as np
+import regex as re
+
+def clean_module_syntax(
+    filepath,
+    output_path = None,
+    overwrite = False,
+    non_overwrite_suffix = "_replaced",
+    verbose = False,
+    packages = None,
+    docstring_only_above_first_func_def = True,
+    
+    ):
+    """
+    Part 0: Copy and paste document into new file if not overwrite
+
+    Part 1: 
+
+    Purpose: How to collect and rename the packages
+
+
+    easy: these would just neeed to collect everything after the import statement
+    f"(?:import {modules} as {word_comb})"
+    f"|(?:from {word_comb} import {modules} as {word_comb})"
+    f"|(?:import {modules})"
+    f"|(?:from {word_comb} import {modules})"  
+
+    harder: need to collect everything after the dot (add prefix with no space beforehand
+    f"|(?:from [.]*{modules} import {word_comb})"
+
+    Process for replacement:
+    for each package
+    1) find and replace the easy with (everything after import grouped)
+    with "from package \1"
+    2) find and replace the harder with (everything grouped after the dot)
+    with "from package.\1"
+    -- now for the relative replacement
+    1) find and replace the easy (at the beginning of a line) by replacing
+    from package with from [relative dots]
+    2) find and replace hard (at beginning of the line) by replacing
+    from package. with [relative dots]
+
+    Part 2: Organization
+
+    2) Get all the docstrings and replace in the file with nothing
+    3) Find all of the module at the beginning of the line and replace with nothing
+    (collect for organizing later)
+
+
+    modules_dir = modu.find_import_modules_in_file(
+        filepath,
+        modules = modules,
+        beginning_of_line = False
+        )
+    modules_dir
+
+    4) Sort the modules into relative and not relative and itself
+    5) Write the doc string and non-referencing modules 
+    6) write last the referencing modules and then itself
+
+    doc strings
+    non-referencing modules
+    #local veraibles
+    rest of code
+    referencing modules
+    itself
+
+    """
+    if packages is None:
+        packages = pku.user_packages
+    
+    
+    filepath = Path(filepath)
+    # 0) Create the output path (or set it to current path if overwrite)
+    if not overwrite:
+        if output_path is None:
+            output_path = filepath.parents[0] / Path(f"{filepath.stem}{non_overwrite_suffix}{filepath.suffix}")
+        su.copy_file(filepath,output_path)
+    else:
+        output_path = filepath
+
+    output_path = Path(output_path)
+        
+    if verbose:
+        print(f"output_path = {output_path}")
+        
+        
+    # 1) Get all the information for the current module and all possible modules from all packages
+    curr_mod = Path(filepath).stem
+    curr_package_name = pku.package_from_filepath_and_package_list(
+        filepath=filepath,
+        packages=packages,
+        return_package_name = True
+    )
+    if verbose:
+        print(f"curr_mod = {curr_mod}, curr_package_name = {curr_package_name}")
+        
+        
+    pkg_to_module = {
+        k.split("/")[1]:pku.module_names_from_directories(k)
+        for k in packages
+    }
+    
+    
+    for package_name,modules in pkg_to_module.items():
+        if verbose:
+            print(f"\n\n--- working on package: {package_name} ---")
+        # 2) Run all of the module name replacements
+
+        word_comb = ru.word_pattern
+        modules_or = f"(?:{'|'.join(modules)})"
+
+        # easy_import_pattern = (
+        # f"(?:(import {modules_or} as {word_comb}))"
+        # f"|(?:from {word_comb} (import {modules_or} as {word_comb}))"
+        # f"|(?:(import {modules_or}))"
+        # f"|(?:from {word_comb} (import {modules_or}))"  
+        # )
+
+        # this pattern will not match the proceeding and then in 
+        # group 1 will match the 
+        easy_import_pattern = (f"(?:from {word_comb} )?"
+        f"(import {modules_or} as {word_comb}|import {modules_or})")
+
+        easy_replacement = fr"from {package_name} \1"
+
+        if verbose:
+            print(f"-- easy initial replacement --")
+        filu.file_regex_replace(
+            pattern = easy_import_pattern,
+            replacement = easy_replacement,
+            filepath = output_path,
+            overwrite_file = True,
+            verbose = verbose
+        )
+
+        if verbose:
+            print(f"-- harder initial replacement --")
+
+        harder_import_pattern = f"(?:from [.]*({modules_or} import {word_comb}))"
+        harder_replacement = fr"from {package_name}.\1"
+        filu.file_regex_replace(
+            pattern = harder_import_pattern,
+            replacement = harder_replacement,
+            filepath = output_path,
+            overwrite_file = True,
+            verbose = verbose
+        )
+
+        if package_name == curr_package_name:
+            if verbose:
+                print(f"-- easier relative replacement --")
+
+            easy_import_relative = f"({ru.start_of_line_pattern})from {package_name} "
+            easy_replacement_relative = fr"\1from . "
+
+            filu.file_regex_replace(
+                pattern = easy_import_relative,
+                replacement = easy_replacement_relative,
+                filepath = output_path,
+                overwrite_file = True,
+                verbose = verbose
+            )
+
+            if verbose:
+                print(f"-- harder relative replacement --")
+
+            harder_import_relative = f"({ru.start_of_line_pattern})from {package_name}."
+            harder_replacement_relative = fr"\1from ."
+
+            filu.file_regex_replace(
+                pattern = harder_import_relative,
+                replacement = harder_replacement_relative,
+                filepath = output_path,
+                overwrite_file = True,
+                verbose = verbose
+            )
+            
+    #2) getting all the docstrings
+    data = filu.read_file(output_path)
+    multi_line_comm = modu.multiline_str(
+        filepath = output_path,
+        verbose = verbose,
+        return_text=False,
+        above_first_func_def = docstring_only_above_first_func_def,
+    )
+
+    range_list = [k.span() for k in multi_line_comm]
+
+    data_doc = stru.remove_range_list(
+        data,
+        range_list=range_list,
+        verbose = False,
+    )
+
+    all_doc = [modu.multiline_str_text(obj) for obj in multi_line_comm]
+    
+    
+    
+    #3) Getting all of the packages 
+    finds = modu.find_import_modules_in_file(
+        data = data_doc,
+        unique = True,
+        verbose = verbose,
+        beginning_of_line = True,
+
+    )
+
+    finds = list(np.sort(finds))
+
+    module_pattern = fr"{ru.start_of_line_pattern}({'|'.join(finds)})(?![0-9a-zA-z _\.\-:]+)"
+    #print(f"module_pattern = {module_pattern}")
+    data_doc_no_mod, count = re.subn(
+        pattern = module_pattern,
+        repl="",
+        string=data_doc,
+    )
+
+    if verbose:
+        print(f"# of modules replaced = {count}")
+
+    #data_doc_no_mod = data_doc
+
+    pkg_list = list(pkg_to_module.keys())
+
+    non_pkg_mods = []
+    pkg_mods = dict()
+    own_mod = []
+
+    for k in finds:
+        set_flag = False
+        if curr_mod in k:
+            own_mod.append(k)
+            continue
+        if "from ." in k:
+            if curr_package_name not in pkg_mods:
+                pkg_mods[curr_package_name] = []
+            pkg_mods[curr_package_name].append(k)
+            continue
+
+        for pkg in pkg_list:
+            if pkg in k:
+                if pkg not in pkg_mods:
+                    pkg_mods[pkg] = []
+                pkg_mods[pkg].append(k)
+                set_flag = True
+                break
+        if not set_flag:
+            non_pkg_mods.append(k)
+
+
+    non_pkg_mods_str = "\n".join(non_pkg_mods)
+    own_mod_str = "\n".join(own_mod)
+    pkg_mods_str = "\n\n".join([f"--- from {pkg} ---\n" + "\n".join(m)
+                               for pkg,m in pkg_mods.items() ])
+
+    if verbose:
+        print(non_pkg_mods_str)
+        print(f"\n")
+        print(pkg_mods_str)
+        print(f"\n")
+        print(own_mod_str)
+        
+        
+    # 4) Creating the final module string
+    separator = f"\n\n"
+    prefix_separator = "\n"
+
+    if len(all_doc) > 0:
+        all_doc_str = "\n\n".join(all_doc)
+        all_doc_str = f"'''\n{all_doc_str}\n'''{separator}"
+    else:
+        all_doc_str = ""
+
+    if len(non_pkg_mods_str) > 0:
+        non_pkg_mods_str = f"{prefix_separator}{non_pkg_mods_str}{separator}"
+    if len(pkg_mods_str) > 0:
+        pkg_mods_str = f"{prefix_separator}{pkg_mods_str}{separator}"
+    if len(own_mod_str) > 0:
+        own_mod_str= f"{prefix_separator}{own_mod_str}"
+
+    final_data = (
+        all_doc_str +
+        non_pkg_mods_str + 
+        data_doc_no_mod +
+        pkg_mods_str + 
+        own_mod_str
+    )
+    
+    
+    # 5) Outputting final string
+    filu.write_file(
+        output_path,
+        final_data,
+        replace=True,
+    )
+
+    
+    
+    
+
+    
     
     
 #from python_tools import file_utils as filu

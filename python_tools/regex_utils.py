@@ -25,7 +25,7 @@ Rules:
 \D: not digit
 \s: whitespace
 ^: beginning of string
-$: end of string
+$: end of string (end of line)
 |: means or
 
 
