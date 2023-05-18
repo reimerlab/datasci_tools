@@ -663,12 +663,17 @@ def import_pattern_str(
     beginning_of_line = True,
     modules = None,
     verbose = False,
-    
+    add_possible_comma = True
     ):
+    
+    if add_possible_comma:
+        word_comb = ru.word_pattern_comma_space
+    else:
+        word_comb = ru.word_pattern
     
     
     if modules is None:
-        modules = ru.word_pattern
+        modules = word_comb
     else:
         modules = f"({'|'.join(modules)})"
     
@@ -677,8 +682,7 @@ def import_pattern_str(
             start = ru.start_of_line_pattern
         else:
             start = ""
-            
-    word_comb =  ru.word_pattern
+    
     import_str = (f"{start}("
         f"(?:import {modules} as {word_comb})"
         f"|(?:from {word_comb} import {modules} as {word_comb})"
@@ -878,7 +882,8 @@ def clean_module_syntax(
     verbose = False,
     packages = None,
     docstring_only_above_first_func_def = True,
-    
+    separator = f"",
+    prefix_separator = "\n"
     ):
     """
     Part 0: Copy and paste document into new file if not overwrite
@@ -1006,7 +1011,7 @@ def clean_module_syntax(
         if verbose:
             print(f"-- harder initial replacement --")
 
-        harder_import_pattern = f"(?:from [.]*({modules_or} import {word_comb}))"
+        harder_import_pattern = f"(?:from [.]*({modules_or} import {ru.word_pattern_comma_space}))"
         harder_replacement = fr"from {package_name}.\1"
         filu.file_regex_replace(
             pattern = harder_import_pattern,
@@ -1120,7 +1125,7 @@ def clean_module_syntax(
 
     non_pkg_mods_str = "\n".join(non_pkg_mods)
     own_mod_str = "\n".join(own_mod)
-    pkg_mods_str = "\n\n".join([f"--- from {pkg} ---\n" + "\n".join(m)
+    pkg_mods_str = "\n\n".join([f"#--- from {pkg} ---\n" + "\n".join(m)
                                for pkg,m in pkg_mods.items() ])
 
     if verbose:
@@ -1132,8 +1137,7 @@ def clean_module_syntax(
         
         
     # 4) Creating the final module string
-    separator = f"\n\n"
-    prefix_separator = "\n"
+
 
     if len(all_doc) > 0:
         all_doc_str = "\n\n".join(all_doc)
@@ -1152,7 +1156,7 @@ def clean_module_syntax(
         all_doc_str +
         non_pkg_mods_str + 
         data_doc_no_mod +
-        pkg_mods_str + 
+        pkg_mods_str + "\n" +
         own_mod_str
     )
     

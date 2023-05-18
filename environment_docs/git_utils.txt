@@ -97,3 +97,9 @@ git reset --soft HEAD~1
 
 --- empty push
 git commit --allow-empty -m "Trigger rebuild"
+
+
+
+---- how to reset to a previous commit 
+git log --oneline
+git reset [id of commit] [--hard] #add the hard if want to change back the files

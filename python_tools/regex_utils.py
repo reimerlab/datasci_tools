@@ -128,6 +128,7 @@ start_of_line_pattern = fr"(?:{start_of_file_pattern}|\n)"
 multiline_str_pattern = r"""(['"])\1\1(.*?)\1{3}"""
 
 word_pattern = "[a-zA-Z._]+"
+word_pattern_comma_space = "[a-zA-Z._, ]+"
 
 
 def multiple_replace(

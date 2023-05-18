@@ -176,6 +176,55 @@ def package_from_filepath_and_package_list(
             return p
     return None
 
+def create_init(
+    directory,
+    init_filename = "__init__.py",
+    exist_ok = True):
+    """
+    Purpose: To create an init file in a directory
+    if one doesn't already exist
+    """
+    filepath = Path(directory) / Path(init_filename)
+    filepath.touch(exist_ok= exist_ok)
+    return filepath
+
+from pathlib import Path
+from python_tools import numpy_utils as nu
+from python_tools import module_utils as modu
+def clean_package_syntax(
+    directory,
+    overwrite=False,
+    create_init_if_not_exist = True,
+    verbose = False,
+    ):
+    """
+    Purpose: To clean all modules in all
+    of the given directories
+    """
+
+    directory = nu.to_list(directory)
+
+    for curr_directory in directory:
+        if verbose:
+            print(f"---- working on directory: {curr_directory} ---")
+        modules = modu.modules_from_directory(curr_directory)
+
+        for mod in modules:
+            filepath = Path(curr_directory) / (f"{mod}.py")
+            if verbose:
+                print(f"   --- working on module: {mod} ---")
+
+            modu.clean_module_syntax(
+                filepath = filepath,
+                verbose = True,
+                overwrite=overwrite
+            )    
+            
+        if create_init_if_not_exist:
+            pku.create_init(
+                directory = curr_directory
+            )
+
 #from python_tools import package_utils as pku
 
 from . import package_utils as pku
