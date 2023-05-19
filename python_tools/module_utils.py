@@ -1169,7 +1169,76 @@ def clean_module_syntax(
     )
 
     
+import regex as re
+def package_from_import_string(
+    string,
+    ):
+    """
+    Purpose: find the package 
+    from the import statement using
+    regex
+    """
+    pattern = fr"\s*(?:from|import) ([a-zA-Z_]+|.)"
+
+    package = re.search(
+        pattern=pattern,
+        string=string,
+    ).groups()[0]
+
+    return package
     
+    
+from python_tools import module_utils as modu
+from python_tools import package_utils as pku
+from pathlib import Path
+import numpy as np
+from python_tools import numpy_utils as nu
+
+def package_imports_from_files(
+    files = None,
+    directory = None,
+    verbose = False,
+    ):
+    """
+    Purpose: Find all of the modules imported
+    from all the files in a directory and 
+    compile a unique list
+
+    Pseudocode: 
+    1) Get all of the modules in the directory
+    2) For each module, get a list of the imports
+    3) restrict the name of the imports to only beginning important part
+    4) make a unique list from all of the lists
+    
+    Ex: 
+    modu.package_imports_from_files(
+        directory = "/graph_tools/graph_tools/",
+    )
+    """
+    if files is None:
+        files = pku.module_files_from_directory(directory)
+
+    files = nu.to_list(files)
+
+    all_imports = []
+    for filepath in files:
+        if verbose:
+            print(f"-- working on {filepath} --")
+        import_statements = modu.find_import_modules_in_file(
+            filename = filepath,
+            beginning_of_line=False,
+        )
+        if len(import_statements) > 0:
+            all_imports += import_statements
+
+    #3) restrict the name of the imports to only beginning important part
+    all_imports = [
+        modu.package_from_import_string(k) for k in all_imports
+    ]
+
+    all_imports = list(np.sort(list(set(all_imports))))
+    all_imports = [k for k in all_imports if k != "."]
+    return all_imports
     
 
     

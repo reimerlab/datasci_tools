@@ -224,6 +224,15 @@ def clean_package_syntax(
             pku.create_init(
                 directory = curr_directory
             )
+            
+
+def module_files_from_directory(
+    directory
+    ):
+    modules = pku.module_names_from_directories(directory)
+    files = [directory / Path(f"{k}.py") for k in modules]
+    return files
+
 
 #from python_tools import package_utils as pku
 

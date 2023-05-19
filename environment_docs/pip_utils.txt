@@ -3,3 +3,5 @@ pip install -e /path/to/install #will install and add to path so still reflects 
 #show where a package is installed 
 pip3 show [package-name]
 
+# install git repo
+pip install git+https://github.com/tangentlabs/django-oscar-paypal.git@issue/34/oscar-0.6

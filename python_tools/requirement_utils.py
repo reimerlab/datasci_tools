@@ -13,7 +13,25 @@ generate the requirements of a folder
 #from python_tools import numpy_utils as nu
 #import tqdm
 #from pathlib import Path
+import numpy as np
+from python_tools import file_utils as filu
 
+def requirement_file_from_requirements_dict(
+    requirement_dict,
+    filepath = "./requirements.txt",
+    mode = "gt"):
+    
+    if mode == "gt":
+        comp = ">="
+    else:
+        comp = "=="
+    data = "\n".join([f"{k}{comp}{v}," for k,v in requirement_dict.items()])
+
+    filu.write_file(
+        filepath = filepath,
+        data = data
+    )
+    
 
 def requirements_dict_from_directories(
     directories,
@@ -22,7 +40,10 @@ def requirements_dict_from_directories(
     output_to_package_directory = True,
     output_directory = "./",
     output_filename = "requirements.txt",
+    diff_with_package_import_list = True,
+    remove_egg_lines = True,
     delete_file = False,
+    mode = "gt"
     ):
     """
     Purpose: To ouptut the requrimenet.txt files for a 
@@ -57,6 +78,9 @@ def requirements_dict_from_directories(
         command += f" {filepath}"
         if len(ignore_files) > 0:
             command += (f" --ignore=" + ",".join(ignore_files))
+            
+        if mode is not None:
+            command += f" --mode {mode}"
 
         if len(packages) > 1:
             curr_filename = f"{output_filename}_{k}"
@@ -76,14 +100,54 @@ def requirements_dict_from_directories(
             print(f"command = {command}")
 
         output = su.bash_command(command)
-        requirement_list = nu.array_from_txt(output_path,dtype = "str")
-        requirement_dict = {pack:ver for pack,ver in [curr_split.split("==") for curr_split in requirement_list] if ".egg" != pack[-4:]}
+        requirement_dict = package_ver_dict_from_file(output_path)
+        
+        
+        if diff_with_package_import_list:
+            req_vs_package_import_diff(
+                requirement_dict=requirement_dict,
+                directory = filepath,
+                verbose = True,        
+            )
+            
+        Path(output_path).unlink()
+            
+            
         pack_includes[k] = requirement_dict
         
-        if delete_file:
-            Path(output_path).unlink()
+        if not delete_file:
+            requirement_file_from_requirements_dict(
+                requirement_dict=requirement_dict,
+                filepath = output_path,
+            )
         
     return pack_includes
+from . import module_utils as modu
+def req_vs_package_import_diff(
+    requirement_dict,
+    directory,
+    verbose = False):
+    req_mods = modu.package_imports_from_files(
+        directory = directory,
+    )
+    
+    import_diff = np.setdiff1d(
+                req_mods,
+                list(requirement_dict.keys())
+    )
+    
+    if verbose:
+        print(f"Package Diff: {import_diff}")
+        
+    return import_diff
+    
 
+def package_ver_dict_from_file(filepath):
+    requirement_list = nu.array_from_txt(filepath,dtype = "str")
+    try:
+        requirement_dict = {pack:ver for pack,ver in [curr_split.split("==") for curr_split in requirement_list] if ".egg" != pack[-4:]}
+    except:
+        requirement_dict = {pack:ver for pack,ver in [curr_split.split(">=") for curr_split in requirement_list] if ".egg" != pack[-4:]}
+    return requirement_dict
 
 from . import requirement_utils as requ

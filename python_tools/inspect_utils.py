@@ -65,3 +65,7 @@ def function_names(
         
     return results_names
     
+    
+import inspect
+def function_code_as_str(func):
+    return inspect.getsource(func)
