@@ -47,13 +47,26 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">python_tools package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-algorithms-utils-module">python_tools.algorithms_utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-argparse-utils-module">python_tools.argparse_utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-data-struct-utils-module">python_tools.data_struct_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.argparse_utils">python_tools.argparse_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.argparse_utils.example_basic_argparse_test"><code class="docutils literal notranslate"><span class="pre">example_basic_argparse_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.argparse_utils.print_help_str"><code class="docutils literal notranslate"><span class="pre">print_help_str()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.data_struct_utils">python_tools.data_struct_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.data_struct_utils.DictType"><code class="docutils literal notranslate"><span class="pre">DictType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.data_struct_utils.parse_type_from_entry"><code class="docutils literal notranslate"><span class="pre">parse_type_from_entry()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-dict-utils-module">python_tools.dict_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-file-utils-module">python_tools.file_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-filtering-utils-module">python_tools.filtering_utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-function-utils-module">python_tools.function_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.function_utils">python_tools.function_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.function_utils.all_functions_from_module"><code class="docutils literal notranslate"><span class="pre">all_functions_from_module()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.function_utils.arg_names"><code class="docutils literal notranslate"><span class="pre">arg_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.function_utils.rename"><code class="docutils literal notranslate"><span class="pre">rename()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-general-utils-module">python_tools.general_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-hash-utils-module">python_tools.hash_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-ipyvolume-movie-utils-module">python_tools.ipyvolume_movie_utils module</a></li>
@@ -69,17 +82,36 @@
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-pandas-utils-module">python_tools.pandas_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-pathlib-utils-module">python_tools.pathlib_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-pretty-print-confusion-matrix-module">python_tools.pretty_print_confusion_matrix module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-regex-utils-module">python_tools.regex_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.regex_utils">python_tools.regex_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.all_match_substring_in_str"><code class="docutils literal notranslate"><span class="pre">all_match_substring_in_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.match_pattern_in_str"><code class="docutils literal notranslate"><span class="pre">match_pattern_in_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.match_substring_in_str"><code class="docutils literal notranslate"><span class="pre">match_substring_in_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.multiple_replace"><code class="docutils literal notranslate"><span class="pre">multiple_replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.sub_str_for_pattern"><code class="docutils literal notranslate"><span class="pre">sub_str_for_pattern()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.sub_str_for_pattern_with_count"><code class="docutils literal notranslate"><span class="pre">sub_str_for_pattern_with_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.regex_utils.substr_from_match_obj"><code class="docutils literal notranslate"><span class="pre">substr_from_match_obj()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-requirement-utils-module">python_tools.requirement_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-scipy-utils-module">python_tools.scipy_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-seaborn-utils-module">python_tools.seaborn_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-statistics-utils-module">python_tools.statistics_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-statistics-visualizations-module">python_tools.statistics_visualizations module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-string-utils-module">python_tools.string_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.string_utils">python_tools.string_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.abbreviate_phrase"><code class="docutils literal notranslate"><span class="pre">abbreviate_phrase()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.example_curly_braces_inside_fstring"><code class="docutils literal notranslate"><span class="pre">example_curly_braces_inside_fstring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.is_int"><code class="docutils literal notranslate"><span class="pre">is_int()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.keep_range_list"><code class="docutils literal notranslate"><span class="pre">keep_range_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.letter_to_number"><code class="docutils literal notranslate"><span class="pre">letter_to_number()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.number_to_letter"><code class="docutils literal notranslate"><span class="pre">number_to_letter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.remove_range_list"><code class="docutils literal notranslate"><span class="pre">remove_range_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.str_overlap"><code class="docutils literal notranslate"><span class="pre">str_overlap()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-system-utils-module">python_tools.system_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-tqdm-utils-module">python_tools.tqdm_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-widget-utils-module">python_tools.widget_utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -119,11 +151,88 @@
 <section id="python-tools-algorithms-utils-module">
 <h2>python_tools.algorithms_utils module<a class="headerlink" href="#python-tools-algorithms-utils-module" title="Permalink to this heading"></a></h2>
 </section>
-<section id="python-tools-argparse-utils-module">
-<h2>python_tools.argparse_utils module<a class="headerlink" href="#python-tools-argparse-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.argparse_utils">
+<span id="python-tools-argparse-utils-module"></span><h2>python_tools.argparse_utils module<a class="headerlink" href="#module-python_tools.argparse_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.argparse_utils.example_basic_argparse_test">
+<span class="sig-prename descclassname"><span class="pre">python_tools.argparse_utils.</span></span><span class="sig-name descname"><span class="pre">example_basic_argparse_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/argparse_utils.html#example_basic_argparse_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.argparse_utils.example_basic_argparse_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.argparse_utils.print_help_str">
+<span class="sig-prename descclassname"><span class="pre">python_tools.argparse_utils.</span></span><span class="sig-name descname"><span class="pre">print_help_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/argparse_utils.html#print_help_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.argparse_utils.print_help_str" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="python-tools-data-struct-utils-module">
-<h2>python_tools.data_struct_utils module<a class="headerlink" href="#python-tools-data-struct-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.data_struct_utils">
+<span id="python-tools-data-struct-utils-module"></span><h2>python_tools.data_struct_utils module<a class="headerlink" href="#module-python_tools.data_struct_utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_tools.data_struct_utils.</span></span><span class="sig-name descname"><span class="pre">DictType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Purpose: To have a dictionary like object
+that also stores the default typs of the data
+if need be</p>
+<p>Ex:
+import data_structure_utils as dsu
+my_obj = dsu.DictType(hello=(“x”,str),hi=(int,5),yes=6)
+my_obj2 = dsu.DictType(hello=(“xy”,str),his=(int,5),yes=(10,bool))
+my_obj</p>
+<p>from python_tools import general_utils as gu
+output_obj = gu.merge_dicts([my_obj,my_obj2,{}])
+output_obj</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.asdict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.asdict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.copy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.items" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.keys" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.lowercase">
+<span class="sig-name descname"><span class="pre">lowercase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.lowercase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.lowercase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.parse_types_from_dict">
+<span class="sig-name descname"><span class="pre">parse_types_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parse_verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.parse_types_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.parse_types_from_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.update" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.DictType.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#DictType.values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.DictType.values" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.data_struct_utils.parse_type_from_entry">
+<span class="sig-prename descclassname"><span class="pre">python_tools.data_struct_utils.</span></span><span class="sig-name descname"><span class="pre">parse_type_from_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/data_struct_utils.html#parse_type_from_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.data_struct_utils.parse_type_from_entry" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="python-tools-dict-utils-module">
 <h2>python_tools.dict_utils module<a class="headerlink" href="#python-tools-dict-utils-module" title="Permalink to this heading"></a></h2>
@@ -137,8 +246,27 @@
 <section id="python-tools-filtering-utils-module">
 <h2>python_tools.filtering_utils module<a class="headerlink" href="#python-tools-filtering-utils-module" title="Permalink to this heading"></a></h2>
 </section>
-<section id="python-tools-function-utils-module">
-<h2>python_tools.function_utils module<a class="headerlink" href="#python-tools-function-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.function_utils">
+<span id="python-tools-function-utils-module"></span><h2>python_tools.function_utils module<a class="headerlink" href="#module-python_tools.function_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.function_utils.all_functions_from_module">
+<span class="sig-prename descclassname"><span class="pre">python_tools.function_utils.</span></span><span class="sig-name descname"><span class="pre">all_functions_from_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_only_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_only_functions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/function_utils.html#all_functions_from_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.function_utils.all_functions_from_module" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.function_utils.arg_names">
+<span class="sig-prename descclassname"><span class="pre">python_tools.function_utils.</span></span><span class="sig-name descname"><span class="pre">arg_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/function_utils.html#arg_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.function_utils.arg_names" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To get the names of the argument</p>
+<p>from python_tools import function_utils as funcu
+funcu.arg_names(myfunc)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.function_utils.rename">
+<span class="sig-prename descclassname"><span class="pre">python_tools.function_utils.</span></span><span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/function_utils.html#rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.function_utils.rename" title="Permalink to this definition"></a></dt>
+<dd><p>Can be used as a decorator to rename the functions</p>
+</dd></dl>
+
 </section>
 <section id="python-tools-general-utils-module">
 <h2>python_tools.general_utils module<a class="headerlink" href="#python-tools-general-utils-module" title="Permalink to this heading"></a></h2>
@@ -185,8 +313,51 @@
 <section id="python-tools-pretty-print-confusion-matrix-module">
 <h2>python_tools.pretty_print_confusion_matrix module<a class="headerlink" href="#python-tools-pretty-print-confusion-matrix-module" title="Permalink to this heading"></a></h2>
 </section>
-<section id="python-tools-regex-utils-module">
-<h2>python_tools.regex_utils module<a class="headerlink" href="#python-tools-regex-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.regex_utils">
+<span id="python-tools-regex-utils-module"></span><h2>python_tools.regex_utils module<a class="headerlink" href="#module-python_tools.regex_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.all_match_substring_in_str">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">all_match_substring_in_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expression</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#all_match_substring_in_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.all_match_substring_in_str" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.match_pattern_in_str">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">match_pattern_in_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#match_pattern_in_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.match_pattern_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To find the string that
+matches the pattern compiled</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.match_substring_in_str">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">match_substring_in_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expression</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#match_substring_in_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.match_substring_in_str" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.multiple_replace">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">multiple_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#multiple_replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.multiple_replace" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To replace multiple strings with a dictionary apping</p>
+<p>Ex:
+from python_tools import regex_utils as ru
+query = “u in [1,2,3,4]”
+dict_mapping = dict(u=”v”,v=”u”)
+ru.multiple_replace(query,dict_mapping)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.sub_str_for_pattern">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">sub_str_for_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#sub_str_for_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.sub_str_for_pattern" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.sub_str_for_pattern_with_count">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">sub_str_for_pattern_with_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#sub_str_for_pattern_with_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.sub_str_for_pattern_with_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.regex_utils.substr_from_match_obj">
+<span class="sig-prename descclassname"><span class="pre">python_tools.regex_utils.</span></span><span class="sig-name descname"><span class="pre">substr_from_match_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/regex_utils.html#substr_from_match_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.regex_utils.substr_from_match_obj" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="python-tools-requirement-utils-module">
 <h2>python_tools.requirement_utils module<a class="headerlink" href="#python-tools-requirement-utils-module" title="Permalink to this heading"></a></h2>
@@ -203,8 +374,79 @@
 <section id="python-tools-statistics-visualizations-module">
 <h2>python_tools.statistics_visualizations module<a class="headerlink" href="#python-tools-statistics-visualizations-module" title="Permalink to this heading"></a></h2>
 </section>
-<section id="python-tools-string-utils-module">
-<h2>python_tools.string_utils module<a class="headerlink" href="#python-tools-string-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.string_utils">
+<span id="python-tools-string-utils-module"></span><h2>python_tools.string_utils module<a class="headerlink" href="#module-python_tools.string_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.abbreviate_phrase">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">abbreviate_phrase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separating_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_word_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_phrase_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_separating_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#abbreviate_phrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.abbreviate_phrase" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To abbreviate a string
+with a cetain number of characters
+for each word seperated by a
+certain character</p>
+<p>Ex:
+from python_tools import string_utils as stru
+stru.abbreviate_phrase(</p>
+<blockquote>
+<div><p>s = “ais_syn_density_max_backup_excitatory”,
+verbose = True,</p>
+</div></blockquote>
+<p>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.example_curly_braces_inside_fstring">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">example_curly_braces_inside_fstring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#example_curly_braces_inside_fstring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.example_curly_braces_inside_fstring" title="Permalink to this definition"></a></dt>
+<dd><p><a class="reference external" href="https://stackoverflow.com/questions/42521230/how-to-escape-curly-brackets-in-f-strings">https://stackoverflow.com/questions/42521230/how-to-escape-curly-brackets-in-f-strings</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.is_int">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">is_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#is_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.is_int" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.keep_range_list">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">keep_range_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#keep_range_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.keep_range_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.letter_to_number">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">letter_to_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">letter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#letter_to_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.letter_to_number" title="Permalink to this definition"></a></dt>
+<dd><p>letter to string string:</p>
+<p>Ex:
+letter_to_number(3)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.number_to_letter">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">number_to_letter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#number_to_letter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.number_to_letter" title="Permalink to this definition"></a></dt>
+<dd><p>Int to letter string:</p>
+<p>Ex:
+number_to_letter(3)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.remove_range_list">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">remove_range_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#remove_range_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.remove_range_list" title="Permalink to this definition"></a></dt>
+<dd><p>Ex:
+from python_tools import string_utils as stru
+stru.remove_range_list(</p>
+<blockquote>
+<div><p>string = ‘geeksforgeeks is best for geeks’,
+range_list = [(3, 6), (7, 10), (14, 17)],
+verbose = True</p>
+</div></blockquote>
+<p>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.str_overlap">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">str_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#str_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.str_overlap" title="Permalink to this definition"></a></dt>
+<dd><p>Ex:
+from python_tools import string_utils as stru
+stru.str_overlap(“my name is Brendan”,”helloBrend”)</p>
+</dd></dl>
+
 </section>
 <section id="python-tools-system-utils-module">
 <h2>python_tools.system_utils module<a class="headerlink" href="#python-tools-system-utils-module" title="Permalink to this heading"></a></h2>
@@ -215,8 +457,8 @@
 <section id="python-tools-widget-utils-module">
 <h2>python_tools.widget_utils module<a class="headerlink" href="#python-tools-widget-utils-module" title="Permalink to this heading"></a></h2>
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-python_tools" title="Permalink to this heading"></a></h2>
 </section>
 </section>
 
