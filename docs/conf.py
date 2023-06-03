@@ -5,6 +5,11 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+
+
 
 project = 'python_tools'
 copyright = '2023, Brendan Celii'
@@ -30,6 +35,8 @@ import sphinx_rtd_theme
 extensions = [
   "sphinx_rtd_theme",
   "sphinx.ext.autodoc",#converts the doc string into documentation
+  "sphinx.ext.viewcode",
+  "sphinx.ext.napoleon"
 ]
 
 html_theme = "sphinx_rtd_theme"
