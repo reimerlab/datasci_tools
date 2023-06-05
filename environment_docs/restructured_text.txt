@@ -1,0 +1,54 @@
+"""
+Purpose: defines the restructured format for 
+creating really nice docstrings
+
+reStructuredText: a markup language the Python community developed for typing richly formatted text
+"""
+
+
+# how to make lists
+- Spacing between items separates list items
+
+* Different bullet symbols create separate lists
+
+- Third item
+
+1) An enumerated list item
+
+2) Second item
+
+   a) Sub item that goes on at length and thus needs
+      to be wrapped. Note the indentation that must
+      match the beginning of the text, not the 
+      enumerator.
+
+      i) List items can even include
+
+         paragraph breaks.
+
+3) Third item
+
+#) Another enumerated list item
+
+#) Second item
+
+
+https://dev.to/zenulabidin/sphinx-docstring-best-practices-2fca
+
+
+There are five docstring reStructuredText directives, which I will list here. These directives are recognized by the Sphinx documentation generator.
+
+:param:: indicates a function parameter, with a name, what it's used for, and default value.
+:param [ParamName]: [ParamDescription], defaults to [DefaultParamVal]
+
+:type:: indicates the type of a parameter, and must be immediately below its associated :param: directive. It also lets you indicate whether a parameter is optional. Simply exclude the , optional part to indicate that a parameter is required.
+:type [ParamName]: [ParamType], optional
+
+:raises:: Indicates that an exception is raised, its type, and its description.
+:raises [ErrorType]: [ErrorDescription]
+
+:return:: Lets you indicate what is returned by the function.
+:return: [ReturnDescription]
+
+:rtype: Indicates the type of the return value.
+:rtype: [ReturnType]

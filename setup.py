@@ -1,4 +1,21 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+def get_install_requires(filepath=None):
+    if filepath is None:
+        filepath = "./"
+    """Returns requirements.txt parsed to a list"""
+    fname = Path(filepath).parent / 'requirements.txt'
+    targets = []
+    if fname.exists():
+        with open(fname, 'r') as f:
+            targets = f.read().splitlines()
+    return targets
+
+def get_links():
+    return [
+        "git+https://github.com/bacelii/python_tools.git"
+    ]
 
 setup(
    name='python_tools', # the name of the package, which can be different than the folder when using pip instal
@@ -7,6 +24,10 @@ setup(
    author='Brendan Celii',
    author_email='brendanacelii@gmail.com',
    packages=find_packages(),  #teslls what packages to be included for the install
+   
+    #install_requires=get_install_requires(), #external packages as dependencies
+    #dependency_links = get_links(),
+   
    install_requires=[
         'colour>=0.1.5',
         'datajoint>=0.12.9',

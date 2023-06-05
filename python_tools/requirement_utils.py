@@ -8,6 +8,10 @@ generate the requirements of a folder
 
 """
 
+default_packages_to_install = [
+    "ipython",
+    "ipython_genutils"
+]
 
 #from python_tools import system_utils as su
 #from python_tools import numpy_utils as nu
@@ -25,7 +29,7 @@ def requirement_file_from_requirements_dict(
         comp = ">="
     else:
         comp = "=="
-    data = "\n".join([f"{k}{comp}{v}," for k,v in requirement_dict.items()])
+    data = "\n".join([f"{k}{comp}{v}" if v is not None else f"{k}" for k,v in requirement_dict.items()])
 
     filu.write_file(
         filepath = filepath,
@@ -43,6 +47,7 @@ def requirements_dict_from_directories(
     diff_with_package_import_list = True,
     remove_egg_lines = True,
     delete_file = False,
+    default_packages = None,
     mode = "gt"
     ):
     """
@@ -50,6 +55,10 @@ def requirements_dict_from_directories(
     list of directiories with modules inside and then
     to compile those requrimenets into a dictionary
     """
+    if default_packages is None:
+        default_packages= default_packages_to_install
+    
+    
     packages = directories
     packages = nu.to_list(packages)
     
@@ -101,6 +110,9 @@ def requirements_dict_from_directories(
 
         output = su.bash_command(command)
         requirement_dict = package_ver_dict_from_file(output_path)
+        
+        for pkg in default_packages:
+            requirement_dict[pkg] = None
         
         
         if diff_with_package_import_list:

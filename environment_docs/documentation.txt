@@ -26,5 +26,17 @@ For publishing to github pages:
 1) make sure branch is gh-pages and make sure directory is /(root)
 
 
+
 A better link: https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d
 
+
+
+1) added to the .gitignore 
+__pycache__/
+.DS_Store
+docs/_build/
+docs/_static/
+docs/_templates
+
+
+push a commit after the docs.yaml created, make sure to change the docs.yaml to be master if no actions deployed
