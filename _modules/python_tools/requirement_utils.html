@@ -79,6 +79,10 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="n">default_packages_to_install</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ipython&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ipython_genutils&quot;</span>
+<span class="p">]</span>
 
 <span class="c1">#from python_tools import system_utils as su</span>
 <span class="c1">#from python_tools import numpy_utils as nu</span>
@@ -96,7 +100,7 @@
         <span class="n">comp</span> <span class="o">=</span> <span class="s2">&quot;&gt;=&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">comp</span> <span class="o">=</span> <span class="s2">&quot;==&quot;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}{</span><span class="n">comp</span><span class="si">}{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">requirement_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}{</span><span class="n">comp</span><span class="si">}{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">requirement_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 
     <span class="n">filu</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="p">,</span>
@@ -114,6 +118,7 @@
     <span class="n">diff_with_package_import_list</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">remove_egg_lines</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">delete_file</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">default_packages</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;gt&quot;</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -121,6 +126,10 @@
 <span class="sd">    list of directiories with modules inside and then</span>
 <span class="sd">    to compile those requrimenets into a dictionary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">default_packages</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">default_packages</span><span class="o">=</span> <span class="n">default_packages_to_install</span>
+    
+    
     <span class="n">packages</span> <span class="o">=</span> <span class="n">directories</span>
     <span class="n">packages</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">packages</span><span class="p">)</span>
     
@@ -172,6 +181,9 @@
 
         <span class="n">output</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">bash_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="n">requirement_dict</span> <span class="o">=</span> <span class="n">package_ver_dict_from_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">default_packages</span><span class="p">:</span>
+            <span class="n">requirement_dict</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         
         
         <span class="k">if</span> <span class="n">diff_with_package_import_list</span><span class="p">:</span>
