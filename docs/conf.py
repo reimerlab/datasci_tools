@@ -43,6 +43,12 @@ extensions = [
 
 html_theme = "sphinx_rtd_theme"
 
+# autodoc_mock_imports = [
+#    "external_library"
+# ]
+
+exclude_patterns = ['*.ipynb_checkpoints*']
+
 def skip(app, what, name, obj, would_skip, options):
     if name == "__init__":
         return False

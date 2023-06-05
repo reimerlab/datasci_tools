@@ -1,4 +1,4 @@
-import base
+import base64
 import hashlib
 """
 Purpose: functions for quick hashing

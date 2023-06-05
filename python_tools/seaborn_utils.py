@@ -134,4 +134,4 @@ def example_gridspec_from_existing_ax():
     gs.tight_layout(fig)
     plt.show()
 
-from seaborn_utils import SeabornFig
+#from .seaborn_utils import SeabornFig

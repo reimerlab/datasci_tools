@@ -1,0 +1,61 @@
+Removing everything under '_build'...
+Running Sphinx v5.3.0
+making output directory... done
+building [mo]: targets for 0 po files that are out of date
+building [html]: targets for 3 source files that are out of date
+updating environment: [new config] 3 added, 0 changed, 0 removed
+reading sources... [ 33%] index
+reading sources... [ 66%] modules
+reading sources... [100%] python_tools
+
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+writing output... [ 33%] index
+writing output... [ 66%] modules
+writing output... [100%] python_tools
+
+generating indices... genindex py-modindex done
+highlighting module code... [  3%] python_tools.algorithms_utils
+highlighting module code... [  6%] python_tools.argparse_utils
+highlighting module code... [  9%] python_tools.data_struct_utils
+highlighting module code... [ 12%] python_tools.dict_utils
+highlighting module code... [ 15%] python_tools.dj_utils
+highlighting module code... [ 18%] python_tools.file_utils
+highlighting module code... [ 21%] python_tools.filtering_utils
+highlighting module code... [ 24%] python_tools.function_utils
+highlighting module code... [ 27%] python_tools.general_utils
+highlighting module code... [ 30%] python_tools.hash_utils
+highlighting module code... [ 33%] python_tools.ipyvolume_movie_utils
+highlighting module code... [ 36%] python_tools.ipyvolume_utils
+highlighting module code... [ 39%] python_tools.json_utils
+highlighting module code... [ 42%] python_tools.linalg_utils
+highlighting module code... [ 45%] python_tools.matlab_utils
+highlighting module code... [ 48%] python_tools.matplotlib_utils
+highlighting module code... [ 51%] python_tools.mesh_utils
+highlighting module code... [ 54%] python_tools.networkx_utils
+highlighting module code... [ 57%] python_tools.numpy_utils
+highlighting module code... [ 60%] python_tools.package_utils
+highlighting module code... [ 63%] python_tools.pandas_utils
+highlighting module code... [ 66%] python_tools.pathlib_utils
+highlighting module code... [ 69%] python_tools.pretty_print_confusion_matrix
+highlighting module code... [ 72%] python_tools.regex_utils
+highlighting module code... [ 75%] python_tools.requirement_utils
+highlighting module code... [ 78%] python_tools.scipy_utils
+highlighting module code... [ 81%] python_tools.seaborn_utils
+highlighting module code... [ 84%] python_tools.statistics_utils
+highlighting module code... [ 87%] python_tools.statistics_visualizations
+highlighting module code... [ 90%] python_tools.string_utils
+highlighting module code... [ 93%] python_tools.system_utils
+highlighting module code... [ 96%] python_tools.tqdm_utils
+highlighting module code... [100%] python_tools.widget_utils
+
+writing additional pages... search done
+copying static files... done
+copying extra files... done
+dumping search index in English (code: en)... done
+dumping object inventory... done
+build succeeded, 153 warnings.
+
+The HTML pages are in _build/html.
