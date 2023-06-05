@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools.mesh_utils &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">python_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">python_tools.mesh_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for python_tools.mesh_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ipyvolume_utils</span> <span class="k">as</span> <span class="n">ipvu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_utils</span> <span class="k">as</span> <span class="n">nu</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">Delaunay</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.cluster</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse.csgraph</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">trimesh</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="c1">#import trimesh</span>
+<span class="c1">#import numpy as np</span>
+<span class="c1">#from python_tools import numpy_utils as nu</span>
+
+
+<div class="viewcode-block" id="mesh_center_vertex_average"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.mesh_center_vertex_average">[docs]</a><span class="k">def</span> <span class="nf">mesh_center_vertex_average</span><span class="p">(</span><span class="n">mesh_list</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">mesh_list</span><span class="p">):</span>
+        <span class="n">mesh_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh_list</span><span class="p">]</span>
+    <span class="n">mesh_list_centers</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mesh_list</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_list_centers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_list_centers</span></div>
+
+<div class="viewcode-block" id="translate_mesh"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.translate_mesh">[docs]</a><span class="k">def</span> <span class="nf">translate_mesh</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">translation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">new_center</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">inplace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">inplace</span><span class="p">:</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">translation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">translation</span> <span class="o">=</span> <span class="n">new_center</span> <span class="o">-</span> <span class="n">mesh_center_vertex_average</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+        
+    <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">+=</span> <span class="n">translation</span>
+    <span class="k">return</span> <span class="n">mesh</span></div>
+
+<div class="viewcode-block" id="scatter_mesh_with_radius"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.scatter_mesh_with_radius">[docs]</a><span class="k">def</span> <span class="nf">scatter_mesh_with_radius</span><span class="p">(</span><span class="n">array</span><span class="p">,</span><span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: to generate a mesh of spheres at certain coordinates with certain size</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="p">[</span><span class="n">radius</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    
+    <span class="n">total_mesh</span> <span class="o">=</span> <span class="n">combine_meshes</span><span class="p">([</span><span class="n">sphere_mesh</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">array</span><span class="p">,</span><span class="n">radius</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">total_mesh</span></div>
+
+
+<div class="viewcode-block" id="combine_meshes"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.combine_meshes">[docs]</a><span class="k">def</span> <span class="nf">combine_meshes</span><span class="p">(</span><span class="n">mesh_pieces</span><span class="p">,</span><span class="n">merge_vertices</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">leftover_mesh</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">Trimesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">faces</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
+<span class="c1">#     for m in mesh_pieces:</span>
+<span class="c1">#         leftover_mesh += m</span>
+
+    <span class="n">leftover_mesh</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span> <span class="n">mesh_pieces</span> <span class="o">+</span>  <span class="p">[</span><span class="n">leftover_mesh</span><span class="p">])</span>
+        
+    <span class="k">if</span> <span class="n">merge_vertices</span><span class="p">:</span>
+        <span class="n">leftover_mesh</span><span class="o">.</span><span class="n">merge_vertices</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">leftover_mesh</span></div>
+
+<div class="viewcode-block" id="sphere_mesh"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.sphere_mesh">[docs]</a><span class="k">def</span> <span class="nf">sphere_mesh</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">sph</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">creation</span><span class="o">.</span><span class="n">icosphere</span><span class="p">(</span><span class="n">subdivisions</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">center_mesh</span><span class="p">(</span><span class="n">sph</span><span class="p">,</span><span class="n">center</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="center_mesh"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.center_mesh">[docs]</a><span class="k">def</span> <span class="nf">center_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">new_center</span><span class="p">):</span>
+    <span class="n">new_mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+    <span class="n">added_offset</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_center</span><span class="p">)</span> <span class="o">-</span> <span class="n">new_mesh</span><span class="o">.</span><span class="n">center_mass</span>
+    <span class="n">new_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">new_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">added_offset</span>
+    <span class="k">return</span> <span class="n">new_mesh</span></div>
+
+<div class="viewcode-block" id="center_mesh_at_origin"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.center_mesh_at_origin">[docs]</a><span class="k">def</span> <span class="nf">center_mesh_at_origin</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">new_mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">new_mesh</span><span class="o">.</span><span class="n">center_mass</span>
+    
+    <span class="n">added_offset</span> <span class="o">=</span> <span class="o">-</span> <span class="n">center</span>
+    <span class="n">new_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">new_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">added_offset</span>
+    <span class="k">return</span> <span class="n">new_mesh</span></div>
+    
+
+
+<span class="c1">#import trimesh</span>
+<span class="c1">#from python_tools import ipyvolume_utils as ipvu</span>
+<span class="c1">#from scipy.spatial import Delaunay</span>
+<div class="viewcode-block" id="mesh_from_delauny_3d"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.mesh_from_delauny_3d">[docs]</a><span class="k">def</span> <span class="nf">mesh_from_delauny_3d</span><span class="p">(</span>
+    <span class="n">tri</span><span class="p">,</span>
+    <span class="n">plot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,):</span>
+    
+    <span class="k">if</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tri</span><span class="p">)):</span>
+        <span class="n">tri</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">(</span><span class="n">tri</span><span class="p">)</span>
+    
+    
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">points</span>
+    <span class="n">faces_orig</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">simplices</span>
+    <span class="n">faces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">faces_orig</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span>
+        <span class="n">faces_orig</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span>
+        <span class="n">faces_orig</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span>
+        <span class="n">faces_orig</span><span class="p">[:,[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]]]</span>
+    <span class="p">)</span>
+    
+    
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">Trimesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vertices</span><span class="p">,</span><span class="n">faces</span><span class="o">=</span><span class="n">faces</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ipvu</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mesh</span></div>
+
+<div class="viewcode-block" id="sample_surface"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.sample_surface">[docs]</a><span class="k">def</span> <span class="nf">sample_surface</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">,</span>
+    <span class="n">even_sampling</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To sample the surface of a mesh</span>
+<span class="sd">    </span>
+<span class="sd">    from python_tools import mesh_utils as mhu</span>
+<span class="sd">    sample_surface(mesh,10000,even_sampling=False,plot=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">even_sampling</span><span class="p">:</span>
+        <span class="n">return_value</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_surface_even</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">return_value</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_surface</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ipvu</span><span class="o">.</span><span class="n">plot_mesh_with_scatter</span><span class="p">(</span>
+            <span class="n">mesh</span><span class="p">,</span>
+            <span class="n">scatter</span> <span class="o">=</span> <span class="n">return_value</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">return_value</span></div>
+<span class="c1"># -------------- 11/21 More bounding box functions ----- #</span>
+<div class="viewcode-block" id="bounding_box"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box">[docs]</a><span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">oriented</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the mesh of the bounding box</span>
+<span class="sd">    </span>
+<span class="sd">    Input: Can take in the corners of a bounding box as well</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;did not recieve bounding box corners&quot;</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">Trimesh</span><span class="p">(</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">mesh</span><span class="p">,</span><span class="n">mesh</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+                              <span class="n">faces</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">bounding_box</span>
+    
+    <span class="k">if</span> <span class="n">oriented</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">bounding_box_oriented</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">bounding_box</span></div>
+
+<div class="viewcode-block" id="bounding_box_center"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box_center">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">oriented</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computed the center of the bounding box</span>
+<span class="sd">    </span>
+<span class="sd">    Ex:</span>
+<span class="sd">    ex_mesh = neuron_obj_with_web[axon_limb_name][9].mesh</span>
+<span class="sd">    nviz.plot_objects(ex_mesh,</span>
+<span class="sd">                      scatters=[tu.bounding_box_center(ex_mesh)],</span>
+<span class="sd">                      scatter_size=1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb_corners</span> <span class="o">=</span> <span class="n">bounding_box_corners</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">oriented</span> <span class="o">=</span> <span class="n">oriented</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">bb_corners</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="bounding_box_corners"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box_corners">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_corners</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">bbox_multiply_ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">oriented</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1">#bbox_verts = mesh.bounding_box.vertices</span>
+    <span class="n">bbox_verts</span> <span class="o">=</span> <span class="n">bounding_box</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">oriented</span><span class="o">=</span><span class="n">oriented</span><span class="p">)</span><span class="o">.</span><span class="n">vertices</span>
+    <span class="n">bb_corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">bbox_verts</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bbox_verts</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bbox_multiply_ratio</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bb_corners</span>
+    
+    <span class="n">bbox_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">bb_corners</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bbox_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bb_corners</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">bbox_center</span>
+    <span class="n">new_corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">bbox_center</span> <span class="o">-</span> <span class="n">bbox_multiply_ratio</span><span class="o">*</span><span class="n">bbox_distance</span><span class="p">,</span>
+                            <span class="n">bbox_center</span> <span class="o">+</span> <span class="n">bbox_multiply_ratio</span><span class="o">*</span><span class="n">bbox_distance</span>
+                           <span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_corners</span></div>
+
+<div class="viewcode-block" id="bounding_box_diagonal"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box_diagonal">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_diagonal</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
+    <span class="n">bbox_corners</span> <span class="o">=</span> <span class="n">bounding_box_corners</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bbox_corners</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">bbox_corners</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="bounding_box_side_lengths"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box_side_lengths">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_side_lengths</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">oriented</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">sort_by_length</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">sort_descending</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,):</span>
+    
+    <span class="n">bbox_corners</span> <span class="o">=</span> <span class="n">bounding_box_corners</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">oriented</span><span class="o">=</span><span class="n">oriented</span><span class="p">)</span>
+    <span class="n">side_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">bbox_corners</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ax</span><span class="p">]</span> <span class="o">-</span> <span class="n">bbox_corners</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">ax</span><span class="p">])</span>
+                   <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+    
+    
+    
+    <span class="k">if</span> <span class="n">sort_by_length</span><span class="p">:</span>
+        <span class="n">side_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">side_lengths</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sort_descending</span><span class="p">:</span>
+            <span class="n">side_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">side_lengths</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Side lengths = </span><span class="si">{</span><span class="n">side_lengths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">side_lengths</span></div>
+
+<div class="viewcode-block" id="bounding_box_side_lengths_sorted"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.bounding_box_side_lengths_sorted">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_side_lengths_sorted</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">oriented</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">sort_descending</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+    <span class="k">return</span> <span class="n">bounding_box_side_lengths</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">oriented</span> <span class="o">=</span> <span class="n">oriented</span><span class="p">,</span>
+    <span class="n">sort_by_length</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">sort_descending</span> <span class="o">=</span> <span class="n">sort_descending</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,)</span></div>
+    
+    
+    
+    
+<div class="viewcode-block" id="normal_vector_from_face_idx"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.normal_vector_from_face_idx">[docs]</a><span class="k">def</span> <span class="nf">normal_vector_from_face_idx</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face_idx</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_normals</span><span class="p">[</span><span class="n">face_idx</span><span class="p">]</span></div>
+
+
+<span class="c1"># ------------ 11/3 Implementing a mesh segmentation algorithm ----------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Source Code: https://github.com/kugelrund/mesh_segmentation</span>
+<span class="sd">Reference paper: https://www.cs.sfu.ca/~haoz/pubs/liu_zhang_pg04.pdf</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#import math</span>
+<span class="c1">#import numpy</span>
+<span class="c1">#import scipy.linalg</span>
+<span class="c1">#import scipy.cluster</span>
+<span class="c1">#import scipy.sparse</span>
+<span class="c1">#import scipy.sparse.csgraph</span>
+<span class="c1">#import scipy.sparse.linalg</span>
+
+<span class="n">delta_default</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">eta_default</span> <span class="o">=</span> <span class="mf">0.15</span>
+<div class="viewcode-block" id="face_center"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.face_center">[docs]</a><span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To compute the center of a face</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">triangles_center</span><span class="p">[</span><span class="n">face</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="geodesic_distance"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.geodesic_distance">[docs]</a><span class="k">def</span> <span class="nf">geodesic_distance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face1</span><span class="p">,</span><span class="n">face2</span><span class="p">,</span><span class="n">edge</span><span class="p">):</span>
+    <span class="n">edge_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">edge_center</span> <span class="o">-</span> <span class="n">face_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">k</span><span class="p">))</span>
+                  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">face1</span><span class="p">,</span><span class="n">face2</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="angular_distance"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.angular_distance">[docs]</a><span class="k">def</span> <span class="nf">angular_distance</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">face1</span><span class="p">,</span>
+    <span class="n">face2</span><span class="p">,</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">eta_default</span><span class="p">):</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">meshu</span><span class="o">.</span><span class="n">normal_vector_from_face_idx</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face1</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span>  <span class="n">meshu</span><span class="o">.</span><span class="n">normal_vector_from_face_idx</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face2</span><span class="p">)</span>
+    <span class="n">ang_distance</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">nu</span><span class="o">.</span><span class="n">angle_between_vectors_simple</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span><span class="n">v2</span><span class="p">)))</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">v1</span><span class="o">@</span><span class="p">(</span><span class="n">face_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face1</span><span class="p">)</span><span class="o">-</span><span class="n">face_center</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">face2</span><span class="p">)))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ang_distance</span> <span class="o">*=</span> <span class="n">eta</span>
+        
+    <span class="k">return</span> <span class="n">ang_distance</span></div>
+
+<div class="viewcode-block" id="edge_to_faces_map"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.edge_to_faces_map">[docs]</a><span class="k">def</span> <span class="nf">edge_to_faces_map</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">k</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">face_adjacency_edges</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">face_adjacency</span>
+    <span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="create_distance_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.create_distance_matrix">[docs]</a><span class="k">def</span> <span class="nf">create_distance_matrix</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">delta_default</span><span class="p">,</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">eta_default</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates the matrix of the angular and geodesic distances</span>
+<span class="sd">    between all adjacent faces. The i,j-th entry of the returned</span>
+<span class="sd">    matrices contains the distance between the i-th and j-th face.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Old method</span>
+<span class="sd">    adj_faces_map = {}</span>
+<span class="sd">    # find adjacent faces by iterating edges</span>
+<span class="sd">    for index, face in enumerate(faces):</span>
+<span class="sd">        for edge in face.edge_keys:</span>
+<span class="sd">            if edge in adj_faces_map:</span>
+<span class="sd">                adj_faces_map[edge].append(index)</span>
+<span class="sd">            else:</span>
+<span class="sd">                adj_faces_map[edge] = [index]</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># map from edge-key to adjacent faces</span>
+    <span class="n">adj_faces_map</span> <span class="o">=</span> <span class="n">meshu</span><span class="o">.</span><span class="n">edge_to_faces_map</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="c1"># helping vectors to create sparse matrix later on</span>
+    <span class="n">row_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">col_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Gval</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># values for matrix of angular distances</span>
+    <span class="n">Aval</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># values for matrix of geodesic distances</span>
+    <span class="c1"># iterate adjacent faces and calculate distances</span>
+    <span class="k">for</span> <span class="n">edge</span><span class="p">,</span> <span class="n">adj_faces</span> <span class="ow">in</span> <span class="n">adj_faces_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">edge</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_faces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">adj_faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">adj_faces</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">Gtemp</span> <span class="o">=</span> <span class="n">meshu</span><span class="o">.</span><span class="n">geodesic_distance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">edge</span><span class="p">)</span>
+            <span class="n">Atemp</span> <span class="o">=</span> <span class="n">meshu</span><span class="o">.</span><span class="n">angular_distance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">)</span>
+            <span class="n">Gval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gtemp</span><span class="p">)</span>
+            <span class="n">Aval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atemp</span><span class="p">)</span>
+            <span class="n">row_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">col_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="c1"># add symmetric entry</span>
+            <span class="n">Gval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gtemp</span><span class="p">)</span>
+            <span class="n">Aval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atemp</span><span class="p">)</span>
+            <span class="n">row_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">col_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_faces</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Edge with more than 2 adjacent faces: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">adj_faces</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;!&quot;</span><span class="p">)</span>
+
+    <span class="n">Gval</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Gval</span><span class="p">)</span>
+    <span class="n">Aval</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Aval</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">Gval</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Gval</span><span class="p">)</span> <span class="o">+</span> \
+             <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="n">Aval</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Aval</span><span class="p">)</span>
+
+    <span class="c1"># create sparse matrix</span>
+    <span class="n">distance_matrix</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">distance_matrix</span></div>
+
+<div class="viewcode-block" id="create_affinity_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.create_affinity_matrix">[docs]</a><span class="k">def</span> <span class="nf">create_affinity_matrix</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">delta_default</span><span class="p">,</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">eta_default</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the adjacency matrix of the given mesh&quot;&quot;&quot;</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Creating distance matrices...&quot;</span><span class="p">)</span>
+    <span class="n">distance_matrix</span> <span class="o">=</span> <span class="n">create_distance_matrix</span><span class="p">(</span>
+        <span class="n">mesh</span><span class="p">,</span>
+        <span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">,</span>
+        <span class="n">eta</span><span class="o">=</span><span class="n">eta</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Finding shortest paths between all faces...&quot;</span><span class="p">)</span>
+    <span class="c1"># for each non adjacent pair of faces find shortest path of adjacent faces</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csgraph</span><span class="o">.</span><span class="n">dijkstra</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">)</span>
+    <span class="n">inf_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">W</span><span class="p">))</span>
+    <span class="n">W</span><span class="p">[</span><span class="n">inf_indices</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Creating affinity matrix...&quot;</span><span class="p">)</span>
+    <span class="c1"># change distance entries to similarities</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="n">l</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">den</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">W</span><span class="o">/</span><span class="n">den</span><span class="p">)</span>
+    <span class="n">W</span><span class="p">[</span><span class="n">inf_indices</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">W</span></div>
+
+<span class="c1">#import time</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Conclusion: Didn&#39;t do a better job of segmenting the head from the mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="segment_mesh"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.segment_mesh">[docs]</a><span class="k">def</span> <span class="nf">segment_mesh</span><span class="p">(</span>
+    <span class="n">mesh</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="c1">#number of clusters</span>
+    <span class="n">delta</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="c1">#between 0 and 1</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">ev_method</span><span class="o">=</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span>
+    <span class="n">kmeans_init</span><span class="o">=</span><span class="s1">&#39;kmeans++&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Segments the given mesh into k clusters and performs the given</span>
+<span class="sd">    action for each cluster</span>
+<span class="sd">    </span>
+<span class="sd">    k: number of clusters</span>
+<span class="sd">    </span>
+<span class="sd">    delta: closer to zero for more importance on angular distance and </span>
+<span class="sd">    closer to 1 for more importance geodesic distance</span>
+<span class="sd">        default = 0.03,</span>
+<span class="sd">        min = 0,</span>
+<span class="sd">        max = 1,</span>
+<span class="sd">    </span>
+<span class="sd">    eta (wieght of convexity): the closer to 0 the more important</span>
+<span class="sd">    the concave angles (min = )</span>
+<span class="sd">        default = 0.15,</span>
+<span class="sd">        min = 1e-10,</span>
+<span class="sd">        max = 1,</span>
+<span class="sd">    </span>
+<span class="sd">    ev_method: method for computing the eigenvector decomposition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_initial_guess</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes an initial guess for the cluster-centers</span>
+<span class="sd">        Chooses indices of the observations with the least association to each</span>
+<span class="sd">        other in a greedy manner. Q is the association matrix of the observations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># choose the pair of indices with the lowest association to each other</span>
+        <span class="n">min_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">Q</span><span class="p">),</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">chosen</span> <span class="o">=</span> <span class="p">[</span><span class="n">min_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
+            <span class="c1"># Take the maximum of the associations to the already chosen indices for</span>
+            <span class="c1"># every index. The index with the lowest result in that therefore is the</span>
+            <span class="c1"># least similar to the already chosen pivots so we take it.</span>
+            <span class="c1"># Note that we will never get an index that was already chosen because</span>
+            <span class="c1"># an index always has the highest possible association 1.0 to itself</span>
+            <span class="n">new_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">chosen</span><span class="p">,:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">chosen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">chosen</span>
+    
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">+</span> <span class="mf">1e-9</span>
+
+    <span class="c1"># affinity matrix</span>
+    
+    <span class="n">W</span> <span class="o">=</span> <span class="n">create_affinity_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">,</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Calculating graph laplacian...&quot;</span><span class="p">)</span>
+    <span class="c1"># degree matrix</span>
+    <span class="n">Dsqrt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="c1"># graph laplacian</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">((</span><span class="n">W</span> <span class="o">*</span> <span class="n">Dsqrt</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">*</span> <span class="n">Dsqrt</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Calculating eigenvectors...&quot;</span><span class="p">)</span>
+    <span class="c1"># get eigenvectors</span>
+    <span class="k">if</span> <span class="n">ev_method</span> <span class="o">==</span> <span class="s1">&#39;dense&#39;</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">eigvals</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigsh</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="c1"># normalize each row to unit length</span>
+    <span class="n">V</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">kmeans_init</span> <span class="o">==</span> <span class="s1">&#39;kmeans++&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Applying kmeans...&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">vq</span><span class="o">.</span><span class="n">kmeans2</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">minit</span><span class="o">=</span><span class="s1">&#39;++&#39;</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Preparing kmeans...&quot;</span><span class="p">)</span>
+        <span class="c1"># compute association matrix</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+        <span class="c1"># compute initial guess for clustering</span>
+        <span class="n">initial_centroids</span> <span class="o">=</span> <span class="n">_initial_guess</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Applying kmeans...&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">vq</span><span class="o">.</span><span class="n">kmeans2</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="n">initial_centroids</span><span class="p">,:],</span> <span class="nb">iter</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--&gt; Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mesh_segmentation: Done clustering!&quot;</span><span class="p">)</span>
+    <span class="c1"># perform action with the clustering result</span>
+    <span class="k">if</span> <span class="n">action</span><span class="p">:</span>
+        <span class="n">action</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">idx</span></div>
+
+<span class="c1">#from python_tools import mesh_utils as meshu</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">mesh_utils</span> <span class="k">as</span> <span class="n">meshu</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
