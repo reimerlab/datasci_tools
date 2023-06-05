@@ -2853,6 +2853,7 @@ def set_legend_labels_with_dict(
     """
     Purpose: To set new legend labels
     with a dictionary mapping
+    
     """
     label_list = []
     for t in ax.get_legend_handles_labels():
@@ -2895,6 +2896,7 @@ def add_correlation_text_box(
     Pseudocode: 
     1) Calculate the correlation
     2) Plot the correlation in a textbox
+    
     """
     
     if corr_dict is None:

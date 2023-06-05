@@ -24,3 +24,7 @@ Process:
     
 For publishing to github pages:
 1) make sure branch is gh-pages and make sure directory is /(root)
+
+
+A better link: https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d
+
