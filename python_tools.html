@@ -98,7 +98,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.sub_dict"><code class="docutils literal notranslate"><span class="pre">sub_dict()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-hash-utils-module">python_tools.hash_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.hash_utils">python_tools.hash_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.hash_utils.hash_str"><code class="docutils literal notranslate"><span class="pre">hash_str()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-ipyvolume-movie-utils-module">python_tools.ipyvolume_movie_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-ipyvolume-utils-module">python_tools.ipyvolume_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.json_utils">python_tools.json_utils module</a><ul>
@@ -955,7 +958,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.scipy_utils.model_fit"><code class="docutils literal notranslate"><span class="pre">model_fit()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-seaborn-utils-module">python_tools.seaborn_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.seaborn_utils">python_tools.seaborn_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.seaborn_utils.SeabornFig2Grid"><code class="docutils literal notranslate"><span class="pre">SeabornFig2Grid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.seaborn_utils.example_SeabornFig2Grid"><code class="docutils literal notranslate"><span class="pre">example_SeabornFig2Grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.seaborn_utils.example_gridspec_from_existing_ax"><code class="docutils literal notranslate"><span class="pre">example_gridspec_from_existing_ax()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.statistics_utils">python_tools.statistics_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.statistics_utils.add_false_true_positive_negative_labels"><code class="docutils literal notranslate"><span class="pre">add_false_true_positive_negative_labels()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.statistics_utils.binomial_probability"><code class="docutils literal notranslate"><span class="pre">binomial_probability()</span></code></a></li>
@@ -1433,8 +1441,18 @@ gu.sub_dict(dict(hello=5,hi=7),keys_to_exclude=”hello”)</p>
 </dd></dl>
 
 </section>
-<section id="python-tools-hash-utils-module">
-<h2>python_tools.hash_utils module<a class="headerlink" href="#python-tools-hash-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.hash_utils">
+<span id="python-tools-hash-utils-module"></span><h2>python_tools.hash_utils module<a class="headerlink" href="#module-python_tools.hash_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.hash_utils.hash_str">
+<span class="sig-prename descclassname"><span class="pre">python_tools.hash_utils.</span></span><span class="sig-name descname"><span class="pre">hash_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/hash_utils.html#hash_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.hash_utils.hash_str" title="Permalink to this definition"></a></dt>
+<dd><p>Purpoose: To hash a string and truncate to a certain
+length</p>
+<p>Example:
+from python_tools import hash_utils as shu
+shu.hash_str(“The quick brown fox”)</p>
+</dd></dl>
+
 </section>
 <section id="python-tools-ipyvolume-movie-utils-module">
 <h2>python_tools.ipyvolume_movie_utils module<a class="headerlink" href="#python-tools-ipyvolume-movie-utils-module" title="Permalink to this heading"></a></h2>
@@ -7941,8 +7959,36 @@ ru.multiple_replace(query,dict_mapping)</p>
 <dd></dd></dl>
 
 </section>
-<section id="python-tools-seaborn-utils-module">
-<h2>python_tools.seaborn_utils module<a class="headerlink" href="#python-tools-seaborn-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.seaborn_utils">
+<span id="python-tools-seaborn-utils-module"></span><h2>python_tools.seaborn_utils module<a class="headerlink" href="#module-python_tools.seaborn_utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="python_tools.seaborn_utils.SeabornFig2Grid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_tools.seaborn_utils.</span></span><span class="sig-name descname"><span class="pre">SeabornFig2Grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seaborngrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subplot_spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/seaborn_utils.html#SeabornFig2Grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.seaborn_utils.SeabornFig2Grid" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Purpose: Allows some seabonrn plots to be subplots</p>
+<p>source: <a class="reference external" href="https://stackoverflow.com/questions/35042255/how-to-plot-multiple-seaborn-jointplot-in-subplot">https://stackoverflow.com/questions/35042255/how-to-plot-multiple-seaborn-jointplot-in-subplot</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.seaborn_utils.SeabornFig2Grid.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seaborngrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subplot_spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/seaborn_utils.html#SeabornFig2Grid.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.seaborn_utils.SeabornFig2Grid.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.seaborn_utils.example_SeabornFig2Grid">
+<span class="sig-prename descclassname"><span class="pre">python_tools.seaborn_utils.</span></span><span class="sig-name descname"><span class="pre">example_SeabornFig2Grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/seaborn_utils.html#example_SeabornFig2Grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.seaborn_utils.example_SeabornFig2Grid" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.seaborn_utils.example_gridspec_from_existing_ax">
+<span class="sig-prename descclassname"><span class="pre">python_tools.seaborn_utils.</span></span><span class="sig-name descname"><span class="pre">example_gridspec_from_existing_ax</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/seaborn_utils.html#example_gridspec_from_existing_ax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.seaborn_utils.example_gridspec_from_existing_ax" title="Permalink to this definition"></a></dt>
+<dd><p>Pseudocode:
+1) Create the figure
+2) Great the gripspec
+3) Use the seabornfig2grid to add the ax to figure
+and reference the certain gripspec</p>
+</dd></dl>
+
 </section>
 <section id="module-python_tools.statistics_utils">
 <span id="python-tools-statistics-utils-module"></span><h2>python_tools.statistics_utils module<a class="headerlink" href="#module-python_tools.statistics_utils" title="Permalink to this heading"></a></h2>
