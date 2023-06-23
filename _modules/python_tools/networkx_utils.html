@@ -5021,12 +5021,12 @@
     <span class="k">return</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="n_edges_out"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.n_edges_out">[docs]</a><span class="k">def</span> <span class="nf">n_edges_out</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">graph_statistics</span> <span class="k">as</span> <span class="nn">gstat</span>
+    <span class="kn">from</span> <span class="nn">graph_tools</span> <span class="kn">import</span> <span class="n">graph_statistics</span> <span class="k">as</span> <span class="n">gstat</span>
     <span class="n">degree_distr</span> <span class="o">=</span> <span class="n">gstat</span><span class="o">.</span><span class="n">degree_distribution</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span><span class="n">degree_type</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">degree_distr</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="n_edges_in"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.n_edges_in">[docs]</a><span class="k">def</span> <span class="nf">n_edges_in</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">graph_statistics</span> <span class="k">as</span> <span class="nn">gstat</span>
+    <span class="kn">from</span> <span class="nn">graph_tools</span> <span class="kn">import</span> <span class="n">graph_statistics</span> <span class="k">as</span> <span class="n">gstat</span>
     <span class="n">degree_distr</span> <span class="o">=</span> <span class="n">gstat</span><span class="o">.</span><span class="n">degree_distribution</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span><span class="n">degree_type</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">degree_distr</span><span class="p">)</span></div>
 
@@ -5542,10 +5542,6 @@
         <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">G</span></div>
-
-
-<span class="c1">#from python_tools import networkx_utils as xu</span>
-    
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">networkx_utils</span> <span class="k">as</span> <span class="n">xu</span>
 </pre></div>

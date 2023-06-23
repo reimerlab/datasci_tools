@@ -91,12 +91,12 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">user_packages</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;/python_tools/python_tools/&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;/machine_learning_tools/machine_learning_tools/&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;/pytorch_tools/pytorch_tools/&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;/graph_tools/graph_tools/&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;/meshAfterParty/meshAfterParty/&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;/neuron_morphology_tools/neuron_morphology_tools/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/python_tools/python_tools/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/machine_learning_tools/machine_learning_tools/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/pytorch_tools/pytorch_tools/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/graph_tools/graph_tools/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/meshAfterParty/meshAfterParty/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/neurd_packages/neuron_morphology_tools/neuron_morphology_tools/&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <div class="viewcode-block" id="module_names_from_directories"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.module_names_from_directories">[docs]</a><span class="k">def</span> <span class="nf">module_names_from_directories</span><span class="p">(</span>
@@ -131,17 +131,18 @@
     <span class="k">return</span> <span class="s2">&quot;from &quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;.&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">plu</span><span class="o">.</span><span class="n">n_levels_parent_above</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">filepath</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span></div>
 
 <div class="viewcode-block" id="prefix_module_imports_in_files"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.prefix_module_imports_in_files">[docs]</a><span class="k">def</span> <span class="nf">prefix_module_imports_in_files</span><span class="p">(</span>
-    <span class="n">filepaths</span><span class="p">,</span>
+    <span class="n">filepaths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">modules_directory</span> <span class="o">=</span> <span class="s2">&quot;../python_tools&quot;</span><span class="p">,</span>
     <span class="n">modules</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span>
+    <span class="n">filepaths_directory</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">auto_detect_relative_prefix</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">prevent_double_prefix</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">overwrite_file</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">output_filepath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">ignore_files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;__init__&quot;</span><span class="p">],</span>
-    
+    <span class="n">skip_filepath_parent_dir</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    want to add a prefixes before</span>
@@ -158,12 +159,32 @@
         <span class="n">modules_directory</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
     
     <span class="n">modules_directory</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">modules_directory</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">filepaths_directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filepaths_directory</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">filepaths_directory</span><span class="p">)</span>
+        <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f_dir</span> <span class="ow">in</span> <span class="n">filepaths_directory</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f_dir</span> <span class="ow">in</span> <span class="n">modules_directory</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;skipping </span><span class="si">{</span><span class="n">f_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">fpaths</span> <span class="o">=</span> <span class="n">plu</span><span class="o">.</span><span class="n">files_of_ext_type</span><span class="p">(</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">f_dir</span><span class="p">,</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;py&quot;</span><span class="p">,</span>
+                <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">filepaths</span> <span class="o">+=</span> <span class="n">fpaths</span>
+
     <span class="n">filepaths</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Working on file: </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             
+        <span class="k">if</span> <span class="n">output_filepath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">curr_output_filepath</span> <span class="o">=</span> <span class="n">output_filepath</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curr_output_filepath</span> <span class="o">=</span> <span class="n">output_filepath</span>
         <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">modules_directory</span><span class="p">:</span>
         <span class="c1"># --- iterate through all package directories and do the replacement</span>
 
@@ -171,6 +192,9 @@
             <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--Getting files from </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    
+                <span class="k">if</span> <span class="n">plu</span><span class="o">.</span><span class="n">inside_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">f</span><span class="p">)</span> <span class="ow">and</span> <span class="n">skip_filepath_parent_dir</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;skipping </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2"> for file </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="n">modules</span> <span class="o">=</span> <span class="n">plu</span><span class="o">.</span><span class="n">files_of_ext_type</span><span class="p">(</span>
                     <span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span><span class="p">,</span>
@@ -202,28 +226,29 @@
             <span class="c1">#print(f&quot;pattern = {pattern}&quot;)</span>
             <span class="c1">#print(f&quot;replacement = {replacement}&quot;)</span>
 
-            <span class="c1">#4) write to a new file or old file            </span>
-            <span class="n">output_filepath</span> <span class="o">=</span> <span class="n">filu</span><span class="o">.</span><span class="n">file_regex_add_prefix</span><span class="p">(</span>
+            <span class="c1">#4) write to a new file or old file           </span>
+            <span class="n">curr_output_filepath</span> <span class="o">=</span> <span class="n">filu</span><span class="o">.</span><span class="n">file_regex_add_prefix</span><span class="p">(</span>
                 <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
                 <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
                 <span class="n">filepath</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
                 <span class="n">replacement</span><span class="o">=</span><span class="n">replacement</span><span class="p">,</span>
                 <span class="n">overwrite_file</span> <span class="o">=</span> <span class="n">overwrite_file</span><span class="p">,</span>
-                <span class="n">output_filepath</span> <span class="o">=</span> <span class="n">output_filepath</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
+                <span class="n">output_filepath</span> <span class="o">=</span> <span class="n">curr_output_filepath</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
                 <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span>
                 <span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
             
-            <span class="n">f</span> <span class="o">=</span> <span class="n">output_filepath</span></div>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">curr_output_filepath</span></div>
 
             
 <span class="kn">from</span> <span class="nn">python_tools</span> <span class="kn">import</span> <span class="n">pathlib_utils</span> <span class="k">as</span> <span class="n">plu</span>
 <div class="viewcode-block" id="package_name_from_path"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.package_name_from_path">[docs]</a><span class="k">def</span> <span class="nf">package_name_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span></div>
 <div class="viewcode-block" id="package_from_filepath_and_package_list"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.package_from_filepath_and_package_list">[docs]</a><span class="k">def</span> <span class="nf">package_from_filepath_and_package_list</span><span class="p">(</span>
     <span class="n">filepath</span><span class="p">,</span>
     <span class="n">packages</span><span class="p">,</span>
     <span class="n">return_package_name</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    packages = (</span>
@@ -240,8 +265,12 @@
 <span class="sd">    )</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Search for package for </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">plu</span><span class="o">.</span><span class="n">inside_directory</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">filepath</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matched to </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_package_name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">package_name_from_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">p</span>
@@ -279,15 +308,15 @@
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;---- working on directory: </span><span class="si">{</span><span class="n">curr_directory</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
         <span class="n">modules</span> <span class="o">=</span> <span class="n">modu</span><span class="o">.</span><span class="n">modules_from_directory</span><span class="p">(</span><span class="n">curr_directory</span><span class="p">)</span>
+        <span class="n">modules</span>
 
         <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
             <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">curr_directory</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2">.py&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   --- working on module: </span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
-
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   --- working on module: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
             <span class="n">modu</span><span class="o">.</span><span class="n">clean_module_syntax</span><span class="p">(</span>
                 <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="p">,</span>
-                <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span>
                 <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span>
             <span class="p">)</span>    
             
