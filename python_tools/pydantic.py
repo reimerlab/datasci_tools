@@ -1,4 +1,5 @@
-"""
+'''
+
 Purpose of module: a module that has:
 1) Base class that a custom class can inherit from:
 - will automatically run checks on the types (or convert data to write type) of data arguments are
@@ -21,13 +22,13 @@ How does it do that? It will first try to extract these values from environment 
 
 What happens: if something is defined as an environment variable, it will use that (
 so don't have to hardcode it)
-"""
 
+'''
 
 def example():
     from datetime import datetime
     from typing import List, Optional
-    from pydantic import BaseModel
+    from python_tools.pydantic import BaseModel
     
     """
     Example: will automatically convert id into the write data type
@@ -57,10 +58,8 @@ def example():
     because it is overwritten with the .env file
     """
     
-    from pydantic import BaseSettings, PostgresDsn
-
+    from python_tools.pydantic import BaseSettings, PostgresDsn
     class Settings(BaseSettings):
-
         API_KEY: str = 'some_secret'
         DB_URL: PostgresDsn = 'postgres://username:passw
             
@@ -71,12 +70,10 @@ def example():
         Reads the variables from the environment.
         Errors will be raised if the required variables are not set.
         """
-
         api_key: str = Field(default=..., env="NEPTUNE")
         OWNER: str = "johschmidt42"  # set your name here, e.g. johndoe22
         PROJECT: str = "Heads"  # set your project name here, e.g. Heads
         EXPERIMENT: str = "heads"  # set your experiment name here, e.g. heads
-
         class Config:
             # this tells pydantic to read the variables from the .env file
             env_file = ".env"

@@ -1,18 +1,12 @@
-"""
+'''
+
 
 Link on how to change parameters of nx.draw:
 https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
 
 
-"""
 
-from . import general_utils as gu
-from . import numpy_utils as nu
-from . import pandas_utils as pu
-from . import regex_utils as ru
-from . import string_utils as stru
-from . import tqdm_utils as tqu
-from .tqdm_utils import tqdm
+'''
 from copy import deepcopy
 from networkx.classes.function import path_weight as pw
 from networkx.drawing.nx_pydot import graphviz_layout
@@ -29,9 +23,10 @@ import time
 
 
 
+
 #import networkx as nx
 #import numpy as np
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 #import time
 
 
@@ -54,7 +49,7 @@ def find_reciprocal_connections(G,redundant=False):
     redundant: whether to return a list with redundant connections or not (Ex: [(b,a)]  or [(b,a),(a,b)]
     
     Ex: 
-    from python_tools import networkx_utils as xu
+    from python_tools from . import networkx_utils as xu
     xu = reload(xu)
     xu.find_reciprocal_connections(returned_network)
     """
@@ -77,7 +72,7 @@ def compare_endpoints(endpoints_1,endpoints_2,**kwargs):
     comparing the endpoints of a graph: 
     
     Ex: 
-    from python_tools import networkx_utils as xu
+    from python_tools from . import networkx_utils as xu
     xu = reload(xu)mess
     end_1 = np.array([[2,3,4],[1,4,5]])
     end_2 = np.array([[1,4,5],[2,3,4]])
@@ -211,7 +206,7 @@ def node_to_edges(G,node_number):
 def get_node_list(G,exclude_list = []):
     return [n for n in list(G.nodes()) if n not in exclude_list]
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def get_nodes_with_attributes_dict(G,attribute_dict):
     """
     
@@ -305,7 +300,7 @@ def get_graph_node_by_coordinate(G,coordinate,return_single_value=True,
 def get_all_nodes_with_certain_attribute_key(G,attribute_name):
     return nx.get_node_attributes(G,attribute_name)
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def get_node_attributes(G,attribute_name="coordinates",node_list=None,
                        return_array=True):
     #print(f"attribute_name = {attribute_name}")
@@ -643,7 +638,7 @@ def find_skeletal_distance_along_graph_node_path(G,node_path):
 
 
 def find_all_cycles(G, source=None, cycle_length_limit=None,time_limit = 1000):
-    from python_tools import system_utils as su
+    from python_tools from . import system_utils as su
     try:
         with su.time_limit(time_limit):
             """forked from networkx dfs_edges function. Assumes nodes are integers, or at least
@@ -2038,7 +2033,7 @@ def create_and_delete_edges(G,
     return G
 
 # ------ 2/26: Used for helping for the lowest angle sum crossovers
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def all_subgraph_edges(G):
     return nu.all_subarrays(list(G.edges()))
 
@@ -2338,7 +2333,7 @@ def all_nodes_on_shortest_paths_between_nodes(G,nodes):
     s_to_s_edges = np.unique(xu.all_edges_on_shortest_paths_between_nodes(G,nodes).ravel())
     return s_to_s_edges
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def min_cut_to_partition_node_groups(G,
                                      source_nodes,
                                     sink_nodes,
@@ -2482,7 +2477,7 @@ def connected_components_subgraphs(G):
 upstream_name = "u"
 node_id_default = upstream_name
 downstream_name = "v"
-#from python_tools import general_utils as gu
+#from python_tools from . import general_utils as gu
 def node_df(
     G,
     properties_to_exclude = None,
@@ -2548,9 +2543,9 @@ def nodes_from_node_query(G,query):
     
 node_query = nodes_from_node_query
 
-#from python_tools import general_utils as gu
+#from python_tools from . import general_utils as gu
 #from python_tools.tqdm_utils import tqdm
-#from python_tools import tqdm_utils as tqu
+#from python_tools from . import tqdm_utils as tqu
 #import time
 #import pandas as pd
 #import numpy as np
@@ -2567,7 +2562,7 @@ def edge_df_multi(G,
     except that it can export node properties
     
     Ex: 
-    from python_tools import networkx_utils as xu
+    from python_tools from . import networkx_utils as xu
     e_df = xu.edge_df_multi(G_proof_multi_di,
                             verbose = True,
                      )
@@ -2653,7 +2648,7 @@ def edge_df(G,with_node_attributes = False,
     return G_df
 
 
-#from python_tools import regex_utils as ru
+#from python_tools from . import regex_utils as ru
 def query_bidirectional(query,
     node_1 = upstream_name,
     node_2=downstream_name,
@@ -2692,8 +2687,8 @@ def is_graph(G):
 def is_graph_any(G):
     return xu.is_digraph(G) or xu.is_multigraph(G) or xu.is_graph(G)
 
-#from python_tools import pandas_utils as pu
-#from python_tools import tqdm_utils as tqu
+#from python_tools from . import pandas_utils as pu
+#from python_tools from . import tqdm_utils as tqu
 #import copy
 
 
@@ -3290,7 +3285,7 @@ def least_downstream_node(G,nodes,verbose = False):
         print(f"# of downstream for each node = {down_count}")
     return nodes[np.argmin(down_count)]
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def check_downstream_nodes_on_same_path(G,
     nodes,
     start_node,
@@ -4029,7 +4024,7 @@ def adjacency_feature_info(
 def nodes_DFS(G,source=None):
     return list(nx.dfs_preorder_nodes(G,source = source))
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def delete_node_attributes(
     G,
     attributes=None,
@@ -4372,7 +4367,7 @@ def edge_str_from_G(
     **kwargs):
     return delimiter.join([f"{e1}->{e2}" for e1,e2 in G.edges()]) + delimiter
 
-#from python_tools import string_utils as stru
+#from python_tools from . import string_utils as stru
 def motif_Gs_for_n_nodes(
     n,
     graph_type = "DiGraph",
@@ -4396,7 +4391,7 @@ def motif_Gs_for_n_nodes(
     2) Filter for a certain amount of nodes
     
     Ex: 
-    from python_tools import networkx_utils as xu
+    from python_tools from . import networkx_utils as xu
     xu.motif_Gs_for_n_nodes(n=3,plot = True)
     """
 
@@ -5471,5 +5466,14 @@ def remove_nodes_with_no_edges(G,copy = False):
         G = G.copy()
     G.remove_nodes_from(nodes)
     return G
+
+#--- from python_tools ---
+from . import general_utils as gu
+from . import numpy_utils as nu
+from . import pandas_utils as pu
+from . import regex_utils as ru
+from . import string_utils as stru
+from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
 
 from . import networkx_utils as xu

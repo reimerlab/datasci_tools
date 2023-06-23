@@ -1,10 +1,12 @@
-"""
+'''
+
 Purpose: To help automatically create a 
 
-"""
+
+'''
+from pathlib import Path
+from setuptools import setup, find_packages
 from typing import List
-from python_tools import inspect_utils as iu
-from python_tools import file_utils as filu
 
 def get_install_requires(filepath=None):
     if filepath is None:
@@ -23,8 +25,6 @@ def get_links():
     ]
 
 setup_py_str = """
-from setuptools import setup, find_packages
-from pathlib import Path
 
 setup(
     name='[name]', # the name of the package, which can be different than the folder when using pip instal
@@ -81,3 +81,6 @@ def setup_py_str_generator(
     
     return data
     
+#--- from python_tools ---
+from . import file_utils as filu
+from . import inspect_utils as iu

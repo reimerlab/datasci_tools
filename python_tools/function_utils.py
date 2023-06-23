@@ -1,8 +1,10 @@
+'''
+
+methods for helping inspect functions
+
+'''
 from inspect import getmembers
 import inspect
-"""
-methods for helping inspect functions
-"""
 
 #import inspect
 
@@ -10,7 +12,7 @@ def arg_names(func):
     """
     Purpose: To get the names of the argument
     
-    from python_tools import function_utils as funcu
+    from python_tools from . import function_utils as funcu
     funcu.arg_names(myfunc)
     """
     return inspect.getfullargspec(func).args
@@ -76,4 +78,5 @@ for f in [myfunc1,myfunc2]:
     new_funcs.append(make_func(f))
     
 new_funcs'''
+
 

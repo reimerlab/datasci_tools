@@ -1,15 +1,14 @@
-from . import data_struct_utils as dsu
-from . import hash_utils as hashu
-from . import string_utils as stru
-import copy
-"""
+'''
+
 Utility functions for manipulating strings
 
-"""
-#from python_tools import hash_utils as hashu
-#from python_tools import string_utils as stru
+
+'''
+import copy
+#from python_tools from . import hash_utils as hashu
+#from python_tools from . import string_utils as stru
 #import copy
-#from python_tools import data_struct_utils as dsu
+#from python_tools from . import data_struct_utils as dsu
 
 def abbreviate_str_keys(
     d,
@@ -37,7 +36,7 @@ def abbreviate_str_keys(
     this_is_a_really_long_name_and_unneccessary_hi = 5
     )
 
-    from python_tools import dict_utils as dictu
+    from python_tools from . import dict_utils as dictu
     dictu.abbreviate_str_keys(
         x,
         verbose = True,
@@ -109,3 +108,8 @@ def abbreviate_str_keys(
 
 
 
+
+#--- from python_tools ---
+from . import data_struct_utils as dsu
+from . import hash_utils as hashu
+from . import string_utils as stru

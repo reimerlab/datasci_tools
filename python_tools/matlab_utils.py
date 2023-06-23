@@ -5,6 +5,7 @@ def loadmat(filepath):
     return io.loadmat(filepath)
 
 
-#from python_tools import matlab_utils as matu
+#from python_tools from . import matlab_utils as matu
+
 
 from . import matlab_utils as matu

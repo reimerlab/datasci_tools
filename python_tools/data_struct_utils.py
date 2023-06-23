@@ -30,7 +30,7 @@ class DictType():
     my_obj2 = dsu.DictType(hello=("xy",str),his=(int,5),yes=(10,bool))
     my_obj
 
-    from python_tools import general_utils as gu
+    from python_tools from . import general_utils as gu
     output_obj = gu.merge_dicts([my_obj,my_obj2,{}])
     output_obj
     
@@ -130,6 +130,7 @@ class DictType():
     
     
 
-#from python_tools import data_struct_utils as dsu
+#from python_tools from . import data_struct_utils as dsu
+
 
 from . import data_struct_utils as dsu

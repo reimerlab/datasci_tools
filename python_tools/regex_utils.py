@@ -1,7 +1,5 @@
-import re
-import re 
+'''
 
-"""
 Note: 
 - * only works at the beginning of string
 
@@ -43,12 +41,16 @@ algorithm = "split"
 data_type = "h01"
 search_string = fr"{dict_type}.*{algorithm}.*{data_type}"
 test_str = "global_parameters_hi_split_h01"
-#from python_tools import regex_utils as ru
+#from python_tools from . import regex_utils as ru
 ru.match_substring_in_str(search_string,
             test_str)
 
 
-"""
+
+'''
+import re
+import re 
+
 
 """
 Exaples of searches-----------------
@@ -129,6 +131,7 @@ multiline_str_pattern = r"""(['"])\1\1(.*?)\1{3}"""
 
 word_pattern = "[a-zA-Z._]+"
 word_pattern_comma_space = "[a-zA-Z._, ]+"
+word_pattern_comma_space_numb = "[a-zA-Z._, ][a-zA-Z._, 1-9]+"
 
 
 def multiple_replace(
@@ -139,7 +142,7 @@ def multiple_replace(
     Purpose: To replace multiple strings with a dictionary apping
     
     Ex: 
-    from python_tools import regex_utils as ru
+    from python_tools from . import regex_utils as ru
     query = "u in [1,2,3,4]"
     dict_mapping = dict(u="v",v="u")
     ru.multiple_replace(query,dict_mapping)
@@ -208,6 +211,7 @@ def match_pattern_in_str(
     else:
         return found_strings
     
+
 
 
 from . import regex_utils as ru

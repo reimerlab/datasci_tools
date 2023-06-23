@@ -1,8 +1,10 @@
-import numpy as np
-"""
+'''
+
 Purpose: defining general algorithms that help with processing
 
-"""
+
+'''
+import numpy as np
 #import numpy as np
 
 def compare_uneven_groups(group1,
@@ -16,7 +18,7 @@ def compare_uneven_groups(group1,
     that are not in the other group
     
     Example: 
-    from python_tools import algorithms_utils as au
+    from python_tools from . import algorithms_utils as au
     au = reload(au)
     au.compare_uneven_groups(obj1.inside_pieces[:10],obj2.inside_pieces,
                              comparison_func = tu.compare_meshes_by_face_midpoints,
@@ -97,4 +99,5 @@ def compare_uneven_groups(group1,
         return return_boolean,differences
     else:
         return return_boolean
+
 

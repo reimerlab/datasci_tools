@@ -1,4 +1,5 @@
-"""
+'''
+
 to explore the use cases of the dataclass module
 
 --- source 1 ----
@@ -36,7 +37,8 @@ class Person():
                                                  other.height, other.email)
         return NotImplemented
 
-"""
+
+'''
 from dataclasses import dataclass
 
 def examples():

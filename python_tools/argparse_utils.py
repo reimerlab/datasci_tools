@@ -1,19 +1,26 @@
-import argparse
-"""
+'''
+
 Purpose: Go through the specifics 
 of how to enable commmand line interface for a python script
 
 Tutorial: https://realpython.com/command-line-interfaces-python-argparse/
-"""
+
+
+
+
+
+argument_options_notes= 
+
+
+
+argparse_arguments_notes =
+'''
+import argparse
 
 #import argparse
 
 general_notes = """
 - when using argparse get the help (-h) for free and will automatically tell you the variables you are missing
-"""
-
-
-argument_options_notes= """
 An argument is a single part of a command line, delimited by blanks.
 An option is a particular type of argument (or a part of an argument) that can modify the behavior of the command line.
 A parameter is a particular type of argument that provides additional information to a single option or command.
@@ -27,9 +34,6 @@ $ ls -l -s -k /var/log
 -s: an option to print the allocated size of each file
 -k: an option to have the size in kilobytes
 /var/log: a parameter that provides additional information (the path to list) to the command
-"""
-
-argparse_arguments_notes ="""
     metavar: provides different names for optional arguments in help mesages
         ex: (see how it replaces the bar variable )
         >>> parser = argparse.ArgumentParser()
@@ -69,4 +73,5 @@ def example_basic_argparse_test():
     
 def print_help_str(parser):
     parser.print_help()
+
 

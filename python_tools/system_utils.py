@@ -1,5 +1,11 @@
-from . import tqdm_utils as tqu
-from .tqdm_utils import tqdm
+'''
+
+How to get a reference to the current module
+
+#import sys
+current_module = sys.modules[__name__]
+
+'''
 from contextlib import contextmanager
 from os import devnull
 from pathlib import Path
@@ -16,9 +22,10 @@ import shutil
 import signal
 import subprocess
 import sys
+import sys, os
 import time
 import warnings
-import sys, os
+import bz2, os
 
 # # ************ warning this will disable all printing until turned off *************
 # # Disable
@@ -31,12 +38,6 @@ import sys, os
 # # ************ warning this will disable all printing until turned off *************
 
     
-"""
-How to get a reference to the current module
-
-#import sys
-current_module = sys.modules[__name__]
-"""
     
 #better way of turning off printing: 
 #import os, sys
@@ -75,7 +76,7 @@ turn_off_warnings = ignore_warnings
 
 #from contextlib import contextmanager,redirect_stderr,redirect_stdout
 #from os import devnull
-#from python_tools import tqdm_utils as tqu
+#from python_tools from . import tqdm_utils as tqu
 #from python_tools.tqdm_utils import tqdm
 #import copy
 
@@ -88,7 +89,7 @@ def suppress_stdout_stderr(suppress_tqdm=True):
     if suppress_tqdm = True
     
     Ex: How to suppress warning messages in Poisson
-    import soma_extraction_utils as sm
+    from meshAfterParty import soma_extraction_utils as sm
 with su.suppress_stdout_stderr():
     sm.soma_volume_ratio(my_neuron.concept_network.nodes["S0"]["data"].mesh)
     
@@ -167,14 +168,14 @@ Example:
 
 su = reload(su)
 
-#from neuron import Neuron
+#from meshAfterParty.neuron import Neuron
 another_neuron = Neuron(new_neuron)
 su.save_object(another_neuron,"inhibitory_saved_neuron")
 
 ---Way that doesn't work---
 su = reload(su)
 
-#import neuron
+#from meshAfterParty import neuron
 another_neuron = neuron.Neuron(new_neuron)
 su.save_object(another_neuron,"inhibitory_saved_neuron")
 
@@ -454,9 +455,13 @@ def rm_dir(directory,ignore_errors = False):
     
 
 
-#from python_tools import system_utils as su
+#from python_tools from . import system_utils as su
 
 
 
+
+#--- from python_tools ---
+from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
 
 from . import system_utils as su

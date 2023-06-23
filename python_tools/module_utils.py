@@ -1,12 +1,10 @@
-"""
+'''
+
 Purpose: to provide functionality for inspecting,
 editing and interacting with python modules (the .py files)
-"""
-from . import module_utils as modu
-from . import data_struct_utils as dsu
 
 
-"""
+
 Note: 
 
 ---Default arguments:---
@@ -21,12 +19,18 @@ value inside the funciton
 Rule: Can't set 
 
 
-"""
+
+'''
+from pathlib import Path
+import inspect
+import numpy as np
+import regex as re
+
+
 
 """
 Demo: Shows that you can't set a local variable with exec and eval 
 
-import inspect
 x_global = 100
 y_global = 200
 
@@ -130,8 +134,6 @@ def set_attributes_by_dict(module,
             print(f"{global_name} = {getattr(module,global_name)}")
             
             
-from . import numpy_utils as nu
-from . import general_utils as gu
 def collect_global_parameters_and_attributes_by_data_type(
     module,
     data_type,
@@ -321,7 +323,7 @@ def set_global_parameters_and_attributes_by_data_type(
 
 
     def set_global_parameters_and_attributes_by_data_type(data_type):
-        import module_utils as modu 
+        from . import module_utils as modu 
         modu.set_global_parameters_and_attributes_by_data_type(syu,data_type)
 
     set_global_parameters_and_attributes_by_data_type("microns")
@@ -454,8 +456,6 @@ Example of the fresh module functions:
 
 
 # ------------- parameters for stats ---------------
-import module_utils as modu
-import general_utils as gu
 
 global_parameters_dict_default = dict()
 attributes_dict_default = dict()    
@@ -536,8 +536,6 @@ Example of how to do abridge
 
 """
 
-from pathlib import Path
-import numpy as np
 
 def all_modules_set_global_parameters_and_attributes(
     data_type,
@@ -550,7 +548,7 @@ def all_modules_set_global_parameters_and_attributes(
     of all modules in a certain directory
     
     Ex: 
-    import module_utils as modu
+    from . import module_utils as modu
     modu.all_modules_set_global_parameters_and_attributes(
         "microns",
         verbose = True,
@@ -641,8 +639,8 @@ def multiline_str(
         idx = index_of_first_func_def(
             filepath = filepath
         )
-        
-        total_results = [k for k in total_results
+        if idx is not None:
+            total_results = [k for k in total_results
                         if k.end() < idx]
     
     if return_text:
@@ -654,9 +652,6 @@ def multiline_str(
 
 
 
-from . import regex_utils as ru
-from . import file_utils as filu
-import regex as re
 
 def import_pattern_str(
     start = None,
@@ -667,7 +662,7 @@ def import_pattern_str(
     ):
     
     if add_possible_comma:
-        word_comb = ru.word_pattern_comma_space
+        word_comb = ru.word_pattern_comma_space_numb
     else:
         word_comb = ru.word_pattern
     
@@ -809,7 +804,6 @@ def clean_module_imports(
     filu.write_file(filepath=output_file,data=finds_top_str + f"\n" + data + ending_import)
     return output_file
 
-from . import pathlib_utils as plu
 def modules_from_directory(
     directory,
     verbose = False,
@@ -836,7 +830,6 @@ def modules_from_directory(
     return modules
 
 
-import regex as re
 def index_of_first_func_def(
     string=None,
     filepath = None):
@@ -863,16 +856,6 @@ def index_of_first_func_def(
     return curr_match
 
 
-from pathlib import Path
-from python_tools import system_utils as su
-from python_tools import regex_utils as ru
-from python_tools import module_utils as modu
-from python_tools import file_utils as filu
-from python_tools import string_utils as stru
-from python_tools import package_utils as pku
-from python_tools import pathlib_utils as plu
-import numpy as np
-import regex as re
 
 def clean_module_syntax(
     filepath,
@@ -1179,7 +1162,6 @@ def clean_module_syntax(
     )
 
     
-import regex as re
 def package_from_import_string(
     string,
     ):
@@ -1198,11 +1180,6 @@ def package_from_import_string(
     return package
     
     
-from python_tools import module_utils as modu
-from python_tools import package_utils as pku
-from pathlib import Path
-import numpy as np
-from python_tools import numpy_utils as nu
 
 def package_imports_from_files(
     files = None,
@@ -1254,7 +1231,7 @@ def package_imports_from_files(
     
     
     
-#from python_tools import file_utils as filu
+#from python_tools from . import file_utils as filu
 
 
             
@@ -1262,3 +1239,16 @@ def package_imports_from_files(
     
 
 
+
+#--- from python_tools ---
+from . import data_struct_utils as dsu
+from . import file_utils as filu
+from . import general_utils as gu
+from . import numpy_utils as nu
+from . import package_utils as pku
+from . import pathlib_utils as plu
+from . import regex_utils as ru
+from . import string_utils as stru
+from . import system_utils as su
+
+from . import module_utils as modu

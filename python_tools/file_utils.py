@@ -1,12 +1,14 @@
+'''
+
+Utils functions for helping to work with files
+
+
+'''
 from pathlib import Path
 import io
 import numpy as np
 import os
 import re
-"""
-Utils functions for helping to work with files
-
-"""
 
 #from pathlib import Path
 
@@ -202,6 +204,7 @@ def file_regex_add_prefix(
         **kwargs
     )
 
-#from python_tools import file_utils as filu
+#from python_tools from . import file_utils as filu
+
 
 from . import file_utils as filu

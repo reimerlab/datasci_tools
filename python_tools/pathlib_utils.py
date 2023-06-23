@@ -1,8 +1,10 @@
+
+from pathlib import Path
 from tqdm.notebook import tqdm
 import os
 import re
+import regex as re
 import shutil
-from pathlib import Path
 
 def filename(path):
     return Path(path).name
@@ -46,7 +48,7 @@ def create_folder(folder_path):
     """
     To create a new folder
     
-    from python_tools import pathlib_utils as plu
+    from python_tools from . import pathlib_utils as plu
     plu.create_folder("/mnt/dj-stor01/platinum/minnie65/02/graphs")
     """
     p = Path(folder_path)
@@ -88,7 +90,7 @@ def inside_directory(directory,filepath):
     """
     Ex: 
     from pathlib import Path
-    from python_tools import pathlib_utils as plu
+    from python_tools from . import pathlib_utils as plu
 
     root = Path("/python_tools/python_tools/")#.resolve()
     child = Path("../python_tools/numpy_utils.py")#.resolve()
@@ -103,7 +105,6 @@ def relative_path_of_parent(parent,filepath):
     """
     return str(Path(filepath).relative_to(Path(parent))).replace("//","/")
 
-import regex as re
 def n_levels_parent_above(parent,filepath,verbose = False):
     """
     Purpose: Find the number of levels a parent
@@ -127,6 +128,7 @@ def n_levels_parent_above(parent,filepath,verbose = False):
     return n_levels
 
 
-#from python_tools import pathlib_utils as plu
+#from python_tools from . import pathlib_utils as plu
+
 
 from . import pathlib_utils as plu

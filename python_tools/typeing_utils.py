@@ -1,10 +1,10 @@
-"""
+
+from typing import List"""
 module for helping create type hinting
 
 documentation: https://docs.python.org/3/library/typing.html
 
 Ex: 
-from typing import List
 
 def get_install_requires(filepath=None) -> List[str]:
     if filepath is None:
@@ -19,4 +19,5 @@ def get_install_requires(filepath=None) -> List[str]:
 
 
 """
+
 

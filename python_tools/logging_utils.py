@@ -1,4 +1,5 @@
-"""
+'''
+
 Covers the basics of the logging module (built in python)
 
 ---------source 1--------------
@@ -44,9 +45,10 @@ logger = logging.getLogger('spam_application'); logger.debug("")
 
 To automatically create a specific logger for every distinct module use:
 logger = logging.getLogger(__name__)
-"""
 
+'''
 import logging
+
 
 
 def examples():

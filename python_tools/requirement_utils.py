@@ -1,24 +1,23 @@
-from . import numpy_utils as nu
-from . import system_utils as su
-from pathlib import Path
-import tqdm
-"""
+'''
+
 utilizies the pipreqs tool to automatically
 generate the requirements of a folder
 
-"""
+
+'''
+from pathlib import Path
+import numpy as np
+import tqdm
 
 default_packages_to_install = [
     "ipython",
     "ipython_genutils"
 ]
 
-#from python_tools import system_utils as su
-#from python_tools import numpy_utils as nu
+#from python_tools from . import system_utils as su
+#from python_tools from . import numpy_utils as nu
 #import tqdm
 #from pathlib import Path
-import numpy as np
-from python_tools import file_utils as filu
 
 def requirement_file_from_requirements_dict(
     requirement_dict,
@@ -134,7 +133,6 @@ def requirements_dict_from_directories(
             )
         
     return pack_includes
-from . import module_utils as modu
 def req_vs_package_import_diff(
     requirement_dict,
     directory,
@@ -161,5 +159,11 @@ def package_ver_dict_from_file(filepath):
     except:
         requirement_dict = {pack:ver for pack,ver in [curr_split.split(">=") for curr_split in requirement_list] if ".egg" != pack[-4:]}
     return requirement_dict
+
+#--- from python_tools ---
+from . import file_utils as filu
+from . import numpy_utils as nu
+from . import system_utils as su
+from . import module_utils as modu
 
 from . import requirement_utils as requ

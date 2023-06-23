@@ -1,18 +1,17 @@
-from . import data_struct_utils as dsu
-from . import numpy_utils as nu
-from . import pandas_utils as pu
+'''
+
+Purpose: Datajoint utils to help with table manipulation
+
+'''
 import datajoint as dj
 import numpy as np
 import pandas as pd
 import time
-"""
-Purpose: Datajoint utils to help with table manipulation
-"""
 #import datajoint as dj
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 #import numpy as np
 #import pandas as pd
-#from python_tools import pandas_utils as pu
+#from python_tools from . import pandas_utils as pu
 
 def df_from_table_old(
     table,
@@ -242,7 +241,7 @@ def parameter_datatype(
     else:
         raise Exception(f"Unknown type: {type(parameter)}")
         
-#from python_tools import data_struct_utils as dsu
+#from python_tools from . import data_struct_utils as dsu
 def parameter_datatype_description(kwargs_dict,
                                   kwargs_datatype_dict = None,
                                    add_null = True,
@@ -338,6 +337,11 @@ def query_table_from_kwargs(
 
 restrict_table_from_list = pu.restrict_df_from_list
 
-#from python_tools import dj_utils as dju
+#from python_tools from . import dj_utils as dju
+
+#--- from python_tools ---
+from . import data_struct_utils as dsu
+from . import numpy_utils as nu
+from . import pandas_utils as pu
 
 from . import dj_utils as dju

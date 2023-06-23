@@ -1,8 +1,10 @@
-import difflib
-"""
+'''
+
 Utility functions for manipulating strings
 
-"""
+
+'''
+import difflib
 
 def abbreviate_phrase(
     s,
@@ -19,7 +21,7 @@ def abbreviate_phrase(
     certain character
     
     Ex: 
-    from python_tools import string_utils as stru
+    from python_tools from . import string_utils as stru
     stru.abbreviate_phrase(
         s = "ais_syn_density_max_backup_excitatory",
         verbose = True,
@@ -49,7 +51,7 @@ def abbreviate_phrase(
 def str_overlap(s1, s2):
     """
     Ex: 
-    from python_tools import string_utils as stru
+    from python_tools from . import string_utils as stru
     stru.str_overlap("my name is Brendan","helloBrend")
     """
     s = difflib.SequenceMatcher(None, s1, s2)
@@ -89,7 +91,6 @@ def example_curly_braces_inside_fstring():
     x = "hi"
     print(f"{x} is better than {{hello}}")
     
-from python_tools import numpy_utils as nu
 def remove_range_list(
     string,
     range_list,
@@ -97,7 +98,7 @@ def remove_range_list(
     
     """
     Ex: 
-    from python_tools import string_utils as stru
+    from python_tools from . import string_utils as stru
     stru.remove_range_list(
         string = 'geeksforgeeks is best for geeks',
         range_list = [(3, 6), (7, 10), (14, 17)],
@@ -127,7 +128,10 @@ def keep_range_list(
 
     
 
-#from python_tools import string_utils as stru
+#from python_tools from . import string_utils as stru
 
+
+#--- from python_tools ---
+from . import numpy_utils as nu
 
 from . import string_utils as stru

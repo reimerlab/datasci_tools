@@ -80,8 +80,9 @@ def rotation_matrix_2D(angle):
 
     
     
-#from python_tools import linalg_utils as lu
+#from python_tools from . import linalg_utils as lu
     
         
+
 
 from . import linalg_utils as lu

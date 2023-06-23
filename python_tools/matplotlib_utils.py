@@ -1,25 +1,5 @@
-from . import numpy_utils as nu
-from . import pandas_utils as pu
-from . import statistics_utils as stu
-from . import string_utils as stru
-from IPython.display import display
-from collections import Counter
-from copy import copy
-from matplotlib import cm
-from matplotlib import colors as mcolors
-from matplotlib.colors import LogNorm
-from matplotlib.ticker import MaxNLocator
-import matplotlib
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-import webcolors
-from matplotlib import colors
-#import numpy as np
-#from python_tools import numpy_utils as nu
-#from python_tools import pandas_utils as pu
-"""
+'''
+
 Notes on other functions: 
 eventplot #will plot 1D data as lines, can stack multiple 1D events
 -- if did a lot of these gives the characteristic neuron spikes
@@ -43,7 +23,25 @@ fig.tight_layout()
            
 
 
-"""
+
+'''
+from IPython.display import display
+from collections import Counter
+from copy import copy
+from matplotlib import cm
+from matplotlib import colors
+from matplotlib import colors as mcolors
+from matplotlib.colors import LogNorm
+from matplotlib.ticker import MaxNLocator
+import matplotlib
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import webcolors
+#import numpy as np
+#from python_tools from . import numpy_utils as nu
+#from python_tools from . import pandas_utils as pu
 
 graph_color_list = ["blue","green","red","cyan","magenta",
      "black","grey","midnightblue","pink","crimson",
@@ -116,7 +114,7 @@ def generate_non_randon_named_color_list(n_colors,
                                   colors_to_omit=colors_to_omit,
                       return_named_colors=True)
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def generate_color_list(
                         user_colors=[], #if user sends a prescribed list
                         n_colors=-1,
@@ -194,7 +192,7 @@ def generate_random_rgba(print_flag=False):
         print(f"random color chosen = {rand_color}")
     return colors.to_rgb(rand_color[0])
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def generate_color_list_no_alpha_change(
                         user_colors=[], #if user sends a prescribed list
                         n_colors=-1,
@@ -340,7 +338,7 @@ def convert_dict_rgb_values_to_names(color_dict):
     neuron plotting function
     
     Example: 
-    from python_tools import matplotlib_utils as mu
+    from python_tools from . import matplotlib_utils as mu
     mu = reload(mu)
     nviz=reload(nviz)
 
@@ -386,7 +384,7 @@ def plot_color_dict(colors,sorted_names=None,
     mu.plot_color_dict(mu.base_colors_dict,hue_sort=True,figure_height=20)
     
     How to plot colors returned from the plotting function:
-    from python_tools import matplotlib_utils as mu
+    from python_tools from . import matplotlib_utils as mu
     mu = reload(mu)
     nviz=reload(nviz)
 
@@ -962,7 +960,7 @@ def color_transition(
     
     return total_colors
 
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def text_overlay(
     ax,
     #dictionary mapping text to coordinate  
@@ -1022,7 +1020,7 @@ def text_overlay(
     return ax
         
         
-#from python_tools import matplotlib_utils as mu
+#from python_tools from . import matplotlib_utils as mu
 def stacked_bar_graph(
     df,
     x = "x",
@@ -1269,7 +1267,7 @@ def histograms_overlayed(
     Purpose: 
     To plot different histograms all overlayed
     
-    from python_tools import matplotlib_utils as mu
+    from python_tools from . import matplotlib_utils as mu
     mu.histograms_overlayed(
         coord_df,
         column="centroid_y_nm",
@@ -1280,7 +1278,7 @@ def histograms_overlayed(
         same_axis = False
     
     df= df.query(f"{column} == {column}")
-    from python_tools import numpy_utils as nu
+    from python_tools from . import numpy_utils as nu
     df = pu.filter_away_rows_with_nan_in_columns(
         df = df,
         columns = column,
@@ -1452,7 +1450,7 @@ def histograms_overlayed(
     
 #import seaborn as sns
 #import matplotlib.pyplot as plt
-#from python_tools import pandas_utils as pu
+#from python_tools from . import pandas_utils as pu
 
 def histogram_2D_overlayed(
     df,
@@ -1473,7 +1471,7 @@ def histogram_2D_overlayed(
     one after the other
     """
     
-    import seaborn_ml as sml
+    from machine_learning_tools import seaborn_ml as sml
 
     if hue_order is None:
         hue_order = df[hue].unique()
@@ -1540,7 +1538,7 @@ def histogram_2D_overlayed(
 
 
 #import numpy as np
-#from python_tools import numpy_utils as nu
+#from python_tools from . import numpy_utils as nu
 def histograms_over_intervals(
     df,
     attribute,
@@ -2710,7 +2708,7 @@ def add_text_to_pos(ax,x,y,text,fontsize=None,weight = "bold"):
         transform=ax_m.transAxes,
     )
     
-#from python_tools import string_utils as stru
+#from python_tools from . import string_utils as stru
 def add_letter_to_ax(
     ax,
     letter=None,
@@ -2870,7 +2868,7 @@ def set_legend_labels_with_dict(
     
 legend_off = remove_legend
 
-#from python_tools import statistics_utils as stu
+#from python_tools from . import statistics_utils as stu
 def add_correlation_text_box(
     ax,
     x=None,
@@ -2952,7 +2950,13 @@ def set_legend_loc(
     return ax
 
 hide_ax = turn_ax_off
-#from python_tools import matplotlib_utils as mu
+#from python_tools from . import matplotlib_utils as mu
 
+
+#--- from python_tools ---
+from . import numpy_utils as nu
+from . import pandas_utils as pu
+from . import statistics_utils as stu
+from . import string_utils as stru
 
 from . import matplotlib_utils as mu

@@ -1,14 +1,5 @@
-from . import file_utils as filu
-from . import numpy_utils as nu
-from . import pathlib_utils as plu
-import io
-from python_tools import pathlib_utils as plu
-from pathlib import Path
-#from python_tools import numpy_utils as nu
-#from python_tools import file_utils as filu
-#import io
+'''
 
-"""
 Notes: global variables can be referenced in functions
 but can't be assigned to (if they are then its just a local copy)
 without the use of the global keyword
@@ -18,7 +9,14 @@ explanation: https://stackoverflow.com/questions/62665924/python-program-importi
 
 --> could technically put at the top
 
-"""
+
+'''
+from pathlib import Path
+import io
+#from python_tools from . import numpy_utils as nu
+#from python_tools from . import file_utils as filu
+#import io
+
 user_packages = (
         "/neurd_packages/python_tools/python_tools/",
         "/neurd_packages/machine_learning_tools/machine_learning_tools/",
@@ -170,7 +168,6 @@ def prefix_module_imports_in_files(
             f = curr_output_filepath
 
             
-from python_tools import pathlib_utils as plu
 def package_name_from_path(path):
     return path.split("/")[-3]
 def package_from_filepath_and_package_list(
@@ -217,9 +214,6 @@ def create_init(
     filepath.touch(exist_ok= exist_ok)
     return filepath
 
-from pathlib import Path
-from python_tools import numpy_utils as nu
-from python_tools import module_utils as modu
 def clean_package_syntax(
     directory,
     overwrite=False,
@@ -263,6 +257,12 @@ def module_files_from_directory(
     return files
 
 
-#from python_tools import package_utils as pku
+#from python_tools from . import package_utils as pku
+
+#--- from python_tools ---
+from . import file_utils as filu
+from . import numpy_utils as nu
+from . import pathlib_utils as plu
+from . import module_utils as modu
 
 from . import package_utils as pku

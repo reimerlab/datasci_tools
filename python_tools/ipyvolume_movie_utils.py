@@ -1,5 +1,5 @@
+
 import numpy as np
-from python_tools import ipyvolume_utils as ipvu
 
 #import numpy as np
 def start_end_frame_from_start_end_frac(
@@ -39,7 +39,7 @@ def start_end_frame_from_start_end_frac(
 
 
 def example_rotating_motif():
-    import connectome_utils as conu
+    from meshAfterParty import connectome_utils as conu
     exc_name = "864691135494192528_0"
     conu.visualize_graph_connections_by_method(
         G,
@@ -80,6 +80,9 @@ def example_rotating_motif():
     )
     
     
-#from python_tools import ipyvolume_movie_utils as ipvm
+#from python_tools from . import ipyvolume_movie_utils as ipvm
+
+#--- from python_tools ---
+from . import ipyvolume_utils as ipvu
 
 from . import ipyvolume_movie_utils as ipvm

@@ -1,14 +1,5 @@
-from scipy.optimize import curve_fit
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy
-from scipy.spatial import Delaunay
-#import matplotlib.pyplot as plt
-#import numpy as np
-#import scipy
+'''
 
-# ------ 3/10: Delauny Triangulation -------#
-"""
 Notes on the Delauny triangulation:
 1) just makes a surface that encloses all points in a triangulation
 such that no point in P is inside the circumcircle of any triangle in DT(P).
@@ -21,7 +12,18 @@ array([[2, 3, 0],
         
 find_simplex --> Find the simplices containing the given points (will return the simplices index)
 
-"""
+
+'''
+from scipy.optimize import curve_fit
+from scipy.spatial import Delaunay
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy
+#import matplotlib.pyplot as plt
+#import numpy as np
+#import scipy
+
+# ------ 3/10: Delauny Triangulation -------#
 
 def example_delaunay_triangulation(points=None,
                                    plot_triangulation=True,
@@ -148,6 +150,7 @@ def model_fit(
     
     
     return func(x, *popt)
+
 
 
 

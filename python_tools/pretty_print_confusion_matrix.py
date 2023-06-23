@@ -1,11 +1,5 @@
-from matplotlib.collections import QuadMesh
-from pandas import DataFrame
-import matplotlib.font_manager as fm
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sn
-# -*- coding: utf-8 -*-
-"""
+'''
+
 plot a pretty confusion matrix with seaborn
 Created on Mon Jun 25 14:17:37 2018
 @author: Wagner Cipriano - wagnerbhbr - gmail - CEFETMG / MMC
@@ -16,7 +10,15 @@ REFerences:
   https://www.programcreek.com/python/example/96197/seaborn.heatmap
   https://stackoverflow.com/questions/19233771/sklearn-plot-confusion-matrix-with-labels/31720054
   http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
-"""
+
+'''
+from matplotlib.collections import QuadMesh
+from pandas import DataFrame
+import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sn
+# -*- coding: utf-8 -*-
 
 #imports
 #from pandas import DataFrame
@@ -313,5 +315,6 @@ if(__name__ == '__main__'):
     plt.pause(5)
     print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
     _test_data_class()
+
 
 

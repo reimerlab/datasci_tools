@@ -1,9 +1,11 @@
-from tqdm.notebook import tqdm
-"""
+'''
+
 To provide a tqdm that can be controlled
 
 Reference Article: https://github.com/tqdm/tqdm/issues/619
-"""
+
+'''
+from tqdm.notebook import tqdm
 #global_enable = False
 
 #from tqdm.notebook import tqdm
@@ -27,5 +29,6 @@ def turn_off_tqdm():
     tqdm.disable=True
     
     
+
 
 
