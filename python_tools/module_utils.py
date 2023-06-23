@@ -883,7 +883,8 @@ def clean_module_syntax(
     packages = None,
     docstring_only_above_first_func_def = True,
     separator = f"",
-    prefix_separator = "\n"
+    prefix_separator = "\n",
+    skip_overwrite_suffix_files = True,
     ):
     """
     Part 0: Copy and paste document into new file if not overwrite
@@ -940,6 +941,10 @@ def clean_module_syntax(
     itself
 
     """
+    if skip_overwrite_suffix_files and non_overwrite_suffix in str(filepath):
+        return 
+    
+    
     if packages is None:
         packages = pku.user_packages
     
@@ -964,14 +969,15 @@ def clean_module_syntax(
     curr_package_name = pku.package_from_filepath_and_package_list(
         filepath=filepath,
         packages=packages,
-        return_package_name = True
+        return_package_name = True,
+        verbose = verbose,
     )
     if verbose:
         print(f"curr_mod = {curr_mod}, curr_package_name = {curr_package_name}")
         
         
     pkg_to_module = {
-        k.split("/")[1]:pku.module_names_from_directories(k)
+        pku.package_name_from_path(k):pku.module_names_from_directories(k)
         for k in packages
     }
     
@@ -1127,6 +1133,10 @@ def clean_module_syntax(
     own_mod_str = "\n".join(own_mod)
     pkg_mods_str = "\n\n".join([f"#--- from {pkg} ---\n" + "\n".join(m)
                                for pkg,m in pkg_mods.items() ])
+    
+    #get rid of any old package documentation (in case run documentation again)
+    for pkg in pkg_mods.keys():
+        data_doc_no_mod = data_doc_no_mod.replace(f"#--- from {pkg} ---\n","")
 
     if verbose:
         print(non_pkg_mods_str)

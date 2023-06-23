@@ -4402,7 +4402,8 @@ def bin_array_column(
     return df
 
 #from python_tools import matplotlib_utils as mu
-plot_gradients_over_coordiante_columns = mu.plot_gradients_over_coordiante_columns
+def plot_gradients_over_coordiante_columns(*args,**kwargs):
+    return mu.plot_gradients_over_coordiante_columns(*args,**kwargs)
                   
 
 #from python_tools import pandas_utils as pu

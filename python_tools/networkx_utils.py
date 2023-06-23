@@ -4950,12 +4950,12 @@ def n_edges(G,nodes=None):
     return G.number_of_edges()
 
 def n_edges_out(G,nodes=None):
-    import graph_statistics as gstat
+    from graph_tools import graph_statistics as gstat
     degree_distr = gstat.degree_distribution(G,nodes=nodes,degree_type="out")
     return np.sum(degree_distr)
 
 def n_edges_in(G,nodes=None):
-    import graph_statistics as gstat
+    from graph_tools import graph_statistics as gstat
     degree_distr = gstat.degree_distribution(G,nodes=nodes,degree_type="in")
     return np.sum(degree_distr)
 
@@ -5471,9 +5471,5 @@ def remove_nodes_with_no_edges(G,copy = False):
         G = G.copy()
     G.remove_nodes_from(nodes)
     return G
-
-
-#from python_tools import networkx_utils as xu
-    
 
 from . import networkx_utils as xu

@@ -20,12 +20,12 @@ explanation: https://stackoverflow.com/questions/62665924/python-program-importi
 
 """
 user_packages = (
-        "/python_tools/python_tools/",
-        "/machine_learning_tools/machine_learning_tools/",
-        "/pytorch_tools/pytorch_tools/",
-        "/graph_tools/graph_tools/",
-        "/meshAfterParty/meshAfterParty/",
-        "/neuron_morphology_tools/neuron_morphology_tools/",
+        "/neurd_packages/python_tools/python_tools/",
+        "/neurd_packages/machine_learning_tools/machine_learning_tools/",
+        "/neurd_packages/pytorch_tools/pytorch_tools/",
+        "/neurd_packages/graph_tools/graph_tools/",
+        "/neurd_packages/meshAfterParty/meshAfterParty/",
+        "/neurd_packages/neuron_morphology_tools/neuron_morphology_tools/",
 )
 
 def module_names_from_directories(
@@ -60,17 +60,18 @@ def relative_import_from(directory,filepath):
     return "from " + "".join(["."]*(plu.n_levels_parent_above(directory,filepath)+1)) + " "
 
 def prefix_module_imports_in_files(
-    filepaths,
+    filepaths=None,
     modules_directory = "../python_tools",
     modules = None,
     prefix = "directory",
+    filepaths_directory = None,
     auto_detect_relative_prefix = True,
     prevent_double_prefix = True,
     overwrite_file = False,
     output_filepath = None,# "text_revised.txt",
     verbose = False,
     ignore_files = ["__init__"],
-    
+    skip_filepath_parent_dir = True,
     ):
     """
     want to add a prefixes before
@@ -87,12 +88,32 @@ def prefix_module_imports_in_files(
         modules_directory = [None]
     
     modules_directory = nu.to_list(modules_directory)
+    
+    if filepaths_directory is not None:
+        filepaths_directory = nu.to_list(filepaths_directory)
+        filepaths = []
+        for f_dir in filepaths_directory:
+            if f_dir in modules_directory:
+                if verbose:
+                    print(f"skipping {f_dir}")
+                continue
+            fpaths = plu.files_of_ext_type(
+                directory = f_dir,
+                ext = "py",
+                verbose = False
+            )
+            filepaths += fpaths
+
     filepaths = nu.to_list(filepaths)
     
     for f in filepaths:
         if verbose:
             print(f"--- Working on file: {f}")
             
+        if output_filepath is not None:
+            curr_output_filepath = output_filepath.copy()
+        else:
+            curr_output_filepath = output_filepath
         for directory in modules_directory:
         # --- iterate through all package directories and do the replacement
 
@@ -100,6 +121,9 @@ def prefix_module_imports_in_files(
             if directory is not None:
                 if verbose:
                     print(f"--Getting files from {directory}")
+                    
+                if plu.inside_directory(directory,f) and skip_filepath_parent_dir:
+                    print(f"skipping {directory} for file {f}")
 
                 modules = plu.files_of_ext_type(
                     directory = directory,
@@ -131,28 +155,29 @@ def prefix_module_imports_in_files(
             #print(f"pattern = {pattern}")
             #print(f"replacement = {replacement}")
 
-            #4) write to a new file or old file            
-            output_filepath = filu.file_regex_add_prefix(
+            #4) write to a new file or old file           
+            curr_output_filepath = filu.file_regex_add_prefix(
                 pattern=pattern,
                 prefix=prefix,
                 filepath=f,
                 replacement=replacement,
                 overwrite_file = overwrite_file,
-                output_filepath = output_filepath,# "text_revised.txt",
+                output_filepath = curr_output_filepath,# "text_revised.txt",
                 verbose = verbose,
                 regex = True,
             )
             
-            f = output_filepath
+            f = curr_output_filepath
 
             
 from python_tools import pathlib_utils as plu
 def package_name_from_path(path):
-    return path.split("/")[1]
+    return path.split("/")[-3]
 def package_from_filepath_and_package_list(
     filepath,
     packages,
     return_package_name = False,
+    verbose = False
     ):
     """
     packages = (
@@ -169,8 +194,12 @@ def package_from_filepath_and_package_list(
     )
     
     """
+    if verbose:
+        print(f"Search for package for {filepath}")
     for p in packages:
         if plu.inside_directory(p,filepath):
+            if verbose:
+                print(f"Matched to {p}")
             if return_package_name:
                 return package_name_from_path(p)
             return p
@@ -208,15 +237,15 @@ def clean_package_syntax(
         if verbose:
             print(f"---- working on directory: {curr_directory} ---")
         modules = modu.modules_from_directory(curr_directory)
+        modules
 
         for mod in modules:
             filepath = Path(curr_directory) / (f"{mod}.py")
             if verbose:
-                print(f"   --- working on module: {mod} ---")
-
+                print(f"   --- working on module: {filepath} ---")
             modu.clean_module_syntax(
                 filepath = filepath,
-                verbose = True,
+                verbose = verbose,
                 overwrite=overwrite
             )    
             
