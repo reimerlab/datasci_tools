@@ -69,11 +69,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for python_tools.pathlib_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span></span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <div class="viewcode-block" id="filename"><a class="viewcode-back" href="../../python_tools.html#python_tools.pathlib_utils.filename">[docs]</a><span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">name</span></div>
@@ -117,7 +119,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    To create a new folder</span>
 <span class="sd">    </span>
-<span class="sd">    from python_tools import pathlib_utils as plu</span>
+<span class="sd">    from python_tools from . import pathlib_utils as plu</span>
 <span class="sd">    plu.create_folder(&quot;/mnt/dj-stor01/platinum/minnie65/02/graphs&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
@@ -159,7 +161,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ex: </span>
 <span class="sd">    from pathlib import Path</span>
-<span class="sd">    from python_tools import pathlib_utils as plu</span>
+<span class="sd">    from python_tools from . import pathlib_utils as plu</span>
 
 <span class="sd">    root = Path(&quot;/python_tools/python_tools/&quot;)#.resolve()</span>
 <span class="sd">    child = Path(&quot;../python_tools/numpy_utils.py&quot;)#.resolve()</span>
@@ -174,7 +176,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">parent</span><span class="p">)))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">)</span></div>
 
-<span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
 <div class="viewcode-block" id="n_levels_parent_above"><a class="viewcode-back" href="../../python_tools.html#python_tools.pathlib_utils.n_levels_parent_above">[docs]</a><span class="k">def</span> <span class="nf">n_levels_parent_above</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span><span class="n">filepath</span><span class="p">,</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Purpose: Find the number of levels a parent</span>
@@ -198,7 +199,8 @@
     <span class="k">return</span> <span class="n">n_levels</span></div>
 
 
-<span class="c1">#from python_tools import pathlib_utils as plu</span>
+<span class="c1">#from python_tools from . import pathlib_utils as plu</span>
+
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pathlib_utils</span> <span class="k">as</span> <span class="n">plu</span>
 </pre></div>

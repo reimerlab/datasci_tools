@@ -69,22 +69,29 @@
            <div itemprop="articleBody">
              
   <h1>Source code for python_tools.argparse_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">argparse</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
 <span class="sd">Purpose: Go through the specifics </span>
 <span class="sd">of how to enable commmand line interface for a python script</span>
 
 <span class="sd">Tutorial: https://realpython.com/command-line-interfaces-python-argparse/</span>
-<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+
+
+<span class="sd">argument_options_notes= </span>
+
+
+
+<span class="sd">argparse_arguments_notes =</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 
 <span class="c1">#import argparse</span>
 
 <span class="n">general_notes</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">- when using argparse get the help (-h) for free and will automatically tell you the variables you are missing</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-
-<span class="n">argument_options_notes</span><span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">An argument is a single part of a command line, delimited by blanks.</span>
 <span class="s2">An option is a particular type of argument (or a part of an argument) that can modify the behavior of the command line.</span>
 <span class="s2">A parameter is a particular type of argument that provides additional information to a single option or command.</span>
@@ -98,9 +105,6 @@
 <span class="s2">-s: an option to print the allocated size of each file</span>
 <span class="s2">-k: an option to have the size in kilobytes</span>
 <span class="s2">/var/log: a parameter that provides additional information (the path to list) to the command</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">argparse_arguments_notes</span> <span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    metavar: provides different names for optional arguments in help mesages</span>
 <span class="s2">        ex: (see how it replaces the bar variable )</span>
 <span class="s2">        &gt;&gt;&gt; parser = argparse.ArgumentParser()</span>
@@ -140,6 +144,7 @@
     
 <div class="viewcode-block" id="print_help_str"><a class="viewcode-back" href="../../python_tools.html#python_tools.argparse_utils.print_help_str">[docs]</a><span class="k">def</span> <span class="nf">print_help_str</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span></div>
+
 
 </pre></div>
 

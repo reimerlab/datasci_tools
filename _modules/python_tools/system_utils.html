@@ -69,8 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for python_tools.system_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tqdm_utils</span> <span class="k">as</span> <span class="n">tqu</span>
-<span class="kn">from</span> <span class="nn">.tqdm_utils</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">How to get a reference to the current module</span>
+
+<span class="sd">#import sys</span>
+<span class="sd">current_module = sys.modules[__name__]</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">devnull</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -87,9 +93,10 @@
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">bz2</span><span class="o">,</span> <span class="nn">os</span>
 
 <span class="c1"># # ************ warning this will disable all printing until turned off *************</span>
 <span class="c1"># # Disable</span>
@@ -101,13 +108,7 @@
 <span class="c1">#     sys.stdout = sys.__stdout__</span>
 <span class="c1"># # ************ warning this will disable all printing until turned off *************</span>
 
-<span class="w">    </span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">How to get a reference to the current module</span>
-
-<span class="sd">#import sys</span>
-<span class="sd">current_module = sys.modules[__name__]</span>
-<span class="sd">&quot;&quot;&quot;</span>
+    
     
 <span class="c1">#better way of turning off printing: </span>
 <span class="c1">#import os, sys</span>
@@ -146,7 +147,7 @@
 
 <span class="c1">#from contextlib import contextmanager,redirect_stderr,redirect_stdout</span>
 <span class="c1">#from os import devnull</span>
-<span class="c1">#from python_tools import tqdm_utils as tqu</span>
+<span class="c1">#from python_tools from . import tqdm_utils as tqu</span>
 <span class="c1">#from python_tools.tqdm_utils import tqdm</span>
 <span class="c1">#import copy</span>
 
@@ -159,7 +160,7 @@
 <span class="sd">    if suppress_tqdm = True</span>
 <span class="sd">    </span>
 <span class="sd">    Ex: How to suppress warning messages in Poisson</span>
-<span class="sd">    import soma_extraction_utils as sm</span>
+<span class="sd">    from meshAfterParty import soma_extraction_utils as sm</span>
 <span class="sd">with su.suppress_stdout_stderr():</span>
 <span class="sd">    sm.soma_volume_ratio(my_neuron.concept_network.nodes[&quot;S0&quot;][&quot;data&quot;].mesh)</span>
 <span class="sd">    </span>
@@ -238,14 +239,14 @@
 
 <span class="sd">su = reload(su)</span>
 
-<span class="sd">#from neuron import Neuron</span>
+<span class="sd">#from meshAfterParty.neuron import Neuron</span>
 <span class="sd">another_neuron = Neuron(new_neuron)</span>
 <span class="sd">su.save_object(another_neuron,&quot;inhibitory_saved_neuron&quot;)</span>
 
 <span class="sd">---Way that doesn&#39;t work---</span>
 <span class="sd">su = reload(su)</span>
 
-<span class="sd">#import neuron</span>
+<span class="sd">#from meshAfterParty import neuron</span>
 <span class="sd">another_neuron = neuron.Neuron(new_neuron)</span>
 <span class="sd">su.save_object(another_neuron,&quot;inhibitory_saved_neuron&quot;)</span>
 
@@ -525,10 +526,14 @@
     
 
 
-<span class="c1">#from python_tools import system_utils as su</span>
+<span class="c1">#from python_tools from . import system_utils as su</span>
 
 
 
+
+<span class="c1">#--- from python_tools ---</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tqdm_utils</span> <span class="k">as</span> <span class="n">tqu</span>
+<span class="kn">from</span> <span class="nn">.tqdm_utils</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">system_utils</span> <span class="k">as</span> <span class="n">su</span>
 </pre></div>
