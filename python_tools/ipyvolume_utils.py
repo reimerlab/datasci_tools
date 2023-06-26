@@ -1,5 +1,6 @@
 '''
 
+
 Purpose: To summarize and expose ipyvolume functionality
 
 Tutorial: https://www.youtube.com/watch?v=hOKa8klJPyo
@@ -13,6 +14,7 @@ The upper left controls:
 1) Eye: allows 2 outputs from different angles for VR
 2) The icon can select 3D so can output data for 3D viewing in google cardboard
 (180 or 360 degrees)
+
 
 '''
 from IPython.display import display
@@ -125,7 +127,7 @@ def example_mesh():
     ipv.show()
     return new_mesh
     
-#from python_tools from . import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 def example_plot_line_segments(array = None):
     if array is None:
         array = np.array([[[0,0,0],[1,1,1]],
@@ -698,7 +700,7 @@ def trisurf_plot_func(
 
 mesh_plot_func = trisurf_plot_func
 
-#from python_tools from . import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
     
 def plot_obj(
     array,
@@ -724,7 +726,7 @@ def plot_obj(
     using a plot type (and possibly add on widgets)
     to help control
     
-    from python_tools from . import ipyvolume_utils as ipvu
+    from python_tools import ipyvolume_utils as ipvu
     import ipyvolume as ipv
 
     ipvu.plot_obj(
@@ -830,8 +832,8 @@ def xyz_from_array(array):
     array = np.array(array).astype('float')
     return array[:,0],array[:,1],array[:,2]
 
-#from python_tools from . import matplotlib_utils as mu
-#from python_tools from . import mesh_utils as mhu
+#from python_tools import matplotlib_utils as mu
+#from python_tools import mesh_utils as mhu
 def plot_mesh(
     mesh,
     alpha = None,
@@ -935,7 +937,7 @@ def plot_scatter(
     
 
 
-#from python_tools from . import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 
 def plot_multi_scatters(
     scatters,
@@ -1383,7 +1385,7 @@ def lighting_parameters():
     specular_exponent – lighting parameter
     """)
 
-#from python_tools from . import ipyvolume_utils as ipvu
+#from python_tools import ipyvolume_utils as ipvu
     
     
     

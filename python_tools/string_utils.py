@@ -1,6 +1,8 @@
 '''
 
+
 Utility functions for manipulating strings
+
 
 
 '''
@@ -21,7 +23,7 @@ def abbreviate_phrase(
     certain character
     
     Ex: 
-    from python_tools from . import string_utils as stru
+    from python_tools import string_utils as stru
     stru.abbreviate_phrase(
         s = "ais_syn_density_max_backup_excitatory",
         verbose = True,
@@ -51,7 +53,7 @@ def abbreviate_phrase(
 def str_overlap(s1, s2):
     """
     Ex: 
-    from python_tools from . import string_utils as stru
+    from python_tools import string_utils as stru
     stru.str_overlap("my name is Brendan","helloBrend")
     """
     s = difflib.SequenceMatcher(None, s1, s2)
@@ -98,7 +100,7 @@ def remove_range_list(
     
     """
     Ex: 
-    from python_tools from . import string_utils as stru
+    from python_tools import string_utils as stru
     stru.remove_range_list(
         string = 'geeksforgeeks is best for geeks',
         range_list = [(3, 6), (7, 10), (14, 17)],
@@ -128,7 +130,7 @@ def keep_range_list(
 
     
 
-#from python_tools from . import string_utils as stru
+#from python_tools import string_utils as stru
 
 
 #--- from python_tools ---

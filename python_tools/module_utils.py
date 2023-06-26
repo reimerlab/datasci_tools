@@ -1,5 +1,6 @@
 '''
 
+
 Purpose: to provide functionality for inspecting,
 editing and interacting with python modules (the .py files)
 
@@ -17,6 +18,7 @@ value inside the funciton
 
 ---- using eval and exec ----
 Rule: Can't set 
+
 
 
 
@@ -323,7 +325,7 @@ def set_global_parameters_and_attributes_by_data_type(
 
 
     def set_global_parameters_and_attributes_by_data_type(data_type):
-        from . import module_utils as modu 
+        from python_tools import module_utils as modu 
         modu.set_global_parameters_and_attributes_by_data_type(syu,data_type)
 
     set_global_parameters_and_attributes_by_data_type("microns")
@@ -548,7 +550,7 @@ def all_modules_set_global_parameters_and_attributes(
     of all modules in a certain directory
     
     Ex: 
-    from . import module_utils as modu
+    from python_tools import module_utils as modu
     modu.all_modules_set_global_parameters_and_attributes(
         "microns",
         verbose = True,
@@ -1231,7 +1233,7 @@ def package_imports_from_files(
     
     
     
-#from python_tools from . import file_utils as filu
+#from python_tools import file_utils as filu
 
 
             

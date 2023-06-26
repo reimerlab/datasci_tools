@@ -1,9 +1,11 @@
 '''
 
+
 Provides a great example of how to visualize
 projections from 1d to 3d: 
 
 http://at-compute004.ad.bcm.edu:8888/notebooks/neuron_mesh_tools/Auto_Proofreading/Soma_Filtering/Soma_Soma_Merger_Detector.ipynb#
+
 
 
 
@@ -16,7 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-#from python_tools from . import pretty_print_confusion_matrix as p_cm
+#from python_tools import pretty_print_confusion_matrix as p_cm
 def plot_pretty_confusion_matrix(y_true,
                                  y_pred,
                                  labels=None,
@@ -135,7 +137,7 @@ def plot_heatmap(#need to order by
     
     
     
-#from python_tools from . import pandas_utils as pu
+#from python_tools import pandas_utils as pu
 #import matplotlib.pyplot as plt
 
 def n_rows_from_n_plots(n_plots,
@@ -199,7 +201,7 @@ def plot_table_histograms_from_divided_tables(tables_to_plot,
         
     fig.tight_layout()
 
-#from python_tools from . import pandas_utils as pu
+#from python_tools import pandas_utils as pu
 
 def plot_table_statistics(df,
                           df_plotting_func,
@@ -273,7 +275,7 @@ def plot_table_histograms(df,
                           
                          )
     
-#from python_tools from . import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 #import matplotlib.pyplot as plt
 
 def plot_table_scatter_statistics_from_divided_tables(
@@ -421,7 +423,7 @@ def scatter_3D_ipv(scatters,
             adaptive_min_max_limits = False
     )
     
-#from python_tools from . import matplotlib_utils as mu
+#from python_tools import matplotlib_utils as mu
 
 def heatmap_3D(
     values,
@@ -558,7 +560,7 @@ def plot_roc(
 
 
     
-#from python_tools from . import statistics_visualizations as sviz
+#from python_tools import statistics_visualizations as sviz
 
 #--- from python_tools ---
 from . import matplotlib_utils as mu

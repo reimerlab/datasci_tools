@@ -1,6 +1,8 @@
 '''
 
+
 Purpose: To help automatically create a 
+
 
 
 '''
@@ -21,7 +23,7 @@ def get_install_requires(filepath=None):
 
 def get_links():
     return [
-        "git+https://github.com/bacelii/machine_learning_tools.git"
+        #"git+https://github.com/bacelii/machine_learning_tools.git"
     ]
 
 setup_py_str = """
@@ -84,3 +86,4 @@ def setup_py_str_generator(
 #--- from python_tools ---
 from . import file_utils as filu
 from . import inspect_utils as iu
+

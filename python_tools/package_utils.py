@@ -1,5 +1,6 @@
 '''
 
+
 Notes: global variables can be referenced in functions
 but can't be assigned to (if they are then its just a local copy)
 without the use of the global keyword
@@ -10,11 +11,12 @@ explanation: https://stackoverflow.com/questions/62665924/python-program-importi
 --> could technically put at the top
 
 
+
 '''
 from pathlib import Path
 import io
-#from python_tools from . import numpy_utils as nu
-#from python_tools from . import file_utils as filu
+#from python_tools import numpy_utils as nu
+#from python_tools import file_utils as filu
 #import io
 
 user_packages = (
@@ -61,8 +63,8 @@ def prefix_module_imports_in_files(
     filepaths=None,
     modules_directory = "../python_tools",
     modules = None,
-    prefix = "directory",
     filepaths_directory = None,
+    prefix = "directory",
     auto_detect_relative_prefix = True,
     prevent_double_prefix = True,
     overwrite_file = False,
@@ -70,6 +72,7 @@ def prefix_module_imports_in_files(
     verbose = False,
     ignore_files = ["__init__"],
     skip_filepath_parent_dir = True,
+    debug_files = False,
     ):
     """
     want to add a prefixes before
@@ -85,15 +88,15 @@ def prefix_module_imports_in_files(
     if modules_directory is None:
         modules_directory = [None]
     
-    modules_directory = nu.to_list(modules_directory)
+    modules_directory = [Path(k) for k in nu.to_list(modules_directory)]
     
     if filepaths_directory is not None:
-        filepaths_directory = nu.to_list(filepaths_directory)
+        filepaths_directory = [Path(k) for k in nu.to_list(filepaths_directory)]
         filepaths = []
         for f_dir in filepaths_directory:
-            if f_dir in modules_directory:
+            if Path(f_dir) in modules_directory:
                 if verbose:
-                    print(f"skipping {f_dir}")
+                    print(f"skipping filepath directory {f_dir}")
                 continue
             fpaths = plu.files_of_ext_type(
                 directory = f_dir,
@@ -105,23 +108,32 @@ def prefix_module_imports_in_files(
     filepaths = nu.to_list(filepaths)
     
     for f in filepaths:
-        if verbose:
+        if verbose or debug_files:
             print(f"--- Working on file: {f}")
             
         if output_filepath is not None:
             curr_output_filepath = output_filepath.copy()
         else:
             curr_output_filepath = output_filepath
+            
+            
         for directory in modules_directory:
         # --- iterate through all package directories and do the replacement
 
             #1) if given a directory: get a list of the module names
             if directory is not None:
-                if verbose:
+                if verbose or debug_files:
                     print(f"--Getting files from {directory}")
                     
+                
+                    
                 if plu.inside_directory(directory,f) and skip_filepath_parent_dir:
-                    print(f"skipping {directory} for file {f}")
+                    if verbose:
+                        print(f"skipping {directory} for file {f}")
+                    continue
+                
+                if debug_files:
+                    continue
 
                 modules = plu.files_of_ext_type(
                     directory = directory,
@@ -146,7 +158,8 @@ def prefix_module_imports_in_files(
 
             replacement = fr"{curr_prefix}import \2"
             if prevent_double_prefix:
-                pattern = f"(?<!{curr_prefix}){pattern}"
+                #pattern = f"(?<!{curr_prefix}){pattern}"
+                pattern = f"(?<!{curr_prefix})(?<!from . ){pattern}"
             else:
                 replacement = None
 
@@ -257,7 +270,7 @@ def module_files_from_directory(
     return files
 
 
-#from python_tools from . import package_utils as pku
+#from python_tools import package_utils as pku
 
 #--- from python_tools ---
 from . import file_utils as filu

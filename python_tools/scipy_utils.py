@@ -1,5 +1,6 @@
 '''
 
+
 Notes on the Delauny triangulation:
 1) just makes a surface that encloses all points in a triangulation
 such that no point in P is inside the circumcircle of any triangle in DT(P).
@@ -11,6 +12,7 @@ array([[2, 3, 0],
         
         
 find_simplex --> Find the simplices containing the given points (will return the simplices index)
+
 
 
 '''
@@ -150,6 +152,7 @@ def model_fit(
     
     
     return func(x, *popt)
+
 
 
 

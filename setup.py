@@ -1,6 +1,3 @@
-from setuptools import setup, find_packages
-from pathlib import Path
-
 def get_install_requires(filepath=None):
     if filepath is None:
         filepath = "./"
@@ -14,44 +11,20 @@ def get_install_requires(filepath=None):
 
 def get_links():
     return [
-        "git+https://github.com/bacelii/python_tools.git"
+        "git+https://github.com/bacelii/machine_learning_tools.git"
     ]
 
+
+
 setup(
-   name='python_tools', # the name of the package, which can be different than the folder when using pip instal
-   version='1.0',
-   description='Modules to help faciliatate basic python programming (specifically for data science) and wrappers for common packages ',
-   author='Brendan Celii',
-   author_email='brendanacelii@gmail.com',
-   packages=find_packages(),  #teslls what packages to be included for the install
-   
-    #install_requires=get_install_requires(), #external packages as dependencies
-    #dependency_links = get_links(),
-   
-   install_requires=[
-        'colour>=0.1.5',
-        'datajoint>=0.12.9',
-        'ipyvolume>=0.5.2',
-        'ipywebrtc>=0.5.0',
-        'ipywidgets>=7.5.1',
-        'matplotlib>=3.3.4',
-        "modin[all]",
-        'networkx>=2.5',
-        'numpy>=1.19.5',
-        'pandas>=1.1.5',
-        'pandasql>=0.7.3',
-         #'pydot>=1.4.2',
-        'pykdtree>=1.3.1',
-        'scikit_learn>=0.23.1',
-        'scipy>=1.5.4',
-        'seaborn>=0.11.2',
-        'Shapely>=1.7.0',
-        'six>=1.11.0',
-        'tqdm>=4.62.2',
-        'trimesh>=3.9.0',
-        'webcolors>=1.11.1',
-   ], #external packages as dependencies
-    
+    name='python_tools', # the name of the package, which can be different than the folder when using pip instal
+    version='1.0.0',
+    description='',
+    author='Brendan Celii',
+    author_email='brendanacelii',
+    packages=find_packages(),  #teslls what packages to be included for the install
+    install_requires=get_install_requires(), #external packages as dependencies
+    dependency_links = get_links(),
     # if wanted to install with the extra requirements use pip install -e ".[interactive]"
     extras_require={
         #'interactive': ['matplotlib>=2.2.0', 'jupyter'],
@@ -64,3 +37,4 @@ setup(
     scripts=[], 
     
 )
+

@@ -1,9 +1,11 @@
 '''
 
+
 Purpose: To implement an enum (non-native) in python where
 the list has an order to them
 
 Purpose of enum: named constants
+
 
 '''
 from enum import Enum
@@ -24,3 +26,4 @@ def example():
     # >> 'Blue'
     Color.RED.value
     # >> 1
+

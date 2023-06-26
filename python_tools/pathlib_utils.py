@@ -48,7 +48,7 @@ def create_folder(folder_path):
     """
     To create a new folder
     
-    from python_tools from . import pathlib_utils as plu
+    from python_tools import pathlib_utils as plu
     plu.create_folder("/mnt/dj-stor01/platinum/minnie65/02/graphs")
     """
     p = Path(folder_path)
@@ -90,7 +90,7 @@ def inside_directory(directory,filepath):
     """
     Ex: 
     from pathlib import Path
-    from python_tools from . import pathlib_utils as plu
+    from python_tools import pathlib_utils as plu
 
     root = Path("/python_tools/python_tools/")#.resolve()
     child = Path("../python_tools/numpy_utils.py")#.resolve()
@@ -128,7 +128,7 @@ def n_levels_parent_above(parent,filepath,verbose = False):
     return n_levels
 
 
-#from python_tools from . import pathlib_utils as plu
+#from python_tools import pathlib_utils as plu
 
 
 from . import pathlib_utils as plu

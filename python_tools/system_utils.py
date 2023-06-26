@@ -1,9 +1,11 @@
 '''
 
+
 How to get a reference to the current module
 
 #import sys
 current_module = sys.modules[__name__]
+
 
 '''
 from contextlib import contextmanager
@@ -12,6 +14,7 @@ from pathlib import Path
 from zipfile import ZipFile
 import _pickle as cPickle
 import bz2
+import bz2, os
 import contextlib
 import copy
 import logging
@@ -24,8 +27,7 @@ import subprocess
 import sys
 import sys, os
 import time
-import warnings
-import bz2, os
+import warnings, os, os
 
 # # ************ warning this will disable all printing until turned off *************
 # # Disable
@@ -76,7 +78,7 @@ turn_off_warnings = ignore_warnings
 
 #from contextlib import contextmanager,redirect_stderr,redirect_stdout
 #from os import devnull
-#from python_tools from . import tqdm_utils as tqu
+#from python_tools import tqdm_utils as tqu
 #from python_tools.tqdm_utils import tqdm
 #import copy
 
@@ -455,13 +457,13 @@ def rm_dir(directory,ignore_errors = False):
     
 
 
-#from python_tools from . import system_utils as su
+#from python_tools import system_utils as su
 
 
 
 
-#--- from python_tools ---
 from . import tqdm_utils as tqu
-from .tqdm_utils import tqdm
 
 from . import system_utils as su
+#--- from python_tools ---
+from .tqdm_utils import tqdm

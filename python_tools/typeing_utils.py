@@ -1,5 +1,7 @@
 
-from typing import List"""
+from typing import List
+
+'''
 module for helping create type hinting
 
 documentation: https://docs.python.org/3/library/typing.html
@@ -18,6 +20,7 @@ def get_install_requires(filepath=None) -> List[str]:
     return targets
 
 
-"""
+'''
+
 
 

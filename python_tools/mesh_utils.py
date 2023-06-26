@@ -13,7 +13,7 @@ import time
 import trimesh
 #import trimesh
 #import numpy as np
-#from python_tools from . import numpy_utils as nu
+#from python_tools import numpy_utils as nu
 
 
 def mesh_center_vertex_average(mesh_list):
@@ -88,7 +88,7 @@ def center_mesh_at_origin(mesh,center=None):
 
 
 #import trimesh
-#from python_tools from . import ipyvolume_utils as ipvu
+#from python_tools import ipyvolume_utils as ipvu
 #from scipy.spatial import Delaunay
 def mesh_from_delauny_3d(
     tri,
@@ -124,7 +124,7 @@ def sample_surface(
     """
     Purpose: To sample the surface of a mesh
     
-    from python_tools from . import mesh_utils as mhu
+    from python_tools import mesh_utils as mhu
     sample_surface(mesh,10000,even_sampling=False,plot=True)
     """
     
@@ -494,7 +494,7 @@ def segment_mesh(
         
     return idx
 
-#from python_tools from . import mesh_utils as meshu
+#from python_tools import mesh_utils as meshu
 
 #--- from python_tools ---
 from . import ipyvolume_utils as ipvu

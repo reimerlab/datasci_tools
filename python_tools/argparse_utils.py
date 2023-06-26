@@ -1,5 +1,6 @@
 '''
 
+
 Purpose: Go through the specifics 
 of how to enable commmand line interface for a python script
 
@@ -14,6 +15,7 @@ argument_options_notes=
 
 
 argparse_arguments_notes =
+
 '''
 import argparse
 
@@ -73,5 +75,6 @@ def example_basic_argparse_test():
     
 def print_help_str(parser):
     parser.print_help()
+
 
 
