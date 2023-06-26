@@ -28,6 +28,14 @@ python\_tools.data\_struct\_utils module
    :undoc-members:
    :show-inheritance:
 
+python\_tools.dataclass\_utils module
+-------------------------------------
+
+.. automodule:: python_tools.dataclass_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 python\_tools.dict\_utils module
 --------------------------------
 
@@ -40,6 +48,14 @@ python\_tools.dj\_utils module
 ------------------------------
 
 .. automodule:: python_tools.dj_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python\_tools.enum\_utils module
+--------------------------------
+
+.. automodule:: python_tools.enum_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,6 +100,14 @@ python\_tools.hash\_utils module
    :undoc-members:
    :show-inheritance:
 
+python\_tools.inspect\_utils module
+-----------------------------------
+
+.. automodule:: python_tools.inspect_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 python\_tools.ipyvolume\_movie\_utils module
 --------------------------------------------
 
@@ -116,6 +140,14 @@ python\_tools.linalg\_utils module
    :undoc-members:
    :show-inheritance:
 
+python\_tools.logging\_utils module
+-----------------------------------
+
+.. automodule:: python_tools.logging_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 python\_tools.matlab\_utils module
 ----------------------------------
 
@@ -136,6 +168,14 @@ python\_tools.mesh\_utils module
 --------------------------------
 
 .. automodule:: python_tools.mesh_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python\_tools.module\_utils module
+----------------------------------
+
+.. automodule:: python_tools.module_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -188,6 +228,14 @@ python\_tools.pretty\_print\_confusion\_matrix module
    :undoc-members:
    :show-inheritance:
 
+python\_tools.pydantic\_utls module
+-----------------------------------
+
+.. automodule:: python_tools.pydantic_utls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 python\_tools.regex\_utils module
 ---------------------------------
 
@@ -216,6 +264,14 @@ python\_tools.seaborn\_utils module
 -----------------------------------
 
 .. automodule:: python_tools.seaborn_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python\_tools.setup\_py\_utils module
+-------------------------------------
+
+.. automodule:: python_tools.setup_py_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -256,6 +312,14 @@ python\_tools.tqdm\_utils module
 --------------------------------
 
 .. automodule:: python_tools.tqdm_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python\_tools.typeing\_utils module
+-----------------------------------
+
+.. automodule:: python_tools.typeing_utils
    :members:
    :undoc-members:
    :show-inheritance:

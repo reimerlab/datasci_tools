@@ -84,7 +84,7 @@ _ Output: [package_name].rst and modules.rst files are generated
         :maxdepth: 2
         :caption: Contents:
         
-        Smodules.rst
+        modules.rst
 
 Step 4: Generating the html files:
 
@@ -176,6 +176,8 @@ Final webpage should be : https://bacelii.github.io/[package_name]/
 ------------------------------------------
 Stage 3: Updating documentation
 
+0) Go out of docs folder and run (if have newly added py files or else they won't be logged):
+    sphinx-apidoc -o docs [package_name]/ --force
 1) Go into docs folder
 2) run: 
     make clean html
@@ -191,7 +193,9 @@ Stage 3: Updating documentation
     d. Can then click around and see the rendering
 
 4) Push changes to main branch (this will do a separate build of html files)
-5) verify changes at the final website
+5) verify changes at the final website:
+    https://bacelii.github.io/[package_name]/
+
 
 
 
