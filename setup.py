@@ -1,3 +1,7 @@
+from pathlib import Path
+from setuptools import setup, find_packages
+from typing import List
+
 def get_install_requires(filepath=None):
     if filepath is None:
         filepath = "./"
@@ -11,7 +15,7 @@ def get_install_requires(filepath=None):
 
 def get_links():
     return [
-        "git+https://github.com/bacelii/machine_learning_tools.git"
+        #"git+https://github.com/bacelii/machine_learning_tools.git"
     ]
 
 

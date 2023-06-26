@@ -1,4 +1,3 @@
-base>=0.0.0
 colour>=0.1.5
 datajoint>=0.12.9
 graph_tools>=1.11
@@ -15,8 +14,9 @@ pandasql>=0.7.3
 pydantic>=1.9.2
 pydot>=1.4.2
 pykdtree>=1.3.1
+pybase64
 regex>=2023.6.3
-scikit_learn>=1.2.2
+scikit_learn
 scipy>=1.5.4
 seaborn>=0.11.2
 setuptools>=39.0.1

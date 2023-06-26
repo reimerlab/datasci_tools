@@ -6,7 +6,6 @@ Purpose: functions for quick hashing
 
 
 '''
-import base
 import hashlib
 import base64
 

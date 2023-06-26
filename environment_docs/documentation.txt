@@ -22,6 +22,185 @@ Process:
     make html
     
     
+---------------------------------------------------------------
+Stage 1: Creating Documentation 
+Link: https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d
+
+Background: 
+1) rst (reStructuredText): entry point for the website
+- they can be like index.rst
+
+Step 1: Setup Directory
+1) pip install sphinx sphinx_rtd_theme
+- sphinx is what does all of the automatic html generation
+2) Create a docs folder in same directory as setup.py
+3) Inside docs folder run: sphinx-quickstart
+- can hit enter to accept all of the defaults
+- will create a documentation directory (along with make.bat file) that will be used later to generate the html
+
+
+Step 2: Editing config
+
+1) in conf.py :
+
+    a. change os.path.abspath('.') to os.path.abspath('..')
+    - this will tell sphinx to look outside the directory for modules
+
+    b. change extensions variable to:
+        import sphinx_rtd_theme
+
+        extensions = [
+        "sphinx_rtd_theme",
+        "sphinx.ext.autodoc",#converts the doc string into documentation
+        "sphinx.ext.viewcode",
+        "sphinx.ext.napoleon"
+        ]
+
+    c. Change the html_theme
+        html_theme = 'sphinx_rtd_theme'
+
+
+    d. Add the following to exclude_patterns
+        exclude_patterns = ['*.ipynb_checkpoints*']
+
+    e. Add the following to bottom: 
+        def skip(app, what, name, obj, would_skip, options):
+            if name == "__init__":
+                return False
+            return would_skip
+
+        def setup(app):
+            app.connect("autodoc-skip-member", skip)
+
+Step 3: Generate the other .rst files (which will have our code)
+
+1) go out of docs directory to base directory
+2) run "sphinx-apidoc -o docs [package_name]/"
+- references the folder where all the code sits
+_ Output: [package_name].rst and modules.rst files are generated
+
+3) go into index.rst and add modules to file:
+    .. toctree::
+        :maxdepth: 2
+        :caption: Contents:
+        
+        Smodules.rst
+
+Step 4: Generating the html files:
+
+1) Go into docs folder
+2) run: 
+    make clean html
+    make html
+
+2b) Clean up any of the errors shown in the make clean html
+
+3) Check: at this point should be able to see html files
+
+    a. go to the docs > _build > html folder
+    b. open up index.html
+    c. once on that file, top right corner has button for "show preview" (only if Live Preview extension is installed)
+    d. Can then click around and see the rendering
+
+---------------------------------------------------------------
+Stage 2: Hosting on Github Pages (using github actions workflow)
+Link: https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
+
+
+1) added following the .gitignore 
+    __pycache__/
+    .DS_Store
+    docs/_build/
+    docs/_static/
+    docs/_templates
+
+2) Creating the github actions workflow
+    a) Create directory and yml file
+        mkdir .github/
+        mkdir .github/workflows
+        vim .github/workflows/docs.yml
+    b) Fill in yaml file with:
+
+        name: docs
+        on: # shows that it willl trigger on a push to main branch
+        push:
+            branches:
+            - main # make sure this isn't master
+
+        jobs:
+        docs:  # the only one job being executed
+            name: Docs
+            runs-on: ubuntu-latest
+            steps: # the steps that will be done if run
+
+            - uses: actions/checkout@v2
+
+            - name: Install Python
+            uses: actions/setup-python@v1
+            with:
+                python-version: 3.8
+
+            - name: Install requirements
+            run: |
+                pip3 install sphinx-rtd-theme
+            
+            - name: Build docs 
+            run: | # the commands we are running
+                cd docs
+                make html
+
+            # https://github.com/peaceiris/actions-gh-pages
+            - name: Deploy
+            if: success()
+            uses: peaceiris/actions-gh-pages@v3
+            with:
+                publish_branch: gh-pages
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: docs/_build/html/
+
+3) Go to the settings of your github page 
+    a. Settings tab
+    b. Under Pages (on left)
+    c. change sources to to "gh-pages" branch
+    - make sure directory is /(root)
+    - might need to change it from main back to gh-pages to work
+
+4) Push change to main branch and monitor progress:
+    a. Go to actions
+    b. Click on docs > then latest run
+    c. Click "Docs" on left > should see the process of job
+
+Final webpage should be : https://bacelii.github.io/[package_name]/
+
+
+------------------------------------------
+Stage 3: Updating documentation
+
+1) Go into docs folder
+2) run: 
+    make clean html
+    make html
+
+2b) Clean up any of the errors shown in the make clean html
+
+3) Check: at this point should be able to see html files
+
+    a. go to the docs > _build > html folder
+    b. open up index.html
+    c. once on that file, top right corner has button for "show preview" (only if Live Preview extension is installed)
+    d. Can then click around and see the rendering
+
+4) Push changes to main branch (this will do a separate build of html files)
+5) verify changes at the final website
+
+
+
+
+
+
+
+
+
 For publishing to github pages:
 1) make sure branch is gh-pages and make sure directory is /(root)
 
@@ -31,12 +210,8 @@ A better link: https://towardsdatascience.com/documenting-python-code-with-sphin
 
 
 
-1) added to the .gitignore 
-__pycache__/
-.DS_Store
-docs/_build/
-docs/_static/
-docs/_templates
+
 
 
 push a commit after the docs.yaml created, make sure to change the docs.yaml to be master if no actions deployed
+

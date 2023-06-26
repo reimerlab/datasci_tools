@@ -59,6 +59,11 @@ def setup_py_str_generator(
     author_email = "brendanacelii",
     description = "",
     output_path = None,
+    import_list = (
+        "from pathlib import Path",
+        "from setuptools import setup, find_packages",
+        "from typing import List" ,
+    ),
     ):
     
     replace_dict = {
@@ -68,14 +73,16 @@ def setup_py_str_generator(
         "[author_email]":author_email,
         "[description]":description
     }
-    data = str(setup_py_str)    
+    
+    data =  str(setup_py_str)    
     for t,r in replace_dict.items():
         data = data.replace(t,r)
         
     data = (
-        iu.function_code_as_str(get_install_requires) + "\n" 
-        + iu.function_code_as_str(get_links) + "\n"
-        + data
+        "\n".join(import_list)  + "\n"
+        + "\n" + iu.function_code_as_str(get_install_requires)
+        + "\n" + iu.function_code_as_str(get_links)
+        + "\n" + data
     )
     
     if output_path:

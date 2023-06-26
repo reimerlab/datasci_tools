@@ -337,7 +337,7 @@ def query_table_from_kwargs(
     else:
         return table & key
 
-restrict_table_from_list = pu.restrict_df_from_list
+
 
 #from python_tools import dj_utils as dju
 
@@ -345,5 +345,7 @@ restrict_table_from_list = pu.restrict_df_from_list
 from . import data_struct_utils as dsu
 from . import numpy_utils as nu
 from . import pandas_utils as pu
+
+restrict_table_from_list = pu.restrict_df_from_list
 
 from . import dj_utils as dju
