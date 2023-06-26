@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools.statistics_visualizations &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">python_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">python_tools.statistics_visualizations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for python_tools.statistics_visualizations</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="sd">Provides a great example of how to visualize</span>
+<span class="sd">projections from 1d to 3d: </span>
+
+<span class="sd">http://at-compute004.ad.bcm.edu:8888/notebooks/neuron_mesh_tools/Auto_Proofreading/Soma_Filtering/Soma_Soma_Merger_Detector.ipynb#</span>
+
+
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1">#from python_tools import pretty_print_confusion_matrix as p_cm</span>
+<div class="viewcode-block" id="plot_pretty_confusion_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_pretty_confusion_matrix">[docs]</a><span class="k">def</span> <span class="nf">plot_pretty_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span>
+                                 <span class="n">y_pred</span><span class="p">,</span>
+                                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span>
+    <span class="n">cell_fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">axes_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Confusion matrix&#39;</span><span class="p">,</span>
+    <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">ticklabel_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Oranges&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To take 2 arrays </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)))</span>
+    <span class="n">p_cm</span><span class="o">.</span><span class="n">plot_confusion_matrix_from_data</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span>
+                                         <span class="n">y_pred</span><span class="p">,</span>
+                                         <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span>
+                                    <span class="n">columns</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                                    <span class="n">fz</span><span class="o">=</span><span class="n">cell_fontsize</span><span class="p">,</span>
+                                <span class="n">axes_fontsize</span><span class="o">=</span><span class="n">axes_fontsize</span><span class="p">,</span>
+                                <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                                <span class="n">title_fontsize</span><span class="o">=</span><span class="n">title_fontsize</span><span class="p">,</span>
+                                <span class="n">ticklabel_fontsize</span><span class="o">=</span><span class="n">ticklabel_fontsize</span><span class="p">,</span>
+                                <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    
+<span class="c1">#import matplotlib as mpl</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="c1">#import matplotlib</span>
+<span class="c1">#import numpy as np</span>
+
+<div class="viewcode-block" id="plot_heatmap"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_heatmap">[docs]</a><span class="k">def</span> <span class="nf">plot_heatmap</span><span class="p">(</span><span class="c1">#need to order by </span>
+    <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input_row_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input_col_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fontsize_cell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    
+    <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;Statistics&#39;</span><span class="p">,</span>
+    <span class="n">x_label</span> <span class="o">=</span> <span class="s2">&quot;Type&quot;</span><span class="p">,</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Autoproofreading Validation&quot;</span><span class="p">):</span>
+
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To plot the scores</span>
+<span class="sd">    of the presyn, postsyn and both</span>
+<span class="sd">    </span>
+<span class="sd">    Needs to be of the form:</span>
+<span class="sd">    Type | Stat1 | Stat2 | Stat 3</span>
+<span class="sd">    -----------------------------</span>
+<span class="sd">    Type 1</span>
+<span class="sd">    Type 2</span>
+<span class="sd">    Type 3</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_row_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_row_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">input_col_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_col_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">synapse_types</span><span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">input_row_names</span><span class="p">]</span>
+    <span class="n">score_types</span> <span class="o">=</span> <span class="n">input_col_names</span>
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">score_df</span> <span class="o">=</span> <span class="n">df</span>
+
+        <span class="n">collapsed_df</span> <span class="o">=</span> <span class="n">score_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">synapse_types</span><span class="p">]</span>
+        <span class="n">collapsed_df</span> <span class="o">=</span> <span class="n">collapsed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">score_types</span><span class="p">]</span>
+        <span class="n">median_accuracies</span> <span class="o">=</span> <span class="n">collapsed_df</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">median_accuracies</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="c1">#setting the text size</span>
+    
+    
+    <span class="n">accuracies</span> <span class="o">=</span> <span class="n">median_accuracies</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">accuracies</span>
+    <span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span>
+    <span class="c1">#now graph the results for all the categories</span>
+    
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">accuracies</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">accuracies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+           <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">accuracies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+           <span class="c1"># ... and label them with the respective list entries</span>
+           <span class="n">xticklabels</span><span class="o">=</span><span class="n">synapse_types</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">score_types</span><span class="p">,</span>
+           <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+           <span class="n">ylabel</span><span class="o">=</span><span class="n">y_label</span><span class="p">,</span>
+           <span class="n">xlabel</span><span class="o">=</span><span class="n">x_label</span><span class="p">)</span>
+
+    <span class="c1"># Rotate the tick labels and set their alignment.</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+             <span class="n">rotation_mode</span><span class="o">=</span><span class="s2">&quot;anchor&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Loop over data dimensions and create text annotations.</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;.2f&#39;</span> <span class="k">if</span> <span class="n">normalize</span> <span class="k">else</span> <span class="s1">&#39;d&#39;</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">0.6</span>
+    <span class="c1">#print(&quot;threshold = &quot; + str(thresh))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="c1">#print(&quot;cm[i,j] = &quot; + str(cm[i,j]))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">format</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">fmt</span><span class="p">),</span>
+                    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span> <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">thresh</span> <span class="k">else</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                   <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize_cell</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+    
+    
+    
+<span class="c1">#from python_tools import pandas_utils as pu</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+
+<div class="viewcode-block" id="n_rows_from_n_plots"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.n_rows_from_n_plots">[docs]</a><span class="k">def</span> <span class="nf">n_rows_from_n_plots</span><span class="p">(</span><span class="n">n_plots</span><span class="p">,</span>
+                       <span class="n">axes_per_row</span> <span class="o">=</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">n_plots</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">n_plots</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_plots</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_plots</span><span class="o">/</span><span class="n">axes_per_row</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="row_column_from_index"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.row_column_from_index">[docs]</a><span class="k">def</span> <span class="nf">row_column_from_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">axes_per_row</span><span class="p">):</span>
+    <span class="n">row_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">index</span><span class="o">/</span><span class="n">axes_per_row</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row_idx</span><span class="p">,</span><span class="n">index</span> <span class="o">-</span> <span class="n">row_idx</span><span class="o">*</span><span class="n">axes_per_row</span></div>
+
+<div class="viewcode-block" id="plot_table_histograms_from_divided_tables"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_table_histograms_from_divided_tables">[docs]</a><span class="k">def</span> <span class="nf">plot_table_histograms_from_divided_tables</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="p">,</span>
+                          <span class="n">tables_labels</span><span class="p">,</span>
+                          <span class="n">fig_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+                         <span class="n">n_bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                        <span class="n">figure_width</span><span class="o">=</span><span class="mf">18.5</span><span class="p">,</span>
+                        <span class="n">figure_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">figure_height_per_row</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+                        <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To plot the distributions of different features between different tables</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_rows</span><span class="o">=</span> <span class="n">sviz</span><span class="o">.</span><span class="n">n_rows_from_n_plots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span><span class="n">axes_per_row</span><span class="p">)</span>
+    <span class="n">curr_table</span> <span class="o">=</span> <span class="n">tables_to_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">figure_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">figure_height</span> <span class="o">=</span> <span class="n">figure_height_per_row</span><span class="o">*</span><span class="n">n_rows</span>
+
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span><span class="n">axes_per_row</span><span class="p">)</span>
+    <span class="c1">#fig.set_size_inches(18.5, 10.5)</span>
+    
+    <span class="c1">#print(f&quot;figure_width,figure_height = {figure_width,figure_height}&quot;)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="n">figure_width</span><span class="p">,</span><span class="n">figure_height</span><span class="p">)</span>
+    
+    
+    
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fig_title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">fig_title</span><span class="p">)</span>
+
+    
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">col_title</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">curr_table</span><span class="p">):</span>
+        <span class="c1">#row = np.floor(j/axes_per_row).astype(&quot;int&quot;)</span>
+        <span class="n">row</span><span class="p">,</span><span class="n">column</span> <span class="o">=</span> <span class="n">sviz</span><span class="o">.</span><span class="n">row_column_from_index</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">axes_per_row</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">column</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">column</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col_title</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">curr_table</span><span class="p">,</span><span class="n">curr_table_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="p">,</span><span class="n">tables_labels</span><span class="p">):</span>
+            <span class="n">curr_data</span> <span class="o">=</span> <span class="n">curr_table</span><span class="p">[</span><span class="n">col_title</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">curr_data</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">curr_table_name</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span><span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span></div>
+
+<span class="c1">#from python_tools import pandas_utils as pu</span>
+
+<div class="viewcode-block" id="plot_table_statistics"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_table_statistics">[docs]</a><span class="k">def</span> <span class="nf">plot_table_statistics</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                          <span class="n">df_plotting_func</span><span class="p">,</span>
+                          <span class="n">category_column</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+                          <span class="n">categories_to_plot</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fig_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+                          <span class="n">columns_to_ignore</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                          <span class="n">columns_to_plot</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span>
+                          
+                         <span class="p">):</span>
+    <span class="k">if</span> <span class="n">columns_to_ignore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">delete_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns_to_ignore</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">columns_to_plot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">category_column</span><span class="p">]</span> <span class="o">+</span> <span class="n">columns_to_plot</span><span class="p">]</span>
+    
+    <span class="n">unique_categories</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">category_column</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+    
+    <span class="n">df_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">unique_categories</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">categories_to_plot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categories_to_plot</span><span class="p">:</span>
+                <span class="n">unique_categories</span> <span class="o">=</span> <span class="n">unique_categories</span><span class="p">[</span><span class="n">unique_categories</span><span class="o">!=</span> <span class="n">k</span><span class="p">]</span>
+                <span class="k">continue</span>
+        <span class="n">new_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">category_column</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span>
+        <span class="n">new_df</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">delete_columns</span><span class="p">(</span><span class="n">new_df</span><span class="p">,[</span><span class="n">category_column</span><span class="p">])</span>
+        <span class="n">df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_df</span><span class="p">)</span>
+    
+    <span class="c1">#df_list = [df[df[category_column] == k] for k in unique_categories]</span>
+    <span class="n">df_plotting_func</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="o">=</span><span class="n">df_list</span><span class="p">,</span>
+                                             <span class="n">tables_labels</span><span class="o">=</span><span class="n">unique_categories</span><span class="p">,</span>
+                                             <span class="n">fig_title</span><span class="o">=</span><span class="n">fig_title</span><span class="p">,</span>
+                                             <span class="n">axes_per_row</span><span class="o">=</span><span class="n">axes_per_row</span><span class="p">,</span>
+                                             <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                                             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="plot_table_histograms"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_table_histograms">[docs]</a><span class="k">def</span> <span class="nf">plot_table_histograms</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                          <span class="n">category_column</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+                          <span class="n">categories_to_plot</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fig_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+                          <span class="n">columns_to_ignore</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">n_bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                          <span class="n">columns_to_plot</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To take a table that has labeled  data</span>
+<span class="sd">    in a column and then to plot the distributions </span>
+<span class="sd">    of all of the features</span>
+<span class="sd">    </span>
+<span class="sd">    Pseudocode:</span>
+<span class="sd">    1) To divide the current table up into multiple tables</span>
+<span class="sd">    based on the number of categories in the category column</span>
+<span class="sd">    2) Send those tables to the divided table function for plotting </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plot_table_statistics</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                          <span class="n">df_plotting_func</span><span class="o">=</span><span class="n">sviz</span><span class="o">.</span><span class="n">plot_table_histograms_from_divided_tables</span><span class="p">,</span>
+                          <span class="n">category_column</span><span class="o">=</span><span class="n">category_column</span><span class="p">,</span>
+                          <span class="n">categories_to_plot</span> <span class="o">=</span> <span class="n">categories_to_plot</span><span class="p">,</span>
+                         <span class="n">fig_title</span><span class="o">=</span><span class="n">fig_title</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="n">axes_per_row</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                          <span class="n">columns_to_ignore</span> <span class="o">=</span> <span class="n">columns_to_ignore</span><span class="p">,</span>
+                          <span class="n">columns_to_plot</span> <span class="o">=</span> <span class="n">columns_to_plot</span><span class="p">,</span>
+                          <span class="n">n_bins</span><span class="o">=</span><span class="n">n_bins</span>
+                          
+                         <span class="p">)</span></div>
+    
+<span class="c1">#from python_tools import numpy_utils as nu</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+
+<div class="viewcode-block" id="plot_table_scatter_statistics_from_divided_tables"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_table_scatter_statistics_from_divided_tables">[docs]</a><span class="k">def</span> <span class="nf">plot_table_scatter_statistics_from_divided_tables</span><span class="p">(</span>
+    <span class="n">tables_to_plot</span><span class="p">,</span>
+    <span class="n">tables_labels</span><span class="p">,</span>
+    <span class="n">figure_height</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">fig_title</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stats_combinations</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">axes_per_row</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">figure_height_per_row</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+    <span class="n">figure_width</span><span class="o">=</span><span class="mf">18.5</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">n_plot_dim</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To plot a combination of two statistics from table</span>
+
+<span class="sd">    Pseudocode:</span>
+<span class="sd">    1) If no combination of statistics are provided then generate all combinations (this will help determine number of rows)</span>
+<span class="sd">    2) Compute the number of rows will need for all of the stats</span>
+<span class="sd">    3) For each combination of statistics:</span>
+<span class="sd">    a) Get the data</span>
+
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">stats_combinations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stats_combinations</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">all_unique_choose_k_combinations</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">n_plot_dim</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_plot_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stats_combinations</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">n_plot_dim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">projection</span> <span class="o">=</span> <span class="s2">&quot;3d&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">projection</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">n_rows</span> <span class="o">=</span> <span class="n">sviz</span><span class="o">.</span><span class="n">n_rows_from_n_plots</span><span class="p">(</span><span class="n">stats_combinations</span><span class="p">,</span>
+                           <span class="n">axes_per_row</span> <span class="o">=</span> <span class="n">axes_per_row</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">figure_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">figure_height</span> <span class="o">=</span> <span class="n">figure_height_per_row</span><span class="o">*</span><span class="n">n_rows</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stats_combinations = </span><span class="si">{</span><span class="n">stats_combinations</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;n_rows = </span><span class="si">{</span><span class="n">n_rows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;figure_height= </span><span class="si">{</span><span class="n">figure_height</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1">#fig,axes = plt.subplots(n_rows,axes_per_row,)#projection=&#39;2d&#39;)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    
+    <span class="c1">#fig.set_size_inches(18.5, 10.5)</span>
+
+    <span class="c1">#print(f&quot;figure_width,figure_height = {figure_width,figure_height}&quot;)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="n">figure_width</span><span class="p">,</span><span class="n">figure_height</span><span class="p">)</span>
+
+
+    
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fig_title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">fig_title</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">data_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats_combinations</span><span class="p">):</span>
+        <span class="c1">#row,column = sviz.row_column_from_index(j,axes_per_row)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">axes_per_row</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+<span class="c1">#         try:</span>
+<span class="c1">#             ax = axes[row,column]</span>
+<span class="c1">#         except:</span>
+<span class="c1">#             ax = axes[column]</span>
+        <span class="n">col_title</span> <span class="o">=</span> <span class="s2">&quot; vs &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">data_names</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col_title</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">curr_table</span><span class="p">,</span><span class="n">curr_table_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tables_to_plot</span><span class="p">,</span><span class="n">tables_labels</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">curr_table</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data_names</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="n">curr_table_name</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">data_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">data_names</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">n_plot_dim</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="n">data_names</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="plot_table_scatters"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_table_scatters">[docs]</a><span class="k">def</span> <span class="nf">plot_table_scatters</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                        <span class="n">stats_combinations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">category_column</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+                          <span class="n">categories_to_plot</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fig_title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+                          <span class="n">columns_to_ignore</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="o">**</span><span class="n">kwargs</span>
+                         <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To take a table that has labeled  data</span>
+<span class="sd">    in a column and then to plot the distributions </span>
+<span class="sd">    of all of the features</span>
+<span class="sd">    </span>
+<span class="sd">    Pseudocode:</span>
+<span class="sd">    1) To divide the current table up into multiple tables</span>
+<span class="sd">    based on the number of categories in the category column</span>
+<span class="sd">    2) Send those tables to the divided table function for plotting </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">plot_table_statistics</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                          <span class="n">df_plotting_func</span><span class="o">=</span><span class="n">sviz</span><span class="o">.</span><span class="n">plot_table_scatter_statistics_from_divided_tables</span><span class="p">,</span>
+                          <span class="n">category_column</span><span class="o">=</span><span class="n">category_column</span><span class="p">,</span>
+                          <span class="n">categories_to_plot</span> <span class="o">=</span> <span class="n">categories_to_plot</span><span class="p">,</span>
+                         <span class="n">fig_title</span><span class="o">=</span><span class="n">fig_title</span><span class="p">,</span>
+                         <span class="n">axes_per_row</span><span class="o">=</span><span class="n">axes_per_row</span><span class="p">,</span>
+                         <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                          <span class="n">columns_to_ignore</span> <span class="o">=</span> <span class="n">columns_to_ignore</span><span class="p">,</span>
+                          <span class="n">stats_combinations</span><span class="o">=</span><span class="n">stats_combinations</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span>
+                          
+                         <span class="p">)</span></div>
+    
+
+<div class="viewcode-block" id="scatter_3D_ipv"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.scatter_3D_ipv">[docs]</a><span class="k">def</span> <span class="nf">scatter_3D_ipv</span><span class="p">(</span><span class="n">scatters</span><span class="p">,</span>
+                  <span class="n">scatters_colors</span> <span class="o">=</span> <span class="p">[],</span>
+                  <span class="n">scatter_size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                  <span class="n">buffer</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">flip_y</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">axis_box_off</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To plot a 3D scatter plot</span>
+<span class="sd">    </span>
+<span class="sd">    sviz.scatter_3D_ipv(scatters=[np.array([1,1,1]),np.array([2,2,2])],</span>
+<span class="sd">                   scatter_size=10)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">meshAfterParty</span> <span class="kn">import</span> <span class="n">neuron_visualizations</span> <span class="k">as</span> <span class="n">nviz</span>
+    <span class="n">nviz</span><span class="o">.</span><span class="n">plot_objects</span><span class="p">(</span>
+        <span class="n">scatters</span><span class="o">=</span><span class="n">scatters</span><span class="p">,</span>
+            <span class="n">scatters_colors</span><span class="o">=</span><span class="n">scatters_colors</span><span class="p">,</span>
+            <span class="n">scatter_size</span><span class="o">=</span><span class="n">scatter_size</span><span class="p">,</span>
+            <span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">,</span>
+            <span class="n">flip_y</span> <span class="o">=</span> <span class="n">flip_y</span><span class="p">,</span>
+            <span class="n">axis_box_off</span><span class="o">=</span><span class="n">axis_box_off</span><span class="p">,</span>
+            <span class="n">adaptive_min_max_limits</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span></div>
+    
+<span class="c1">#from python_tools import matplotlib_utils as mu</span>
+
+<div class="viewcode-block" id="heatmap_3D"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.heatmap_3D">[docs]</a><span class="k">def</span> <span class="nf">heatmap_3D</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">feature_name</span> <span class="o">=</span> <span class="s2">&quot;feature_name&quot;</span><span class="p">,</span>
+    <span class="n">scatter_size</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">plot_highest_bin_value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">axis_box_off</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">bin_type</span> <span class="o">=</span> <span class="s2">&quot;equal_width&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To plot a 3D heatmap of a feature with values and coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">meshAfterParty</span> <span class="kn">import</span> <span class="n">neuron_visualizations</span> <span class="k">as</span> <span class="n">nviz</span>
+    
+    <span class="n">curr_data</span><span class="o">=</span> <span class="n">values</span>
+    <span class="n">curr_centers</span> <span class="o">=</span> <span class="n">coordinates</span>
+
+    <span class="n">data_dict</span><span class="p">,</span><span class="n">color_dict</span><span class="p">,</span><span class="n">bin_spacing_to_return</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">divided_data_into_color_gradient</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">curr_data</span><span class="p">,</span>
+    <span class="n">n_bins</span> <span class="o">=</span> <span class="n">n_bins</span><span class="p">,</span>
+    <span class="n">bin_type</span><span class="o">=</span><span class="n">bin_type</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span>
+
+    <span class="n">scatters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">scatters_colors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">bin_idx</span><span class="p">,</span><span class="n">data_idx</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">scatters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_centers</span><span class="p">[</span><span class="n">data_idx</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">scatters_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color_dict</span><span class="p">[</span><span class="n">bin_idx</span><span class="p">])</span>
+
+    <span class="n">x_values</span> <span class="o">=</span> <span class="n">bin_spacing_to_return</span>
+    <span class="n">x_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">color_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_highest_bin_value</span><span class="p">:</span>
+        <span class="n">x_values</span> <span class="o">=</span> <span class="n">x_values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_colors</span> <span class="o">=</span> <span class="n">x_colors</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x_values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">x_colors</span><span class="p">,</span><span class="n">s</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">feature_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Color Scale&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">nviz</span><span class="o">.</span><span class="n">plot_objects</span><span class="p">(</span>
+    <span class="n">scatters</span><span class="o">=</span><span class="n">scatters</span><span class="p">,</span>
+    <span class="n">scatters_colors</span><span class="o">=</span><span class="n">scatters_colors</span><span class="p">,</span>
+    <span class="n">scatter_size</span><span class="o">=</span><span class="n">scatter_size</span><span class="p">,</span>
+    <span class="n">axis_box_off</span> <span class="o">=</span> <span class="n">axis_box_off</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+    
+    <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="heatmap_2D"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.heatmap_2D">[docs]</a><span class="k">def</span> <span class="nf">heatmap_2D</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">feature_name</span> <span class="o">=</span> <span class="s2">&quot;feature_name&quot;</span><span class="p">,</span>
+    <span class="n">bin_type</span> <span class="o">=</span> <span class="s2">&quot;equal_width&quot;</span><span class="p">,</span>
+    <span class="n">plot_highest_bin_value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="p">):</span>
+    
+    <span class="n">data_dict</span><span class="p">,</span><span class="n">color_dict</span><span class="p">,</span><span class="n">bin_spacing_to_return</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">divided_data_into_color_gradient</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+    <span class="n">n_bins</span> <span class="o">=</span> <span class="n">n_bins</span><span class="p">,</span>
+    <span class="n">bin_type</span><span class="o">=</span><span class="n">bin_type</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span>
+    
+    <span class="n">x_values</span> <span class="o">=</span> <span class="n">bin_spacing_to_return</span>
+    <span class="n">x_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">color_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">plot_highest_bin_value</span><span class="p">:</span>
+        <span class="n">x_values</span> <span class="o">=</span> <span class="n">x_values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_colors</span> <span class="o">=</span> <span class="n">x_colors</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x_values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">x_colors</span><span class="p">,</span><span class="n">s</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">feature_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Color Scale&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">bin_idx</span><span class="p">,</span><span class="n">data_idx</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">data_idx</span><span class="p">][:,</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="n">coordinates</span><span class="p">[</span><span class="n">data_idx</span><span class="p">][:,</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="n">color_dict</span><span class="p">[</span><span class="n">bin_idx</span><span class="p">],</span>
+                      <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span>
+                        <span class="n">s</span> <span class="o">=</span> <span class="n">size</span><span class="p">,)</span>
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    
+    
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="c1">#from sklearn.metrics import roc_curve, auc</span>
+
+<div class="viewcode-block" id="plot_roc"><a class="viewcode-back" href="../../python_tools.html#python_tools.statistics_visualizations.plot_roc">[docs]</a><span class="k">def</span> <span class="nf">plot_roc</span><span class="p">(</span>
+    <span class="n">fpr</span><span class="p">,</span>
+    <span class="n">tpr</span><span class="p">,</span>
+    <span class="n">auc_score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkorange&quot;</span><span class="p">,</span>
+    <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,):</span>
+    
+    <span class="k">if</span> <span class="n">auc_score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">auc_score</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span><span class="n">tpr</span><span class="p">)</span>
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">fpr</span><span class="p">,</span>
+    <span class="n">tpr</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+    <span class="n">lw</span><span class="o">=</span><span class="n">line_width</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ROC curve (area = </span><span class="si">%0.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">auc_score</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;navy&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">line_width</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True Positive Rate&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Receiver operating characteristic&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+    
+<span class="c1">#from python_tools import statistics_visualizations as sviz</span>
+
+<span class="c1">#--- from python_tools ---</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">matplotlib_utils</span> <span class="k">as</span> <span class="n">mu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_utils</span> <span class="k">as</span> <span class="n">nu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pandas_utils</span> <span class="k">as</span> <span class="n">pu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pretty_print_confusion_matrix</span> <span class="k">as</span> <span class="n">p_cm</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">statistics_visualizations</span> <span class="k">as</span> <span class="n">sviz</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

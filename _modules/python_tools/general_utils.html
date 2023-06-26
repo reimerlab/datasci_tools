@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools.general_utils &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">python_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">python_tools.general_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for python_tools.general_utils</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">How to recieve a single values tuple </span>
+<span class="sd">and unpack it into its element --&gt; use (__ , ) on recieving end</span>
+
+<span class="sd">def ex_function(ex_bool = True,second_bool=False):</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    return_value = (5,)</span>
+<span class="sd">    if ex_bool:</span>
+<span class="sd">        return_value += (6,)</span>
+<span class="sd">    if second_bool:</span>
+<span class="sd">        return_value += (7,)</span>
+<span class="sd">        </span>
+
+<span class="sd">    return return_value</span>
+
+<span class="sd">(y,) = ex_function(ex_bool=False,second_bool=False)</span>
+<span class="sd">type(y)</span>
+
+
+
+<span class="sd">To us eval in list comprehension: </span>
+
+<span class="sd">globs = globals()</span>
+<span class="sd">locs = locals()</span>
+<span class="sd">out2 = [eval(cmd,globs,locs) for cmd in [&#39;self.b&#39;]]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">#from python_tools import numpy_utils as nu</span>
+<span class="c1">#import numpy as np</span>
+<span class="c1">#import itertools</span>
+<div class="viewcode-block" id="invert_mapping"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.invert_mapping">[docs]</a><span class="k">def</span> <span class="nf">invert_mapping</span><span class="p">(</span><span class="n">my_map</span><span class="p">,</span><span class="n">total_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">one_to_one</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Will invert a dictionary mapping that is not unique</span>
+<span class="sd">    (Also considers an array of a mapping of the indices to the value)</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: </span>
+<span class="sd">    input: [8,1,4,5,4,6,8]</span>
+<span class="sd">    output: {8: [0, 6], 1: [1], 4: [2, 4], 5: [3], 6: [5]}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">my_map</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">my_map</span><span class="p">):</span>
+        <span class="n">my_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">my_map</span><span class="p">)])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Non dictionary or array type recieved&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">total_keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">inv_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inv_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,[])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">total_keys</span><span class="p">])</span>
+    
+    <span class="c1">#handling the one-dimensional case where dictionary just maps to numbers</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">my_map</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">my_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">inv_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1">#2-D case where dictionary maps to list of numbers</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v1</span> <span class="ow">in</span> <span class="n">my_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="n">inv_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">one_to_one</span><span class="p">:</span>
+        <span class="n">inv_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">inv_map</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        
+    <span class="k">return</span> <span class="n">inv_map</span></div>
+
+<div class="viewcode-block" id="get_unique_values_dict_of_lists"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.get_unique_values_dict_of_lists">[docs]</a><span class="k">def</span> <span class="nf">get_unique_values_dict_of_lists</span><span class="p">(</span><span class="n">dict_of_lists</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: If have a dictionary that maps the keys to lists,</span>
+<span class="sd">    this function will give the unique values of all the elements of all the lists</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dict_of_lists</span><span class="o">.</span><span class="n">values</span><span class="p">()))))</span></div>
+
+<div class="viewcode-block" id="flip_key_orders_for_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.flip_key_orders_for_dict">[docs]</a><span class="k">def</span> <span class="nf">flip_key_orders_for_dict</span><span class="p">(</span><span class="n">curr_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    To flip the order of keys in dictionarys with multiple</span>
+<span class="sd">    levels of keys:</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: </span>
+<span class="sd">    test_dict = {0:{1:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;],2:[&#39;c&#39;,&#39;d&#39;,&#39;e&#39;]},</span>
+<span class="sd">            1:{0:[&#39;i&#39;,&#39;j&#39;,&#39;k&#39;],2:[&#39;f&#39;,&#39;g&#39;,&#39;h&#39;]}}</span>
+<span class="sd">    </span>
+<span class="sd">    output:</span>
+<span class="sd">    {0: {1: [&#39;i&#39;, &#39;j&#39;, &#39;k&#39;]},</span>
+<span class="sd">     1: {0: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]},</span>
+<span class="sd">     2: {0: [&#39;c&#39;, &#39;d&#39;, &#39;e&#39;], 1: [&#39;f&#39;, &#39;g&#39;, &#39;h&#39;]}}</span>
+<span class="sd">     </span>
+<span class="sd">     Pseudocode: </span>
+<span class="sd">     How to flip the soma to piece touching dictionaries</span>
+<span class="sd">    1) get all the possible limb keys</span>
+<span class="sd">    2) Create a dictionary with empty list</span>
+<span class="sd">    3) Iterate through all of the somas</span>
+<span class="sd">    - if the limb is in the keys then add the info (if not then skip)</span>
+
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">test_dict</span> <span class="o">=</span> <span class="n">curr_dict</span>
+    <span class="n">all_limbs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">test_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span>
+    <span class="n">flipped_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">l_idx</span> <span class="ow">in</span> <span class="n">all_limbs</span><span class="p">:</span>
+        <span class="n">flipped_dict</span><span class="p">[</span><span class="n">l_idx</span><span class="p">]</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sm_idx</span><span class="p">,</span><span class="n">sm_dict</span> <span class="ow">in</span> <span class="n">test_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">l_idx</span> <span class="ow">in</span> <span class="n">sm_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">flipped_dict</span><span class="p">[</span><span class="n">l_idx</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">sm_idx</span><span class="p">:</span><span class="n">sm_dict</span><span class="p">[</span><span class="n">l_idx</span><span class="p">]})</span>
+    <span class="k">return</span> <span class="n">flipped_dict</span></div>
+
+<span class="c1">#import itertools</span>
+<div class="viewcode-block" id="combine_list_of_lists"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.combine_list_of_lists">[docs]</a><span class="k">def</span> <span class="nf">combine_list_of_lists</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">))</span></div>
+
+
+<span class="c1">#have to reorder the keys</span>
+<div class="viewcode-block" id="order_dict_by_keys"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.order_dict_by_keys">[docs]</a><span class="k">def</span> <span class="nf">order_dict_by_keys</span><span class="p">(</span><span class="n">current_dict</span><span class="p">):</span>
+    <span class="n">current_dict_new</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span><span class="n">current_dict</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">current_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))])</span>
+    <span class="k">return</span> <span class="n">current_dict_new</span></div>
+
+
+<div class="viewcode-block" id="dict_to_array"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.dict_to_array">[docs]</a><span class="k">def</span> <span class="nf">dict_to_array</span><span class="p">(</span><span class="n">current_dict</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">current_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span><span class="nb">list</span><span class="p">(</span><span class="n">current_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())])</span><span class="o">.</span><span class="n">T</span></div>
+
+
+
+<div class="viewcode-block" id="add_prefix_to_keys"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.add_prefix_to_keys">[docs]</a><span class="k">def</span> <span class="nf">add_prefix_to_keys</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">prefix</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+<span class="c1">#from python_tools import data_struct_utils as dsu</span>
+<div class="viewcode-block" id="merge_dicts"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.merge_dicts">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="n">dicts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To combine multiple dictionaries</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: </span>
+<span class="sd">    x = dict(a=5,b=8,c=9)</span>
+<span class="sd">    y = dict(d = 10,e=7,f=10)</span>
+<span class="sd">    z = dict(r = 20,g = 30)</span>
+<span class="sd">    merge_dicts([x,y,z])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dicts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">dsu</span><span class="o">.</span><span class="n">DictType</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">]):</span>
+        <span class="n">dicts</span> <span class="o">=</span> <span class="p">[</span><span class="n">dsu</span><span class="o">.</span><span class="n">DictType</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">]</span>
+    
+    <span class="n">super_dict</span> <span class="o">=</span> <span class="n">dicts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">super_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">super_dict</span></div>
+
+<span class="c1">#import itertools</span>
+<div class="viewcode-block" id="merge_dicts_simple"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.merge_dicts_simple">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts_simple</span><span class="p">(</span><span class="n">dicts</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="is_function"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.is_function">[docs]</a><span class="k">def</span> <span class="nf">is_function</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ex: </span>
+<span class="sd">    from python_tools import general_utils as gu</span>
+
+<span class="sd">    def print_hello():</span>
+<span class="sd">        print(&quot;hi&quot;)</span>
+<span class="sd">    gu.is_function(print_hello)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+<span class="c1">#import numpy as np</span>
+<div class="viewcode-block" id="sub_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.sub_dict">[docs]</a><span class="k">def</span> <span class="nf">sub_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">keys_to_include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">keys_to_exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To restrict a dictionary</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: </span>
+<span class="sd">    gu.sub_dict(dict(hello=5,hi=7),keys_to_exclude=&quot;hello&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">curr_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    
+    <span class="k">if</span> <span class="n">keys_to_include</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">keys_to_include</span><span class="p">):</span>
+            <span class="n">keys_to_include</span> <span class="o">=</span> <span class="p">[</span><span class="n">keys_to_include</span><span class="p">]</span>
+        <span class="n">curr_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">curr_keys</span><span class="p">,</span><span class="n">keys_to_include</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">keys_to_exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nu</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">keys_to_exclude</span><span class="p">):</span>
+            <span class="n">keys_to_exclude</span> <span class="o">=</span> <span class="p">[</span><span class="n">keys_to_exclude</span><span class="p">]</span>
+        <span class="n">curr_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">curr_keys</span><span class="p">,</span><span class="n">keys_to_exclude</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">obj</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">curr_keys</span><span class="p">}</span></div>
+
+
+<span class="c1"># ------------ Help  with raising errors --------------- #</span>
+<div class="viewcode-block" id="Error"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.Error">[docs]</a><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> 
+  
+    <span class="c1"># Error is derived class for Exception, but </span>
+    <span class="c1"># Base class for exceptions in this module </span>
+    <span class="k">pass</span></div>
+  
+<div class="viewcode-block" id="CGAL_skel_error"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.CGAL_skel_error">[docs]</a><span class="k">class</span> <span class="nc">CGAL_skel_error</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span> 
+  
+    <span class="c1"># Raised when an operation attempts a state  </span>
+    <span class="c1"># transition that&#39;s not allowed. </span>
+<div class="viewcode-block" id="CGAL_skel_error.__init__"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.CGAL_skel_error.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">msg</span><span class="p">):</span> 
+  
+        <span class="c1"># Error message thrown is saved in msg </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> </div></div>
+        
+        
+<div class="viewcode-block" id="str_filter_away_character"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.str_filter_away_character">[docs]</a><span class="k">def</span> <span class="nf">str_filter_away_character</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> 
+                            <span class="n">character_to_remove</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ex: </span>
+<span class="sd">    s = &quot;my_new_name&quot;</span>
+<span class="sd">    gu.str_filter_away_character(s,&quot;_&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    Output: &gt;&gt; mynewname</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">character_to_remove</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="str_filter_away_characters"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.str_filter_away_characters">[docs]</a><span class="k">def</span> <span class="nf">str_filter_away_characters</span><span class="p">(</span><span class="n">string</span><span class="p">,</span>
+                              <span class="n">characters_to_remove</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">characters_to_remove</span><span class="p">:</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">string</span></div>
+
+<div class="viewcode-block" id="add_prefix_to_dict_keys"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.add_prefix_to_dict_keys">[docs]</a><span class="k">def</span> <span class="nf">add_prefix_to_dict_keys</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">prefix</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+        
+
+        
+
+        
+        
+        
+
+
+<span class="c1">#--- from python_tools ---</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">data_struct_utils</span> <span class="k">as</span> <span class="n">dsu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_utils</span> <span class="k">as</span> <span class="n">nu</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

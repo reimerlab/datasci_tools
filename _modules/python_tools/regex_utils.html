@@ -71,6 +71,7 @@
   <h1>Source code for python_tools.regex_utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
 
+
 <span class="sd">Note: </span>
 <span class="sd">- * only works at the beginning of string</span>
 
@@ -112,9 +113,10 @@
 <span class="sd">data_type = &quot;h01&quot;</span>
 <span class="sd">search_string = fr&quot;{dict_type}.*{algorithm}.*{data_type}&quot;</span>
 <span class="sd">test_str = &quot;global_parameters_hi_split_h01&quot;</span>
-<span class="sd">#from python_tools from . import regex_utils as ru</span>
+<span class="sd">#from python_tools import regex_utils as ru</span>
 <span class="sd">ru.match_substring_in_str(search_string,</span>
 <span class="sd">            test_str)</span>
+
 
 
 
@@ -213,7 +215,7 @@
 <span class="sd">    Purpose: To replace multiple strings with a dictionary apping</span>
 <span class="sd">    </span>
 <span class="sd">    Ex: </span>
-<span class="sd">    from python_tools from . import regex_utils as ru</span>
+<span class="sd">    from python_tools import regex_utils as ru</span>
 <span class="sd">    query = &quot;u in [1,2,3,4]&quot;</span>
 <span class="sd">    dict_mapping = dict(u=&quot;v&quot;,v=&quot;u&quot;)</span>
 <span class="sd">    ru.multiple_replace(query,dict_mapping)</span>
