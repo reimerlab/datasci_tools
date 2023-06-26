@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools.logging_utils &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">python_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">python_tools.logging_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for python_tools.logging_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="sd">Covers the basics of the logging module (built in python)</span>
+
+<span class="sd">---------source 1--------------</span>
+<span class="sd">link: https://towardsdatascience.com/logging-in-python-a1415d0b8141</span>
+
+<span class="sd">Standard levels (WARNING is the default level)</span>
+<span class="sd">┌──────────┬───────┐</span>
+<span class="sd">│  Level   │ Value │</span>
+<span class="sd">├──────────┼───────┤</span>
+<span class="sd">│ CRITICAL │    50 │</span>
+<span class="sd">│ ERROR    │    40 │</span>
+<span class="sd">│ WARNING  │    30 │</span>
+<span class="sd">│ INFO     │    20 │</span>
+<span class="sd">│ DEBUG    │    10 │</span>
+<span class="sd">└──────────┴───────┘</span>
+
+<span class="sd">Purpose of module: without changing any code except the basicConfig function</span>
+<span class="sd">1) To make print statements really easy to turn off and on with different levels</span>
+<span class="sd">2) To output any print/debug statements to a file without changing, </span>
+<span class="sd">3) print out other things (like time and traceback calls)</span>
+
+<span class="sd">When would you use it? </span>
+<span class="sd">1) debugging, </span>
+<span class="sd">2) usage monitoring</span>
+<span class="sd">3) performance monitoring</span>
+
+<span class="sd">How to use: </span>
+<span class="sd">1) put &quot;logging.[level](&#39;some message in code&#39;)&quot;</span>
+<span class="sd">2) set &quot;logging.basicConfig(level=logging.LEVEL)&quot;</span>
+<span class="sd">- only that level and above will be printed or executed</span>
+<span class="sd">3) can set more args in basicConfig to </span>
+<span class="sd">    - print to text </span>
+<span class="sd">    - change output formatting</span>
+
+<span class="sd"># -- named logger vs root logger --</span>
+
+<span class="sd">1) How to use the root logger</span>
+<span class="sd">logging.debug(&quot;&quot;) OR logger = logging.getLogger(); logger.debug(&quot;&quot;)</span>
+
+<span class="sd">2) Using a named logger so that you are able to tell where logging came from</span>
+<span class="sd">logger = logging.getLogger(&#39;spam_application&#39;); logger.debug(&quot;&quot;)</span>
+
+
+<span class="sd">To automatically create a specific logger for every distinct module use:</span>
+<span class="sd">logger = logging.getLogger(__name__)</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+
+<div class="viewcode-block" id="examples"><a class="viewcode-back" href="../../python_tools.html#python_tools.logging_utils.examples">[docs]</a><span class="k">def</span> <span class="nf">examples</span><span class="p">():</span>
+    <span class="c1"># -- Ex: Basic</span>
+    <span class="kn">import</span> <span class="nn">logging</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Debug message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Info message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Warning message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Critical message&#39;</span><span class="p">)</span>
+    
+    
+    <span class="c1"># -- Ex: output to file (the last 2 messages would print)</span>
+    <span class="kn">import</span> <span class="nn">logging</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;sample.log&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Debug message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Info message&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error message&#39;</span><span class="p">)</span>
+    
+    
+    <span class="c1"># -- Ex: changing formatting</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    default formatting = %(levelname)s:%(name):%(message)s</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">:</span><span class="si">%(name)s</span><span class="s1">:</span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Info message&#39;</span><span class="p">)</span>
+    
+    
+    <span class="c1"># -- Ex: change date formatting</span>
+    <span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">:</span><span class="si">%(name)s</span><span class="s1">:</span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">,</span> 
+                        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> 
+                        <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%b-</span><span class="si">%d</span><span class="s1"> </span><span class="si">%X</span><span class="s1">%z&#39;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Info message&#39;</span><span class="p">)</span>
+    
+    
+    <span class="c1"># -- Ex: logging an exception with a traceback</span>
+    <span class="c1"># - way 1: with error and a flag set</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="mi">5</span><span class="o">/</span><span class="mi">0</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Exception occured&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        
+    <span class="c1"># - way 2: with exception class</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="mi">5</span><span class="o">/</span><span class="mi">0</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Exception occured&#39;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
