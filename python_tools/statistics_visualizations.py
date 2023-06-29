@@ -1,10 +1,12 @@
 '''
 
 
+
 Provides a great example of how to visualize
 projections from 1d to 3d: 
 
 http://at-compute004.ad.bcm.edu:8888/notebooks/neuron_mesh_tools/Auto_Proofreading/Soma_Filtering/Soma_Soma_Merger_Detector.ipynb#
+
 
 
 
@@ -561,6 +563,8 @@ def plot_roc(
 
     
 #from python_tools import statistics_visualizations as sviz
+
+
 
 #--- from python_tools ---
 from . import matplotlib_utils as mu

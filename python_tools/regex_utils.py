@@ -1,6 +1,7 @@
 '''
 
 
+
 Note: 
 - * only works at the beginning of string
 
@@ -45,6 +46,7 @@ test_str = "global_parameters_hi_split_h01"
 #from python_tools import regex_utils as ru
 ru.match_substring_in_str(search_string,
             test_str)
+
 
 
 
@@ -133,7 +135,7 @@ multiline_str_pattern = r"""(['"])\1\1(.*?)\1{3}"""
 
 word_pattern = "[a-zA-Z._]+"
 word_pattern_comma_space = "[a-zA-Z._, ]+"
-word_pattern_comma_space_numb = "[a-zA-Z._, ][a-zA-Z._, 1-9]+"
+word_pattern_comma_space_numb = "[a-zA-Z._, ][a-zA-Z._, 1-9]*"
 
 
 def multiple_replace(
@@ -213,6 +215,8 @@ def match_pattern_in_str(
     else:
         return found_strings
     
+
+
 
 
 

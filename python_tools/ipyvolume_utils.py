@@ -1,6 +1,7 @@
 '''
 
 
+
 Purpose: To summarize and expose ipyvolume functionality
 
 Tutorial: https://www.youtube.com/watch?v=hOKa8klJPyo
@@ -14,6 +15,7 @@ The upper left controls:
 1) Eye: allows 2 outputs from different angles for VR
 2) The icon can select 3D so can output data for 3D viewing in google cardboard
 (180 or 360 degrees)
+
 
 
 '''
@@ -1390,6 +1392,8 @@ def lighting_parameters():
     
     
     
+
+
 
 #--- from python_tools ---
 from . import matplotlib_utils as mu

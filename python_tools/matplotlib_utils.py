@@ -1,6 +1,7 @@
 '''
 
 
+
 Notes on other functions: 
 eventplot #will plot 1D data as lines, can stack multiple 1D events
 -- if did a lot of these gives the characteristic neuron spikes
@@ -22,6 +23,7 @@ fig.tight_layout()
 
 
            
+
 
 
 
@@ -2953,6 +2955,8 @@ def set_legend_loc(
 
 hide_ax = turn_ax_off
 #from python_tools import matplotlib_utils as mu
+
+
 
 
 #--- from python_tools ---

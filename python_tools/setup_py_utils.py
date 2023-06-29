@@ -1,7 +1,9 @@
 '''
 
 
+
 Purpose: To help automatically create a 
+
 
 
 
@@ -9,6 +11,11 @@ Purpose: To help automatically create a
 from pathlib import Path
 from setuptools import setup, find_packages
 from typing import List
+
+def get_links():
+    return [
+        #"python_tools @ git+https://github.com/bacelii/python_tools.git'"
+    ]
 
 def get_install_requires(filepath=None):
     if filepath is None:
@@ -19,12 +26,11 @@ def get_install_requires(filepath=None):
     if fname.exists():
         with open(fname, 'r') as f:
             targets = f.read().splitlines()
+            
+    targets += get_links()
     return targets
 
-def get_links():
-    return [
-        #"git+https://github.com/bacelii/machine_learning_tools.git"
-    ]
+
 
 setup_py_str = """
 
@@ -36,7 +42,7 @@ setup(
     author_email='[author_email]',
     packages=find_packages(),  #teslls what packages to be included for the install
     install_requires=get_install_requires(), #external packages as dependencies
-    dependency_links = get_links(),
+    # dependency_links = get_links(),
     # if wanted to install with the extra requirements use pip install -e ".[interactive]"
     extras_require={
         #'interactive': ['matplotlib>=2.2.0', 'jupyter'],
@@ -90,7 +96,8 @@ def setup_py_str_generator(
     
     return data
     
+
+
 #--- from python_tools ---
 from . import file_utils as filu
 from . import inspect_utils as iu
-

@@ -1,7 +1,9 @@
 '''
 
 
+
 Useful wrappers and functions for the inspect module
+
 
 
 '''
@@ -72,4 +74,5 @@ def function_names(
     
 def function_code_as_str(func):
     return inspect.getsource(func)
+
 

@@ -1,6 +1,7 @@
 '''
 
 
+
 to explore the use cases of the dataclass module
 
 --- source 1 ----
@@ -37,6 +38,7 @@ class Person():
                     self.height, self.email) == (other.name, other.age,
                                                  other.height, other.email)
         return NotImplemented
+
 
 
 
@@ -134,4 +136,5 @@ def examples():
         departament:str = "security" 
 
     print(Employee('Joe', 25, 1.85, 'joe@dataquest.io', 100000, 'Marketing'))
+
 

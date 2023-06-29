@@ -1,10 +1,12 @@
 '''
 
 
+
 How to get a reference to the current module
 
 #import sys
 current_module = sys.modules[__name__]
+
 
 
 '''
@@ -462,8 +464,10 @@ def rm_dir(directory,ignore_errors = False):
 
 
 
+
+
+#--- from python_tools ---
 from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
 
 from . import system_utils as su
-#--- from python_tools ---
-from .tqdm_utils import tqdm

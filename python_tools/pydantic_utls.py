@@ -1,6 +1,7 @@
 '''
 
 
+
 Purpose of module: a module that has:
 1) Base class that a custom class can inherit from:
 - will automatically run checks on the types (or convert data to write type) of data arguments are
@@ -23,6 +24,7 @@ How does it do that? It will first try to extract these values from environment 
 
 What happens: if something is defined as an environment variable, it will use that (
 so don't have to hardcode it)
+
 
 
 '''

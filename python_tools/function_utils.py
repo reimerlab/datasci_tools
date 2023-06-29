@@ -1,7 +1,9 @@
 '''
 
 
+
 methods for helping inspect functions
+
 
 
 '''
@@ -80,6 +82,7 @@ for f in [myfunc1,myfunc2]:
     new_funcs.append(make_func(f))
     
 new_funcs'''
+
 
 
 

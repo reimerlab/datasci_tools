@@ -1,27 +1,3 @@
-Good link on how to create automatic documentation landing page
-
-https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
-
--- explains need to change the docs.yml to "main" instead of master or else it won't trigger anything
-https://stackoverflow.com/questions/61989951/github-action-workflow-not-running
-
-Process:
-1) pip3 install -U sphinx
-2) Within project create docs folder, go into folder and run "sphinx-quickstart"
-3) Will automatically create a lot of files
-- Makefile: builds the proect
-- conf.py: specifies the build
-- index.rst (reStructuredText): entry point for the website
-4) to make website, run: make html
-5) pip3 install sphinx-rtd-theme
-6) add some more stuff to the conf.py
-7) Generate more .rst files in the doc folder: sphinx-apidoc -o . ../autos
-8) link the .rst files
-9) add some more code to the conf.py and rerun the html
-    make clean html
-    make html
-    
-    
 ---------------------------------------------------------------
 Stage 1: Creating Documentation 
 Link: https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d
@@ -31,12 +7,22 @@ Background:
 - they can be like index.rst
 
 Step 1: Setup Directory
-1) pip install sphinx sphinx_rtd_theme
+1) install sphinx
 - sphinx is what does all of the automatic html generation
+
+pip install sphinx sphinx_rtd_theme
+
+
 2) Create a docs folder in same directory as setup.py
-3) Inside docs folder run: sphinx-quickstart
+
+mkdir docs
+
+
+3) Inside docs folder run: 
 - can hit enter to accept all of the defaults
 - will create a documentation directory (along with make.bat file) that will be used later to generate the html
+
+sphinx-quickstart
 
 
 Step 2: Editing config
@@ -44,24 +30,33 @@ Step 2: Editing config
 1) in conf.py :
 
     a. change os.path.abspath('.') to os.path.abspath('..')
+
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+
+
     - this will tell sphinx to look outside the directory for modules
 
     b. change extensions variable to:
-        import sphinx_rtd_theme
 
-        extensions = [
-        "sphinx_rtd_theme",
-        "sphinx.ext.autodoc",#converts the doc string into documentation
-        "sphinx.ext.viewcode",
-        "sphinx.ext.napoleon"
-        ]
+import sphinx_rtd_theme
+
+extensions = [
+"sphinx_rtd_theme",
+"sphinx.ext.autodoc",#converts the doc string into documentation
+"sphinx.ext.viewcode",
+"sphinx.ext.napoleon"
+]
 
     c. Change the html_theme
-        html_theme = 'sphinx_rtd_theme'
+
+html_theme = 'sphinx_rtd_theme'
 
 
     d. Add the following to exclude_patterns
-        exclude_patterns = ['*.ipynb_checkpoints*']
+
+exclude_patterns = ['*.ipynb_checkpoints*']
 
     e. Add the following to bottom: 
         def skip(app, what, name, obj, would_skip, options):
@@ -72,12 +67,70 @@ Step 2: Editing config
         def setup(app):
             app.connect("autodoc-skip-member", skip)
 
+-*******************--- whole conf.py
+
+# Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+
+project = '[NEED TO INSERT MODULE NAME]'
+copyright = '2023, Brendan Celii'
+author = 'Brendan Celii'
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+import sphinx_rtd_theme
+
+extensions = [
+"sphinx_rtd_theme",
+"sphinx.ext.autodoc",#converts the doc string into documentation
+"sphinx.ext.viewcode",
+"sphinx.ext.napoleon"
+]
+
+templates_path = ['_templates']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','*.ipynb_checkpoints*']
+
+
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_theme = 'sphinx_rtd_theme'
+html_static_path = ['_static']
+
+
+def skip(app, what, name, obj, would_skip, options):
+    if name == "__init__":
+        return False
+    return would_skip
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+-*******************--- END whole conf.py
+
+
+
+
+
+
 Step 3: Generate the other .rst files (which will have our code)
 
 1) go out of docs directory to base directory
 2) run "sphinx-apidoc -o docs [package_name]/"
 - references the folder where all the code sits
 _ Output: [package_name].rst and modules.rst files are generated
+
+sphinx-apidoc -o docs [package_name]/
 
 3) go into index.rst and add modules to file:
     .. toctree::
@@ -108,64 +161,80 @@ Link: https://medium.com/practical-coding/documenting-your-python-library-from-z
 
 
 1) added following the .gitignore 
-    __pycache__/
-    .DS_Store
-    docs/_build/
-    docs/_static/
-    docs/_templates
+
+__pycache__/
+.DS_Store
+docs/_build/
+docs/_static/
+docs/_templates
 
 2) Creating the github actions workflow
     a) Create directory and yml file
-        mkdir .github/
-        mkdir .github/workflows
-        vim .github/workflows/docs.yml
+
+mkdir .github/;mkdir .github/workflows;vim .github/workflows/docs.yml
     b) Fill in yaml file with:
 
-        name: docs
-        on: # shows that it willl trigger on a push to main branch
-        push:
-            branches:
-            - main # make sure this isn't master
+name: docs
+on:
+  push:
+    branches:
+      - main
 
-        jobs:
-        docs:  # the only one job being executed
-            name: Docs
-            runs-on: ubuntu-latest
-            steps: # the steps that will be done if run
+jobs:
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-            - uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
 
-            - name: Install Python
-            uses: actions/setup-python@v1
-            with:
-                python-version: 3.8
+      - name: Upgrade pip
+        run: |
+          # install pip=>20.1 to use "pip cache dir"
+          python3 -m pip install --upgrade pip
 
-            - name: Install requirements
-            run: |
-                pip3 install sphinx-rtd-theme
-            
-            - name: Build docs 
-            run: | # the commands we are running
-                cd docs
-                make html
+      # - name: Get pip cache dir
+      #   id: pip-cache
+      #   run: echo "::set-output name=dir::$(pip cache dir)"
 
-            # https://github.com/peaceiris/actions-gh-pages
-            - name: Deploy
-            if: success()
-            uses: peaceiris/actions-gh-pages@v3
-            with:
-                publish_branch: gh-pages
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: docs/_build/html/
+      - name: Install requirements
+        run: |
+          pip3 install sphinx-rtd-theme
 
-3) Go to the settings of your github page 
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r ./requirements.txt
+          pip3 install git+https://github.com/bacelii/python_tools.git
+
+      - name: Build docs
+        run: |
+          cd docs
+          make html
+
+      # https://github.com/peaceiris/actions-gh-pages
+      - name: Deploy
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html/
+
+
+3) push changes
+
+4) Go to the settings of your github page 
     a. Settings tab
     b. Under Pages (on left)
     c. change sources to to "gh-pages" branch
     - make sure directory is /(root)
     - might need to change it from main back to gh-pages to work
 
-4) Push change to main branch and monitor progress:
+5) Push change to main branch and monitor progress:
     a. Go to actions
     b. Click on docs > then latest run
     c. Click "Docs" on left > should see the process of job
@@ -203,11 +272,39 @@ Stage 3: Updating documentation
 
 
 
+------------------------------------------------------------------
+Old Notes: 
+
+Good link on how to create automatic documentation landing page
+
+https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
+
+-- explains need to change the docs.yml to "main" instead of master or else it won't trigger anything
+https://stackoverflow.com/questions/61989951/github-action-workflow-not-running
+
+Process:
+1) pip3 install -U sphinx
+2) Within project create docs folder, go into folder and run "sphinx-quickstart"
+3) Will automatically create a lot of files
+- Makefile: builds the proect
+- conf.py: specifies the build
+- index.rst (reStructuredText): entry point for the website
+4) to make website, run: make html
+5) pip3 install sphinx-rtd-theme
+6) add some more stuff to the conf.py
+7) Generate more .rst files in the doc folder: sphinx-apidoc -o . ../autos
+8) link the .rst files
+9) add some more code to the conf.py and rerun the html
+    make clean html
+    make html
+    
+    
+
+
 
 
 For publishing to github pages:
 1) make sure branch is gh-pages and make sure directory is /(root)
-
 
 
 A better link: https://towardsdatascience.com/documenting-python-code-with-sphinx-554e1d6c4f6d

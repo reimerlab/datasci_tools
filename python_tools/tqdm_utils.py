@@ -1,9 +1,11 @@
 '''
 
 
+
 To provide a tqdm that can be controlled
 
 Reference Article: https://github.com/tqdm/tqdm/issues/619
+
 
 
 '''
@@ -31,6 +33,7 @@ def turn_off_tqdm():
     tqdm.disable=True
     
     
+
 
 
 

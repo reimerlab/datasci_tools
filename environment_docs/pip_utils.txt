@@ -5,3 +5,32 @@ pip3 show [package-name]
 
 # install git repo
 pip install git+https://github.com/tangentlabs/django-oscar-paypal.git@issue/34/oscar-0.6
+
+
+# getting more information doing uninstall
+ pip3 uninstall --verbose [package]
+
+
+# package that was installed with pip -e hard to uninstall
+https://github.com/pypa/pip/issues/5330
+
+
+# what happens with pip install -e 
+.local/lib/python3.10/site-packages/easy-install.pth
+
+1) Found location where modules are installed
+- imported a module installed by pip
+- did module.__file__ to fine path
+Ex: /usr/local/lib/python3.6/dist-packages/
+
+2) Found the [module].egg-link
+
+3) Delete the [module].egg-info from the package
+
+4) pip3 uninstall [module]
+
+5) Remove from the path inside ipynb
+
+from os import sys
+sys.path.remove("/neurd_packages/python_tools")
+import python_tools --> should result in error

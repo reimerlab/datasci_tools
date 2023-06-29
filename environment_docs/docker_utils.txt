@@ -3,3 +3,184 @@ docker image build . -t "tag_name:latest"
 
 to run it:
 docker container run -it ubuntu:latest /bin/bash
+
+---Notes from best practices:
+link: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+1) can have a .dockerignore file
+2) Only the instructions RUN, COPY, ADD create layers. Other instructions create temporary intermediate images, and don’t increase the size of the build.
+
+3) sort multi-line arguments alphabetically so easy to see if already had something
+--> multiple lines can have backslashes
+4) LABEL can be added for automation
+- can have more than one label
+5) Can add version to packages you install
+6) always combine RUN apt-get update with apt-get install in the same RUN statement
+--> because otherwise could run into caching issues
+
+Code: RUN apt-get update && apt-get install -y
+
+
+Ex 1: 
+RUN apt-get update && apt-get install -y \
+    package-bar \
+    package-baz \
+    package-foo=1.3.*
+
+Ex 2: Clears the cache with rm statemnt because don't need it in layer (because always does update)
+
+RUN apt-get update && apt-get install -y \
+    aufs-tools \
+    automake \
+    build-essential \
+    curl \
+    dpkg-sig \
+    libcap-dev \
+    libsqlite3-dev \
+    mercurial \
+    reprepro \
+    ruby1.9.1 \
+    ruby1.9.1-dev \
+    s3cmd=1.1.* \
+ && rm -rf /var/lib/apt/lists/*
+
+
+7a) CMD: run the software contained in your image, along with any arguments.
+
+7b) ENTRYPOINT: sets image main command
+
+8) EXPOSE: ports container will listen for connections
+    Ex: webserver should do EXPOSE 80
+
+9) ENV sets environment variables
+ENV PATH=/usr/local/nginx/bin:$PATH
+
+10) COPY (prefer over add): adds local files to current container
+
+Ex: 
+COPY
+Learn more about the "COPY" Dockerfile command.
+ requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+COPY . /tmp/
+
+11) use curl and wget to fetch packages
+
+12) VOLUME: mount external 
+13) WORKDIR: sets current working directory
+
+
+14) ARG: how can specify an argument to use later in build
+
+Ex: 
+-- dockerfile
+ARG MODEL_TO_COPY
+COPY application ./application
+COPY $MODEL_TO_COPY ./application/$MODEL_TO_COPY
+
+-- run command (specifying value of arg variable)
+docker build --build-arg MODEL_TO_COPY=model_name -t <container>:<model_name specific tag> .
+
+Ex 2: 
+ARG GO_VERSION=1.20
+FROM golang:${GO_VERSION}-alpine AS base
+
+docker build --build-arg="GO_VERSION=1.19" 
+
+
+How could do a conditional build based on arg
+
+Ex 3: using args in the run commands
++ ARG APP_VERSION="v0.0.0+unknown"
+  RUN --mount=type=cache,target=/go/pkg/mod/ \
+      --mount=type=bind,target=. \
+-     go build -o /bin/server ./cmd/server
++     go build -ldflags "-X main.version=$APP_VERSION" -o /bin/server ./cmd/server
+
+
+Ex 4: 
+ARG my_arg
+
+FROM centos:7 AS base
+RUN echo "do stuff with the centos image"
+
+FROM base AS branch-version-1
+RUN echo "this is the stage that sets VAR=TRUE"
+ENV VAR=TRUE
+
+FROM base AS branch-version-2
+RUN echo "this is the stage that sets VAR=FALSE"
+ENV VAR=FALSE
+
+FROM branch-version-${my_arg} AS final
+RUN echo "VAR is equal to ${VAR}"
+
+
+# ----- Advanced Patterns -----------
+background on multi-stage build:
+https://docs.docker.com/build/building/multi-stage/
+
+link: https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae
+
+Basic methods: 
+1) Can name the build stages
+FROM ____ AS BASE
+FROM BASE AS NAME_1
+...
+FROM BASE AS NAME_2
+...
+COPY --from:NAME_1 FILE_1 DEST
+
+
+2) could use build arguments to select from what stage to 
+copy or inherit
+
+---- ex of conditional copying ----
+ARG src=stage0
+COPY --from=build-${src} . .
+
+
+--- ex of conditional inheritance (all unused stages ignored):
+ARG BUILD_VERSION=1
+FROM alpine AS base
+RUN …
+FROM base AS branch-version-1
+RUN touch version1
+FROM base AS branch-version-2
+RUN touch version2
+FROM branch-version-${BUILD_VERSION} AS after-condition
+FROM after-condition 
+RUN …
+
+
+
+
+
+How to copy from one stage to another usin# syntax=docker/dockerfile:1
+
+FROM golang:1.16 AS builder
+WORKDIR /go/src/github.com/alexellis/href-counter/
+RUN go get -d -v golang.org/x/net/html  
+COPY app.go ./
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o app .
+
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/alexellis/href-counter/app ./
+CMD ["./app"] g named build stages
+
+--> could then specify a target build stage
+
+docker build --target builder -t alexellis2/href-counter:latest .
+
+
+Notes: 
+1) Can always use a previous stage as a new stage
+2) if one stage isn't used in the final target --> it will not be built and skipped (thanks to new BuildKit backend)
+3) can specify the target you want
+
+
+Takeaways: 
+1) Make dockerfile with different stages
+-> just specify the target

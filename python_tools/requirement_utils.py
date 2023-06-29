@@ -1,8 +1,10 @@
 '''
 
 
+
 utilizies the pipreqs tool to automatically
 generate the requirements of a folder
+
 
 
 
@@ -162,10 +164,12 @@ def package_ver_dict_from_file(filepath):
         requirement_dict = {pack:ver for pack,ver in [curr_split.split(">=") for curr_split in requirement_list] if ".egg" != pack[-4:]}
     return requirement_dict
 
+
+
 #--- from python_tools ---
 from . import file_utils as filu
+from . import module_utils as modu
 from . import numpy_utils as nu
 from . import system_utils as su
-from . import module_utils as modu
 
 from . import requirement_utils as requ

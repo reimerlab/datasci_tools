@@ -1,6 +1,7 @@
 '''
 
 
+
 Purpose: To make pandas table manipulation easier
 
 
@@ -197,6 +198,7 @@ in the boxes is just what you specify
 .apply is a function that is very adaptable to the input given but usually
 better to send data to vectorized function
  --> link: https://towardsdatascience.com/avoiding-apply-ing-yourself-in-pandas-a6ade4569b7f
+
 
 
 
@@ -4408,12 +4410,14 @@ def plot_gradients_over_coordiante_columns(*args,**kwargs):
 #from python_tools import pandas_utils as pu
 
 
+
+
+#--- from python_tools ---
 from . import general_utils as gu
 from . import ipyvolume_utils as ipvu
 from . import matplotlib_utils as mu
 from . import numpy_utils as nu
 from . import regex_utils as reu
+from .tqdm_utils import tqdm
 
 from . import pandas_utils as pu
-#--- from python_tools ---
-from .tqdm_utils import tqdm

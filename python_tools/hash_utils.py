@@ -1,13 +1,15 @@
 '''
 
 
+
 Purpose: functions for quick hashing
 
 
 
+
 '''
-import hashlib
 import base64
+import hashlib
 
 #import base64
 #import hashlib
@@ -34,6 +36,8 @@ test 2
 test 5
 """
 #from python_tools import hash_utils as hashu
+
+
 
 
 from . import hash_utils as hashu

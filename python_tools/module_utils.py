@@ -1,6 +1,7 @@
 '''
 
 
+
 Purpose: to provide functionality for inspecting,
 editing and interacting with python modules (the .py files)
 
@@ -18,6 +19,7 @@ value inside the funciton
 
 ---- using eval and exec ----
 Rule: Can't set 
+
 
 
 
@@ -1073,7 +1075,9 @@ def clean_module_syntax(
 
     finds = list(np.sort(finds))
 
-    module_pattern = fr"{ru.start_of_line_pattern}({'|'.join(finds)})(?![0-9a-zA-z _\.\-:]+)"
+    finds_len = [len(k) for k in finds]
+    finds_for_query = [finds[i] for i in np.flip(np.argsort(finds_len))]
+    module_pattern = fr"{ru.start_of_line_pattern}({'|'.join(finds_for_query)})(?![0-9a-zA-z _\.\-:]+)"
     #print(f"module_pattern = {module_pattern}")
     data_doc_no_mod, count = re.subn(
         pattern = module_pattern,
@@ -1124,10 +1128,13 @@ def clean_module_syntax(
         data_doc_no_mod = data_doc_no_mod.replace(f"#--- from {pkg} ---\n","")
 
     if verbose:
+        print(f"----non_pkg_mods_str = ")
         print(non_pkg_mods_str)
         print(f"\n")
+        print(f"----pkg_mods_str = ")
         print(pkg_mods_str)
         print(f"\n")
+        print(f"----own_mod_str = ")
         print(own_mod_str)
         
         
@@ -1239,6 +1246,8 @@ def package_imports_from_files(
             
 
     
+
+
 
 
 

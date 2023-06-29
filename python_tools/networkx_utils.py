@@ -2,8 +2,10 @@
 
 
 
+
 Link on how to change parameters of nx.draw:
 https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
+
 
 
 
@@ -5459,13 +5461,15 @@ def remove_nodes_with_no_edges(G,copy = False):
     G.remove_nodes_from(nodes)
     return G
 
+
+
+#--- from python_tools ---
 from . import general_utils as gu
 from . import numpy_utils as nu
 from . import pandas_utils as pu
 from . import regex_utils as ru
 from . import string_utils as stru
 from . import tqdm_utils as tqu
+from .tqdm_utils import tqdm
 
 from . import networkx_utils as xu
-#--- from python_tools ---
-from .tqdm_utils import tqdm

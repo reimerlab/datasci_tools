@@ -1,6 +1,7 @@
 '''
 
 
+
 Notes: global variables can be referenced in functions
 but can't be assigned to (if they are then its just a local copy)
 without the use of the global keyword
@@ -9,6 +10,7 @@ Module importing itself: essentially will run through things twice
 explanation: https://stackoverflow.com/questions/62665924/python-program-importing-itself
 
 --> could technically put at the top
+
 
 
 
@@ -272,10 +274,12 @@ def module_files_from_directory(
 
 #from python_tools import package_utils as pku
 
+
+
 #--- from python_tools ---
 from . import file_utils as filu
+from . import module_utils as modu
 from . import numpy_utils as nu
 from . import pathlib_utils as plu
-from . import module_utils as modu
 
 from . import package_utils as pku
