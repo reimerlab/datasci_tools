@@ -68,20 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.dict_utils.abbreviate_str_keys"><code class="docutils literal notranslate"><span class="pre">abbreviate_str_keys()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.dj_utils">python_tools.dj_utils module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.all_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">all_attribute_names_from_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.append_table_to_pairwise_table"><code class="docutils literal notranslate"><span class="pre">append_table_to_pairwise_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table"><code class="docutils literal notranslate"><span class="pre">df_from_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table_old"><code class="docutils literal notranslate"><span class="pre">df_from_table_old()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.dj_query_from_pandas_query"><code class="docutils literal notranslate"><span class="pre">dj_query_from_pandas_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype"><code class="docutils literal notranslate"><span class="pre">parameter_datatype()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype_description"><code class="docutils literal notranslate"><span class="pre">parameter_datatype_description()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.primary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">primary_attribute_names_from_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.query_table_from_kwargs"><code class="docutils literal notranslate"><span class="pre">query_table_from_kwargs()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.secondary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">secondary_attribute_names_from_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.table_definition_from_example_dict"><code class="docutils literal notranslate"><span class="pre">table_definition_from_example_dict()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.enum_utils">python_tools.enum_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.enum_utils.example"><code class="docutils literal notranslate"><span class="pre">example()</span></code></a></li>
 </ul>
@@ -1497,114 +1484,8 @@ max_phrase_len = 15</p>
 </dd></dl>
 
 </section>
-<section id="module-python_tools.dj_utils">
-<span id="python-tools-dj-utils-module"></span><h2>python_tools.dj_utils module<a class="headerlink" href="#module-python_tools.dj_utils" title="Permalink to this heading"></a></h2>
-<p>Purpose: Datajoint utils to help with table manipulation</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.all_attribute_names_from_table">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">all_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#all_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.all_attribute_names_from_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.append_table_to_pairwise_table">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">append_table_to_pairwise_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_to_append</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes_to_not_rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'prefix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#append_table_to_pairwise_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.append_table_to_pairwise_table" title="Permalink to this definition"></a></dt>
-<dd><p>Purpose: To add on a table to both
-sides of another</p>
-<p>Pseudocode:
-1) Determine the primary attributes to join on
-(if not already)
-2) Determine the secondary attributes you want to
-join
-3) Build a renaming dictionary
-4) Project the tale to only those attributes chosen
-5) star restrict the table with the renamed tables</p>
-<p>— Example: —-
-dju.append_table_to_pairwise_table(</p>
-<blockquote>
-<div><p>table = m65auto.AutoProofreadNeuronLeafMatch(),
-table_to_append = hdju.subgraph_vectors_table,
-primary_attributes = [</p>
-<blockquote>
-<div><p>“segment_id”,
-“split_index”,
-“subgraph_idx”,
-#”leaf_node”,</p>
-</div></blockquote>
-<p>],
-secondary_attributes = [</p>
-<blockquote>
-<div><p>‘compartment’,
-‘node’,
-‘y_soma_relative’,
-‘width’,</p>
-</div></blockquote>
-<p>],
-source_name = “”,
-target_name = “match”,
-append_type = “prefix”,
-verbose = True,</p>
-</div></blockquote>
-<p>)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_substr_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table_old">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table_old" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.dj_query_from_pandas_query">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">dj_query_from_pandas_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#dj_query_from_pandas_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.dj_query_from_pandas_query" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longblob'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype_description">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_null</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype_description" title="Permalink to this definition"></a></dt>
-<dd><p>To generate the the datatype part of a parameter
-table definition</p>
-<p>— Exmaple–
-new_str = parameter_datatype_description(kwargs_dict,</p>
-<blockquote>
-<div><blockquote>
-<div><p>kwargs_datatype_dict = dict(filter_by_volume_threshold=”new datatype”)</p>
-</div></blockquote>
-<p>)</p>
-</div></blockquote>
-<p>print(new_str)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.primary_attribute_names_from_table">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">primary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#primary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.primary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.query_table_from_kwargs">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">query_table_from_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#query_table_from_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.query_table_from_kwargs" title="Permalink to this definition"></a></dt>
-<dd><p>Purpose: To query a datajoint table
-with keywords that may be None</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.secondary_attribute_names_from_table">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">secondary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#secondary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.secondary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="python_tools.dj_utils.table_definition_from_example_dict">
-<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">table_definition_from_example_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition_description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_name_description_to_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#table_definition_from_example_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.table_definition_from_example_dict" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="python-tools-dj-utils-module">
+<h2>python_tools.dj_utils module<a class="headerlink" href="#python-tools-dj-utils-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-python_tools.enum_utils">
 <span id="python-tools-enum-utils-module"></span><h2>python_tools.enum_utils module<a class="headerlink" href="#module-python_tools.enum_utils" title="Permalink to this heading"></a></h2>

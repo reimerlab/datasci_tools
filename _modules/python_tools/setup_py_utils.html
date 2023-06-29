@@ -72,7 +72,9 @@
 <span></span><span class="sd">&#39;&#39;&#39;</span>
 
 
+
 <span class="sd">Purpose: To help automatically create a </span>
+
 
 
 
@@ -80,6 +82,11 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<div class="viewcode-block" id="get_links"><a class="viewcode-back" href="../../python_tools.html#python_tools.setup_py_utils.get_links">[docs]</a><span class="k">def</span> <span class="nf">get_links</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="c1">#&quot;python_tools @ git+https://github.com/bacelii/python_tools.git&#39;&quot;</span>
+    <span class="p">]</span></div>
 
 <div class="viewcode-block" id="get_install_requires"><a class="viewcode-back" href="../../python_tools.html#python_tools.setup_py_utils.get_install_requires">[docs]</a><span class="k">def</span> <span class="nf">get_install_requires</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filepath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -90,12 +97,11 @@
     <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">targets</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            
+    <span class="n">targets</span> <span class="o">+=</span> <span class="n">get_links</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">targets</span></div>
 
-<div class="viewcode-block" id="get_links"><a class="viewcode-back" href="../../python_tools.html#python_tools.setup_py_utils.get_links">[docs]</a><span class="k">def</span> <span class="nf">get_links</span><span class="p">():</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="c1">#&quot;git+https://github.com/bacelii/machine_learning_tools.git&quot;</span>
-    <span class="p">]</span></div>
+
 
 <span class="n">setup_py_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 
@@ -107,7 +113,7 @@
 <span class="s2">    author_email=&#39;[author_email]&#39;,</span>
 <span class="s2">    packages=find_packages(),  #teslls what packages to be included for the install</span>
 <span class="s2">    install_requires=get_install_requires(), #external packages as dependencies</span>
-<span class="s2">    dependency_links = get_links(),</span>
+<span class="s2">    # dependency_links = get_links(),</span>
 <span class="s2">    # if wanted to install with the extra requirements use pip install -e &quot;.[interactive]&quot;</span>
 <span class="s2">    extras_require={</span>
 <span class="s2">        #&#39;interactive&#39;: [&#39;matplotlib&gt;=2.2.0&#39;, &#39;jupyter&#39;],</span>
@@ -161,10 +167,11 @@
     
     <span class="k">return</span> <span class="n">data</span></div>
     
+
+
 <span class="c1">#--- from python_tools ---</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">file_utils</span> <span class="k">as</span> <span class="n">filu</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">inspect_utils</span> <span class="k">as</span> <span class="n">iu</span>
-
 </pre></div>
 
            </div>
