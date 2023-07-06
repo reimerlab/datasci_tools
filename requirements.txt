@@ -7,7 +7,7 @@ ipywidgets>=7.5.1
 matplotlib>=3.3.4
 modin>=0.8.3.post4
 networkx>=2.5
-numpy==1.19.5
+numpy==1.21
 pandas>=1.1.5
 pandasql>=0.7.3
 pydantic>=1.9.2
