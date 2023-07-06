@@ -207,10 +207,69 @@ def file_regex_add_prefix(
         regex = regex,
         **kwargs
     )
+    
+def file_regex_search(
+    filepath,
+    patterns,
+    verbose = False,
+    unique = False,
+    ):
+    """
+    Purpose: To search a file for a certain regex pattern
+    and to return all instances within the file
 
-#from python_tools import file_utils as filu
+    Pseudocode: 
+    1) Read in the file into a string
+    2) Search the string for the patterns
+    
+    Example: 
+    filu.file_regex_search(
+        filepath = '/neurd_packages/mesh_tools/mesh_tools/skeleton_utils.py',
+        patterns = [
+            "nviz.([a-zA-Z1-9_-]*)\(",
+            #"sm.([a-zA-Z1-9_-]*)\("
+        ],
+        verbose = True,
+        unique = True,
+    )
+    """
+    
+    patterns = nu.to_list(patterns)
+    patterns = f"(?:" + "|".join(patterns) + ")"
+
+    if verbose:
+        print(f"regex pattern = \n{patterns}")
+        
+    all_matches = []
+    filepath = nu.to_list(filepath)
+
+    for f in filepath:
+        #1) Read in the file into a string
+        data = filu.read_file(f)
 
 
+        matches = reu.match_pattern_in_str(
+            data,
+            patterns 
+        )
+
+        if unique:
+            matches = list(np.unique(matches))
+        if verbose:
+            print(f"# of matches in {Path(f).stem} = {len(matches)}")
+            
+        all_matches += matches
+    
+    all_matches = list(np.unique(all_matches))
+    if verbose:
+        print(f"# of matches total = {len(all_matches)}") 
+        
+
+    return all_matches
+
+#--- from python_tools ---
+from . import numpy_utils as nu
+from . import regex_utils as reu
 
 
 from . import file_utils as filu

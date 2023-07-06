@@ -129,8 +129,21 @@ def keep_range_list(
         verbose = verbose
     )
 
+def replace_patterns(
+    string,
+    patterns,
+    replacement = "",
+    ):
+    patterns = nu.to_list(patterns)
+    for p in patterns:
+        string = string.replace(p,replacement)
+    return string
 
-    
+def eliminate_patterns(
+    string,
+    patterns,
+    ):
+    return replace_patterns(string,patterns)
 
 #from python_tools import string_utils as stru
 

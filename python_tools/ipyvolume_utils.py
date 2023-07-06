@@ -1387,7 +1387,538 @@ def lighting_parameters():
     specular_exponent – lighting parameter
     """)
 
-#from python_tools import ipyvolume_utils as ipvu
+# ------ plotting functions ported over
+
+def plot_ipv_mesh(mesh,color=[1.,0.,0.,0.2],
+                 flip_y=True):
+    
+    if mesh is None or len(mesh.vertices) == 0:
+        return
+    
+    if flip_y:
+        #print("inside elephant flipping copy")
+        elephant_mesh_sub = mesh.copy()
+        elephant_mesh_sub.vertices[...,1] = -elephant_mesh_sub.vertices[...,1]
+    else:
+        elephant_mesh_sub = mesh
+    
+    
+    #check if the color is a dictionary
+    if type(color) == dict:
+        #get the type of values stored in there
+        labels = list(color.items())
+        
+        #if the labels were stored as just numbers/decimals
+        if type(labels[0]) == int or type(labels[0]) == float:
+            #get all of the possible labels
+            unique_labels = np.unique(labels)
+            #get random colors for all of the labels
+            colors_list =  mu.generate_color_list(n_colors)
+            for lab,curr_color in zip(unique_labels,colors_list):
+                #find the faces that correspond to that label
+                faces_to_keep = [k for k,v in color.items() if v == lab]
+                #draw the mesh with that color
+                curr_mesh = elephant_mesh_sub.submesh([faces_to_keep],append=True)
+                
+                mesh4 = ipv.plot_trisurf(elephant_mesh_sub.vertices[:,0],
+                               elephant_mesh_sub.vertices[:,1],
+                               elephant_mesh_sub.vertices[:,2],
+                               triangles=elephant_mesh_sub.faces)
+                mesh4.color = curr_color
+                mesh4.material.transparent = True
+    else:          
+        mesh4 = ipv.plot_trisurf(elephant_mesh_sub.vertices[:,0],
+                                   elephant_mesh_sub.vertices[:,1],
+                                   elephant_mesh_sub.vertices[:,2],
+                                   triangles=elephant_mesh_sub.faces)
+        mesh4.color = color
+        mesh4.material.transparent = True
+        
+
+def plot_ipv_skeleton(edge_coordinates,color=[0,0.,1,1],
+                     flip_y=True):
+    
+    if len(edge_coordinates) == 0:
+        #print("Edge coordinates in plot_ipv_skeleton were of 0 length so returning")
+        return []
+    
+    if flip_y:
+        edge_coordinates = edge_coordinates.copy()
+        edge_coordinates[...,1] = -edge_coordinates[...,1] 
+    
+    #print(f"edge_coordinates inside after change = {edge_coordinates}")
+    unique_skeleton_verts_final,edges_final = convert_skeleton_to_nodes_edges_optimized(edge_coordinates)
+    mesh2 = ipv.plot_trisurf(unique_skeleton_verts_final[:,0], 
+                            unique_skeleton_verts_final[:,1], 
+                            unique_skeleton_verts_final[:,2], 
+                            lines=edges_final)
+    #print(f"color in ipv_skeleton = {color}")
+    mesh2.color = color 
+    mesh2.material.transparent = True
+    
+    #print(f"Color in skeleton ipv plot = {color}")
+
+    if flip_y:
+        unique_skeleton_verts_final[...,1] = -unique_skeleton_verts_final[...,1]
+    
+    return unique_skeleton_verts_final
+
+def plot_ipv_scatter(scatter_points,scatter_color=[1.,0.,0.,0.5],
+                    scatter_size=0.4,
+                    flip_y=True):
+    
+    if len(scatter_points) == 0:
+        return 
+    
+    scatter_points = (np.array(scatter_points).reshape(-1,3)).astype("float")
+    if flip_y:
+        scatter_points = scatter_points.copy()
+        scatter_points[...,1] = -scatter_points[...,1]
+#     print(f"scatter_points[:,0] = {scatter_points[:,0]}")
+#     print(f"scatter_points[:,1] = {scatter_points[:,1]}")
+#     print(f"scatter_points[:,2] = {scatter_points[:,2]}")
+#     print(f"scatter_size = {scatter_size}")
+#     print(f"scatter_color = {scatter_color}")
+    mesh_5 = ipv.scatter(
+            scatter_points[:,0], 
+            scatter_points[:,1],
+            scatter_points[:,2], 
+            size=scatter_size, 
+            color=scatter_color,
+            marker="sphere")
+    mesh_5.material.transparent = True
+
+
+
+def graph_skeleton_and_mesh(main_mesh_verts=[],
+                            main_mesh_faces=[],
+                            unique_skeleton_verts_final=[],
+                            edges_final=[],
+                            edge_coordinates=[],
+                            other_meshes=[],
+                            other_meshes_colors =  [],
+                            mesh_alpha=0.2,
+                            other_meshes_face_components = [],
+                            other_skeletons = [],
+                            other_skeletons_colors =  [],
+                            return_other_colors = False,
+                            main_mesh_color = [0.,1.,0.,0.2],
+                            main_skeleton_color = [0,0.,1,1],
+                            main_mesh_face_coloring = [],
+                            other_scatter=[],
+                            scatter_size = 0.3,
+                            other_scatter_colors=[],
+                            main_scatter_color=[1.,0.,0.,0.5],
+                            scatter_with_widgets = False,
+                            buffer=1000,
+                           axis_box_off=True,
+                           html_path="",
+                           show_at_end=True,
+                           append_figure=False,
+                            set_zoom = True,
+                           flip_y=True,
+                           adaptive_min_max_limits = True):
+    """
+    Graph the final result of skeleton and mesh
+    
+    Pseudocode on how to do face colorings :
+    could get a dictionary mapping faces to colors or groups
+    - if mapped to groups then do random colors (and generate them)
+    - if mapped to colors then just do submeshes and send the colors
+    """
+    #print(f"other_scatter = {other_scatter}")
+    #print(f"mesh_alpha = {mesh_alpha}")
+    
+    if not append_figure:
+        ipv.figure(figsize=(15,15))
+    
+    main_mesh_vertices = []
+    
+    
+    #print("Working on main skeleton")
+    if (len(unique_skeleton_verts_final) > 0 and len(edges_final) > 0) or (len(edge_coordinates)>0):
+        if flip_y:
+            edge_coordinates = edge_coordinates.copy()
+            edge_coordinates[...,1] = -edge_coordinates[...,1]
+        if (len(edge_coordinates)>0):
+            unique_skeleton_verts_final,edges_final = convert_skeleton_to_nodes_edges_optimized(edge_coordinates)
+        mesh2 = ipv.plot_trisurf(unique_skeleton_verts_final[:,0], 
+                                unique_skeleton_verts_final[:,1], 
+                                unique_skeleton_verts_final[:,2], 
+                                lines=edges_final, color='blue')
+
+        mesh2.color = main_skeleton_color 
+        mesh2.material.transparent = True
+        
+        if flip_y:
+            unique_skeleton_verts_final[...,1] = -unique_skeleton_verts_final[...,1]
+            
+        main_mesh_vertices.append(unique_skeleton_verts_final)
+    
+    #print("Working on main mesh")
+    if len(main_mesh_verts) > 0 and len(main_mesh_faces) > 0:
+        if len(main_mesh_face_coloring) > 0:
+            #will go through and color the faces of the main mesh if any sent
+            for face_array,face_color in main_mesh_face_coloring:
+                curr_mesh = main_mesh.submesh([face_array],append=True)
+                plot_ipv_mesh(curr_mesh,face_color,flip_y=flip_y)
+        else:
+            if flip_y:
+                main_mesh_verts = main_mesh_verts.copy()
+                main_mesh_verts[...,1] = -main_mesh_verts[...,1]
+            
+            main_mesh = trimesh.Trimesh(vertices=main_mesh_verts,faces=main_mesh_faces)
+
+            mesh3 = ipv.plot_trisurf(main_mesh.vertices[:,0],
+                                   main_mesh.vertices[:,1],
+                                   main_mesh.vertices[:,2],
+                                   triangles=main_mesh.faces)
+            
+            mesh3.color = main_mesh_color
+            mesh3.material.transparent = True
+            
+            #flipping them back
+            if flip_y:
+                main_mesh_verts[...,1] = -main_mesh_verts[...,1]
+            
+        main_mesh_vertices.append(main_mesh_verts)
+        
+    
+    # cast everything to list type
+    if type(other_meshes) != list and type(other_meshes) != np.ndarray:
+        other_meshes = [other_meshes]
+    if type(other_meshes_colors) != list and type(other_meshes_colors) != np.ndarray:
+        other_meshes_colors = [other_meshes_colors]
+    if type(other_skeletons) != list and type(other_skeletons) != np.ndarray:
+        other_skeletons = [other_skeletons]
+    if type(other_skeletons_colors) != list and type(other_skeletons_colors) != np.ndarray:
+        other_skeletons_colors = [other_skeletons_colors]
+        
+#     if type(other_scatter) != list and type(other_scatter) != np.ndarray:
+#         other_scatter = [other_scatter]
+#     if type(other_scatter_colors) != list and type(other_scatter_colors) != np.ndarray:
+#         other_scatter_colors = [other_scatter_colors]
+
+    if not nu.is_array_like(other_scatter):
+        other_scatter = [other_scatter]
+    if not nu.is_array_like(other_scatter_colors):
+        other_scatter_colors = [other_scatter_colors]
+    
+        
+    
+    
+    if len(other_meshes) > 0:
+        if len(other_meshes_face_components ) > 0:
+            other_meshes_colors = other_meshes_face_components
+        elif len(other_meshes_colors) == 0:
+            other_meshes_colors = [main_mesh_color]*len(other_meshes)
+        else:
+            #get the locations of all of the dictionaries
+            if "random" in other_meshes_colors:
+                other_meshes_colors = mu.generate_color_list(
+                            user_colors=[], #if user sends a prescribed list
+                            n_colors=len(other_meshes),
+                            #colors_to_omit=["green","blue"], #because that is the one used for the main mesh
+                            alpha_level=mesh_alpha)
+            else:
+                other_meshes_colors = mu.generate_color_list(
+                            user_colors=other_meshes_colors, #if user sends a prescribed list
+                            n_colors=len(other_meshes),
+                            #colors_to_omit=["green","blue"], #because that is the one used for the main mesh
+                            alpha_level=mesh_alpha)
+            
+    
+       
+    #print("Working on other meshes")
+    for curr_mesh,curr_color in zip(other_meshes,other_meshes_colors):
+        #print(f"flip_y = {flip_y}")
+        plot_ipv_mesh(curr_mesh,color=curr_color,flip_y=flip_y)
+        
+        if curr_mesh is not None:
+            main_mesh_vertices.append(curr_mesh.vertices)
+    
+    
+    #print("Working on other skeletons")
+    if len(other_skeletons) > 0:
+        if len(other_skeletons_colors) == 0:
+            other_skeletons_colors = [main_skeleton_color]*len(other_skeletons)
+        elif "random" in other_skeletons_colors:
+            other_skeletons_colors = mu.generate_color_list(
+                        user_colors=[], #if user sends a prescribed list
+                        n_colors=len(other_skeletons),
+                        #colors_to_omit=["green","blue"], #because that is the one used for the main mesh
+                        alpha_level=1)
+        else:
+            
+            other_skeletons_colors = mu.generate_color_list(
+                        user_colors=other_skeletons_colors, #if user sends a prescribed list
+                        n_colors=len(other_skeletons),
+                        #colors_to_omit=["green","blue"], #because that is the one used for the main mesh
+                        alpha_level=1)
+            #print(f"user colors picked for other_skeletons_colors = {other_skeletons_colors}")
+    
+        
+    for curr_sk,curr_color in zip(other_skeletons,other_skeletons_colors):
+        sk_vertices = plot_ipv_skeleton(curr_sk,color=curr_color,flip_y=flip_y)
+        
+        main_mesh_vertices.append(sk_vertices)
+        
+        
+    #printing the scatter plots
+    #print("Working on other scatter plots")
+    if len(other_scatter) > 0 and len(other_scatter_colors) == 0:
+        other_scatter_colors = [main_scatter_color]*len(other_scatter)
+        
+    while len(other_scatter_colors) < len(other_scatter):
+        other_scatter_colors += other_scatter_colors
+        
+        
+    if not nu.is_array_like(scatter_size):
+        scatter_size = [scatter_size]*len(other_scatter)
+        
+    
+    for curr_scatter,curr_color,curr_size in zip(other_scatter,other_scatter_colors,scatter_size):
+#         print(f"curr_scatter = {curr_scatter}")
+#         print(f"curr_color = {curr_color}")
+#         print(f"curr_size= {curr_size}")
+        if not scatter_with_widgets:
+            plot_ipv_scatter(curr_scatter,scatter_color=curr_color,
+                        scatter_size=curr_size,flip_y=flip_y)
+        main_mesh_vertices.append(curr_scatter)
+            
+    if scatter_with_widgets:
+        ipvu.plot_multi_scatters(
+            other_scatter,other_scatter_colors,scatter_size,
+            show_at_end = False,
+            new_figure = False,
+            flip_y = flip_y,
+        )
+
+
+    #create the main mesh vertices for setting the bounding box
+    if len(main_mesh_vertices) == 0:
+        raise Exception("No meshes or skeletons passed to the plotting funciton")
+    elif len(main_mesh_vertices) == 1:
+        main_mesh_vertices = main_mesh_vertices[0]
+    else:
+        #get rid of all empt
+        #print(f"main_mesh_vertices = {main_mesh_vertices}")
+        main_mesh_vertices = np.vstack([k.reshape(-1,3) for k in main_mesh_vertices if len(k)>0])
+    
+    if len(main_mesh_vertices) == 0:
+        print("***There is nothing to plot***")
+        return
+    
+
+#     print(f"main_mesh_vertices = {main_mesh_vertices}")
+    
+    if flip_y:
+        main_mesh_vertices = main_mesh_vertices.copy()
+        main_mesh_vertices = main_mesh_vertices.reshape(-1,3)
+        main_mesh_vertices[...,1] = -main_mesh_vertices[...,1]
+    
+
+    volume_max = np.max(main_mesh_vertices.reshape(-1,3),axis=0)
+    volume_min = np.min(main_mesh_vertices.reshape(-1,3),axis=0)
+    
+#     if len(main_mesh_vertices) < 10:
+#         print(f"main_mesh_vertices = {main_mesh_vertices}")
+#     print(f"volume_max= {volume_max}")
+#     print(f"volume_min= {volume_min}")
+
+    ranges = volume_max - volume_min
+    index = [0,1,2]
+    max_index = np.argmax(ranges)
+    min_limits = [0,0,0]
+    max_limits = [0,0,0]
+
+
+    for i in index:
+        if i == max_index or not adaptive_min_max_limits:
+            min_limits[i] = volume_min[i] - buffer
+            max_limits[i] = volume_max[i] + buffer 
+            continue
+        else:
+            difference = ranges[max_index] - ranges[i]
+            min_limits[i] = volume_min[i] - difference/2  - buffer
+            max_limits[i] = volume_max[i] + difference/2 + buffer
+            
+#     print(f"min_limits= {min_limits}")
+#     print(f"max_limits= {max_limits}")
+
+    #ipv.xyzlim(-2, 2)
+    
+    if set_zoom:
+        ipv.xlim(min_limits[0],max_limits[0])
+        ipv.ylim(min_limits[1],max_limits[1])
+        ipv.zlim(min_limits[2],max_limits[2])
+
+
+        ipv.style.set_style_light()
+        if axis_box_off:
+            ipv.style.axes_off()
+            ipv.style.box_off()
+        else:
+            ipv.style.axes_on()
+            ipv.style.box_on()
+        
+    if show_at_end:
+        ipv.show()
+    
+    if html_path != "":
+        ipv.pylab.save(html_path)
+    
+    if return_other_colors:
+        return other_meshes_colors
+        
+
+
+
+
+
+
+
+
+def plot_objects(main_mesh=None,
+                 main_skeleton=None,
+                 main_mesh_color = [0.,1.,0.,0.2],
+                 main_mesh_alpha = None,
+                 
+                main_skeleton_color = [0,0.,1,1],
+                meshes=[],
+                meshes_colors =  [],
+                mesh_alpha=0.2,
+                            
+                skeletons = [],
+                skeletons_colors =  [],
+                            
+                scatters=[],
+                scatters_colors=[],
+                scatter_size = 0.3,
+                main_scatter_color=[1.,0.,0.,0.5],
+                scatter_with_widgets = True,
+                 
+                buffer=0,#1000,
+                axis_box_off=True,
+                html_path="",
+                show_at_end=True,
+                append_figure=False,
+                flip_y=True,
+                
+                subtract_from_main_mesh=True,
+                set_zoom = True, #used for the skeleton graph
+                zoom_coordinate=None,
+                zoom_radius = None,
+                zoom_radius_xyz = None,
+                adaptive_min_max_limits = True):
+    #import neuron_visualizations as nviz
+    #nviz = reload(nviz)
+    
+    if (main_mesh is None 
+        and main_skeleton is None 
+        and len(meshes) == 0
+        and len(skeletons) == 0
+        and len(scatters) == 0):
+        print("Nothing to plot so returning")
+        return 
+    
+    
+        
+    if main_skeleton is None:
+        edge_coordinates = []
+    else:
+        edge_coordinates=main_skeleton
+        
+        
+    convert_to_list_vars = [meshes,meshes_colors,skeletons,
+                            skeletons_colors,scatters,scatters_colors,scatter_size]
+    
+    def convert_to_list(curr_item):
+        if type(curr_item) != list:
+            if nu.is_array_like(curr_item):
+                return list(curr_item)
+            else:
+                return [curr_item]
+        else:
+            return curr_item
+    
+    meshes =  convert_to_list(meshes)
+    meshes_colors =  convert_to_list(meshes_colors)
+    skeletons =  convert_to_list(skeletons)
+    skeletons_colors =  convert_to_list(skeletons_colors)
+    scatters =  convert_to_list(scatters)
+    scatters_colors =  convert_to_list(scatters_colors)
+    
+    # --- 6/10: Making sure all scatters are numpy arrays ---
+    scatters = [np.array(s).reshape(-1,3) for s in scatters]
+    
+    
+    if (subtract_from_main_mesh and (not main_mesh is None) and (len(meshes)>0)):
+        main_mesh = tu.subtract_mesh(original_mesh=main_mesh,
+                                  subtract_mesh=meshes,exact_match=False)
+    
+    
+    if main_mesh is None or nu.is_array_like(main_mesh):
+        main_mesh_verts = []
+        main_mesh_faces= []
+    else:
+        main_mesh_verts = main_mesh.vertices
+        main_mesh_faces= main_mesh.faces
+        
+    if main_mesh_alpha is None:
+        main_mesh_alpha = 0.2
+    else: 
+        if nu.is_array_like(main_mesh_color):
+            main_mesh_color = list(main_mesh_color)
+            if len(main_mesh_color) == 4:
+                main_mesh_color[3] = main_mesh_alpha
+            else:
+                main_mesh_color.append(main_mesh_alpha)
+            
+    
+    if type(main_mesh_color) == str:
+        main_mesh_color = mu.color_to_rgba(main_mesh_color,alpha=main_mesh_alpha)
+    
+    
+    #print(f"scatters = {scatters}")
+    return_value = graph_skeleton_and_mesh(main_mesh_verts=main_mesh_verts,
+                           main_mesh_faces=main_mesh_faces,
+                           edge_coordinates=edge_coordinates,
+                           other_meshes=meshes,
+                                      mesh_alpha=mesh_alpha,
+                            other_meshes_colors=meshes_colors,
+                            other_skeletons=skeletons,
+                            other_skeletons_colors=skeletons_colors,
+                            other_scatter=scatters,
+                            other_scatter_colors=scatters_colors,
+                            scatter_size=scatter_size,
+                            main_scatter_color=main_scatter_color,
+                            scatter_with_widgets=scatter_with_widgets,             
+                                              
+                            buffer=buffer,
+                            axis_box_off=axis_box_off,
+                            html_path=html_path,
+                            show_at_end=show_at_end,
+                            append_figure=append_figure,
+                            flip_y=flip_y,
+                                      main_mesh_color=main_mesh_color,
+                                    main_skeleton_color = main_skeleton_color,
+                                              
+                            set_zoom=set_zoom,
+                            adaptive_min_max_limits=adaptive_min_max_limits,
+                           )
+    #return 
+    
+    if zoom_coordinate is not None:
+        print(f"Trying to set zoom")
+        nviz.set_zoom(
+            zoom_coordinate,
+            radius = zoom_radius,
+            radius_xyz = zoom_radius_xyz
+        )
+        
+        
+    return return_value
     
     
     

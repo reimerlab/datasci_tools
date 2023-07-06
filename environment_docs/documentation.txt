@@ -16,6 +16,7 @@ pip install sphinx sphinx_rtd_theme
 2) Create a docs folder in same directory as setup.py
 
 mkdir docs
+cd docs
 
 
 3) Inside docs folder run: 
@@ -133,11 +134,12 @@ _ Output: [package_name].rst and modules.rst files are generated
 sphinx-apidoc -o docs [package_name]/
 
 3) go into index.rst and add modules to file:
-    .. toctree::
-        :maxdepth: 2
-        :caption: Contents:
-        
-        modules.rst
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Contents:
+    
+    modules.rst
 
 Step 4: Generating the html files:
 

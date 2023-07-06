@@ -28,6 +28,7 @@ user_packages = (
         "/neurd_packages/graph_tools/graph_tools/",
         "/neurd_packages/meshAfterParty/meshAfterParty/",
         "/neurd_packages/neuron_morphology_tools/neuron_morphology_tools/",
+        "/neurd_packages/mesh_tools/mesh_tools/",
 )
 
 def module_names_from_directories(

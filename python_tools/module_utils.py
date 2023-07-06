@@ -1117,6 +1117,34 @@ def clean_module_syntax(
         if not set_flag:
             non_pkg_mods.append(k)
 
+    def sorted_unique_list(
+        curr_data,
+        patterns_to_eliminate = (
+            ".",
+            "from",
+            "import",
+            " ",
+        )):
+        """
+        Purpose: to clean a list to make it unique
+        and sorted
+        
+        Pseudocode:
+        1) make the list unique
+        2) find the order list should be sorted when 
+        3) return a sorted version of the list
+        """
+        curr_data = np.unique(curr_data)
+        idx = np.argsort([stru.eliminate_patterns(
+            k,
+            patterns = patterns_to_eliminate
+        ) for k in curr_data])
+        return list(curr_data[idx])
+    
+    # make sure unique and sorted
+    for pkg in pkg_mods.keys():
+        pkg_mods[pkg] = sorted_unique_list(pkg_mods[pkg])
+    non_pkg_mods = sorted_unique_list(non_pkg_mods)
 
     non_pkg_mods_str = "\n".join(non_pkg_mods)
     own_mod_str = "\n".join(own_mod)
@@ -1235,21 +1263,6 @@ def package_imports_from_files(
     all_imports = list(np.sort(list(set(all_imports))))
     all_imports = [k for k in all_imports if k != "."]
     return all_imports
-    
-
-    
-    
-    
-#from python_tools import file_utils as filu
-
-
-            
-
-    
-
-
-
-
 
 #--- from python_tools ---
 from . import data_struct_utils as dsu
