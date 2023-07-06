@@ -145,8 +145,8 @@ Step 4: Generating the html files:
 
 1) Go into docs folder
 2) run: 
-    make clean html
-    make html
+    
+make clean html
 
 2b) Clean up any of the errors shown in the make clean html
 
