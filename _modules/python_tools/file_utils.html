@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python_tools.file_utils &mdash; python_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            python_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">python_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">python_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">python_tools.file_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for python_tools.file_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+
+<span class="sd">Utils functions for helping to work with files</span>
+
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1">#from pathlib import Path</span>
+
+<div class="viewcode-block" id="file_from_dicts"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.file_from_dicts">[docs]</a><span class="k">def</span> <span class="nf">file_from_dicts</span><span class="p">(</span>
+    <span class="n">dicts</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">seperation_character</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose_line</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: Convert list of dictionaries to </span>
+<span class="sd">    a file with one dictionary per line</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filepath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        
+    <span class="n">filepath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+        
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing file to </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dicts</span><span class="p">):</span>
+            <span class="n">line_to_write</span> <span class="o">=</span> <span class="n">seperation_character</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">verbose_line</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;line </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">= </span><span class="si">{</span><span class="n">line_to_write</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line_to_write</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">filepath</span></div>
+
+
+<span class="c1">#import os</span>
+<div class="viewcode-block" id="str_in_filepath"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.str_in_filepath">[docs]</a><span class="k">def</span> <span class="nf">str_in_filepath</span><span class="p">(</span>
+    <span class="n">search_str</span><span class="p">,</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">dir_path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">dir_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+    <span class="n">cur_path</span> <span class="o">=</span> <span class="n">filepath</span>
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">cur_path</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cur_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="c1"># read all content of a file and search string</span>
+                <span class="k">if</span> <span class="n">search_str</span> <span class="ow">in</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">search_str</span><span class="si">}</span><span class="s1"> found in </span><span class="si">{</span><span class="n">cur_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Wasn&#39;t able to read </span><span class="si">{</span><span class="n">cur_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+        
+    
+<div class="viewcode-block" id="search_directory_files_for_str"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.search_directory_files_for_str">[docs]</a><span class="k">def</span> <span class="nf">search_directory_files_for_str</span><span class="p">(</span>
+    <span class="n">dir_path</span><span class="p">,</span>
+    <span class="n">search_str</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    
+    <span class="n">all_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># iterate each file in a directory</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
+        <span class="n">cur_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="c1"># check if it is a file</span>
+        <span class="k">if</span> <span class="n">str_in_filepath</span><span class="p">(</span><span class="n">search_str</span><span class="p">,</span><span class="n">cur_path</span><span class="p">,</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">):</span>
+            <span class="n">all_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_path</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">all_files</span></div>
+
+
+<span class="c1">#import re</span>
+<span class="c1">#from pathlib import Path</span>
+
+<div class="viewcode-block" id="file_regex_replace"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.file_regex_replace">[docs]</a><span class="k">def</span> <span class="nf">file_regex_replace</span><span class="p">(</span>
+    <span class="n">pattern</span><span class="p">,</span>
+    <span class="n">replacement</span><span class="p">,</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">overwrite_file</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_filepath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
+    <span class="n">default_suffix</span> <span class="o">=</span> <span class="s2">&quot;_replaced&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To replace certain text </span>
+<span class="sd">    in a file and either write changes</span>
+<span class="sd">    back to same file or to a new one</span>
+
+<span class="sd">    Pseudocode:</span>
+<span class="sd">    1) open the file</span>
+<span class="sd">    2) read in the contents of the file</span>
+<span class="sd">    3) using the regex replace function (with potential to use captured groups)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">overwrite_file</span><span class="p">:</span>
+        <span class="n">output_filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        
+    <span class="c1">#print(f&quot;output_filepath = {output_filepath}&quot;)</span>
+    
+    <span class="k">if</span> <span class="n">output_filepath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">output_filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">default_suffix</span><span class="si">}{</span><span class="n">p</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+    <span class="c1">#print(f&quot;output_filepath = {output_filepath}&quot;)</span>
+
+
+    <span class="c1"># Opening our text file in read only</span>
+    <span class="c1"># mode using the open() function</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">filu</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="c1"># Searching and replacing the text</span>
+    <span class="c1"># using the replace() function</span>
+    <span class="k">if</span> <span class="n">regex</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span><span class="n">count</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# of substitutions = </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="n">replacement</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  --&gt; output_filepath = </span><span class="si">{</span><span class="n">output_filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Opening our text file in write only</span>
+    <span class="c1"># mode to write the replaced content</span>
+    <span class="n">filu</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">output_filepath</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">output_filepath</span></div>
+    
+<span class="c1">#import io</span>
+<div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+    <span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">my_file</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">my_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="write_file"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.write_file">[docs]</a><span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span><span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">my_file</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+            <span class="n">my_file</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">my_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+    
+    
+    
+<div class="viewcode-block" id="file_regex_add_prefix"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.file_regex_add_prefix">[docs]</a><span class="k">def</span> <span class="nf">file_regex_add_prefix</span><span class="p">(</span>
+    <span class="n">pattern</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">,</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">replacement</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">overwrite_file</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_filepath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
+    <span class="n">default_suffix</span> <span class="o">=</span> <span class="s2">&quot;_replaced&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: Add a prefix in front of certain patterns in file</span>
+<span class="sd">    </span>
+<span class="sd">    Ex:</span>
+<span class="sd">    file_regex_replace(</span>
+<span class="sd">        pattern = &quot;(new hello)&quot;,</span>
+<span class="sd">        prefix = &quot;from . &quot;,</span>
+<span class="sd">        filepath = &quot;test.txt&quot;,</span>
+<span class="sd">        overwrite_file=False,</span>
+<span class="sd">        verbose = True</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;\1&quot;</span><span class="p">,</span>
+
+    <span class="k">return</span> <span class="n">filu</span><span class="o">.</span><span class="n">file_regex_replace</span><span class="p">(</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">,</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">,</span>
+        <span class="n">filepath</span><span class="o">=</span><span class="n">filepath</span><span class="p">,</span>
+        <span class="n">overwrite_file</span> <span class="o">=</span> <span class="n">overwrite_file</span><span class="p">,</span>
+        <span class="n">output_filepath</span> <span class="o">=</span> <span class="n">output_filepath</span><span class="p">,</span><span class="c1"># &quot;text_revised.txt&quot;,</span>
+        <span class="n">default_suffix</span> <span class="o">=</span> <span class="n">default_suffix</span><span class="p">,</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">regex</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="file_regex_search"><a class="viewcode-back" href="../../python_tools.html#python_tools.file_utils.file_regex_search">[docs]</a><span class="k">def</span> <span class="nf">file_regex_search</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">patterns</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">unique</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To search a file for a certain regex pattern</span>
+<span class="sd">    and to return all instances within the file</span>
+
+<span class="sd">    Pseudocode: </span>
+<span class="sd">    1) Read in the file into a string</span>
+<span class="sd">    2) Search the string for the patterns</span>
+<span class="sd">    </span>
+<span class="sd">    Example: </span>
+<span class="sd">    filu.file_regex_search(</span>
+<span class="sd">        filepath = &#39;/neurd_packages/mesh_tools/mesh_tools/skeleton_utils.py&#39;,</span>
+<span class="sd">        patterns = [</span>
+<span class="sd">            &quot;nviz.([a-zA-Z1-9_-]*)\(&quot;,</span>
+<span class="sd">            #&quot;sm.([a-zA-Z1-9_-]*)\(&quot;</span>
+<span class="sd">        ],</span>
+<span class="sd">        verbose = True,</span>
+<span class="sd">        unique = True,</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">patterns</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(?:&quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;regex pattern = </span><span class="se">\n</span><span class="si">{</span><span class="n">patterns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="n">all_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepath</span><span class="p">:</span>
+        <span class="c1">#1) Read in the file into a string</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">filu</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">reu</span><span class="o">.</span><span class="n">match_pattern_in_str</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">patterns</span> 
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">unique</span><span class="p">:</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">matches</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# of matches in </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="n">all_matches</span> <span class="o">+=</span> <span class="n">matches</span>
+    
+    <span class="n">all_matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">all_matches</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# of matches total = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> 
+        
+
+    <span class="k">return</span> <span class="n">all_matches</span></div>
+
+<span class="c1">#--- from python_tools ---</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_utils</span> <span class="k">as</span> <span class="n">nu</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">regex_utils</span> <span class="k">as</span> <span class="n">reu</span>
+
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">file_utils</span> <span class="k">as</span> <span class="n">filu</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
