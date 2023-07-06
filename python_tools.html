@@ -64,7 +64,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.dataclass_utils.examples"><code class="docutils literal notranslate"><span class="pre">examples()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-dict-utils-module">python_tools.dict_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.dict_utils">python_tools.dict_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dict_utils.abbreviate_str_keys"><code class="docutils literal notranslate"><span class="pre">abbreviate_str_keys()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.enum_utils">python_tools.enum_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.enum_utils.example"><code class="docutils literal notranslate"><span class="pre">example()</span></code></a></li>
@@ -1465,8 +1468,29 @@ self.email = email</p>
 <dd></dd></dl>
 
 </section>
-<section id="python-tools-dict-utils-module">
-<h2>python_tools.dict_utils module<a class="headerlink" href="#python-tools-dict-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.dict_utils">
+<span id="python-tools-dict-utils-module"></span><h2>python_tools.dict_utils module<a class="headerlink" href="#module-python_tools.dict_utils" title="Permalink to this heading"></a></h2>
+<p>Utility functions for manipulating strings</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dict_utils.abbreviate_str_keys">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dict_utils.</span></span><span class="sig-name descname"><span class="pre">abbreviate_str_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_phrase_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_on_non_str_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separating_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_word_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_separating_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_key_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_key_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collision_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dict_utils.html#abbreviate_str_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dict_utils.abbreviate_str_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: to abbreviate
+the key strings of a dictionary</p>
+<p>Ex:
+x = dict(
+this_is_a_really_long_name_and_unneccessary_hi = 5
+)</p>
+<p>from python_tools import dict_utils as dictu
+dictu.abbreviate_str_keys(</p>
+<blockquote>
+<div><p>x,
+verbose = True,
+max_word_len=3,
+max_phrase_len = 15</p>
+</div></blockquote>
+<p>)</p>
+</dd></dl>
+
 </section>
 <section id="python-tools-dj-utils-module">
 <h2>python_tools.dj_utils module<a class="headerlink" href="#python-tools-dj-utils-module" title="Permalink to this heading"></a></h2>
