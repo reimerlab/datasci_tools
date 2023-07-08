@@ -4022,8 +4022,8 @@ xu.get_edge_attributes(ordered_Graph)</p>
 <li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph. If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
-packages are installed the data can also be a NumPy matrix
-or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
+packages are installed the data can also be a 2D NumPy array, a
+SciPy sparse array, or a PyGraphviz graph.</p></li>
 <li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
 </dd>
@@ -4082,6 +4082,13 @@ keyword arguments.</p></li>
 will be updated when each duplicate edge is added.</p>
 <p>Edge attributes specified in an ebunch take precedence over
 attributes specified via keyword arguments.</p>
+<p>When adding edges from an iterator over the graph you are changing,
+a <cite>RuntimeError</cite> can be raised with message:
+<cite>RuntimeError: dictionary changed size during iteration</cite>. This
+happens when the graph’s underlying dictionary is modified during
+iteration. To avoid this error, evaluate the iterator into a separate
+object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
+object to <cite>G.add_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>  <span class="c1"># using a list of edge tuples</span>
@@ -4092,6 +4099,15 @@ attributes specified via keyword arguments.</p>
 <p>Associate data to edges</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;WN2898&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_edges_from(((5, n) for n in G.nodes))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4124,9 +4140,26 @@ where w is a number.</p></li>
 <p>Adding the same edge twice for Graph/DiGraph simply updates
 the edge data. For MultiGraph/MultiDiGraph, duplicate edges
 are stored.</p>
+<p>When adding edges from an iterator over the graph you are changing,
+a <cite>RuntimeError</cite> can be raised with message:
+<cite>RuntimeError: dictionary changed size during iteration</cite>. This
+happens when the graph’s underlying dictionary is modified during
+iteration. To avoid this error, evaluate the iterator into a separate
+object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
+object to <cite>G.add_weighted_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Evaluate an iterator over edges before passing it</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_weighted_edges_from(((5, n, weight) for n in G.nodes))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4248,6 +4281,14 @@ ignored.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#python_tools.networkx_utils.GraphOrderedEdges.remove_node" title="python_tools.networkx_utils.GraphOrderedEdges.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>When removing nodes from an iterator over the graph you are changing,
+a <cite>RuntimeError</cite> will be raised with message:
+<cite>RuntimeError: dictionary changed size during iteration</cite>. This
+happens when the graph’s underlying dictionary is modified during
+iteration. To avoid this error, evaluate the iterator into a separate
+object, e.g. by using <cite>list(iterator_of_nodes)</cite>, and pass this
+object to <cite>G.remove_nodes_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
@@ -4256,6 +4297,14 @@ ignored.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="go">[]</span>
+</pre></div>
+</div>
+<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will fail, as the graph&#39;s dict is modified during iteration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.remove_nodes_from(n for n in G.nodes if n &lt; 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will work, since the dictionary underlying graph is not modified</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
