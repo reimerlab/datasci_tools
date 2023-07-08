@@ -1,0 +1,48 @@
+# Example of how to add environment varialbes that can control threads
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name:  cell-type-h01-v7-test2
+spec:
+  parallelism: 1
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - at-node7
+                  #- at-compute003
+                  #- at-compute004
+                  #- at-compute005
+      restartPolicy: Never
+      hostNetwork: true
+      volumes: # Example volume mounting
+      - name: mnt # name for the volume to be reference in container volumeMounts
+        hostPath:
+          path: /mnt # Directory on the host machine to be mounted
+      tolerations:
+      - key: "brendan_reserve"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      containers:
+      - name: cell-type-h01-test2
+        #image: at-docker.ad.bcm.edu:5000/decimation_skeletonization:latest
+        image: at-docker.ad.bcm.edu:5000/minnie65p3-neuron_mesh_tools_2
+        env:
+        - name: OMP_NUM_THREADS #sets the initial value of the nthreads-var IV (internal control variable)
+          value: "1"
+        - name: OPENBLAS_NUM_THREADS
+          value: "1"
+        - name: MKL_NUM_THREADS
+          value: "1"
+        - name: VECLIB_MAXIMUM_THREADS
+          value: "1"
+        - name: NUMEXPR_NUM_THREADS
+          value: "1"

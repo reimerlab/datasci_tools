@@ -1,0 +1,3 @@
+
+#for how to set up gsutil
+https://cloud.google.com/storage/docs/gsutil_install

@@ -161,6 +161,11 @@ make clean html
 Stage 2: Hosting on Github Pages (using github actions workflow)
 Link: https://medium.com/practical-coding/documenting-your-python-library-from-zero-to-website-488f87ae58f5
 
+0) Make sure the following settings are set
+
+Settings > Actions > General 
+    > Workflow Permissions > Read and write Permissions
+    > check the box for "Allow Github Actions to create and approve pull requests"
 
 1) added following the .gitignore 
 
@@ -186,6 +191,8 @@ jobs:
   docs:
     name: Docs
     runs-on: ubuntu-latest
+    # if need to specify a container
+    #container: celiib/mesh_tools:v1 #
     steps:
       - uses: actions/checkout@v2
 
