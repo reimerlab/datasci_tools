@@ -1,5 +1,4 @@
 colour>=0.1.5
-datajoint>=0.12.9
 ipython
 ipyvolume>=0.5.2
 ipywebrtc>=0.5.0
@@ -23,4 +22,7 @@ six>=1.11.0
 tqdm>=4.62.2
 trimesh>=3.9.0
 webcolors>=1.11.1
+grandiso @ git+https://git@github.com/aplbrain/grandiso-networkx.git
+dotmotif @ git+https://git@github.com/celiibrendan/dotmotif.git
+datajoint @ git+https://git@github.com/spapa013/datajoint-python.git
 ipython_genutils
