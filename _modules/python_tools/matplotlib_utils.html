@@ -111,10 +111,10 @@
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">webcolors</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <span class="c1">#from python_tools import numpy_utils as nu</span>
 <span class="c1">#from python_tools import pandas_utils as pu</span>
 
@@ -360,7 +360,7 @@
 
 
 <span class="c1">#import webcolors</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 
 <div class="viewcode-block" id="closest_colour"><a class="viewcode-back" href="../../python_tools.html#python_tools.matplotlib_utils.closest_colour">[docs]</a><span class="k">def</span> <span class="nf">closest_colour</span><span class="p">(</span><span class="n">requested_colour</span><span class="p">):</span>
     <span class="n">min_colours</span> <span class="o">=</span> <span class="p">{}</span>
@@ -946,7 +946,7 @@
     <span class="n">Color</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="divided_data_into_color_gradient"><a class="viewcode-back" href="../../python_tools.html#python_tools.matplotlib_utils.divided_data_into_color_gradient">[docs]</a><span class="k">def</span> <span class="nf">divided_data_into_color_gradient</span><span class="p">(</span>
     <span class="n">data</span><span class="p">,</span>
     <span class="n">n_bins</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -1612,7 +1612,7 @@
     
 
 
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <span class="c1">#from python_tools import numpy_utils as nu</span>
 <div class="viewcode-block" id="histograms_over_intervals"><a class="viewcode-back" href="../../python_tools.html#python_tools.matplotlib_utils.histograms_over_intervals">[docs]</a><span class="k">def</span> <span class="nf">histograms_over_intervals</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>

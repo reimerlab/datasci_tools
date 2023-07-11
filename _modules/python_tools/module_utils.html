@@ -98,7 +98,7 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
 
 
@@ -328,13 +328,6 @@
     <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
     
-<span class="c1">#     if set_default_first and data_type != &quot;default&quot;:</span>
-<span class="c1">#         if verbose:</span>
-<span class="c1">#             print(f&quot;Setting default first&quot;)</span>
-<span class="c1">#         modu.set_global_parameters_and_attributes_by_data_type(module,</span>
-<span class="c1">#                                                                data_type=&quot;default&quot;,</span>
-<span class="c1">#                                                               set_default_first = False,</span>
-<span class="c1">#                                                               verbose = False)</span>
     <span class="k">if</span> <span class="n">data_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
     
@@ -816,7 +809,7 @@
     <span class="k">return</span> <span class="n">str_finds</span></div>
 
 <span class="c1">#from pathlib import Path</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="clean_module_imports"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.clean_module_imports">[docs]</a><span class="k">def</span> <span class="nf">clean_module_imports</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">,</span>
     <span class="n">overwrite_file</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>

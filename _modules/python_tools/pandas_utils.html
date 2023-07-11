@@ -282,7 +282,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pandasql</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -525,7 +525,7 @@
 <span class="c1"># ----------- 1/25 Additon: Used for helping with clustering ----------- #</span>
 <span class="c1">#from python_tools import numpy_utils as nu</span>
 <span class="c1">#import matplotlib.pyplot as plt</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 
 <div class="viewcode-block" id="divide_dataframe_by_column_value"><a class="viewcode-back" href="../../python_tools.html#python_tools.pandas_utils.divide_dataframe_by_column_value">[docs]</a><span class="k">def</span> <span class="nf">divide_dataframe_by_column_value</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
@@ -660,7 +660,7 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
 
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <span class="c1">#import matplotlib.pyplot as plt</span>
 <span class="c1">#import six</span>
 
@@ -827,7 +827,7 @@
                        <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
     
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="filter_away_columns"><a class="viewcode-back" href="../../python_tools.html#python_tools.pandas_utils.filter_away_columns">[docs]</a><span class="k">def</span> <span class="nf">filter_away_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
                        <span class="n">column_list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2642,7 +2642,7 @@
 <div class="viewcode-block" id="flatten_row_multi_index"><a class="viewcode-back" href="../../python_tools.html#python_tools.pandas_utils.flatten_row_multi_index">[docs]</a><span class="k">def</span> <span class="nf">flatten_row_multi_index</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span></div>
 
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="restrict_df_to_coordinates_within_radius_old"><a class="viewcode-back" href="../../python_tools.html#python_tools.pandas_utils.restrict_df_to_coordinates_within_radius_old">[docs]</a><span class="k">def</span> <span class="nf">restrict_df_to_coordinates_within_radius_old</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
     <span class="n">name</span><span class="p">,</span>

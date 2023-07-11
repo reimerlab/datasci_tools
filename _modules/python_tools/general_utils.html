@@ -71,7 +71,7 @@
   <h1>Source code for python_tools.general_utils</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">How to recieve a single values tuple </span>
@@ -104,7 +104,7 @@
 
 
 <span class="c1">#from python_tools import numpy_utils as nu</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <span class="c1">#import itertools</span>
 <div class="viewcode-block" id="invert_mapping"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.invert_mapping">[docs]</a><span class="k">def</span> <span class="nf">invert_mapping</span><span class="p">(</span><span class="n">my_map</span><span class="p">,</span><span class="n">total_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">one_to_one</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -242,7 +242,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="sub_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.sub_dict">[docs]</a><span class="k">def</span> <span class="nf">sub_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">keys_to_include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">keys_to_exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

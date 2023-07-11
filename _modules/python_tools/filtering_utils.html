@@ -71,7 +71,7 @@
   <h1>Source code for python_tools.filtering_utils</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Purpose: Will aid in filtering a set</span>
 <span class="sd">of objects based on a list of functions or statistics</span>
@@ -98,7 +98,7 @@
 
 <span class="c1">#from python_tools import networkx_utils as xu</span>
 <span class="c1">#import networkx as nx</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <span class="c1">#from python_tools import tqdm_utils as tqu</span>
 <span class="n">default_attribute_name</span> <span class="o">=</span> <span class="s2">&quot;obj&quot;</span>
 <span class="n">node_arguments_name</span> <span class="o">=</span> <span class="s2">&quot;arguments&quot;</span>
@@ -453,7 +453,7 @@
     <span class="k">return</span> <span class="n">diff_from_max</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">attribute_name</span><span class="o">=</span><span class="s2">&quot;distance_above_soma&quot;</span><span class="p">)</span></div>
 
 <span class="c1">#from python_tools import numpy_utils as nu</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 
 <div class="viewcode-block" id="compute_global_functions"><a class="viewcode-back" href="../../python_tools.html#python_tools.filtering_utils.compute_global_functions">[docs]</a><span class="k">def</span> <span class="nf">compute_global_functions</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>

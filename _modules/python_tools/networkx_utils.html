@@ -90,7 +90,7 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">networkx.classes.function</span> <span class="k">as</span> <span class="nn">cls_func</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pydot</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -2613,7 +2613,7 @@
 <span class="c1">#from python_tools import tqdm_utils as tqu</span>
 <span class="c1">#import time</span>
 <span class="c1">#import pandas as pd</span>
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 
 
 <div class="viewcode-block" id="edge_df_multi"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.edge_df_multi">[docs]</a><span class="k">def</span> <span class="nf">edge_df_multi</span><span class="p">(</span><span class="n">G</span><span class="p">,</span>
@@ -3949,7 +3949,7 @@
         
     <span class="k">return</span> <span class="n">G</span>
     
-<span class="c1">#import numpy as np</span>
+<span class="c1">#from . import numpy_dep as np</span>
 <div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">dense</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">nodelist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">return_nodelist</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodelist</span><span class="o">=</span><span class="n">nodelist</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     
