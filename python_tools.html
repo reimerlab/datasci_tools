@@ -157,6 +157,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.change_time_interval"><code class="docutils literal notranslate"><span class="pre">change_time_interval()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.clear_figure"><code class="docutils literal notranslate"><span class="pre">clear_figure()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.clear_selected"><code class="docutils literal notranslate"><span class="pre">clear_selected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.convert_skeleton_to_nodes_edges_optimized"><code class="docutils literal notranslate"><span class="pre">convert_skeleton_to_nodes_edges_optimized()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.coords_from_obj"><code class="docutils literal notranslate"><span class="pre">coords_from_obj()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.coords_min_max_from_fig"><code class="docutils literal notranslate"><span class="pre">coords_min_max_from_fig()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.coords_min_max_from_obj"><code class="docutils literal notranslate"><span class="pre">coords_min_max_from_obj()</span></code></a></li>
@@ -2091,6 +2092,13 @@ Documentation: <a class="reference external" href="https://ipyvolume.readthedocs
 <dt class="sig sig-object py" id="python_tools.ipyvolume_utils.clear_selected">
 <span class="sig-prename descclassname"><span class="pre">python_tools.ipyvolume_utils.</span></span><span class="sig-name descname"><span class="pre">clear_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/ipyvolume_utils.html#clear_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.ipyvolume_utils.clear_selected" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.ipyvolume_utils.convert_skeleton_to_nodes_edges_optimized">
+<span class="sig-prename descclassname"><span class="pre">python_tools.ipyvolume_utils.</span></span><span class="sig-name descname"><span class="pre">convert_skeleton_to_nodes_edges_optimized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/ipyvolume_utils.html#convert_skeleton_to_nodes_edges_optimized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.ipyvolume_utils.convert_skeleton_to_nodes_edges_optimized" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: will return the nodes and edges but without making the nodes unique
+(so will have some repeats)</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.ipyvolume_utils.coords_from_obj">

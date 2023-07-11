@@ -1507,6 +1507,16 @@
         <span class="n">mesh4</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span></div>
         
 
+<div class="viewcode-block" id="convert_skeleton_to_nodes_edges_optimized"><a class="viewcode-back" href="../../python_tools.html#python_tools.ipyvolume_utils.convert_skeleton_to_nodes_edges_optimized">[docs]</a><span class="k">def</span> <span class="nf">convert_skeleton_to_nodes_edges_optimized</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: will return the nodes and edges but without making the nodes unique</span>
+<span class="sd">    (so will have some repeats)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique_rows</span>  <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">curr_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_rows</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">unique_rows</span><span class="p">,</span> <span class="n">curr_edges</span></div>
+
 <div class="viewcode-block" id="plot_ipv_skeleton"><a class="viewcode-back" href="../../python_tools.html#python_tools.ipyvolume_utils.plot_ipv_skeleton">[docs]</a><span class="k">def</span> <span class="nf">plot_ipv_skeleton</span><span class="p">(</span><span class="n">edge_coordinates</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
                      <span class="n">flip_y</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
