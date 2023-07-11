@@ -17,7 +17,7 @@ from sklearn.metrics import roc_curve
 import matplotlib
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 
 
 #from python_tools import pretty_print_confusion_matrix as p_cm
@@ -54,7 +54,7 @@ def plot_pretty_confusion_matrix(y_true,
 #import matplotlib as mpl
 #import matplotlib.pyplot as plt
 #import matplotlib
-#import numpy as np
+#from . import numpy_dep as np
 
 def plot_heatmap(#need to order by 
     df=None,

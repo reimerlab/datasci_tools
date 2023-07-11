@@ -1,7 +1,7 @@
 
-import numpy as np
+from . import numpy_dep as np
 
-#import numpy as np
+#from . import numpy_dep as np
 def start_end_frame_from_start_end_frac(
     start,
     end,

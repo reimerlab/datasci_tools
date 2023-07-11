@@ -20,7 +20,7 @@ import bz2, os
 import contextlib
 import copy
 import logging
-import numpy as np
+from . import numpy_dep as np
 import os
 import pickle
 import shutil
@@ -394,7 +394,7 @@ def bash_command(command,split_by_line = False):
 #--------------- 2/1 Saving off zipped files -------------
 #from zipfile import ZipFile
 #import time
-#import numpy as np
+#from . import numpy_dep as np
 
 def zip_write_from_file_paths(
     zip_file_path,

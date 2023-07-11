@@ -8,8 +8,8 @@ Purpose: defining general algorithms that help with processing
 
 
 '''
-import numpy as np
-#import numpy as np
+from . import numpy_dep as np
+#from . import numpy_dep as np
 
 def compare_uneven_groups(group1,
                           group2,

@@ -10,7 +10,7 @@ import datetime
 import itertools
 import math
 import networkx as nx
-import numpy as np
+from . import numpy_dep as np
 import pandas as pd
 import scipy.spatial as spatial
 import time
@@ -612,7 +612,7 @@ def random_2D_subarray(array,n_samples,
     
     Ex: 
     from python_tools import numpy_utils as nu
-    import numpy as np
+    from . import numpy_dep as np
 
     y = np.array([[1,3],[3,2],[5,6]])
     nu.random_2D_subarray(array=y,
@@ -1375,7 +1375,7 @@ def clip(a,a_min,a_max,**kwargs):
     To make sure array or number within limits
     
     Ex: 
-    import numpy as np
+    from . import numpy_dep as np
     np.clip(-1,1,9)
     """
     return np.clip(a,a_min,a_max,**kwargs)
@@ -1712,7 +1712,7 @@ def cdist(alpha, beta, period=2*np.pi,rad=True):
     Returns the cirvular distance between two orientations given the period
 
     Example:
-        import numpy as np
+        from . import numpy_dep as np
         from matplotlib import pyplot as plt
         ori_scale = np.linspace(0, np.pi, 100)
         ori_x, ori_y = np.meshgrid(ori_scale, ori_scale)

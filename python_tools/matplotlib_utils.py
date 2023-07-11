@@ -40,10 +40,10 @@ from matplotlib.ticker import MaxNLocator
 import matplotlib
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 import seaborn as sns
 import webcolors
-#import numpy as np
+#from . import numpy_dep as np
 #from python_tools import numpy_utils as nu
 #from python_tools import pandas_utils as pu
 
@@ -289,7 +289,7 @@ def apply_alpha_to_color_list(color_list,alpha=0.2,print_flag=False):
 
 
 #import webcolors
-#import numpy as np
+#from . import numpy_dep as np
 
 def closest_colour(requested_colour):
     min_colours = {}
@@ -875,7 +875,7 @@ except:
     Color = None
 
 
-#import numpy as np
+#from . import numpy_dep as np
 def divided_data_into_color_gradient(
     data,
     n_bins = 5,
@@ -1541,7 +1541,7 @@ def histogram_2D_overlayed(
     
 
 
-#import numpy as np
+#from . import numpy_dep as np
 #from python_tools import numpy_utils as nu
 def histograms_over_intervals(
     df,

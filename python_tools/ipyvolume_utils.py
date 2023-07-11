@@ -25,14 +25,14 @@ import ipyvolume as ipv
 import ipywebrtc as webrtc
 import ipywidgets
 import ipywidgets as widgets
-import numpy as np
+from . import numpy_dep as np
 import os
 import trimesh
 
 #import ipyvolume as ipv
 #import ipywidgets as widgets
 #from IPython.display import display
-#import numpy as np
+#from . import numpy_dep as np
 
 def print_selection_hotkeys():
     s = """

@@ -1,11 +1,11 @@
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 import seaborn as sns
 #import matplotlib.gridspec as gridspec
 #import seaborn as sns
-#import numpy as np
+#from . import numpy_dep as np
 
 class SeabornFig2Grid():
     """

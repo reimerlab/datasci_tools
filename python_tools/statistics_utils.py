@@ -1,7 +1,7 @@
 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_recall_fscore_support
-import numpy as np
+from . import numpy_dep as np
 import pandas as pd
 import scipy
 import sklearn

@@ -10,7 +10,7 @@ Utils functions for helping to work with files
 '''
 from pathlib import Path
 import io
-import numpy as np
+from . import numpy_dep as np
 import os
 import re
 

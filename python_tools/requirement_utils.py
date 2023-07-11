@@ -10,7 +10,7 @@ generate the requirements of a folder
 
 '''
 from pathlib import Path
-import numpy as np
+from . import numpy_dep as np
 import tqdm
 
 default_packages_to_install = [

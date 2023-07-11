@@ -1,5 +1,5 @@
 
-import numpy as np
+from . import numpy_dep as np
 
 def projection(
     vector_to_project,

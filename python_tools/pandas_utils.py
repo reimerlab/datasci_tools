@@ -211,7 +211,7 @@ from pathlib import Path
 import json
 import math
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 import pandas as pd
 import pandasql
 import re
@@ -454,7 +454,7 @@ def delete_columns(df,columns_to_delete):
 # ----------- 1/25 Additon: Used for helping with clustering ----------- #
 #from python_tools import numpy_utils as nu
 #import matplotlib.pyplot as plt
-#import numpy as np
+#from . import numpy_dep as np
 
 def divide_dataframe_by_column_value(
     df,
@@ -589,7 +589,7 @@ def reset_index(df):
     return df.reset_index(drop=True)
     
 
-#import numpy as np
+#from . import numpy_dep as np
 #import matplotlib.pyplot as plt
 #import six
 
@@ -756,7 +756,7 @@ def gzip_to_df(filepath):
                        compression='gzip', header=0, sep=',', quotechar='"', error_bad_lines=False)
 
     
-#import numpy as np
+#from . import numpy_dep as np
 def filter_away_columns(df,
                        column_list):
     """
@@ -2571,7 +2571,7 @@ def flatten_column_multi_index(df,join_str = "_"):
 def flatten_row_multi_index(df):
     return df.reset_index()
 
-#import numpy as np
+#from . import numpy_dep as np
 def restrict_df_to_coordinates_within_radius_old(
     df,
     name,

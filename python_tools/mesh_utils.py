@@ -3,7 +3,7 @@ from scipy.spatial import Delaunay
 import copy
 import math
 import numpy
-import numpy as np
+from . import numpy_dep as np
 import scipy.cluster
 import scipy.linalg
 import scipy.sparse
@@ -12,7 +12,7 @@ import scipy.sparse.linalg
 import time
 import trimesh
 #import trimesh
-#import numpy as np
+#from . import numpy_dep as np
 #from python_tools import numpy_utils as nu
 
 

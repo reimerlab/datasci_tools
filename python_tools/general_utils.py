@@ -1,6 +1,6 @@
 
 import itertools
-import numpy as np
+from . import numpy_dep as np
 
 """
 How to recieve a single values tuple 
@@ -33,7 +33,7 @@ out2 = [eval(cmd,globs,locs) for cmd in ['self.b']]
 
 
 #from python_tools import numpy_utils as nu
-#import numpy as np
+#from . import numpy_dep as np
 #import itertools
 def invert_mapping(my_map,total_keys=None,one_to_one=False):
     """
@@ -171,7 +171,7 @@ def is_function(obj):
     """
     return callable(obj)
 
-#import numpy as np
+#from . import numpy_dep as np
 def sub_dict(obj,keys_to_include=None,
             keys_to_exclude=None):
     """

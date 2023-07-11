@@ -1,6 +1,6 @@
 
 import networkx as nx
-import numpy as np
+from . import numpy_dep as np
 """
 Purpose: Will aid in filtering a set
 of objects based on a list of functions or statistics
@@ -27,7 +27,7 @@ Good example of this usage is:
 
 #from python_tools import networkx_utils as xu
 #import networkx as nx
-#import numpy as np
+#from . import numpy_dep as np
 #from python_tools import tqdm_utils as tqu
 default_attribute_name = "obj"
 node_arguments_name = "arguments"
@@ -382,7 +382,7 @@ def distance_above_soma_diff_from_max(G,node):
     return diff_from_max(G,node,attribute_name="distance_above_soma")
 
 #from python_tools import numpy_utils as nu
-#import numpy as np
+#from . import numpy_dep as np
 
 def compute_global_functions(
     G,

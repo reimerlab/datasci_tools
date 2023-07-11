@@ -19,7 +19,7 @@ import itertools
 import matplotlib.pyplot as plt
 import networkx as nx
 import networkx.classes.function as cls_func
-import numpy as np
+from . import numpy_dep as np
 import pandas as pd
 import pydot
 import random
@@ -2542,7 +2542,7 @@ node_query = nodes_from_node_query
 #from python_tools import tqdm_utils as tqu
 #import time
 #import pandas as pd
-#import numpy as np
+#from . import numpy_dep as np
 
 
 def edge_df_multi(G,
@@ -3878,7 +3878,7 @@ def star_graph(
         
     return G
     
-#import numpy as np
+#from . import numpy_dep as np
 def adjacency_matrix(G,dense = True,nodelist=None,return_nodelist = False,**kwargs):
     adj_matrix = nx.adjacency_matrix(G,nodelist=nodelist,**kwargs)
     

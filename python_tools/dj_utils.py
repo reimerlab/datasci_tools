@@ -8,12 +8,12 @@ Purpose: Datajoint utils to help with table manipulation
 
 '''
 import datajoint as dj
-import numpy as np
+from . import numpy_dep as np
 import pandas as pd
 import time
 #import datajoint as dj
 #from python_tools import numpy_utils as nu
-#import numpy as np
+#from . import numpy_dep as np
 #import pandas as pd
 #from python_tools import pandas_utils as pu
 

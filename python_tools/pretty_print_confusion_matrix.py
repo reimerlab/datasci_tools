@@ -20,13 +20,13 @@ from matplotlib.collections import QuadMesh
 from pandas import DataFrame
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 import seaborn as sn
 # -*- coding: utf-8 -*-
 
 #imports
 #from pandas import DataFrame
-#import numpy as np
+#from . import numpy_dep as np
 #import matplotlib.pyplot as plt
 #import matplotlib.font_manager as fm
 #from matplotlib.collections import QuadMesh

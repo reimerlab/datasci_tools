@@ -21,10 +21,10 @@ find_simplex --> Find the simplices containing the given points (will return the
 from scipy.optimize import curve_fit
 from scipy.spatial import Delaunay
 import matplotlib.pyplot as plt
-import numpy as np
+from . import numpy_dep as np
 import scipy
 #import matplotlib.pyplot as plt
-#import numpy as np
+#from . import numpy_dep as np
 #import scipy
 
 # ------ 3/10: Delauny Triangulation -------#

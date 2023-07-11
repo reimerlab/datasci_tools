@@ -27,7 +27,7 @@ Rule: Can't set
 '''
 from pathlib import Path
 import inspect
-import numpy as np
+from . import numpy_dep as np
 import regex as re
 
 
@@ -257,13 +257,6 @@ def set_global_parameters_and_attributes_by_data_type(
     verbose = False
     ):
     
-#     if set_default_first and data_type != "default":
-#         if verbose:
-#             print(f"Setting default first")
-#         modu.set_global_parameters_and_attributes_by_data_type(module,
-#                                                                data_type="default",
-#                                                               set_default_first = False,
-#                                                               verbose = False)
     if data_type is None:
         data_type = "default"
     
@@ -745,7 +738,7 @@ def find_import_modules_in_file(
     return str_finds
 
 #from pathlib import Path
-#import numpy as np
+#from . import numpy_dep as np
 def clean_module_imports(
     filename,
     overwrite_file = False,
