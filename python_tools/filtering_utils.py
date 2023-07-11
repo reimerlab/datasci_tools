@@ -235,7 +235,7 @@ def compute_node_properties(G,node_functions,
             f_name = f_info.__name__
         elif type(f_info) == "str": #so can just give function name from mod
             if func_mod is None:
-                from meshAfterParty import neuron_statistics as nst
+                from meshAfterParty from neurd import neuron_statistics as nst
                 func_mod = nst
             func = geattr(func_mod,f_info)
             f_name = f_info

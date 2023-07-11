@@ -1822,7 +1822,7 @@ def plot_objects(main_mesh=None,
                 zoom_radius = None,
                 zoom_radius_xyz = None,
                 adaptive_min_max_limits = True):
-    #import neuron_visualizations as nviz
+    #from neurd import neuron_visualizations as nviz
     #nviz = reload(nviz)
     
     if (main_mesh is None 

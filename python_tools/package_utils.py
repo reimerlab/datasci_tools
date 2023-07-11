@@ -29,6 +29,7 @@ user_packages = (
         "/neurd_packages/meshAfterParty/meshAfterParty/",
         "/neurd_packages/neuron_morphology_tools/neuron_morphology_tools/",
         "/neurd_packages/mesh_tools/mesh_tools/",
+        "/neurd_packages/NEURD/neurd"
 )
 
 def module_names_from_directories(
@@ -235,6 +236,7 @@ def clean_package_syntax(
     overwrite=False,
     create_init_if_not_exist = True,
     verbose = False,
+    packages = None,
     ):
     """
     Purpose: To clean all modules in all
@@ -256,7 +258,8 @@ def clean_package_syntax(
             modu.clean_module_syntax(
                 filepath = filepath,
                 verbose = verbose,
-                overwrite=overwrite
+                overwrite=overwrite,
+                packages=packages,
             )    
             
         if create_init_if_not_exist:

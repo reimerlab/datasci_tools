@@ -414,7 +414,7 @@ def scatter_3D_ipv(scatters,
                    scatter_size=10)
     
     """
-    from meshAfterParty import neuron_visualizations as nviz
+    from meshAfterParty from neurd import neuron_visualizations as nviz
     nviz.plot_objects(
         scatters=scatters,
             scatters_colors=scatters_colors,
@@ -441,7 +441,7 @@ def heatmap_3D(
     """
     Purpose: To plot a 3D heatmap of a feature with values and coordinates
     """
-    from meshAfterParty import neuron_visualizations as nviz
+    from meshAfterParty from neurd import neuron_visualizations as nviz
     
     curr_data= values
     curr_centers = coordinates

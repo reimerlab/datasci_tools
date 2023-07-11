@@ -39,7 +39,7 @@ def start_end_frame_from_start_end_frac(
 
 
 def example_rotating_motif():
-    from meshAfterParty import connectome_utils as conu
+    from meshAfterParty from neurd import connectome_utils as conu
     exc_name = "864691135494192528_0"
     conu.visualize_graph_connections_by_method(
         G,
