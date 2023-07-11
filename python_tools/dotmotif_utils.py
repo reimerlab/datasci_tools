@@ -352,6 +352,6 @@ macro(X, Y)
 
 '''
 
-import dotmotif_utils as dmu
+from . import dotmotif_utils as dmu
 
 

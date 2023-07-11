@@ -21,6 +21,9 @@ def parents(path):
     path = Path(path).resolve()
     return list(path.parents)
 
+def parent_directory(path):
+    return parents(path)[0]
+
 
 """
 How to search and unlink files: 

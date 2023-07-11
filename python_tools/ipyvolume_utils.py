@@ -27,6 +27,7 @@ import ipywidgets
 import ipywidgets as widgets
 import numpy as np
 import os
+import trimesh
 
 #import ipyvolume as ipv
 #import ipywidgets as widgets
