@@ -93,7 +93,7 @@ def suppress_stdout_stderr(suppress_tqdm=True):
     if suppress_tqdm = True
     
     Ex: How to suppress warning messages in Poisson
-    from meshAfterParty from neurd import soma_extraction_utils as sm
+    from neurd import soma_extraction_utils as sm
 with su.suppress_stdout_stderr():
     sm.soma_volume_ratio(my_neuron.concept_network.nodes["S0"]["data"].mesh)
     
@@ -179,7 +179,7 @@ su.save_object(another_neuron,"inhibitory_saved_neuron")
 ---Way that doesn't work---
 su = reload(su)
 
-#from meshAfterParty from neurd import neuron
+#from neurd import neuron
 another_neuron = neuron.Neuron(new_neuron)
 su.save_object(another_neuron,"inhibitory_saved_neuron")
 

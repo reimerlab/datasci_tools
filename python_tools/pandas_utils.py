@@ -1302,7 +1302,7 @@ def histogram_of_discrete_labels(
     )
     
     Ex 2: 
-    from meshAfterParty from neurd import cell_type_utils as ctu
+    from neurd import cell_type_utils as ctu
     df_counts = pu.histogram_of_discrete_labels(
         df_centr_sort,
         y="cell_type_fine",
