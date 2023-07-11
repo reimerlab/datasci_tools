@@ -3,7 +3,7 @@ from functools import reduce
 from pathlib import Path
 from pykdtree.kdtree import KDTree
 from scipy import stats
-from scipy.spatial.distance import pdist
+from scipy.spatial.distance import pdist,squareform
 from shapely.geometry import LineString
 from shapely.geometry import Point
 import datetime
@@ -13,6 +13,7 @@ import networkx as nx
 from . import numpy_dep as np
 import pandas as pd
 import scipy.spatial as spatial
+
 import time
 import trimesh
 #import networkx as nx

@@ -1436,6 +1436,16 @@ def plot_ipv_mesh(mesh,color=[1.,0.,0.,0.2],
         mesh4.material.transparent = True
         
 
+def convert_skeleton_to_nodes_edges_optimized(array):
+    """
+    Purpose: will return the nodes and edges but without making the nodes unique
+    (so will have some repeats)
+    
+    """
+    unique_rows  = array.reshape(-1,3)
+    curr_edges = np.arange(len(unique_rows)).reshape(-1,2)
+    return unique_rows, curr_edges
+
 def plot_ipv_skeleton(edge_coordinates,color=[0,0.,1,1],
                      flip_y=True):
     
