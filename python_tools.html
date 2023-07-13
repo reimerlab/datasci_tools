@@ -410,6 +410,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.module_utils">python_tools.module_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.ModuleDataTypeSetter"><code class="docutils literal notranslate"><span class="pre">ModuleDataTypeSetter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.abbreviation_linked_imports"><code class="docutils literal notranslate"><span class="pre">abbreviation_linked_imports()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.abbreviations_from_modules"><code class="docutils literal notranslate"><span class="pre">abbreviations_from_modules()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.all_modules_set_global_parameters_and_attributes"><code class="docutils literal notranslate"><span class="pre">all_modules_set_global_parameters_and_attributes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.basic_global_names"><code class="docutils literal notranslate"><span class="pre">basic_global_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.clean_module_imports"><code class="docutils literal notranslate"><span class="pre">clean_module_imports()</span></code></a></li>
@@ -1211,6 +1213,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.remove_range_list"><code class="docutils literal notranslate"><span class="pre">remove_range_list()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.replace_patterns"><code class="docutils literal notranslate"><span class="pre">replace_patterns()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.str_overlap"><code class="docutils literal notranslate"><span class="pre">str_overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.string_utils.strip_whitespace"><code class="docutils literal notranslate"><span class="pre">strip_whitespace()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.system_utils">python_tools.system_utils module</a><ul>
@@ -3753,6 +3756,31 @@ Rule: Can’t set</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.abbreviation_linked_imports">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">abbreviation_linked_imports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_imports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#abbreviation_linked_imports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.abbreviation_linked_imports" title="Permalink to this definition"></a></dt>
+<dd><p>Pseudocode:
+1) find all of the module imports in the files
+1b) For each package with it’s list of modules
+2) for list of modules, find the abbreviation statements (as […])</p>
+<blockquote>
+<div><p>and add to list</p>
+</div></blockquote>
+<p>3) Search in document for lines where
+a. line starts without any tabs
+b. there is not def, import, class as the first word
+c. an abbreviation is at the beggining of the line with
+- all allowed to come before: [= (]
+- all allowed to come after: [.]
+4. add found lines and compile an extra string to represent those
+5. Replace those lines in the main string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.abbreviations_from_modules">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">abbreviations_from_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#abbreviations_from_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.abbreviations_from_modules" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.module_utils.all_modules_set_global_parameters_and_attributes">
 <span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">all_modules_set_global_parameters_and_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('/meshAfterParty/meshAfterParty')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#all_modules_set_global_parameters_and_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.all_modules_set_global_parameters_and_attributes" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: To set the global parameters
@@ -3791,7 +3819,7 @@ ones to newline</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.module_utils.clean_module_syntax">
-<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">clean_module_syntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_overwrite_suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_replaced'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docstring_only_above_first_func_def</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_overwrite_suffix_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#clean_module_syntax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.clean_module_syntax" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">clean_module_syntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_overwrite_suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_replaced'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docstring_only_above_first_func_def</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_overwrite_suffix_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_imports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_abbreviation_linked_imports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_whitespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#clean_module_syntax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.clean_module_syntax" title="Permalink to this definition"></a></dt>
 <dd><p>Part 0: Copy and paste document into new file if not overwrite</p>
 <p>Part 1:</p>
 <p>Purpose: How to collect and rename the packages</p>
@@ -7866,7 +7894,7 @@ explanation: <a class="reference external" href="https://stackoverflow.com/quest
 <p>–&gt; could technically put at the top</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.package_utils.clean_package_syntax">
-<span class="sig-prename descclassname"><span class="pre">python_tools.package_utils.</span></span><span class="sig-name descname"><span class="pre">clean_package_syntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init_if_not_exist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/package_utils.html#clean_package_syntax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.package_utils.clean_package_syntax" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.package_utils.</span></span><span class="sig-name descname"><span class="pre">clean_package_syntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init_if_not_exist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_imports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/package_utils.html#clean_package_syntax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.package_utils.clean_package_syntax" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: To clean all modules in all
 of the given directories</p>
 </dd></dl>
@@ -10217,6 +10245,37 @@ verbose = True</p>
 <dd><p>Ex:
 from python_tools import string_utils as stru
 stru.str_overlap(“my name is Brendan”,”helloBrend”)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.string_utils.strip_whitespace">
+<span class="sig-prename descclassname"><span class="pre">python_tools.string_utils.</span></span><span class="sig-name descname"><span class="pre">strip_whitespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whitespace_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_whitespace_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trailing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/string_utils.html#strip_whitespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.string_utils.strip_whitespace" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Purpose: Want to eliminate leading and trailing whitespace
+from a string (whitespace = spaces, newlines, tabs)</p>
+<p>Pseudocode:
+For beginning and end</p>
+<blockquote>
+<div><p>1) Create a regex pattern to capture all leading or trailing
+white space
+2) Eliminate that group from the original string</p>
+</div></blockquote>
+<p>Ex:
+from python_tools import string_utils as stru</p>
+<dl class="simple">
+<dt>stru.strip_whitespace(</dt><dd><p>string = “</p>
+</dd>
+</dl>
+<p>hello there</p>
+</div></blockquote>
+<dl>
+<dt>“,</dt><dd><blockquote>
+<div><p>#string = ”   hello “,
+verbose = True,</p>
+</div></blockquote>
+<p>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
