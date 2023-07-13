@@ -135,8 +135,8 @@ multiline_str_pattern = r"""(['"])\1\1(.*?)\1{3}"""
 
 word_pattern = "[a-zA-Z._]+"
 word_pattern_comma_space = "[a-zA-Z._, ]+"
-word_pattern_comma_space_numb = "[a-zA-Z._, ][a-zA-Z._, 1-9]*"
-
+word_pattern_number = "[a-zA-Z._][a-zA-Z._0-9]+"
+word_pattern_comma_space_numb = "[a-zA-Z._, ][a-zA-Z._, 0-9]*"
 
 def multiple_replace(
     text,

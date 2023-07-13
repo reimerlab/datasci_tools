@@ -237,6 +237,7 @@ def clean_package_syntax(
     create_init_if_not_exist = True,
     verbose = False,
     packages = None,
+    top_imports = None,
     ):
     """
     Purpose: To clean all modules in all
@@ -260,6 +261,7 @@ def clean_package_syntax(
                 verbose = verbose,
                 overwrite=overwrite,
                 packages=packages,
+                top_imports=top_imports,
             )    
             
         if create_init_if_not_exist:

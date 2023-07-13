@@ -147,10 +147,69 @@ def eliminate_patterns(
 
 #from python_tools import string_utils as stru
 
+def strip_whitespace(
+    string,
+    whitespace_char = None,
+    additional_whitespace_char = None,
+    leading = True,
+    trailing = True,
+    verbose = False,):
+    """
+    Purpose: Want to eliminate leading and trailing whitespace 
+    from a string (whitespace = spaces, newlines, tabs)
 
+    Pseudocode:
+    For beginning and end
+        1) Create a regex pattern to capture all leading or trailing
+        white space
+        2) Eliminate that group from the original string
+        
+    Ex: 
+    from python_tools import string_utils as stru
+       
+    stru.strip_whitespace(
+        string = "     \t\n    hello there             \t \n\n\n",
+        #string = "   hello ",
+        verbose = True,
+    )
+
+    """
+    if whitespace_char is None:
+        whitespace_char = (
+        " ",
+        "\t",
+        "\n",
+        reu.start_of_file_pattern,
+        reu.end_of_file_pattern
+        )
+        
+    if additional_whitespace_char is not None:
+        whitespace_char = list(whitespace_char) + nu.to_list(additional_whitespace_char)
+    
+    trials = []
+    if leading:
+        trials.append((0,1))
+    if trailing:
+        trials.append((-1,-1))
+    
+    for start_idx,incrementer in trials:
+        for i in range(len(string)):
+            curr_idx = start_idx+incrementer*i
+            curr_char = string[curr_idx]
+            if curr_char not in whitespace_char:
+                if verbose:
+                    print(f"Non-whitespace char ({curr_char}) at idx = {curr_idx}")
+                if start_idx == 0:
+                    string = string[curr_idx:]
+                else:
+                    if curr_idx < -1:
+                        string = string[:curr_idx+1]
+                break
+    return string
 
 
 #--- from python_tools ---
 from . import numpy_utils as nu
+from . import regex_utils as reu
 
 from . import string_utils as stru

@@ -29,6 +29,7 @@ from pathlib import Path
 import inspect
 from . import numpy_dep as np
 import regex as re
+import numpy as np
 
 
 
@@ -865,6 +866,9 @@ def clean_module_syntax(
     separator = f"",
     prefix_separator = "\n",
     skip_overwrite_suffix_files = True,
+    top_imports = None,
+    replace_abbreviation_linked_imports = True,
+    strip_whitespace = True,
     ):
     """
     Part 0: Copy and paste document into new file if not overwrite
@@ -921,6 +925,7 @@ def clean_module_syntax(
     itself
 
     """
+
     if skip_overwrite_suffix_files and non_overwrite_suffix in str(filepath):
         return 
     
@@ -1109,6 +1114,26 @@ def clean_module_syntax(
                 break
         if not set_flag:
             non_pkg_mods.append(k)
+            
+    # ---- replace the abbreviation dependend imports --
+    
+    abbr_linked_imports = dict()
+    if replace_abbreviation_linked_imports:
+        for pkg_name,mods in pkg_mods.items():
+            if len(mods) > 0:
+                return_mods = modu.abbreviation_linked_imports(
+                    data_doc_no_mod,
+                    modules = mods,
+                    verbose = verbose,
+                    top_imports=top_imports,
+                )
+                
+                if len(return_mods) > 0:
+                    return_mods_str = "".join(return_mods)
+                    abbr_linked_imports[pkg_name] = return_mods_str
+                    
+                    for k in return_mods:
+                        data_doc_no_mod = data_doc_no_mod.replace(k,"")
 
     def sorted_unique_list(
         curr_data,
@@ -1141,8 +1166,27 @@ def clean_module_syntax(
 
     non_pkg_mods_str = "\n".join(non_pkg_mods)
     own_mod_str = "\n".join(own_mod)
-    pkg_mods_str = "\n\n".join([f"#--- from {pkg} ---\n" + "\n".join(m)
-                               for pkg,m in pkg_mods.items() ])
+    
+    
+    pkg_mods_str = ""
+    for pkg,m in pkg_mods.items():
+        curr_str = f"\n\n#--- from {pkg} ---\n" + "\n".join(m)
+        
+        if pkg in abbr_linked_imports:
+            curr_str += f"\n{abbr_linked_imports[pkg]}"
+        
+        pkg_mods_str += curr_str
+        
+    # pkg_mods_str = "\n\n".join([f"#--- from {pkg} ---\n" + "\n".join(m)
+    #                            for pkg,m in pkg_mods.items() ])
+    
+    if top_imports is not None:
+        top_imports = nu.to_list(top_imports)
+        for ti in top_imports:
+            if ti in pkg_mods_str:
+                non_pkg_mods_str += f"\n{ti}"
+        non_pkg_mods_str += "\n\n"
+        
     
     #get rid of any old package documentation (in case run documentation again)
     for pkg in pkg_mods.keys():
@@ -1174,6 +1218,18 @@ def clean_module_syntax(
         pkg_mods_str = f"{prefix_separator}{pkg_mods_str}{separator}"
     if len(own_mod_str) > 0:
         own_mod_str= f"{prefix_separator}{own_mod_str}"
+        
+    if strip_whitespace:
+        data_doc_no_mod = stru.strip_whitespace(
+            string = data_doc_no_mod,
+            verbose = False
+        )
+        
+    # return (
+    #     data_doc_no_mod,
+    #     pkg_mods_str,
+    #     own_mod_str
+    # )
 
     final_data = (
         all_doc_str +
@@ -1182,8 +1238,7 @@ def clean_module_syntax(
         pkg_mods_str + "\n" +
         own_mod_str
     )
-    
-    
+
     # 5) Outputting final string
     filu.write_file(
         output_path,
@@ -1257,6 +1312,93 @@ def package_imports_from_files(
     all_imports = [k for k in all_imports if k != "."]
     return all_imports
 
+def abbreviations_from_modules(modules,verbose = False):
+    pattern = f"as ({reu.word_pattern})"
+    pattern = re.compile(pattern)
+    
+    abbreviations = []
+    for curr_find in modules:
+        if verbose:
+            print(f"current_mod = {curr_find}")
+        s_find = pattern.finditer(curr_find)
+        for sf in s_find:
+            curr_abr = (sf.groups()[0])
+            if verbose:
+                print(f"   abbr found: {curr_abr}")
+            abbreviations.append(curr_abr)
+            
+    abbreviations = np.unique(abbreviations)
+    return abbreviations
+    
+def abbreviation_linked_imports(
+    data= None,
+    modules = None,
+    filepath = None, # to load the data if not
+    verbose = False,
+    strip_newline = False,
+    top_imports=None,
+    ):
+    """
+    Pseudocode: 
+    1) find all of the module imports in the files
+    1b) For each package with it's list of modules
+    2) for list of modules, find the abbreviation statements (as [...])
+      and add to list
+    3) Search in document for lines where
+    a. line starts without any tabs
+    b. there is not def, import, class as the first word
+    c. an abbreviation is at the beggining of the line with
+    - all allowed to come before: [= (]
+    - all allowed to come after: [.]
+    4. add found lines and compile an extra string to represent those
+    5. Replace those lines in the main string
+    """
+
+    if data is None:
+        data = filu.read_file(filepath)
+
+    if modules is None:
+        modules = modu.find_import_modules_in_file(
+                data = data,
+                unique = True,
+                verbose = verbose,
+                beginning_of_line = True,
+        )
+
+    #2) for list of modules, find the abbreviation statements (as [...]) and add to list
+    if top_imports is not None:
+        modules=np.setdiff1d(modules,top_imports)
+    abbreviations = abbreviations_from_modules(modules,verbose=verbose)
+    
+
+    #3) Search in document for lines where
+    
+    if len(abbreviations) > 0:
+    
+        abbr_or = "|".join(abbreviations)
+        abbr_or = f"(?:{abbr_or})"
+        
+
+        doc_pattern = f"{reu.start_of_line_pattern}{reu.word_pattern_number}[ ]*=[ ]*{abbr_or}.{reu.word_pattern_number}(?!\(|[a-zA-Z._0-9]|\[)[ ]*" 
+        #print(f"doc_pattern = {doc_pattern}")
+
+        abbr_matches = reu.match_pattern_in_str(
+            string=data,
+            pattern=doc_pattern
+        )
+        
+        if verbose:
+            print(f"doc_pattern = {doc_pattern}")
+            print(f"abbr_matches = {abbr_matches}")
+            
+        
+        if strip_newline:
+            abbr_matches = [k.replace("\n","") for k in abbr_matches]
+    else:
+        abbr_matches = []
+
+    return abbr_matches
+
 #--- from python_tools ---
 from . import data_struct_utils as dsu
 from . import file_utils as filu
@@ -1267,5 +1409,6 @@ from . import pathlib_utils as plu
 from . import regex_utils as ru
 from . import string_utils as stru
 from . import system_utils as su
+from . import regex_utils as reu
 
 from . import module_utils as modu
