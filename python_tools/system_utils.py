@@ -12,6 +12,7 @@ current_module = sys.modules[__name__]
 '''
 from contextlib import contextmanager
 from os import devnull
+from contextlib import contextmanager,redirect_stderr,redirect_stdout
 from pathlib import Path
 from zipfile import ZipFile
 import _pickle as cPickle
@@ -78,7 +79,7 @@ suppress_warnings = ignore_warnings
 turn_off_warnings = ignore_warnings
     
 
-#from contextlib import contextmanager,redirect_stderr,redirect_stdout
+
 #from os import devnull
 #from python_tools import tqdm_utils as tqu
 #from python_tools.tqdm_utils import tqdm

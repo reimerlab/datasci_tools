@@ -73,9 +73,10 @@ global_ending = "global"
 output_types_global = ("global_parameters","attributes")
 
 
-def basic_global_names(k,
-                       global_suffix=None,
-                      suffix_to_add = None):
+def basic_global_names(
+    k,
+    global_suffix=None,
+    suffix_to_add = None):
     if global_suffix is None:
         global_suffix = global_ending
     if suffix_to_add is not None:
@@ -110,19 +111,27 @@ def print_dict_with_suffix(my_dict,suffix):
     for k,v in my_dict.items():
         print(f"{k}_{suffix} = {v},")
     
-def set_global_parameters_by_dict(module,
-                                  param_dict,
-                           global_suffix = "global",
-                          verbose = False):
+def set_global_parameters_by_dict(
+    module,
+    param_dict,
+    global_suffix = "global",
+    verbose = False):
     for k,v in param_dict.items():
+        name_used = None
         local_name,global_name = modu.basic_global_names(k,global_suffix)
         try:
             setattr(module,global_name,v)
+            name_used = global_name
         except:
-            print(f"Unable to set {k}")
+            try:
+                setattr(module,local_name,v)
+                name_used = local_name
+            except:
+                print(f"Unable to set {k}")
             
         if verbose:
-            print(f"{global_name} = {getattr(module,global_name)}")
+            print(f"{name_used} = {getattr(module,name_used)}")
+            
             
 def set_attributes_by_dict(module,
                            param_dict,
@@ -137,6 +146,43 @@ def set_attributes_by_dict(module,
             
         if verbose:
             print(f"{global_name} = {getattr(module,global_name)}")
+            
+def set_module_attr_global_param_by_dict(
+    module,
+    param_dict,
+    verbose =False,
+    **kwargs
+    ):
+    
+    return set_global_parameters_by_dict(
+        module,
+        param_dict=param_dict,
+        verbose =verbose,
+        **kwargs 
+    )
+    
+def set_all_module_attr_global_param_by_dict(
+    param_dict,
+    verbose = False,
+    package_name = None
+    ):
+    
+    for mod,p_dict in param_dict:
+        if "str" in str(type(mod)):
+            if package_name is None:
+                raise Exception("")
+            exec_str = f"from {package_name} import {mod}"
+            exec(exec_str,globals())
+
+            # now run the setting
+            exec(f"set_module_attr_global_param_by_dict({mod},p_dict,verbose = {verbose})",globals())
+            
+        else:
+            set_module_attr_global_param_by_dict(
+                mod,
+                p_dict,
+                verbose = verbose
+            )
             
             
 def collect_global_parameters_and_attributes_by_data_type(

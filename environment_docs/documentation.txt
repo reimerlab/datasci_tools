@@ -191,8 +191,6 @@ jobs:
   docs:
     name: Docs
     runs-on: ubuntu-latest
-    # if need to specify a container
-    #container: celiib/mesh_tools:v1 #
     steps:
       - uses: actions/checkout@v2
 
@@ -216,8 +214,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install -r ./requirements.txt
-          pip3 install git+https://github.com/bacelii/python_tools.git
+          python3 -m pip install --use-deprecated=legacy-resolver  -r ./requirements.txt
+          #pip3 install git+https://github.com/bacelii/python_tools.git
 
       - name: Build docs
         run: |
@@ -232,6 +230,7 @@ jobs:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/_build/html/
+
 
 
 3) push changes

@@ -29,6 +29,8 @@ from . import numpy_dep as np
 import os
 import trimesh
 
+
+
 #import ipyvolume as ipv
 #import ipywidgets as widgets
 #from IPython.display import display
@@ -1864,7 +1866,7 @@ def plot_objects(main_mesh=None,
     scatters = [np.array(s).reshape(-1,3) for s in scatters]
     
     
-    if (subtract_from_main_mesh and (not main_mesh is None) and (len(meshes)>0)):
+    if ((subtract_from_main_mesh and tu is not None) and (not main_mesh is None) and (len(meshes)>0)):
         main_mesh = tu.subtract_mesh(original_mesh=main_mesh,
                                   subtract_mesh=meshes,exact_match=False)
     
@@ -1941,5 +1943,11 @@ def plot_objects(main_mesh=None,
 from . import matplotlib_utils as mu
 from . import mesh_utils as mhu
 from . import numpy_utils as nu
+
+#--- from mesh_tools ---
+try:
+    from mesh_tools import trimesh_utils as tu
+except:
+    tu = None
 
 from . import ipyvolume_utils as ipvu
