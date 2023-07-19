@@ -1228,7 +1228,7 @@ def all_downstream_nodes(
     curr_nodes = np.unique(np.array(xu.downstream_edges(G,node)).ravel())
     if not include_self:
         return_list = list(curr_nodes[curr_nodes!=node])
-        if return_empty_list_if_none:
+        if return_empty_list_if_none and len(return_list) > 0:
             if nu.is_array_like(return_list[0]):
                 return_list = []
         return return_list

@@ -94,6 +94,9 @@ adding new ssh key: https://docs.github.com/en/authentication/connecting-to-gith
 --- reset 1 commit 
 git reset --soft HEAD~1
 
+--- removing file 
+git rm --cached giant_file
+
 
 --- empty push
 git commit --allow-empty -m "Trigger rebuild"
