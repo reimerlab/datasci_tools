@@ -16,10 +16,10 @@ jobs:
         with:
           python-version: 3.8
 
-      # - name: Upgrade pip
-      #   run: |
-      #     # install pip=>20.1 to use "pip cache dir"
-      #     python3 -m pip install --upgrade pip
+      - name: Upgrade pip
+        run: |
+          # install pip=>20.1 to use "pip cache dir"
+          python3 -m pip install --upgrade pip
 
       # - name: Get pip cache dir
       #   id: pip-cache
@@ -30,7 +30,7 @@ jobs:
           pip3 install sphinx-rtd-theme
 
       - name: Install dependencies
-        run: python3 -m pip install --use-deprecated=legacy-resolver -r ./requirements.txt
+        run: python3 -m pip install -r ./requirements.txt
 
       - name: Build docs
         run: |
