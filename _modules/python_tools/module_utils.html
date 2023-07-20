@@ -144,9 +144,10 @@
 <span class="n">output_types_global</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;global_parameters&quot;</span><span class="p">,</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="basic_global_names"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.basic_global_names">[docs]</a><span class="k">def</span> <span class="nf">basic_global_names</span><span class="p">(</span><span class="n">k</span><span class="p">,</span>
-                       <span class="n">global_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">suffix_to_add</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="basic_global_names"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.basic_global_names">[docs]</a><span class="k">def</span> <span class="nf">basic_global_names</span><span class="p">(</span>
+    <span class="n">k</span><span class="p">,</span>
+    <span class="n">global_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">suffix_to_add</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">global_suffix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">global_suffix</span> <span class="o">=</span> <span class="n">global_ending</span>
     <span class="k">if</span> <span class="n">suffix_to_add</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -181,19 +182,27 @@
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">my_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="set_global_parameters_by_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.set_global_parameters_by_dict">[docs]</a><span class="k">def</span> <span class="nf">set_global_parameters_by_dict</span><span class="p">(</span><span class="n">module</span><span class="p">,</span>
-                                  <span class="n">param_dict</span><span class="p">,</span>
-                           <span class="n">global_suffix</span> <span class="o">=</span> <span class="s2">&quot;global&quot;</span><span class="p">,</span>
-                          <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="set_global_parameters_by_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.set_global_parameters_by_dict">[docs]</a><span class="k">def</span> <span class="nf">set_global_parameters_by_dict</span><span class="p">(</span>
+    <span class="n">module</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="p">,</span>
+    <span class="n">global_suffix</span> <span class="o">=</span> <span class="s2">&quot;global&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">param_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">name_used</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">local_name</span><span class="p">,</span><span class="n">global_name</span> <span class="o">=</span> <span class="n">modu</span><span class="o">.</span><span class="n">basic_global_names</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">global_suffix</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="n">global_name</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">name_used</span> <span class="o">=</span> <span class="n">global_name</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to set </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="n">local_name</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">name_used</span> <span class="o">=</span> <span class="n">local_name</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to set </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">global_name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="n">global_name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name_used</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="n">name_used</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            
             
 <div class="viewcode-block" id="set_attributes_by_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.set_attributes_by_dict">[docs]</a><span class="k">def</span> <span class="nf">set_attributes_by_dict</span><span class="p">(</span><span class="n">module</span><span class="p">,</span>
                            <span class="n">param_dict</span><span class="p">,</span>
@@ -208,6 +217,43 @@
             
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">global_name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span><span class="n">global_name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="set_module_attr_global_param_by_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.set_module_attr_global_param_by_dict">[docs]</a><span class="k">def</span> <span class="nf">set_module_attr_global_param_by_dict</span><span class="p">(</span>
+    <span class="n">module</span><span class="p">,</span>
+    <span class="n">param_dict</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+    
+    <span class="k">return</span> <span class="n">set_global_parameters_by_dict</span><span class="p">(</span>
+        <span class="n">module</span><span class="p">,</span>
+        <span class="n">param_dict</span><span class="o">=</span><span class="n">param_dict</span><span class="p">,</span>
+        <span class="n">verbose</span> <span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span> 
+    <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="set_all_module_attr_global_param_by_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.set_all_module_attr_global_param_by_dict">[docs]</a><span class="k">def</span> <span class="nf">set_all_module_attr_global_param_by_dict</span><span class="p">(</span>
+    <span class="n">param_dict</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">package_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+    
+    <span class="k">for</span> <span class="n">mod</span><span class="p">,</span><span class="n">p_dict</span> <span class="ow">in</span> <span class="n">param_dict</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;str&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">mod</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">package_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">exec_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;from </span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">exec_str</span><span class="p">,</span><span class="nb">globals</span><span class="p">())</span>
+
+            <span class="c1"># now run the setting</span>
+            <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set_module_attr_global_param_by_dict(</span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2">,p_dict,verbose = </span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span><span class="nb">globals</span><span class="p">())</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">set_module_attr_global_param_by_dict</span><span class="p">(</span>
+                <span class="n">mod</span><span class="p">,</span>
+                <span class="n">p_dict</span><span class="p">,</span>
+                <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+            <span class="p">)</span></div>
             
             
 <div class="viewcode-block" id="collect_global_parameters_and_attributes_by_data_type"><a class="viewcode-back" href="../../python_tools.html#python_tools.module_utils.collect_global_parameters_and_attributes_by_data_type">[docs]</a><span class="k">def</span> <span class="nf">collect_global_parameters_and_attributes_by_data_type</span><span class="p">(</span>

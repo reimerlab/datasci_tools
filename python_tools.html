@@ -431,9 +431,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.package_from_import_string"><code class="docutils literal notranslate"><span class="pre">package_from_import_string()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.package_imports_from_files"><code class="docutils literal notranslate"><span class="pre">package_imports_from_files()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.print_dict_with_suffix"><code class="docutils literal notranslate"><span class="pre">print_dict_with_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.set_all_module_attr_global_param_by_dict"><code class="docutils literal notranslate"><span class="pre">set_all_module_attr_global_param_by_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.set_attributes_by_dict"><code class="docutils literal notranslate"><span class="pre">set_attributes_by_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.set_global_parameters_and_attributes_by_data_type"><code class="docutils literal notranslate"><span class="pre">set_global_parameters_and_attributes_by_data_type()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.set_global_parameters_by_dict"><code class="docutils literal notranslate"><span class="pre">set_global_parameters_by_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.set_module_attr_global_param_by_dict"><code class="docutils literal notranslate"><span class="pre">set_module_attr_global_param_by_dict()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.networkx_utils">python_tools.networkx_utils module</a><ul>
@@ -3996,6 +3998,11 @@ modu.package_imports_from_files(</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.set_all_module_attr_global_param_by_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">set_all_module_attr_global_param_by_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#set_all_module_attr_global_param_by_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.set_all_module_attr_global_param_by_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.module_utils.set_attributes_by_dict">
 <span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">set_attributes_by_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#set_attributes_by_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.set_attributes_by_dict" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -4008,6 +4015,11 @@ modu.package_imports_from_files(</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.module_utils.set_global_parameters_by_dict">
 <span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">set_global_parameters_by_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'global'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#set_global_parameters_by_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.set_global_parameters_by_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.set_module_attr_global_param_by_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">set_module_attr_global_param_by_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#set_module_attr_global_param_by_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.set_module_attr_global_param_by_dict" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
