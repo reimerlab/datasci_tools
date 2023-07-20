@@ -10,13 +10,12 @@ Step 1: Setup Directory
 1) install sphinx
 - sphinx is what does all of the automatic html generation
 
-pip install sphinx sphinx_rtd_theme
+pip3 install sphinx sphinx_rtd_theme
 
 
 2) Create a docs folder in same directory as setup.py
 
-mkdir docs
-cd docs
+mkdir docs;cd docs
 
 
 3) Inside docs folder run: 
