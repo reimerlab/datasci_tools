@@ -7,7 +7,8 @@ methods for helping inspect functions
 
 
 '''
-from inspect import getmembers
+
+from inspect import getmembers, isfunction
 import inspect
 
 #import inspect
@@ -22,7 +23,6 @@ def arg_names(func):
     return inspect.getfullargspec(func).args
 
 
-#from inspect import getmembers, isfunction
 
 def all_functions_from_module(
     module,

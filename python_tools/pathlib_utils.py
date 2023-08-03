@@ -63,7 +63,7 @@ def copy_file(filepath,destination):
     
 def files_of_ext_type(
     directory,
-    ext,
+    ext = "py",
     verbose = False,
     return_stem = False,
     ):
