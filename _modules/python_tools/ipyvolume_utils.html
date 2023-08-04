@@ -422,6 +422,8 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
         
+        
+    
     <span class="k">try</span><span class="p">:</span>
         <span class="n">w</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">widgets</span><span class="p">,</span><span class="n">widget</span><span class="p">)(</span>
             <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
@@ -436,6 +438,10 @@
         <span class="n">link_func</span> <span class="o">=</span> <span class="s2">&quot;jslink&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">link_func</span> <span class="o">=</span> <span class="s2">&quot;link&quot;</span>
+        
+    <span class="c1"># print(f&#39;widget = {widget}, value = {value}&#39;)</span>
+    <span class="c1"># print(f&quot;{getattr(obj,attribute)}&quot;)</span>
+    
     <span class="n">curr_link</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">widgets</span><span class="p">,</span><span class="n">link_func</span><span class="p">)((</span><span class="n">obj</span><span class="p">,</span><span class="n">attribute</span><span class="p">),(</span><span class="n">w</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">))</span>
     
     <span class="k">if</span> <span class="n">display_widget</span><span class="p">:</span>
@@ -1050,6 +1056,10 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scatters</span><span class="p">):</span>
         <span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">scatters</span><span class="p">)</span>
         
+    <span class="c1">#print(f&quot;size = {size}&quot;)</span>
+    <span class="c1">#print(f&quot;color = {color}&quot;)</span>
+    <span class="c1">#print(f&quot;scatters = {scatters}&quot;)</span>
+        
     <span class="n">sum_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">scatters</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">sum_points</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -1592,7 +1602,7 @@
                             <span class="n">other_scatter</span><span class="o">=</span><span class="p">[],</span>
                             <span class="n">scatter_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
                             <span class="n">other_scatter_colors</span><span class="o">=</span><span class="p">[],</span>
-                            <span class="n">main_scatter_color</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span>
+                            <span class="n">main_scatter_color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="c1">#[1.,0.,0.,0.5],</span>
                             <span class="n">scatter_with_widgets</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                             <span class="n">buffer</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                            <span class="n">axis_box_off</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1617,7 +1627,6 @@
         <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
     
     <span class="n">main_mesh_vertices</span> <span class="o">=</span> <span class="p">[]</span>
-    
     
     <span class="c1">#print(&quot;Working on main skeleton&quot;)</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_skeleton_verts_final</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges_final</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edge_coordinates</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
@@ -1770,6 +1779,8 @@
                         <span class="n">scatter_size</span><span class="o">=</span><span class="n">curr_size</span><span class="p">,</span><span class="n">flip_y</span><span class="o">=</span><span class="n">flip_y</span><span class="p">)</span>
         <span class="n">main_mesh_vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_scatter</span><span class="p">)</span>
             
+    
+
     <span class="k">if</span> <span class="n">scatter_with_widgets</span><span class="p">:</span>
         <span class="n">ipvu</span><span class="o">.</span><span class="n">plot_multi_scatters</span><span class="p">(</span>
             <span class="n">other_scatter</span><span class="p">,</span><span class="n">other_scatter_colors</span><span class="p">,</span><span class="n">scatter_size</span><span class="p">,</span>
@@ -1777,8 +1788,7 @@
             <span class="n">new_figure</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">flip_y</span> <span class="o">=</span> <span class="n">flip_y</span><span class="p">,</span>
         <span class="p">)</span>
-
-
+        
     <span class="c1">#create the main mesh vertices for setting the bounding box</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">main_mesh_vertices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No meshes or skeletons passed to the plotting funciton&quot;</span><span class="p">)</span>
@@ -1879,7 +1889,7 @@
                 <span class="n">scatters</span><span class="o">=</span><span class="p">[],</span>
                 <span class="n">scatters_colors</span><span class="o">=</span><span class="p">[],</span>
                 <span class="n">scatter_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
-                <span class="n">main_scatter_color</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span>
+                <span class="n">main_scatter_color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="c1">#[1.,0.,0.,0.5],</span>
                 <span class="n">scatter_with_widgets</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                  
                 <span class="n">buffer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="c1">#1000,</span>
@@ -1895,8 +1905,6 @@
                 <span class="n">zoom_radius</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">zoom_radius_xyz</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">adaptive_min_max_limits</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-    <span class="c1">#from neurd import neuron_visualizations as nviz</span>
-    <span class="c1">#nviz = reload(nviz)</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="n">main_mesh</span> <span class="ow">is</span> <span class="kc">None</span> 
         <span class="ow">and</span> <span class="n">main_skeleton</span> <span class="ow">is</span> <span class="kc">None</span> 
@@ -1995,7 +2003,7 @@
     
     <span class="k">if</span> <span class="n">zoom_coordinate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying to set zoom&quot;</span><span class="p">)</span>
-        <span class="n">nviz</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span>
+        <span class="n">set_zoom</span><span class="p">(</span>
             <span class="n">zoom_coordinate</span><span class="p">,</span>
             <span class="n">radius</span> <span class="o">=</span> <span class="n">zoom_radius</span><span class="p">,</span>
             <span class="n">radius_xyz</span> <span class="o">=</span> <span class="n">zoom_radius_xyz</span>

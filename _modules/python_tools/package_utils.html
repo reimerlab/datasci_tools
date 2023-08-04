@@ -88,6 +88,9 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="c1">#from python_tools import numpy_utils as nu</span>
 <span class="c1">#from python_tools import file_utils as filu</span>
 <span class="c1">#import io</span>
@@ -348,8 +351,71 @@
     <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">directory</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.py&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">files</span></div>
 
+<div class="viewcode-block" id="modules_from_package_in_sys_modules"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.modules_from_package_in_sys_modules">[docs]</a><span class="k">def</span> <span class="nf">modules_from_package_in_sys_modules</span><span class="p">(</span><span class="n">package_name</span><span class="p">):</span>
+    <span class="k">return</span>  <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2">.&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="submodule_version_dict"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.submodule_version_dict">[docs]</a><span class="k">def</span> <span class="nf">submodule_version_dict</span><span class="p">(</span>
+    <span class="n">submodule</span><span class="p">,</span><span class="c1">#= &quot;hdju&quot;,</span>
+    <span class="n">package_name</span><span class="p">,</span>
+    <span class="n">use_loader</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+    <span class="n">hdju_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">pku</span><span class="o">.</span><span class="n">modules_from_package_in_sys_modules</span><span class="p">(</span><span class="n">package_name</span><span class="p">):</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span><span class="n">submodule</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1">#print(f&quot;mod = {mod}, attr = {attr}&quot;)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_loader</span><span class="p">:</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span><span class="s2">&quot;__loader__&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdju_dict</span><span class="p">:</span>
+                <span class="n">hdju_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+                
+            <span class="n">hdju_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">hdju_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">new_name</span> <span class="o">=</span> <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+        
+    <span class="k">return</span> <span class="n">hdju_dict</span></div>
+
+<div class="viewcode-block" id="reload_all_modules_in_package"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.reload_all_modules_in_package">[docs]</a><span class="k">def</span> <span class="nf">reload_all_modules_in_package</span><span class="p">(</span><span class="n">package_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To reload all modules in a specified package</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules_from_package_in_sys_modules</span><span class="p">(</span><span class="n">package_name</span><span class="p">):</span>
+        <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">module</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_all_modules_in_package"><a class="viewcode-back" href="../../python_tools.html#python_tools.package_utils.load_all_modules_in_package">[docs]</a><span class="k">def</span> <span class="nf">load_all_modules_in_package</span><span class="p">(</span>
+    <span class="n">package_directory</span><span class="p">,</span>
+    <span class="n">reload_after_load</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">suppress_import_errors</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,):</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;package_directory = </span><span class="si">{</span><span class="n">package_directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s1">&#39;__init__.py&#39;</span> <span class="ow">or</span> <span class="n">module</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.py&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;from . import </span><span class="si">{</span><span class="n">module</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">locals</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suppress_import_errors</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">reload_after_load</span><span class="p">:</span>
+        <span class="n">reload_all_modules_in_package</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">package_directory</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span></div>
+
 
 <span class="c1">#from python_tools import package_utils as pku</span>
+
 
 
 
