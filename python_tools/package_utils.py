@@ -17,6 +17,9 @@ explanation: https://stackoverflow.com/questions/62665924/python-program-importi
 '''
 from pathlib import Path
 import io
+import importlib
+from os import sys
+import os
 #from python_tools import numpy_utils as nu
 #from python_tools import file_utils as filu
 #import io
@@ -277,8 +280,71 @@ def module_files_from_directory(
     files = [directory / Path(f"{k}.py") for k in modules]
     return files
 
+def modules_from_package_in_sys_modules(package_name):
+    return  [k for k in sys.modules.values() if f"'{package_name}." in str(k)]
+
+def submodule_version_dict(
+    submodule,#= "hdju",
+    package_name,
+    use_loader = False,
+    verbose = False,
+    ):
+    hdju_dict = dict()
+    for mod in pku.modules_from_package_in_sys_modules(package_name):
+        attr = getattr(mod,submodule,None)
+        #print(f"mod = {mod}, attr = {attr}")
+        if attr is not None:
+            if use_loader:
+                attr = getattr(attr,"__loader__")
+            if str(attr) not in hdju_dict:
+                hdju_dict[str(attr)] = []
+                
+            hdju_dict[str(attr)].append(mod)
+            
+    if verbose:
+        for k,v in hdju_dict.items():
+            print(f"{k}")
+            for vv in v:
+                new_name = vv.__name__.replace(f"{package_name}.","")
+                print(f"   {new_name}")
+                
+        
+    return hdju_dict
+
+def reload_all_modules_in_package(package_name):
+    """
+    Purpose: To reload all modules in a specified package
+
+    """
+    for module in modules_from_package_in_sys_modules(package_name):
+        importlib.reload(module)
+
+
+def load_all_modules_in_package(
+    package_directory,
+    reload_after_load = True,
+    suppress_import_errors = True,
+    verbose=False,):
+    
+    if verbose:
+        print(f"package_directory = {package_directory}")
+    for module in os.listdir(os.path.dirname(__file__)):
+        if module == '__init__.py' or module[-3:] != '.py':
+            continue
+        try:
+            exec(f"from . import {module[:-3]}", locals(), globals())
+        except Exception as e:
+            if suppress_import_errors:
+                pass
+            else:
+                raise Exception(e)
+        
+    if reload_after_load:
+        reload_all_modules_in_package(Path(package_directory).stem)
+
 
 #from python_tools import package_utils as pku
+
 
 
 

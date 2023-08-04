@@ -601,53 +601,56 @@ def all_modules_set_global_parameters_and_attributes(
 
     """
     p = Path(directory)
-    mods = [k.stem for k in list(p.iterdir()) if k.suffix == ".py"]
-    mods_set = []
-    for k in mods:
-        if k in ["__init__"]:
-            continue
-        try:
-            if verbose_loop:
-                print(f"--Working on module {k}--")
-                
-            imp_str = f"import {k}"
-            if from_package is not None:
-                imp_str = f"from {from_package} {imp_str}"
-            exec(imp_str)
-            if verbose_loop:
-                print(f"Accomplished import")
-        except Exception as e:
-            
-            if verbose_loop:
-                print(f"Failed import: {e} ")
-            continue
-
-        success_set = False
-        try:
-            str_to_run = f"set_global_parameters_and_attributes_by_data_type({k},data_type='{data_type}')"
-            #print(f"str_to_run = {str_to_run}")
-            exec(str_to_run)
-        except:
+    
+    # running a second time so for the circular imports that failed the first time should be fine the second
+    for i in range(0,2):
+        mods = [k.stem for k in list(p.iterdir()) if k.suffix == ".py"]
+        mods_set = []
+        for k in mods:
+            if k in ["__init__"]:
+                continue
             try:
-                exec(f"{k}.set_global_parameters_and_attributes_by_data_type(data_type='{data_type}')")
+                if verbose_loop:
+                    print(f"--Working on module {k}--")
+                    
+                imp_str = f"import {k}"
+                if from_package is not None:
+                    imp_str = f"from {from_package} {imp_str}"
+                exec(imp_str)
+                if verbose_loop:
+                    print(f"Accomplished import")
+            except Exception as e:
+                
+                if verbose_loop:
+                    print(f"Failed import: {e} ")
+                continue
+
+            success_set = False
+            try:
+                str_to_run = f"set_global_parameters_and_attributes_by_data_type({k},data_type='{data_type}')"
+                #print(f"str_to_run = {str_to_run}")
+                exec(str_to_run)
             except:
                 try:
-                    exec(f"{k}.set_global_parameters_and_attributes_by_data_type(dt='{data_type}')")
+                    exec(f"{k}.set_global_parameters_and_attributes_by_data_type(data_type='{data_type}')")
                 except:
-                    if verbose_loop:
-                        print(f"Failed setting plobal params ")
-                        continue
+                    try:
+                        exec(f"{k}.set_global_parameters_and_attributes_by_data_type(dt='{data_type}')")
+                    except:
+                        if verbose_loop:
+                            print(f"Failed setting plobal params ")
+                            continue
+                    else:
+                        success_set = True
                 else:
                     success_set = True
             else:
                 success_set = True
-        else:
-            success_set = True
-        
-        if (verbose_loop or verbose) and success_set:
-            print(f"{k}: Accomplished setting global parameters")
-            mods_set.append(k)
-        
+            
+            if (verbose_loop or verbose) and success_set:
+                print(f"{k}: Accomplished setting global parameters")
+                mods_set.append(k)
+            
 
     if verbose:
         print(f"All modules set: {np.array(mods_set)}")

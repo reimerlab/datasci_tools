@@ -351,6 +351,8 @@ def add_attribute_widget(
     else:
         value = None
         
+        
+    
     try:
         w = getattr(widgets,widget)(
             description=description,
@@ -365,6 +367,10 @@ def add_attribute_widget(
         link_func = "jslink"
     else:
         link_func = "link"
+        
+    # print(f'widget = {widget}, value = {value}')
+    # print(f"{getattr(obj,attribute)}")
+    
     curr_link = getattr(widgets,link_func)((obj,attribute),(w,"value"))
     
     if display_widget:
@@ -979,6 +985,10 @@ def plot_multi_scatters(
     if len(size) != len(scatters):
         size = size*len(scatters)
         
+    #print(f"size = {size}")
+    #print(f"color = {color}")
+    #print(f"scatters = {scatters}")
+        
     sum_points = np.sum([len(k) for k in scatters])
     if sum_points == 0:
         if verbose:
@@ -1521,7 +1531,7 @@ def graph_skeleton_and_mesh(main_mesh_verts=[],
                             other_scatter=[],
                             scatter_size = 0.3,
                             other_scatter_colors=[],
-                            main_scatter_color=[1.,0.,0.,0.5],
+                            main_scatter_color="red",#[1.,0.,0.,0.5],
                             scatter_with_widgets = False,
                             buffer=1000,
                            axis_box_off=True,
@@ -1546,7 +1556,6 @@ def graph_skeleton_and_mesh(main_mesh_verts=[],
         ipv.figure(figsize=(15,15))
     
     main_mesh_vertices = []
-    
     
     #print("Working on main skeleton")
     if (len(unique_skeleton_verts_final) > 0 and len(edges_final) > 0) or (len(edge_coordinates)>0):
@@ -1699,6 +1708,8 @@ def graph_skeleton_and_mesh(main_mesh_verts=[],
                         scatter_size=curr_size,flip_y=flip_y)
         main_mesh_vertices.append(curr_scatter)
             
+    
+
     if scatter_with_widgets:
         ipvu.plot_multi_scatters(
             other_scatter,other_scatter_colors,scatter_size,
@@ -1706,8 +1717,7 @@ def graph_skeleton_and_mesh(main_mesh_verts=[],
             new_figure = False,
             flip_y = flip_y,
         )
-
-
+        
     #create the main mesh vertices for setting the bounding box
     if len(main_mesh_vertices) == 0:
         raise Exception("No meshes or skeletons passed to the plotting funciton")
@@ -1808,7 +1818,7 @@ def plot_objects(main_mesh=None,
                 scatters=[],
                 scatters_colors=[],
                 scatter_size = 0.3,
-                main_scatter_color=[1.,0.,0.,0.5],
+                main_scatter_color="red",#[1.,0.,0.,0.5],
                 scatter_with_widgets = True,
                  
                 buffer=0,#1000,
@@ -1824,8 +1834,6 @@ def plot_objects(main_mesh=None,
                 zoom_radius = None,
                 zoom_radius_xyz = None,
                 adaptive_min_max_limits = True):
-    #from neurd import neuron_visualizations as nviz
-    #nviz = reload(nviz)
     
     if (main_mesh is None 
         and main_skeleton is None 
@@ -1924,7 +1932,7 @@ def plot_objects(main_mesh=None,
     
     if zoom_coordinate is not None:
         print(f"Trying to set zoom")
-        nviz.set_zoom(
+        set_zoom(
             zoom_coordinate,
             radius = zoom_radius,
             radius_xyz = zoom_radius_xyz
