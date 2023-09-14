@@ -126,6 +126,12 @@ re.sub(pattern,r"\1\2",s)
 (?: something) this is an uncaptured group, where group something together but not save for named
 ():captured group
 
+
+
+# -------- Example: Lookbs for no alphanumeric char ---
+(?<![a-zA-z_])volume_utils #look behind (letters that preceeded)
+volume_utils(?![a-zA-z_])# look ahead (letters that come after)
+
 """
 start_of_file_pattern = r"\A"
 end_of_file_pattern = r"\Z"
