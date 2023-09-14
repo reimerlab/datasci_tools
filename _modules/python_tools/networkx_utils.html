@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -2591,7 +2591,11 @@
     <span class="n">remaining_nodes</span> <span class="o">=</span> <span class="n">reduced_df</span><span class="p">[</span><span class="n">upstream_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">remaining_nodes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="node_df_from_node_query"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.node_df_from_node_query">[docs]</a><span class="k">def</span> <span class="nf">node_df_from_node_query</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">query</span><span class="p">,</span><span class="n">return_nodes</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="node_df_from_node_query"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.node_df_from_node_query">[docs]</a><span class="k">def</span> <span class="nf">node_df_from_node_query</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">,</span>
+    <span class="n">return_nodes</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">G</span>
     <span class="n">node_df</span> <span class="o">=</span> <span class="n">xu</span><span class="o">.</span><span class="n">node_df</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
@@ -2603,8 +2607,32 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">reduced_df</span></div>
     
-<div class="viewcode-block" id="nodes_from_node_query"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.nodes_from_node_query">[docs]</a><span class="k">def</span> <span class="nf">nodes_from_node_query</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">query</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">xu</span><span class="o">.</span><span class="n">node_df_from_node_query</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">query</span><span class="p">,</span><span class="n">return_nodes</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
+<div class="viewcode-block" id="node_query_subgraph"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.node_query_subgraph">[docs]</a><span class="k">def</span> <span class="nf">node_query_subgraph</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="n">return_G</span> <span class="o">=</span>  <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span>
+        <span class="n">nodes_from_node_query</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">)</span>
+        <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time for node query subgraph = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">return_G</span></div>
+<div class="viewcode-block" id="nodes_from_node_query"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.nodes_from_node_query">[docs]</a><span class="k">def</span> <span class="nf">nodes_from_node_query</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">xu</span><span class="o">.</span><span class="n">node_df_from_node_query</span><span class="p">(</span>
+        <span class="n">G</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">,</span>
+        <span class="n">return_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="p">)</span></div>
     
 <span class="n">node_query</span> <span class="o">=</span> <span class="n">nodes_from_node_query</span>
 
@@ -3950,8 +3978,20 @@
     <span class="k">return</span> <span class="n">G</span>
     
 <span class="c1">#from . import numpy_dep as np</span>
-<div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">dense</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">nodelist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">return_nodelist</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodelist</span><span class="o">=</span><span class="n">nodelist</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">dense</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">nodelist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_nodelist</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    
+    <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span>
+        <span class="n">G</span><span class="p">,</span>
+        <span class="n">nodelist</span><span class="o">=</span><span class="n">nodelist</span><span class="p">,</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
     
     <span class="k">if</span> <span class="n">dense</span><span class="p">:</span>
         <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">adj_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
@@ -5175,6 +5215,9 @@
 <div class="viewcode-block" id="empty_graph_type_from_G"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.empty_graph_type_from_G">[docs]</a><span class="k">def</span> <span class="nf">empty_graph_type_from_G</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">graph_type_from_G</span><span class="p">(</span><span class="n">G</span><span class="p">))()</span></div>
 
+<div class="viewcode-block" id="empty_graph_from_type"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.empty_graph_from_type">[docs]</a><span class="k">def</span> <span class="nf">empty_graph_from_type</span><span class="p">(</span><span class="n">graph_type</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">graph_type</span><span class="p">)()</span></div>
+
 
 <div class="viewcode-block" id="edge_subgraph"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.edge_subgraph">[docs]</a><span class="k">def</span> <span class="nf">edge_subgraph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">edges</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
@@ -5184,7 +5227,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span></div>
 
 <div class="viewcode-block" id="random_edges_from_existing_edges"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.random_edges_from_existing_edges">[docs]</a><span class="k">def</span> <span class="nf">random_edges_from_existing_edges</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">,</span>
+    <span class="n">G</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">random_idx</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">n_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5216,10 +5259,11 @@
     <span class="k">return</span> <span class="n">new_edges</span></div>
 
 <div class="viewcode-block" id="random_edges_from_existing_nodes"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.random_edges_from_existing_nodes">[docs]</a><span class="k">def</span> <span class="nf">random_edges_from_existing_nodes</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">,</span>
+    <span class="n">G</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">n_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">samples_perc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">seed</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">buffer_multiplier</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">no_self_loops</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -5238,9 +5282,12 @@
     
     <span class="k">if</span> <span class="n">nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">xu</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">edges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
     
     <span class="k">if</span> <span class="n">n_samples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span><span class="o">*</span><span class="n">samples_perc</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="o">*</span><span class="n">samples_perc</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
     <span class="n">curr_samples</span> <span class="o">=</span> <span class="n">n_samples</span><span class="o">*</span><span class="n">buffer_multiplier</span>
 
     <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -5331,7 +5378,9 @@
     <span class="k">return</span> <span class="n">G_new</span></div>
 
 <div class="viewcode-block" id="random_edges_subgraph"><a class="viewcode-back" href="../../python_tools.html#python_tools.networkx_utils.random_edges_subgraph">[docs]</a><span class="k">def</span> <span class="nf">random_edges_subgraph</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">,</span>
+    <span class="n">G</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edges_func</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">random_idx</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">n_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5341,10 +5390,10 @@
     <span class="n">verbose_edge_generation</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">in_degree_sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">out_degree_sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">graph_type</span> <span class="o">=</span> <span class="s2">&quot;DiGraph&quot;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
     <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    
     
     <span class="k">if</span> <span class="n">edges_func</span> <span class="o">==</span> <span class="s2">&quot;degree_config_model&quot;</span><span class="p">:</span>
         <span class="n">G_new</span> <span class="o">=</span> <span class="n">directed_configuration_model</span><span class="p">(</span>
@@ -5352,7 +5401,7 @@
             <span class="n">in_degree_sequence</span> <span class="o">=</span> <span class="n">in_degree_sequence</span><span class="p">,</span>
             <span class="n">out_degree_sequence</span> <span class="o">=</span> <span class="n">out_degree_sequence</span><span class="p">,</span>
             <span class="n">self_loops</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">create_using</span> <span class="o">=</span> <span class="s2">&quot;DiGraph&quot;</span><span class="p">,</span>
+            <span class="n">create_using</span> <span class="o">=</span> <span class="n">graph_type</span><span class="p">,</span>
             <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -5366,6 +5415,8 @@
 
         <span class="n">new_edges</span> <span class="o">=</span> <span class="n">edges_func</span><span class="p">(</span>
             <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span><span class="p">,</span>
             <span class="n">random_idx</span> <span class="o">=</span> <span class="n">random_idx</span><span class="p">,</span>
             <span class="n">n_samples</span> <span class="o">=</span> <span class="n">n_samples</span><span class="p">,</span>
             <span class="n">samples_perc</span> <span class="o">=</span> <span class="n">samples_perc</span><span class="p">,</span>
@@ -5373,13 +5424,17 @@
             <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose_edge_generation</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
+        
+        <span class="n">G_new</span> <span class="o">=</span> <span class="n">empty_graph_from_type</span><span class="p">(</span><span class="n">graph_type</span><span class="p">)</span>
+        <span class="n">G_new</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">new_edges</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">edges_func</span> <span class="o">==</span> <span class="n">random_edges_from_existing_edges</span><span class="p">:</span>
-            <span class="n">new_edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">new_edges</span><span class="p">])</span>
-            <span class="n">G_new</span> <span class="o">=</span> <span class="n">xu</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">new_edges</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">G_new</span> <span class="o">=</span> <span class="n">empty_graph_type_from_G</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-            <span class="n">G_new</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">new_edges</span><span class="p">)</span>
+        <span class="c1"># if edges_func == random_edges_from_existing_edges:</span>
+        <span class="c1">#     new_edges = set([tuple(k) for k in new_edges])</span>
+        <span class="c1">#     G_new = xu.edge_subgraph(G,new_edges)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     G_new = empty_graph_from_type(graph_type)</span>
+        <span class="c1">#     #G_new = empty_graph_type_from_G(G)</span>
+        <span class="c1">#     G_new.add_edges_from(new_edges)</span>
             
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total time for random subgraph: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

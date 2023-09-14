@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=404a92a0"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -61,6 +61,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.dataclass_utils">python_tools.dataclass_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dataclass_utils.DataclassSubscript"><code class="docutils literal notranslate"><span class="pre">DataclassSubscript</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.dataclass_utils.examples"><code class="docutils literal notranslate"><span class="pre">examples()</span></code></a></li>
 </ul>
 </li>
@@ -68,7 +69,20 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.dict_utils.abbreviate_str_keys"><code class="docutils literal notranslate"><span class="pre">abbreviate_str_keys()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.dj_utils">python_tools.dj_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.all_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">all_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.append_table_to_pairwise_table"><code class="docutils literal notranslate"><span class="pre">append_table_to_pairwise_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table"><code class="docutils literal notranslate"><span class="pre">df_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table_old"><code class="docutils literal notranslate"><span class="pre">df_from_table_old()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.dj_query_from_pandas_query"><code class="docutils literal notranslate"><span class="pre">dj_query_from_pandas_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype"><code class="docutils literal notranslate"><span class="pre">parameter_datatype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype_description"><code class="docutils literal notranslate"><span class="pre">parameter_datatype_description()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.primary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">primary_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.query_table_from_kwargs"><code class="docutils literal notranslate"><span class="pre">query_table_from_kwargs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.secondary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">secondary_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.table_definition_from_example_dict"><code class="docutils literal notranslate"><span class="pre">table_definition_from_example_dict()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.enum_utils">python_tools.enum_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.enum_utils.example"><code class="docutils literal notranslate"><span class="pre">example()</span></code></a></li>
 </ul>
@@ -116,6 +130,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.add_prefix_to_keys"><code class="docutils literal notranslate"><span class="pre">add_prefix_to_keys()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.combine_list_of_lists"><code class="docutils literal notranslate"><span class="pre">combine_list_of_lists()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.dict_to_array"><code class="docutils literal notranslate"><span class="pre">dict_to_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.flatten_nested_dict"><code class="docutils literal notranslate"><span class="pre">flatten_nested_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.flip_key_orders_for_dict"><code class="docutils literal notranslate"><span class="pre">flip_key_orders_for_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.get_unique_values_dict_of_lists"><code class="docutils literal notranslate"><span class="pre">get_unique_values_dict_of_lists()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.invert_mapping"><code class="docutils literal notranslate"><span class="pre">invert_mapping()</span></code></a></li>
@@ -123,6 +138,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.merge_dicts"><code class="docutils literal notranslate"><span class="pre">merge_dicts()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.merge_dicts_simple"><code class="docutils literal notranslate"><span class="pre">merge_dicts_simple()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.order_dict_by_keys"><code class="docutils literal notranslate"><span class="pre">order_dict_by_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.print_nested_dict"><code class="docutils literal notranslate"><span class="pre">print_nested_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.remove_dict_suffixes"><code class="docutils literal notranslate"><span class="pre">remove_dict_suffixes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.str_filter_away_character"><code class="docutils literal notranslate"><span class="pre">str_filter_away_character()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.str_filter_away_characters"><code class="docutils literal notranslate"><span class="pre">str_filter_away_characters()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.general_utils.sub_dict"><code class="docutils literal notranslate"><span class="pre">sub_dict()</span></code></a></li>
@@ -185,6 +202,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.get_xyz_lim"><code class="docutils literal notranslate"><span class="pre">get_xyz_lim()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.get_xyz_radius"><code class="docutils literal notranslate"><span class="pre">get_xyz_radius()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.graph_skeleton_and_mesh"><code class="docutils literal notranslate"><span class="pre">graph_skeleton_and_mesh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.hide_legend_panel"><code class="docutils literal notranslate"><span class="pre">hide_legend_panel()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.lighting_parameters"><code class="docutils literal notranslate"><span class="pre">lighting_parameters()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.line_plot_func"><code class="docutils literal notranslate"><span class="pre">line_plot_func()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.ipyvolume_utils.line_segments_plot_func"><code class="docutils literal notranslate"><span class="pre">line_segments_plot_func()</span></code></a></li>
@@ -233,9 +251,14 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.json_utils">python_tools.json_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.df_from_json_file"><code class="docutils literal notranslate"><span class="pre">df_from_json_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.dict_to_json"><code class="docutils literal notranslate"><span class="pre">dict_to_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.dict_to_json_file"><code class="docutils literal notranslate"><span class="pre">dict_to_json_file()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.dicts_list_from_json_file"><code class="docutils literal notranslate"><span class="pre">dicts_list_from_json_file()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.flatten_df_from_json"><code class="docutils literal notranslate"><span class="pre">flatten_df_from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.is_jsonable"><code class="docutils literal notranslate"><span class="pre">is_jsonable()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.json_from_file"><code class="docutils literal notranslate"><span class="pre">json_from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.json_to_dict"><code class="docutils literal notranslate"><span class="pre">json_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.json_utils.json_to_flat_dict"><code class="docutils literal notranslate"><span class="pre">json_to_flat_dict()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.linalg_utils">python_tools.linalg_utils module</a><ul>
@@ -423,6 +446,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.generate_default_assignment_block"><code class="docutils literal notranslate"><span class="pre">generate_default_assignment_block()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.import_pattern_str"><code class="docutils literal notranslate"><span class="pre">import_pattern_str()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.index_of_first_func_def"><code class="docutils literal notranslate"><span class="pre">index_of_first_func_def()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.load_modules_in_directory"><code class="docutils literal notranslate"><span class="pre">load_modules_in_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.module_name_no_prefix"><code class="docutils literal notranslate"><span class="pre">module_name_no_prefix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.modules_from_directory"><code class="docutils literal notranslate"><span class="pre">modules_from_directory()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.multiline_str"><code class="docutils literal notranslate"><span class="pre">multiline_str()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.module_utils.multiline_str_text"><code class="docutils literal notranslate"><span class="pre">multiline_str_text()</span></code></a></li>
@@ -525,6 +550,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.edgelist_from_adjacency_matrix"><code class="docutils literal notranslate"><span class="pre">edgelist_from_adjacency_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.edges"><code class="docutils literal notranslate"><span class="pre">edges()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.edges_and_weights_to_graph"><code class="docutils literal notranslate"><span class="pre">edges_and_weights_to_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.empty_graph_from_type"><code class="docutils literal notranslate"><span class="pre">empty_graph_from_type()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.empty_graph_type_from_G"><code class="docutils literal notranslate"><span class="pre">empty_graph_type_from_G()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.end_nodes"><code class="docutils literal notranslate"><span class="pre">end_nodes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.end_nodes_of_digraph"><code class="docutils literal notranslate"><span class="pre">end_nodes_of_digraph()</span></code></a></li>
@@ -632,6 +658,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.node_df_features"><code class="docutils literal notranslate"><span class="pre">node_df_features()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.node_df_from_node_query"><code class="docutils literal notranslate"><span class="pre">node_df_from_node_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.node_query"><code class="docutils literal notranslate"><span class="pre">node_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.node_query_subgraph"><code class="docutils literal notranslate"><span class="pre">node_query_subgraph()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.node_to_edges"><code class="docutils literal notranslate"><span class="pre">node_to_edges()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.nodes"><code class="docutils literal notranslate"><span class="pre">nodes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.networkx_utils.nodes_DFS"><code class="docutils literal notranslate"><span class="pre">nodes_DFS()</span></code></a></li>
@@ -862,6 +889,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.repeat_vector_hstack"><code class="docutils literal notranslate"><span class="pre">repeat_vector_hstack()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.replace_nan_with_zero"><code class="docutils literal notranslate"><span class="pre">replace_nan_with_zero()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.rotation_matrix"><code class="docutils literal notranslate"><span class="pre">rotation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.row_col_subarray"><code class="docutils literal notranslate"><span class="pre">row_col_subarray()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.rows_columns_delete"><code class="docutils literal notranslate"><span class="pre">rows_columns_delete()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.rows_columns_restriction"><code class="docutils literal notranslate"><span class="pre">rows_columns_restriction()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.save_compressed"><code class="docutils literal notranslate"><span class="pre">save_compressed()</span></code></a></li>
@@ -1441,6 +1469,9 @@ link: <a class="reference external" href="https://www.dataquest.io/blog/how-to-u
 1) To easily create a class meant for just storing data that
 already has a bunch of the basic functions created for you
 - __init__, __eq__, __repr__</p>
+<ul class="simple">
+<li><p>advantage: Don’t have to create own init function</p></li>
+</ul>
 <p>2) with other options for the decorator (like order = True)
 other functions would be implemented
 __lt__ (less than), __le__ (less or equal), __gt__ (greater than), and __ge__ (greater or equal)</p>
@@ -1473,6 +1504,17 @@ self.email = email</p>
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="python_tools.dataclass_utils.DataclassSubscript">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_tools.dataclass_utils.</span></span><span class="sig-name descname"><span class="pre">DataclassSubscript</span></span><a class="reference internal" href="_modules/python_tools/dataclass_utils.html#DataclassSubscript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dataclass_utils.DataclassSubscript" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="python_tools.dataclass_utils.DataclassSubscript.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#python_tools.dataclass_utils.DataclassSubscript.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.dataclass_utils.examples">
 <span class="sig-prename descclassname"><span class="pre">python_tools.dataclass_utils.</span></span><span class="sig-name descname"><span class="pre">examples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dataclass_utils.html#examples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dataclass_utils.examples" title="Permalink to this definition"></a></dt>
@@ -1503,8 +1545,114 @@ max_phrase_len = 15</p>
 </dd></dl>
 
 </section>
-<section id="python-tools-dj-utils-module">
-<h2>python_tools.dj_utils module<a class="headerlink" href="#python-tools-dj-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.dj_utils">
+<span id="python-tools-dj-utils-module"></span><h2>python_tools.dj_utils module<a class="headerlink" href="#module-python_tools.dj_utils" title="Permalink to this heading"></a></h2>
+<p>Purpose: Datajoint utils to help with table manipulation</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.all_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">all_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#all_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.all_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.append_table_to_pairwise_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">append_table_to_pairwise_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_to_append</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes_to_not_rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'prefix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#append_table_to_pairwise_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.append_table_to_pairwise_table" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To add on a table to both
+sides of another</p>
+<p>Pseudocode:
+1) Determine the primary attributes to join on
+(if not already)
+2) Determine the secondary attributes you want to
+join
+3) Build a renaming dictionary
+4) Project the tale to only those attributes chosen
+5) star restrict the table with the renamed tables</p>
+<p>— Example: —-
+dju.append_table_to_pairwise_table(</p>
+<blockquote>
+<div><p>table = m65auto.AutoProofreadNeuronLeafMatch(),
+table_to_append = hdju.subgraph_vectors_table,
+primary_attributes = [</p>
+<blockquote>
+<div><p>“segment_id”,
+“split_index”,
+“subgraph_idx”,
+#”leaf_node”,</p>
+</div></blockquote>
+<p>],
+secondary_attributes = [</p>
+<blockquote>
+<div><p>‘compartment’,
+‘node’,
+‘y_soma_relative’,
+‘width’,</p>
+</div></blockquote>
+<p>],
+source_name = “”,
+target_name = “match”,
+append_type = “prefix”,
+verbose = True,</p>
+</div></blockquote>
+<p>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_substr_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table_old">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table_old" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.dj_query_from_pandas_query">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">dj_query_from_pandas_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#dj_query_from_pandas_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.dj_query_from_pandas_query" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longblob'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype_description">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_null</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype_description" title="Permalink to this definition"></a></dt>
+<dd><p>To generate the the datatype part of a parameter
+table definition</p>
+<p>— Exmaple–
+new_str = parameter_datatype_description(kwargs_dict,</p>
+<blockquote>
+<div><blockquote>
+<div><p>kwargs_datatype_dict = dict(filter_by_volume_threshold=”new datatype”)</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p>print(new_str)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.primary_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">primary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#primary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.primary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.query_table_from_kwargs">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">query_table_from_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#query_table_from_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.query_table_from_kwargs" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To query a datajoint table
+with keywords that may be None</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.secondary_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">secondary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#secondary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.secondary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.table_definition_from_example_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">table_definition_from_example_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition_description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_name_description_to_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#table_definition_from_example_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.table_definition_from_example_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-python_tools.enum_utils">
 <span id="python-tools-enum-utils-module"></span><h2>python_tools.enum_utils module<a class="headerlink" href="#module-python_tools.enum_utils" title="Permalink to this heading"></a></h2>
@@ -1871,6 +2019,20 @@ funcu.arg_names(myfunc)</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.general_utils.flatten_nested_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.general_utils.</span></span><span class="sig-name descname"><span class="pre">flatten_nested_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/general_utils.html#flatten_nested_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.general_utils.flatten_nested_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Example:
+ex_dict = dict(</p>
+<blockquote>
+<div><p>x = 10,
+my_dict = dict(another_dict = dict(yyy = 1000),y = 60,z = 100),
+zz = 70</p>
+</div></blockquote>
+<p>)</p>
+<p>gu.flatten_nested_dict(ex_dict,level_prefix = False)</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.general_utils.flip_key_orders_for_dict">
 <span class="sig-prename descclassname"><span class="pre">python_tools.general_utils.</span></span><span class="sig-name descname"><span class="pre">flip_key_orders_for_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/general_utils.html#flip_key_orders_for_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.general_utils.flip_key_orders_for_dict" title="Permalink to this definition"></a></dt>
 <dd><p>To flip the order of keys in dictionarys with multiple
@@ -1945,6 +2107,20 @@ merge_dicts([x,y,z])</p>
 <dt class="sig sig-object py" id="python_tools.general_utils.order_dict_by_keys">
 <span class="sig-prename descclassname"><span class="pre">python_tools.general_utils.</span></span><span class="sig-name descname"><span class="pre">order_dict_by_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/general_utils.html#order_dict_by_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.general_utils.order_dict_by_keys" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.general_utils.print_nested_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.general_utils.</span></span><span class="sig-name descname"><span class="pre">print_nested_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_incr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span>&#160; <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/general_utils.html#print_nested_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.general_utils.print_nested_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Things still need to do:
+1) Comment out all functions, list of functions, etc.
+2) Add np. in front of arrays</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.general_utils.remove_dict_suffixes">
+<span class="sig-prename descclassname"><span class="pre">python_tools.general_utils.</span></span><span class="sig-name descname"><span class="pre">remove_dict_suffixes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffixes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/general_utils.html#remove_dict_suffixes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.general_utils.remove_dict_suffixes" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To remove any suffixes from a diction</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.general_utils.str_filter_away_character">
@@ -2266,6 +2442,11 @@ could get a dictionary mapping faces to colors or groups
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.ipyvolume_utils.hide_legend_panel">
+<span class="sig-prename descclassname"><span class="pre">python_tools.ipyvolume_utils.</span></span><span class="sig-name descname"><span class="pre">hide_legend_panel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/ipyvolume_utils.html#hide_legend_panel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.ipyvolume_utils.hide_legend_panel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.ipyvolume_utils.lighting_parameters">
 <span class="sig-prename descclassname"><span class="pre">python_tools.ipyvolume_utils.</span></span><span class="sig-name descname"><span class="pre">lighting_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/ipyvolume_utils.html#lighting_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.ipyvolume_utils.lighting_parameters" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -2568,6 +2749,16 @@ distance (float) – radial distance from the center to the camera.</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.json_utils.dict_to_json">
+<span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">dict_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#dict_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.dict_to_json" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.json_utils.dict_to_json_file">
+<span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">dict_to_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./data.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#dict_to_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.dict_to_json_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.json_utils.dicts_list_from_json_file">
 <span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">dicts_list_from_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flatten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#dicts_list_from_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.dicts_list_from_json_file" title="Permalink to this definition"></a></dt>
 <dd><p>Convert a json file into a list of dictionaries</p>
@@ -2579,8 +2770,23 @@ distance (float) – radial distance from the center to the camera.</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.json_utils.is_jsonable">
+<span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">is_jsonable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#is_jsonable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.is_jsonable" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.json_utils.json_from_file">
 <span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">json_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple_objs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#json_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.json_from_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.json_utils.json_to_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">json_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#json_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.json_to_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.json_utils.json_to_flat_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.json_utils.</span></span><span class="sig-name descname"><span class="pre">json_to_flat_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/json_utils.html#json_to_flat_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.json_utils.json_to_flat_dict" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
@@ -3926,6 +4132,18 @@ function definition</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.load_modules_in_directory">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">load_modules_in_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#load_modules_in_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.load_modules_in_directory" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To load modules in a directory and
+return references to the modules (or names)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.module_utils.module_name_no_prefix">
+<span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">module_name_no_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#module_name_no_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.module_name_no_prefix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="python_tools.module_utils.modules_from_directory">
 <span class="sig-prename descclassname"><span class="pre">python_tools.module_utils.</span></span><span class="sig-name descname"><span class="pre">modules_from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('__init__',)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/module_utils.html#modules_from_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.module_utils.modules_from_directory" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: Get all modules from directory</p>
@@ -4075,8 +4293,8 @@ xu.get_edge_attributes(ordered_Graph)</p>
 <li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph. If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
-packages are installed the data can also be a 2D NumPy array, a
-SciPy sparse array, or a PyGraphviz graph.</p></li>
+packages are installed the data can also be a NumPy matrix
+or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
 <li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
 </dd>
@@ -4135,13 +4353,6 @@ keyword arguments.</p></li>
 will be updated when each duplicate edge is added.</p>
 <p>Edge attributes specified in an ebunch take precedence over
 attributes specified via keyword arguments.</p>
-<p>When adding edges from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> can be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
-object to <cite>G.add_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>  <span class="c1"># using a list of edge tuples</span>
@@ -4152,15 +4363,6 @@ object to <cite>G.add_edges_from</cite>.</p>
 <p>Associate data to edges</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;WN2898&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_edges_from(((5, n) for n in G.nodes))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4193,26 +4395,9 @@ where w is a number.</p></li>
 <p>Adding the same edge twice for Graph/DiGraph simply updates
 the edge data. For MultiGraph/MultiDiGraph, duplicate edges
 are stored.</p>
-<p>When adding edges from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> can be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
-object to <cite>G.add_weighted_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)])</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over edges before passing it</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_weighted_edges_from(((5, n, weight) for n in G.nodes))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4334,14 +4519,6 @@ ignored.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#python_tools.networkx_utils.GraphOrderedEdges.remove_node" title="python_tools.networkx_utils.GraphOrderedEdges.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p>
 </div>
-<p class="rubric">Notes</p>
-<p>When removing nodes from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> will be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_nodes)</cite>, and pass this
-object to <cite>G.remove_nodes_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
@@ -4350,14 +4527,6 @@ object to <cite>G.remove_nodes_from</cite>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="go">[]</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will fail, as the graph&#39;s dict is modified during iteration</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.remove_nodes_from(n for n in G.nodes if n &lt; 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will work, since the dictionary underlying graph is not modified</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4406,7 +4575,7 @@ needed for GNN training
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.adjacency_matrix">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_nodelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.adjacency_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_nodelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weight'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.adjacency_matrix" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -5160,6 +5329,11 @@ matrix to an edgelist</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.edges_and_weights_to_graph">
 <span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">edges_and_weights_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Graph'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#edges_and_weights_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.edges_and_weights_to_graph" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.networkx_utils.empty_graph_from_type">
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">empty_graph_from_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#empty_graph_from_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.empty_graph_from_type" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -5920,7 +6094,12 @@ verbose = True)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.node_query">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">node_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#python_tools.networkx_utils.node_query" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">node_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#python_tools.networkx_utils.node_query" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.networkx_utils.node_query_subgraph">
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">node_query_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#node_query_subgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.node_query_subgraph" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -5945,7 +6124,7 @@ verbose = True)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.nodes_from_node_query">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">nodes_from_node_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#nodes_from_node_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.nodes_from_node_query" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">nodes_from_node_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#nodes_from_node_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.nodes_from_node_query" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -6150,12 +6329,12 @@ are within a threshold distance of each other</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.random_edges_from_existing_edges">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_from_existing_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_from_existing_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_from_existing_edges" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_from_existing_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_from_existing_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_from_existing_edges" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.random_edges_from_existing_nodes">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_from_existing_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_self_loops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_if_not_enough_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_from_existing_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_from_existing_nodes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_from_existing_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_self_loops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_if_not_enough_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_from_existing_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_from_existing_nodes" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: To generate a random
 list of edges by sampling the
 nodes</p>
@@ -6163,7 +6342,7 @@ nodes</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.networkx_utils.random_edges_subgraph">
-<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_edge_generation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_degree_sequence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_degree_sequence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_subgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_subgraph" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">python_tools.networkx_utils.</span></span><span class="sig-name descname"><span class="pre">random_edges_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_edge_generation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_degree_sequence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_degree_sequence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DiGraph'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/networkx_utils.html#random_edges_subgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.networkx_utils.random_edges_subgraph" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -7738,6 +7917,25 @@ verbose = True,</p>
 <dt class="sig sig-object py" id="python_tools.numpy_utils.rotation_matrix">
 <span class="sig-prename descclassname"><span class="pre">python_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">rotation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/numpy_utils.html#rotation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.numpy_utils.rotation_matrix" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.numpy_utils.row_col_subarray">
+<span class="sig-prename descclassname"><span class="pre">python_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">row_col_subarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/numpy_utils.html#row_col_subarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.numpy_utils.row_col_subarray" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: Will select a 2D subarray
+after given the columns and rows to keep</p>
+<p>Example of similar operation
+import numpy as np
+test_arr = np.array([</p>
+<blockquote>
+<div><p>[1,2,3],
+[3,4,5],
+[6,7,8]</p>
+</div></blockquote>
+<p>])</p>
+<p>row_idx = [0,2]
+col_idx = [0,1]
+test_arr[row_idx,:][:,col_idx]</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.numpy_utils.rows_columns_delete">

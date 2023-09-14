@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -824,6 +824,7 @@
         <span class="n">ipv</span><span class="o">.</span><span class="n">pylab</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">ipv</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ipvu</span><span class="o">.</span><span class="n">hide_legend_panel</span><span class="p">()</span>
         
         
     <span class="k">if</span> <span class="n">lines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1206,6 +1207,7 @@
 
     <span class="k">if</span> <span class="n">new_figure</span><span class="p">:</span>
         <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ipvu</span><span class="o">.</span><span class="n">hide_legend_panel</span><span class="p">()</span>
     <span class="n">quiver</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
         <span class="o">*</span><span class="n">ipvu</span><span class="o">.</span><span class="n">xyz_from_array</span><span class="p">(</span><span class="n">centers</span><span class="p">,),</span>
         <span class="o">*</span><span class="n">ipvu</span><span class="o">.</span><span class="n">xyz_from_array</span><span class="p">(</span><span class="n">vectors</span><span class="p">,)</span>
@@ -1289,6 +1291,7 @@
 
     <span class="c1"># draw the scatter plot, and add controls with animate_glyphs</span>
     <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ipvu</span><span class="o">.</span><span class="n">hide_legend_panel</span><span class="p">()</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;sphere&quot;</span><span class="p">)</span>
     <span class="n">ipv</span><span class="o">.</span><span class="n">animation_control</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
     <span class="n">ipv</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
@@ -1625,6 +1628,8 @@
     
     <span class="k">if</span> <span class="ow">not</span> <span class="n">append_figure</span><span class="p">:</span>
         <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+
+    <span class="n">hide_legend_panel</span><span class="p">()</span>
     
     <span class="n">main_mesh_vertices</span> <span class="o">=</span> <span class="p">[]</span>
     
@@ -2010,9 +2015,15 @@
         <span class="p">)</span>
         
         
+    
+        
+        
     <span class="k">return</span> <span class="n">return_value</span></div>
     
     
+<div class="viewcode-block" id="hide_legend_panel"><a class="viewcode-back" href="../../python_tools.html#python_tools.ipyvolume_utils.hide_legend_panel">[docs]</a><span class="k">def</span> <span class="nf">hide_legend_panel</span><span class="p">():</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">gcc</span><span class="p">()</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></div>
     
     
 
