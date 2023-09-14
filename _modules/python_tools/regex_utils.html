@@ -197,6 +197,12 @@
 <span class="sd">(?: something) this is an uncaptured group, where group something together but not save for named</span>
 <span class="sd">():captured group</span>
 
+
+
+<span class="sd"># -------- Example: Lookbs for no alphanumeric char ---</span>
+<span class="sd">(?&lt;![a-zA-z_])volume_utils #look behind (letters that preceeded)</span>
+<span class="sd">volume_utils(?![a-zA-z_])# look ahead (letters that come after)</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">start_of_file_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\A&quot;</span>
 <span class="n">end_of_file_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\Z&quot;</span>
