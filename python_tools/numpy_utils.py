@@ -2387,6 +2387,27 @@ def keep_range_list(
         remove = False,
         verbose = verbose
     )
+    
+def row_col_subarray(arr,row_idx,col_idx):
+    """
+    Purpose: Will select a 2D subarray
+    after given the columns and rows to keep
+    
+    Example of similar operation
+    import numpy as np
+    test_arr = np.array([
+        [1,2,3],
+        [3,4,5],
+        [6,7,8]
+    ])
+
+    row_idx = [0,2]
+    col_idx = [0,1]
+    test_arr[row_idx,:][:,col_idx]
+    """
+    row_idx = to_list(row_idx)
+    col_idx = to_list(col_idx)
+    return arr[row_idx, :][:, col_idx]
 
 array_from_txt = loadtxt
 read_txt = loadtxt

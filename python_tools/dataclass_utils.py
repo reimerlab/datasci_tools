@@ -12,6 +12,8 @@ What is purpose of dataclass?
 already has a bunch of the basic functions created for you
 - __init__, __eq__, __repr__
 
+- advantage: Don't have to create own init function
+
 2) with other options for the decorator (like order = True)
 other functions would be implemented
 __lt__ (less than), __le__ (less or equal), __gt__ (greater than), and __ge__ (greater or equal)
@@ -138,3 +140,10 @@ def examples():
     print(Employee('Joe', 25, 1.85, 'joe@dataquest.io', 100000, 'Marketing'))
 
 
+@dataclass
+class DataclassSubscript():
+    def __getitem__(self, item):
+        return getattr(self, item)
+    
+    def __setitem__(self, attr, item):
+        return setattr(self, attr, item)

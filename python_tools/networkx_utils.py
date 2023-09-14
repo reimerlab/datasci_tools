@@ -2520,7 +2520,11 @@ def subgraph_from_node_query(G,
     remaining_nodes = reduced_df[upstream_name].to_list()
     return G.subgraph(remaining_nodes)
 
-def node_df_from_node_query(G,query,return_nodes = False):
+def node_df_from_node_query(
+    G,
+    query,
+    return_nodes = False,
+    ):
     if len(G.nodes()) == 0:
         return G
     node_df = xu.node_df(G)
@@ -2532,8 +2536,32 @@ def node_df_from_node_query(G,query,return_nodes = False):
     else:
         return reduced_df
     
-def nodes_from_node_query(G,query):
-    return xu.node_df_from_node_query(G,query,return_nodes = True)
+def node_query_subgraph(
+    G,
+    query,
+    verbose = False):
+    if verbose:
+        st = time.time()
+    
+    return_G =  G.subgraph(
+        nodes_from_node_query(
+            G,
+            query)
+        )
+    
+    if verbose:
+        print(f"Time for node query subgraph = {time.time() - st}")
+    
+    return return_G
+def nodes_from_node_query(
+    G,
+    query,
+    **kwargs):
+    return xu.node_df_from_node_query(
+        G,
+        query,
+        return_nodes = True
+        )
     
 node_query = nodes_from_node_query
 
@@ -3879,8 +3907,20 @@ def star_graph(
     return G
     
 #from . import numpy_dep as np
-def adjacency_matrix(G,dense = True,nodelist=None,return_nodelist = False,**kwargs):
-    adj_matrix = nx.adjacency_matrix(G,nodelist=nodelist,**kwargs)
+def adjacency_matrix(
+    G,
+    dense = True,
+    nodelist=None,
+    return_nodelist = False,
+    weight = "weight",
+    **kwargs):
+    
+    adj_matrix = nx.adjacency_matrix(
+        G,
+        nodelist=nodelist,
+        weight=weight,
+        **kwargs
+    )
     
     if dense:
         adj_matrix = adj_matrix.toarray()
@@ -5104,6 +5144,9 @@ def graph_type_from_G(G):
 def empty_graph_type_from_G(G):
     return getattr(nx,graph_type_from_G(G))()
 
+def empty_graph_from_type(graph_type):
+    return getattr(nx,graph_type)()
+
 
 def edge_subgraph(G,edges):
     return G.edge_subgraph(edges)
@@ -5113,7 +5156,7 @@ def nodes(G):
     return np.array(list(G.nodes()))
 
 def random_edges_from_existing_edges(
-    G,
+    G=None,
     edges = None,
     random_idx = None,
     n_samples = None,
@@ -5145,10 +5188,11 @@ def random_edges_from_existing_edges(
     return new_edges
 
 def random_edges_from_existing_nodes(
-    G,
+    G=None,
     n_samples=None,
     samples_perc = None,
     nodes = None,
+    edges = None,
     seed = None,
     buffer_multiplier = 4,
     no_self_loops = True,
@@ -5167,9 +5211,12 @@ def random_edges_from_existing_nodes(
     
     if nodes is None:
         nodes = xu.nodes(G)
+        
+    if edges is None:
+        edges = G.edges()
     
     if n_samples is None:
-        n_samples = np.ceil(len(G.edges())*samples_perc).astype('int')
+        n_samples = np.ceil(len(edges)*samples_perc).astype('int')
     curr_samples = n_samples*buffer_multiplier
 
     if seed is not None:
@@ -5260,7 +5307,9 @@ def directed_configuration_model(
     return G_new
 
 def random_edges_subgraph(
-    G,
+    G=None,
+    nodes = None,
+    edges = None,
     edges_func = None,
     random_idx = None,
     n_samples = None,
@@ -5270,10 +5319,10 @@ def random_edges_subgraph(
     verbose_edge_generation = False,
     in_degree_sequence = None,
     out_degree_sequence = None,
+    graph_type = "DiGraph",
     **kwargs
     ):
     st = time.time()
-    
     
     if edges_func == "degree_config_model":
         G_new = directed_configuration_model(
@@ -5281,7 +5330,7 @@ def random_edges_subgraph(
             in_degree_sequence = in_degree_sequence,
             out_degree_sequence = out_degree_sequence,
             self_loops = False,
-            create_using = "DiGraph",
+            create_using = graph_type,
             seed = seed,
         )
     else:
@@ -5295,6 +5344,8 @@ def random_edges_subgraph(
 
         new_edges = edges_func(
             G = G,
+            nodes = nodes,
+            edges = edges,
             random_idx = random_idx,
             n_samples = n_samples,
             samples_perc = samples_perc,
@@ -5302,13 +5353,17 @@ def random_edges_subgraph(
             verbose = verbose_edge_generation,
             **kwargs
         )
+        
+        G_new = empty_graph_from_type(graph_type)
+        G_new.add_edges_from(new_edges)
 
-        if edges_func == random_edges_from_existing_edges:
-            new_edges = set([tuple(k) for k in new_edges])
-            G_new = xu.edge_subgraph(G,new_edges)
-        else:
-            G_new = empty_graph_type_from_G(G)
-            G_new.add_edges_from(new_edges)
+        # if edges_func == random_edges_from_existing_edges:
+        #     new_edges = set([tuple(k) for k in new_edges])
+        #     G_new = xu.edge_subgraph(G,new_edges)
+        # else:
+        #     G_new = empty_graph_from_type(graph_type)
+        #     #G_new = empty_graph_type_from_G(G)
+        #     G_new.add_edges_from(new_edges)
             
     if verbose:
         print(f"Total time for random subgraph: {time.time() - st}")

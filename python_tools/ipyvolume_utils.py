@@ -753,6 +753,7 @@ def plot_obj(
         ipv.pylab.clear()
         ipv.clear()
         ipv.figure()
+        ipvu.hide_legend_panel()
         
         
     if lines is not None:
@@ -1135,6 +1136,7 @@ def plot_quiver(
 
     if new_figure:
         ipv.figure()
+        ipvu.hide_legend_panel()
     quiver = ipv.quiver(
         *ipvu.xyz_from_array(centers,),
         *ipvu.xyz_from_array(vectors,)
@@ -1218,6 +1220,7 @@ def rotation_movie_export():
 
     # draw the scatter plot, and add controls with animate_glyphs
     ipv.figure()
+    ipvu.hide_legend_panel()
     s = ipv.scatter(x, z, y, marker="sphere")
     ipv.animation_control(s, interval=200)
     ipv.ylim(-3,3)
@@ -1554,6 +1557,8 @@ def graph_skeleton_and_mesh(main_mesh_verts=[],
     
     if not append_figure:
         ipv.figure(figsize=(15,15))
+
+    hide_legend_panel()
     
     main_mesh_vertices = []
     
@@ -1939,9 +1944,15 @@ def plot_objects(main_mesh=None,
         )
         
         
+    
+        
+        
     return return_value
     
     
+def hide_legend_panel():
+    container = ipv.gcc()
+    container.panels = [1,2]
     
     
 

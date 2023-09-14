@@ -147,6 +147,8 @@ def merge_dicts(dicts):
     if len(dicts) == 0:
         return {}
     
+    dicts = nu.to_list(dicts)
+    
     if np.any([isinstance(k,dsu.DictType) for k in dicts]):
         dicts = [dsu.DictType(k) for k in dicts]
     
@@ -154,6 +156,116 @@ def merge_dicts(dicts):
     for d in dicts[1:]:
         super_dict.update(d)
     return super_dict
+
+def flatten_nested_dict(
+    data,
+    level_prefix = False,
+    prefix = None,
+    ):
+    """
+    Example: 
+    ex_dict = dict(
+        x = 10,
+        my_dict = dict(another_dict = dict(yyy = 1000),y = 60,z = 100),
+        zz = 70
+    )
+
+    gu.flatten_nested_dict(ex_dict,level_prefix = False)
+    """
+    if prefix is None:
+        prefix = ""
+    else:
+        prefix = f"{prefix}_"
+    new_dict = dict()
+    other_dicts = []
+    
+    for k,v in data.items():
+        if isinstance(v,dict):
+            if level_prefix:
+                send_prefix = f"{prefix}{k}"
+            else:
+                send_prefix = None
+            other_dicts.append(
+                flatten_nested_dict(
+                    v,
+                    level_prefix = level_prefix,
+                    prefix = send_prefix,
+                    ))
+        else:
+            new_dict[f"{prefix}{k}"] = v
+            
+    other_dicts.append(new_dict)
+    return merge_dicts(other_dicts)
+
+def print_nested_dict(
+    d,
+    indent=1,
+    indent_incr=1,
+    indent_str ="  ",
+    total_str = "",
+    filepath = None,
+    overwrite = True
+    ):
+    """
+    Things still need to do: 
+    1) Comment out all functions, list of functions, etc.
+    2) Add np. in front of arrays
+    """
+    def file_export(filepath):
+        nonlocal overwrite
+        if filepath is None:
+            return None
+        else:
+            if overwrite:
+                mode = "w"
+                overwrite = False
+            else:
+                mode = "a"
+            return open(filepath,mode)
+        
+        
+    print(f'{indent_str}' * (indent - 1) + "{",file=file_export(filepath))
+    for key, value in d.items():
+        if isinstance(value,dsu.DictType):
+            value = value.asdict()
+        if isinstance(value, dict):
+            print(f'{indent_str}' * indent + f"{repr(key)}:",
+                  file=file_export(filepath))
+            print_nested_dict(
+                value, 
+                indent+indent_incr,
+                indent_incr=indent_incr,
+                indent_str=indent_str,
+                filepath = filepath,
+                overwrite=overwrite
+            )
+        else:
+            print(f'{indent_str}' * (indent) + f"{repr(key)}:{repr(value)},",
+                  file=file_export(filepath))
+    end_str = f'{indent_str}' * (indent - 1) + "}"
+    if indent-1 == 0:
+        print(end_str,file=file_export(filepath))
+    else:
+        print(end_str + ",",file=file_export(filepath))
+    
+
+def remove_dict_suffixes(
+    data,
+    suffixes,
+    ):
+    """
+    Purpose: To remove any suffixes from a diction
+    """
+    suffixes = nu.to_list(suffixes)
+    new_data = dict()
+    for k,v in data.items():
+        new_name = k
+        for suf in suffixes:
+            if k[-len(suf):] == suf:
+                new_name = k[:-len(suf)]
+                break
+        new_data[new_name] = v
+    return new_data
 
 #import itertools
 def merge_dicts_simple(dicts):

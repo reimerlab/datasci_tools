@@ -10,9 +10,11 @@ Purpose: to help parse json files
 '''
 import json
 import pandas as pd
+from pathlib import Path
 #from python_tools import pandas_utils as pu
 #import pandas as pd
 #import json
+indent_default = 4
 
 def df_from_json_file(filepath):
     return pu.json_to_df(filepath)
@@ -46,9 +48,51 @@ def json_from_file(filepath,multiple_objs = True):
     
 #from python_tools import json_utils as ju
 
+def json_to_dict(filepath):
+
+    with open(filepath) as json_file:
+        data = json.load(json_file)
+
+    return data
+
+def dict_to_json(
+    data,
+    indent = None):
+    
+    if indent is None:
+        indent = indent_default 
+    # Serializing json  
+    return json.dumps(data, indent = indent) 
 
 
+def dict_to_json_file(
+    data,
+    filepath="./data.json",
+    indent = None):
+    
+    filepath = str(Path(filepath).absolute())
+    
+    if indent is None:
+        indent = indent_default 
+    
+    if filepath[-5:] != ".json":
+        filepath += ".json"
+    
+    with open(filepath, "w") as outfile:
+        json.dump(data, outfile,indent=indent)
+
+def is_jsonable(x):
+    try:
+        json.dumps(x)
+        return True
+    except (TypeError, OverflowError):
+        return False
+    
+def json_to_flat_dict(filepath,**kwargs):
+    curr_json = jsu.json_to_dict(filepath,**kwargs)
+    return gu.flatten_nested_dict(curr_json)
 #--- from python_tools ---
 from . import pandas_utils as pu
+from . import general_utils as gu
 
 from . import json_utils as ju

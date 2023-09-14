@@ -19,11 +19,12 @@ scipy>=1.5.4
 seaborn>=0.11.2
 setuptools>=39.0.1
 Shapely>=1.7.0
-six>=1.11.0
+six>=1.11.0 
 tqdm>=4.62.2
 trimesh>=3.9.0
 webcolors>=1.11.1
+#datajoint @ git+https://git@github.com/spapa013/datajoint-python.git
+datajoint
 grandiso @ git+https://git@github.com/aplbrain/grandiso-networkx.git
 dotmotif @ git+https://git@github.com/bacelii/dotmotif.git
-datajoint @ git+https://git@github.com/spapa013/datajoint-python.git
 ipython_genutils

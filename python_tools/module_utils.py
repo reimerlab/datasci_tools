@@ -1463,6 +1463,63 @@ def abbreviation_linked_imports(
 
     return abbr_matches
 
+
+
+def load_modules_in_directory(
+    directory,
+    verbose_loop = False,
+    package_name = None,
+    return_objects = False,
+    return_names = False,
+    ):
+    """
+    Purpose: To load modules in a directory and
+    return references to the modules (or names)
+    """
+    directory = Path(directory)
+
+    if package_name is None:
+        package_name = directory.stem
+
+    p = directory
+
+    ref_dict = dict()
+    mods = pku.module_files_from_directory(p)
+    for i in range(0,2):
+        for mod in mods:
+            k = mod.stem
+            if verbose_loop:
+                print(f"--Working on module {k}--")
+
+            imp_str = f"import {k}"
+            pkg_str = f"from {package_name} {imp_str}"
+
+            try:
+                exec(pkg_str)
+            except:
+                try:
+                    exec(imp_str)
+                except:
+                    if verbose_loop:
+                        print(f"--Not able to import {k}--")
+                    continue
+
+            if verbose_loop:
+                print(f"Accomplished import")
+
+            if k not in ref_dict:
+                ref_dict[k] = eval(k)
+
+    if return_objects:
+        return list(ref_dict.values())
+    elif return_names:
+        return list(ref_dict.keys())
+    else:
+        return ref_dict
+    
+def module_name_no_prefix(module):
+    return module.__name__.split(".")[-1]
+
 #--- from python_tools ---
 from . import data_struct_utils as dsu
 from . import file_utils as filu
