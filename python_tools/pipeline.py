@@ -22,7 +22,15 @@ class StageProducts:
                        }
         return export_dict
     
-    def update(self,**kwargs):
+    def update(self,*args,**kwargs):
+        if len(args) > 0:
+            if isinstance(args[0],self.__class__):
+                kwargs.update(args[0].export())
+            elif type(args[0]):
+                kwargs.update(args[0])
+            else:
+                pass
+            
         for k,v in kwargs.items():
             setattr(self,k,v)
             
@@ -37,6 +45,12 @@ class StageProducts:
         for k,v in self.export().items():
             ret_str+=(f"    {k}:{v}\n")
         return ret_str
+    
+    def __contains__(self,key):
+        return key in self.export()
+    
+    def get(self,k,*args):
+        return self.export().get(k,*args)
   
             
 default_stage = "NoStage"
@@ -91,9 +105,9 @@ class PipelineProducts:
     
     def set_stage_attrs(
         self,
-        stage,
         attr_dict,
-        clean_write = True,
+        stage,
+        clean_write = False,
         **kwargs
         ):
         
@@ -102,7 +116,7 @@ class PipelineProducts:
         if clean_write or stage not in self.products:
             self.products[stage] = StageProducts(attr_dict)
         else:
-            self.products[stage].update(**attr_dict)
+            self.products[stage].update(attr_dict)
             
     def set_attr(
         self,
@@ -125,8 +139,8 @@ class PipelineProducts:
                 stage = default_stage
                 
             self.set_stage_attrs(
-                stage,
                 {k:v},
+                stage = stage,
                 clean_write = False,
                 **kwargs
             )
@@ -226,11 +240,43 @@ class PipelineProducts:
             return attrs_values
     
     def __getattr__(self, name):
-        if name in self.products:
+        #print(f"self = {self.__repr__}")
+        #print(f"name = {name}")
+        if name[:2] == "__":
+            raise AttributeError(name)
+        
+        if name in list(self.products.keys()):
             return self.products[name]
         else:
-            return self.get_attr(name,error_on_not_found=True)
+            return self.get_attr(
+                name,error_on_not_found=True
+            )
             #return self.__getattribute__(name)
+            
+    def get(self,key,*args):
+        """
+        To mirror the get function in dictionaries
+        but that goes a little recursive
+        """
+        if key in self.products:
+            #print(f"Top level")
+            return self.products.get(key)
+        else:
+            for sk,sv in self.products.items():
+                if key in sv:
+                    #print(f"Low level")
+                    return sv[key]
+                else:
+                    continue
+        if len(args) > 0:
+            return args[0]
+            #print(f"Default level")
+        else:
+            raise Exception(f"Could not find value {key}")
+        
+    def delete_stage(self,stage):
+        del self.products[stage]
+            
     
 
 from . import function_utils as funcu
