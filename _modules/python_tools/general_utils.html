@@ -320,6 +320,69 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">end_str</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">file_export</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span></div>
     
 
+<span class="kn">import</span> <span class="nn">trimesh</span>
+<div class="viewcode-block" id="nested_dict_obj_search"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.nested_dict_obj_search">[docs]</a><span class="k">def</span> <span class="nf">nested_dict_obj_search</span><span class="p">(</span>
+    <span class="n">data_struct</span><span class="p">,</span>
+    <span class="n">class_to_find</span><span class="p">,</span>
+    <span class="n">objs_list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To search a nested dictionary</span>
+<span class="sd">    for certain object type, collect it,</span>
+<span class="sd">    and then return a complete collections</span>
+<span class="sd">    of those objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">if</span> <span class="n">objs_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">objs_list</span><span class="o">=</span> <span class="p">[]</span>
+        
+        
+    <span class="n">return_value</span><span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Working on </span><span class="si">{</span><span class="n">data_struct</span><span class="si">}</span><span class="s2"> (id = </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">data_struct</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_struct</span><span class="p">,</span><span class="n">class_to_find</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found instance of class: &quot;</span><span class="p">)</span>
+        <span class="n">objs_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_struct</span><span class="p">)</span>
+        <span class="n">return_value</span><span class="o">=</span> <span class="n">objs_list</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#if (&quot;dict&quot; in str(data_struct.__class__).lower() or</span>
+        <span class="c1">#  &quot;list&quot; in str(data_struct.__class__).lower() ):</span>
+        <span class="k">if</span> <span class="s2">&quot;__iter__&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">data_struct</span><span class="p">)</span> \
+            <span class="ow">and</span> <span class="s2">&quot;str&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data_struct</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is iterable&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data_struct</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;keys&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">data_struct</span><span class="p">):</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">data_struct</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">k</span>
+                    
+                <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Going to search value </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    
+                <span class="n">return_value</span> <span class="o">=</span> <span class="n">nested_dict_obj_search</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">class_to_find</span> <span class="o">=</span> <span class="n">class_to_find</span><span class="p">,</span>
+                    <span class="n">objs_list</span> <span class="o">=</span> <span class="n">objs_list</span><span class="p">,</span>
+                    <span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not iterable so returning&quot;</span><span class="p">)</span>
+            <span class="n">return_value</span> <span class="o">=</span> <span class="n">objs_list</span>
+            
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-- current objs_list --&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">objs_list</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> (id = </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">return_value</span></div>
+
 <div class="viewcode-block" id="remove_dict_suffixes"><a class="viewcode-back" href="../../python_tools.html#python_tools.general_utils.remove_dict_suffixes">[docs]</a><span class="k">def</span> <span class="nf">remove_dict_suffixes</span><span class="p">(</span>
     <span class="n">data</span><span class="p">,</span>
     <span class="n">suffixes</span><span class="p">,</span>

@@ -278,6 +278,11 @@
     <span class="n">file_size</span> <span class="o">=</span> <span class="n">get_file_size</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File size is </span><span class="si">{</span><span class="n">file_size</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
     
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">meshu</span><span class="o">.</span><span class="n">clear_all_mesh_cache_in_nested_data_struct</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    
     <span class="k">if</span> <span class="n">return_size</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">file_size</span></div>
     
@@ -541,6 +546,7 @@
 <span class="c1">#--- from python_tools ---</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tqdm_utils</span> <span class="k">as</span> <span class="n">tqu</span>
 <span class="kn">from</span> <span class="nn">.tqdm_utils</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">mesh_utils</span> <span class="k">as</span> <span class="n">meshu</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">system_utils</span> <span class="k">as</span> <span class="n">su</span>
 </pre></div>
