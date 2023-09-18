@@ -494,6 +494,61 @@ def segment_mesh(
         
     return idx
 
+
+def clear_mesh_cache(mesh):
+    mesh._cache.clear()
+    
+def clear_ray_cache(mesh,verbose = False):
+    """
+    Purpose: to clear the cache for the 
+    RayMeshIntersector object attribute for the mesh
+    that is preventing trimesh objects from being pickled
+    
+    documentation: https://github.com/mikedh/trimesh/blob/main/trimesh/ray/ray_pyembree.py
+    
+    """
+    if hasattr(mesh,"ray"):
+        mesh.ray._cache.clear()
+    else:
+        if verbose:
+            print(f"No ray attribute")
+    
+    
+def all_mesh_in_nested_data_struct(
+    data_struct,
+    debug = False,
+    mesh_class = trimesh.Trimesh,
+    ):
+    return gu.nested_dict_obj_search(
+        data_struct,
+        class_to_find = mesh_class,
+        debug = debug,
+    )
+def clear_all_mesh_cache_in_nested_data_struct(
+    data_struct,
+    verbose = False,
+    mesh_class = trimesh.Trimesh,
+    debug = False,
+    clear_cache_funcs = None,
+    ):
+    
+    if clear_cache_funcs:
+        clear_cache_funcs = [clear_ray_cache]
+        
+    clear_cache_funcs = nu.to_list(clear_cache_funcs)
+    
+    return_objs = gu.nested_dict_obj_search(
+        data_struct,
+        class_to_find = mesh_class,
+        debug = debug,
+    )
+    
+    for k in return_objs:
+        if verbose:
+            print(f"Cleared mesh: {k}:{id(k)}")
+        for func in clear_cache_funcs:
+            func(k)
+
 #from python_tools import mesh_utils as meshu
 
 
@@ -501,5 +556,6 @@ def segment_mesh(
 #--- from python_tools ---
 from . import ipyvolume_utils as ipvu
 from . import numpy_utils as nu
+from . import general_utils as gu
 
 from . import mesh_utils as meshu

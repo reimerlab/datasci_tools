@@ -7,7 +7,11 @@ Purpose: Datajoint utils to help with table manipulation
 
 
 '''
-import datajoint as dj
+try:
+    import datajoint as dj
+except ImportError as e:
+    raise e("Datajoint must be installed ...")
+    
 from . import numpy_dep as np
 import pandas as pd
 import time

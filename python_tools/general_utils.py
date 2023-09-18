@@ -249,6 +249,69 @@ def print_nested_dict(
         print(end_str + ",",file=file_export(filepath))
     
 
+import trimesh
+def nested_dict_obj_search(
+    data_struct,
+    class_to_find,
+    objs_list = None,
+    debug = False,
+    ):
+    """
+    Purpose: To search a nested dictionary
+    for certain object type, collect it,
+    and then return a complete collections
+    of those objects
+    """
+    
+    
+    if objs_list is None:
+        objs_list= []
+        
+        
+    return_value= None
+    if debug:
+        print(f"Working on {data_struct} (id = {id(data_struct)})")
+        
+    if isinstance(data_struct,class_to_find):
+        if debug:
+            print(f"Found instance of class: ")
+        objs_list.append(data_struct)
+        return_value= objs_list 
+    else:
+        #if ("dict" in str(data_struct.__class__).lower() or
+        #  "list" in str(data_struct.__class__).lower() ):
+        if "__iter__" in dir(data_struct) \
+            and "str" not in str(type(data_struct)):
+            if debug:
+                print(f"is iterable")
+            for k in data_struct:
+                if "keys" in dir(data_struct):
+                    value = data_struct[k]
+                else:
+                    value = k
+                    
+                if debug:
+                    print(f"Going to search value {k} with value {value}")
+                    
+                return_value = nested_dict_obj_search(
+                    value,
+                    class_to_find = class_to_find,
+                    objs_list = objs_list,
+                    debug = debug
+                )
+        else:
+            if debug:
+                print("not iterable so returning")
+            return_value = objs_list
+            
+    if debug:
+        print(f"-- current objs_list --")
+        for k in objs_list:
+            print(f"{k} (id = {id(k)})")
+        print(f"\n")
+            
+    return return_value
+
 def remove_dict_suffixes(
     data,
     suffixes,

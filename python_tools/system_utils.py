@@ -207,6 +207,11 @@ def save_object(obj, filename,return_size=False):
     file_size = get_file_size(filename)/1000000
     print(f"File size is {file_size} MB")
     
+    try:
+        meshu.clear_all_mesh_cache_in_nested_data_struct(obj)
+    except Exception as e:
+        print(e)
+    
     if return_size:
         return file_size
     
@@ -470,5 +475,6 @@ def rm_dir(directory,ignore_errors = False):
 #--- from python_tools ---
 from . import tqdm_utils as tqu
 from .tqdm_utils import tqdm
+from . import mesh_utils as meshu
 
 from . import system_utils as su

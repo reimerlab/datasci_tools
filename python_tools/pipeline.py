@@ -49,8 +49,16 @@ class StageProducts:
     def __contains__(self,key):
         return key in self.export()
     
+    def __iter__(self,*args,**kwargs):
+        return self.export().__iter__(*args,**kwargs)
+    
     def get(self,k,*args):
         return self.export().get(k,*args)
+    
+    def values(self):
+        return self.export().values()
+    def keys(self):
+        return self.export().keys()
   
             
 default_stage = "NoStage"
@@ -88,6 +96,7 @@ class PipelineProducts:
     
     def __setitem__(self,k,v):
         self.products[k] = v
+        
                 
     def export(self):
         return {k:v.export() for k,v in self.products.items()}
@@ -248,10 +257,12 @@ class PipelineProducts:
         if name in list(self.products.keys()):
             return self.products[name]
         else:
-            return self.get_attr(
-                name,error_on_not_found=True
-            )
-            #return self.__getattribute__(name)
+            try:
+                return self.get_attr(
+                    name,error_on_not_found=True
+                )
+            except:
+                return self.__getattribute__(name)
             
     def get(self,key,*args):
         """
@@ -275,7 +286,13 @@ class PipelineProducts:
             raise Exception(f"Could not find value {key}")
         
     def delete_stage(self,stage):
-        del self.products[stage]
+        try:
+            del self.products[stage]
+        except:
+            pass
+        
+    def __iter__(self,*args,**kwargs):
+        return self.products.__iter__(*args,**kwargs)
             
     
 

@@ -455,7 +455,7 @@ def set_node_attributes_dict(G,attrs):
 
 def relabel_node_names(G,mapping,copy=False):
     G = nx.relabel_nodes(G, mapping, copy=copy)
-    print("Finished relabeling nodes")
+    #print("Finished relabeling nodes")
     return G
     
 rename_nodes = relabel_node_names
