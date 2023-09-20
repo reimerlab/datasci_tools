@@ -524,6 +524,7 @@ def all_mesh_in_nested_data_struct(
         class_to_find = mesh_class,
         debug = debug,
     )
+    
 def clear_all_mesh_cache_in_nested_data_struct(
     data_struct,
     verbose = False,
@@ -532,7 +533,7 @@ def clear_all_mesh_cache_in_nested_data_struct(
     clear_cache_funcs = None,
     ):
     
-    if clear_cache_funcs:
+    if clear_cache_funcs is None:  
         clear_cache_funcs = [clear_ray_cache]
         
     clear_cache_funcs = nu.to_list(clear_cache_funcs)
@@ -543,6 +544,7 @@ def clear_all_mesh_cache_in_nested_data_struct(
         debug = debug,
     )
     
+    verbose = True
     for k in return_objs:
         if verbose:
             print(f"Cleared mesh: {k}:{id(k)}")

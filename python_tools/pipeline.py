@@ -178,8 +178,9 @@ class PipelineProducts:
 
         """
         if stages is None:
-            stages = self.stages
+            stages = [k for k in self.stages[::-1]]
             
+        
         for st in stages:
             v = self.products[st]
             if hasattr(v,attr):
