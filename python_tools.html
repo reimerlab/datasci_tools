@@ -69,7 +69,20 @@
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.dict_utils.abbreviate_str_keys"><code class="docutils literal notranslate"><span class="pre">abbreviate_str_keys()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-tools-dj-utils-module">python_tools.dj_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-python_tools.dj_utils">python_tools.dj_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.all_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">all_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.append_table_to_pairwise_table"><code class="docutils literal notranslate"><span class="pre">append_table_to_pairwise_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table"><code class="docutils literal notranslate"><span class="pre">df_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.df_from_table_old"><code class="docutils literal notranslate"><span class="pre">df_from_table_old()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.dj_query_from_pandas_query"><code class="docutils literal notranslate"><span class="pre">dj_query_from_pandas_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype"><code class="docutils literal notranslate"><span class="pre">parameter_datatype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.parameter_datatype_description"><code class="docutils literal notranslate"><span class="pre">parameter_datatype_description()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.primary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">primary_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.query_table_from_kwargs"><code class="docutils literal notranslate"><span class="pre">query_table_from_kwargs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.secondary_attribute_names_from_table"><code class="docutils literal notranslate"><span class="pre">secondary_attribute_names_from_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.dj_utils.table_definition_from_example_dict"><code class="docutils literal notranslate"><span class="pre">table_definition_from_example_dict()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.enum_utils">python_tools.enum_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.enum_utils.example"><code class="docutils literal notranslate"><span class="pre">example()</span></code></a></li>
 </ul>
@@ -1537,8 +1550,114 @@ max_phrase_len = 15</p>
 </dd></dl>
 
 </section>
-<section id="python-tools-dj-utils-module">
-<h2>python_tools.dj_utils module<a class="headerlink" href="#python-tools-dj-utils-module" title="Permalink to this heading"></a></h2>
+<section id="module-python_tools.dj_utils">
+<span id="python-tools-dj-utils-module"></span><h2>python_tools.dj_utils module<a class="headerlink" href="#module-python_tools.dj_utils" title="Permalink to this heading"></a></h2>
+<p>Purpose: Datajoint utils to help with table manipulation</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.all_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">all_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#all_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.all_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.append_table_to_pairwise_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">append_table_to_pairwise_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_to_append</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes_to_not_rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'prefix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#append_table_to_pairwise_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.append_table_to_pairwise_table" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To add on a table to both
+sides of another</p>
+<p>Pseudocode:
+1) Determine the primary attributes to join on
+(if not already)
+2) Determine the secondary attributes you want to
+join
+3) Build a renaming dictionary
+4) Project the tale to only those attributes chosen
+5) star restrict the table with the renamed tables</p>
+<p>— Example: —-
+dju.append_table_to_pairwise_table(</p>
+<blockquote>
+<div><p>table = m65auto.AutoProofreadNeuronLeafMatch(),
+table_to_append = hdju.subgraph_vectors_table,
+primary_attributes = [</p>
+<blockquote>
+<div><p>“segment_id”,
+“split_index”,
+“subgraph_idx”,
+#”leaf_node”,</p>
+</div></blockquote>
+<p>],
+secondary_attributes = [</p>
+<blockquote>
+<div><p>‘compartment’,
+‘node’,
+‘y_soma_relative’,
+‘width’,</p>
+</div></blockquote>
+<p>],
+source_name = “”,
+target_name = “match”,
+append_type = “prefix”,
+verbose = True,</p>
+</div></blockquote>
+<p>)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_substr_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.df_from_table_old">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">df_from_table_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_method_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#df_from_table_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.df_from_table_old" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.dj_query_from_pandas_query">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">dj_query_from_pandas_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#dj_query_from_pandas_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.dj_query_from_pandas_query" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longblob'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.parameter_datatype_description">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">parameter_datatype_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_null</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#parameter_datatype_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.parameter_datatype_description" title="Permalink to this definition"></a></dt>
+<dd><p>To generate the the datatype part of a parameter
+table definition</p>
+<p>— Exmaple–
+new_str = parameter_datatype_description(kwargs_dict,</p>
+<blockquote>
+<div><blockquote>
+<div><p>kwargs_datatype_dict = dict(filter_by_volume_threshold=”new datatype”)</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p>print(new_str)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.primary_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">primary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#primary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.primary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.query_table_from_kwargs">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">query_table_from_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#query_table_from_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.query_table_from_kwargs" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To query a datajoint table
+with keywords that may be None</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.secondary_attribute_names_from_table">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">secondary_attribute_names_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#secondary_attribute_names_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.secondary_attribute_names_from_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.dj_utils.table_definition_from_example_dict">
+<span class="sig-prename descclassname"><span class="pre">python_tools.dj_utils.</span></span><span class="sig-name descname"><span class="pre">table_definition_from_example_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwargs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs_datatype_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition_description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_name_description_to_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/dj_utils.html#table_definition_from_example_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.dj_utils.table_definition_from_example_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-python_tools.enum_utils">
 <span id="python-tools-enum-utils-module"></span><h2>python_tools.enum_utils module<a class="headerlink" href="#module-python_tools.enum_utils" title="Permalink to this heading"></a></h2>
@@ -4212,8 +4331,8 @@ xu.get_edge_attributes(ordered_Graph)</p>
 <li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph. If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
-packages are installed the data can also be a 2D NumPy array, a
-SciPy sparse array, or a PyGraphviz graph.</p></li>
+packages are installed the data can also be a NumPy matrix
+or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
 <li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
 </dd>
@@ -4272,13 +4391,6 @@ keyword arguments.</p></li>
 will be updated when each duplicate edge is added.</p>
 <p>Edge attributes specified in an ebunch take precedence over
 attributes specified via keyword arguments.</p>
-<p>When adding edges from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> can be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
-object to <cite>G.add_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>  <span class="c1"># using a list of edge tuples</span>
@@ -4289,15 +4401,6 @@ object to <cite>G.add_edges_from</cite>.</p>
 <p>Associate data to edges</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;WN2898&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_edges_from(((5, n) for n in G.nodes))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4330,26 +4433,9 @@ where w is a number.</p></li>
 <p>Adding the same edge twice for Graph/DiGraph simply updates
 the edge data. For MultiGraph/MultiDiGraph, duplicate edges
 are stored.</p>
-<p>When adding edges from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> can be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_edges)</cite>, and pass this
-object to <cite>G.add_weighted_edges_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)])</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over edges before passing it</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grow graph by one new node, adding edges to all existing nodes.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wrong way - will raise RuntimeError</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.add_weighted_edges_from(((5, n, weight) for n in G.nodes))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># correct way - note that there will be no self-edge for node 5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="nb">list</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4471,14 +4557,6 @@ ignored.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#python_tools.networkx_utils.GraphOrderedEdges.remove_node" title="python_tools.networkx_utils.GraphOrderedEdges.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p>
 </div>
-<p class="rubric">Notes</p>
-<p>When removing nodes from an iterator over the graph you are changing,
-a <cite>RuntimeError</cite> will be raised with message:
-<cite>RuntimeError: dictionary changed size during iteration</cite>. This
-happens when the graph’s underlying dictionary is modified during
-iteration. To avoid this error, evaluate the iterator into a separate
-object, e.g. by using <cite>list(iterator_of_nodes)</cite>, and pass this
-object to <cite>G.remove_nodes_from</cite>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
@@ -4487,14 +4565,6 @@ object to <cite>G.remove_nodes_from</cite>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="go">[]</span>
-</pre></div>
-</div>
-<p>Evaluate an iterator over a graph if using it to modify the same graph</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will fail, as the graph&#39;s dict is modified during iteration</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># G.remove_nodes_from(n for n in G.nodes if n &lt; 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># this command will work, since the dictionary underlying graph is not modified</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
