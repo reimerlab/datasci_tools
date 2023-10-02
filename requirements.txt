@@ -23,7 +23,7 @@ six>=1.11.0
 tqdm>=4.62.2
 trimesh>=3.9.0
 webcolors>=1.11.1
-datajoint
-grandiso @ git+https://git@github.com/aplbrain/grandiso-networkx.git
-dotmotif @ git+https://git@github.com/bacelii/dotmotif.git
+#datajoint
+#grandiso @ git+https://git@github.com/aplbrain/grandiso-networkx.git
+#dotmotif @ git+https://git@github.com/bacelii/dotmotif.git
 ipython_genutils
