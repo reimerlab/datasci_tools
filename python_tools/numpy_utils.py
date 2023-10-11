@@ -2409,6 +2409,29 @@ def row_col_subarray(arr,row_idx,col_idx):
     col_idx = to_list(col_idx)
     return arr[row_idx, :][:, col_idx]
 
+
+def align_array(
+    array,
+    align_matrix = None,
+    ):
+    #print(f"verbose align_array_from_soma_coordinate = {verbose}")
+    """
+    Purpose: Will align a coordinate or skeleton
+    (or any array) with the rotation matrix
+    determined from the soam center
+    """
+    if len(array) <= 0:
+        return array
+    
+    if align_matrix is None:
+        return array
+    
+    curr_shape = array.shape
+    new_coords = array.reshape(-1,3) @ align_matrix
+    new_array = new_coords.reshape(*curr_shape)
+    
+    return new_array
+
 array_from_txt = loadtxt
 read_txt = loadtxt
 

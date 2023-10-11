@@ -18,6 +18,8 @@ find /neuron_mesh_tools/ -type f -newer /tmp/start -not -newer /tmp/end
 # to find a certain word 
 grep -r delaunay *
 
+# to look for a specific string inside a file in a filepath
+grep -Rnw '/neurd_packages/neuron_mesh_tools/' -e 'mc_with_team'
 
 # installing the python packages from github
 pip3 install git+https://github.com/aplbrain/dotmotif

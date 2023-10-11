@@ -552,7 +552,16 @@ def clear_all_mesh_cache_in_nested_data_struct(
             func(k)
 
 #from python_tools import mesh_utils as meshu
-
+def align_mesh(mesh,align_matrix=None,in_place = False):
+    if len(mesh.vertices ) <= 0:
+        return mesh
+    
+    if align_matrix is None:
+        return mesh
+    if not in_place:
+        mesh = mesh.copy()
+    mesh.vertices = mesh.vertices @ align_matrix
+    return mesh
 
 
 #--- from python_tools ---
