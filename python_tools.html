@@ -394,6 +394,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.mesh_utils">python_tools.mesh_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.mesh_utils.align_mesh"><code class="docutils literal notranslate"><span class="pre">align_mesh()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.mesh_utils.all_mesh_in_nested_data_struct"><code class="docutils literal notranslate"><span class="pre">all_mesh_in_nested_data_struct()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.mesh_utils.angular_distance"><code class="docutils literal notranslate"><span class="pre">angular_distance()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.mesh_utils.bounding_box"><code class="docutils literal notranslate"><span class="pre">bounding_box()</span></code></a></li>
@@ -733,6 +734,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-python_tools.numpy_utils">python_tools.numpy_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.adjacency_matrix_from_edge_list"><code class="docutils literal notranslate"><span class="pre">adjacency_matrix_from_edge_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.align_array"><code class="docutils literal notranslate"><span class="pre">align_array()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.aligning_matrix_3D"><code class="docutils literal notranslate"><span class="pre">aligning_matrix_3D()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.all_combinations_of_lists"><code class="docutils literal notranslate"><span class="pre">all_combinations_of_lists()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python_tools.numpy_utils.all_directed_choose_2_combinations"><code class="docutils literal notranslate"><span class="pre">all_directed_choose_2_combinations()</span></code></a></li>
@@ -3675,6 +3677,11 @@ an ax object</p>
 </section>
 <section id="module-python_tools.mesh_utils">
 <span id="python-tools-mesh-utils-module"></span><h2>python_tools.mesh_utils module<a class="headerlink" href="#module-python_tools.mesh_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.mesh_utils.align_mesh">
+<span class="sig-prename descclassname"><span class="pre">python_tools.mesh_utils.</span></span><span class="sig-name descname"><span class="pre">align_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/mesh_utils.html#align_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.mesh_utils.align_mesh" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="python_tools.mesh_utils.all_mesh_in_nested_data_struct">
 <span class="sig-prename descclassname"><span class="pre">python_tools.mesh_utils.</span></span><span class="sig-name descname"><span class="pre">all_mesh_in_nested_data_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_struct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_class=&lt;class</span> <span class="pre">'trimesh.base.Trimesh'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/mesh_utils.html#all_mesh_in_nested_data_struct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.mesh_utils.all_mesh_in_nested_data_struct" title="Permalink to this definition"></a></dt>
@@ -6703,6 +6710,14 @@ adjusted adjacency matrix, node features</p>
 <dt class="sig sig-object py" id="python_tools.numpy_utils.adjacency_matrix_from_edge_list">
 <span class="sig-prename descclassname"><span class="pre">python_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">adjacency_matrix_from_edge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/numpy_utils.html#adjacency_matrix_from_edge_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.numpy_utils.adjacency_matrix_from_edge_list" title="Permalink to this definition"></a></dt>
 <dd><p>THIS IS ASSUMING THAT ALL NODES IN THE GRAPH HAVE AT LEAST ONE EDGE</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_tools.numpy_utils.align_array">
+<span class="sig-prename descclassname"><span class="pre">python_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">align_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/python_tools/numpy_utils.html#align_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#python_tools.numpy_utils.align_array" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: Will align a coordinate or skeleton
+(or any array) with the rotation matrix
+determined from the soam center</p>
 </dd></dl>
 
 <dl class="py function">

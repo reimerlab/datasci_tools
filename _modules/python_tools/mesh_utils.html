@@ -623,7 +623,16 @@
             <span class="n">func</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
 <span class="c1">#from python_tools import mesh_utils as meshu</span>
-
+<div class="viewcode-block" id="align_mesh"><a class="viewcode-back" href="../../python_tools.html#python_tools.mesh_utils.align_mesh">[docs]</a><span class="k">def</span> <span class="nf">align_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="n">align_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">in_place</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+    
+    <span class="k">if</span> <span class="n">align_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">@</span> <span class="n">align_matrix</span>
+    <span class="k">return</span> <span class="n">mesh</span></div>
 
 
 <span class="c1">#--- from python_tools ---</span>
