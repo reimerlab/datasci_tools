@@ -78,8 +78,10 @@
 
 
 
-
+<span class="sd">Installation: apt-get install pipreqs</span>
 <span class="sd">&#39;&#39;&#39;</span>
+
+
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
@@ -229,10 +231,18 @@
 
 <div class="viewcode-block" id="package_ver_dict_from_file"><a class="viewcode-back" href="../../python_tools.html#python_tools.requirement_utils.package_ver_dict_from_file">[docs]</a><span class="k">def</span> <span class="nf">package_ver_dict_from_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
     <span class="n">requirement_list</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">array_from_txt</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">requirement_list</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">requirement_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">requirement_list</span><span class="p">[()]]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">requirement_list</span> <span class="o">=</span> <span class="p">[]</span>
+            
     <span class="k">try</span><span class="p">:</span>
         <span class="n">requirement_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">pack</span><span class="p">:</span><span class="n">ver</span> <span class="k">for</span> <span class="n">pack</span><span class="p">,</span><span class="n">ver</span> <span class="ow">in</span> <span class="p">[</span><span class="n">curr_split</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;==&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">curr_split</span> <span class="ow">in</span> <span class="n">requirement_list</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.egg&quot;</span> <span class="o">!=</span> <span class="n">pack</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]}</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">requirement_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">pack</span><span class="p">:</span><span class="n">ver</span> <span class="k">for</span> <span class="n">pack</span><span class="p">,</span><span class="n">ver</span> <span class="ow">in</span> <span class="p">[</span><span class="n">curr_split</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">curr_split</span> <span class="ow">in</span> <span class="n">requirement_list</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.egg&quot;</span> <span class="o">!=</span> <span class="n">pack</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]}</span>
+            
     <span class="k">return</span> <span class="n">requirement_dict</span></div>
 
 
