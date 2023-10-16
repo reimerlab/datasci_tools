@@ -7,8 +7,10 @@ generate the requirements of a folder
 
 
 
-
+Installation: apt-get install pipreqs
 '''
+
+
 from pathlib import Path
 from . import numpy_dep as np
 import tqdm
@@ -158,10 +160,18 @@ def req_vs_package_import_diff(
 
 def package_ver_dict_from_file(filepath):
     requirement_list = nu.array_from_txt(filepath,dtype = "str")
+    
+    if requirement_list.ndim == 0:
+        try:
+            requirement_list = [requirement_list[()]]
+        except:
+            requirement_list = []
+            
     try:
         requirement_dict = {pack:ver for pack,ver in [curr_split.split("==") for curr_split in requirement_list] if ".egg" != pack[-4:]}
     except:
         requirement_dict = {pack:ver for pack,ver in [curr_split.split(">=") for curr_split in requirement_list] if ".egg" != pack[-4:]}
+            
     return requirement_dict
 
 
