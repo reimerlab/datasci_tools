@@ -20,12 +20,12 @@ import io
 import importlib
 from os import sys
 import os
-#from python_tools import numpy_utils as nu
-#from python_tools import file_utils as filu
+#from datasci_tools import numpy_utils as nu
+#from datasci_tools import file_utils as filu
 #import io
 
 user_packages = (
-        "/neurd_packages/python_tools/python_tools/",
+        "/neurd_packages/datasci_tools/datasci_tools/",
         "/neurd_packages/machine_learning_tools/machine_learning_tools/",
         "/neurd_packages/pytorch_tools/pytorch_tools/",
         "/neurd_packages/graph_tools/graph_tools/",
@@ -68,7 +68,7 @@ def relative_import_from(directory,filepath):
 
 def prefix_module_imports_in_files(
     filepaths=None,
-    modules_directory = "../python_tools",
+    modules_directory = "../datasci_tools",
     modules = None,
     filepaths_directory = None,
     prefix = "directory",
@@ -198,7 +198,7 @@ def package_from_filepath_and_package_list(
     ):
     """
     packages = (
-            "/python_tools/python_tools/",
+            "/datasci_tools/datasci_tools/",
             "/machine_learning_tools/machine_learning_tools/",
             "/pytorch_tools/pytorch_tools/",
             "/graph_tools/graph_tools/",
@@ -206,7 +206,7 @@ def package_from_filepath_and_package_list(
             "/neuron_morphology_tools/neuron_morphology_tools/",
     )
     pku.package_from_filepath_and_package_list(
-        filepath = "../python_tools/networkx_utils.py",
+        filepath = "../datasci_tools/networkx_utils.py",
         packages=packages
     )
     
@@ -343,12 +343,12 @@ def load_all_modules_in_package(
         reload_all_modules_in_package(Path(package_directory).stem)
 
 
-#from python_tools import package_utils as pku
+#from datasci_tools import package_utils as pku
 
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import file_utils as filu
 from . import module_utils as modu
 from . import numpy_utils as nu

@@ -5,7 +5,7 @@ from . import numpy_dep as np
 import pandas as pd
 import scipy
 import sklearn
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 
 def ensure_scalar(array):
     if nu.is_array_like(array):
@@ -47,7 +47,7 @@ def calculate_scores(TP,FP,FN):
                recall=recall(TP,FN),
                f1=f1(TP,FP,FN))
 
-#from python_tools import pandas_utils as pu
+#from datasci_tools import pandas_utils as pu
 #import pandas as pd
 def add_false_true_positive_negative_labels(
     df,
@@ -294,11 +294,11 @@ def correlation_scores_all(
     
 
 
-#from python_tools import statistics_utils as stu
+#from datasci_tools import statistics_utils as stu
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import numpy_utils as nu
 from . import pandas_utils as pu
 

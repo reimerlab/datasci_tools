@@ -25,7 +25,7 @@ def abbreviate_phrase(
     certain character
     
     Ex: 
-    from python_tools import string_utils as stru
+    from datasci_tools import string_utils as stru
     stru.abbreviate_phrase(
         s = "ais_syn_density_max_backup_excitatory",
         verbose = True,
@@ -55,7 +55,7 @@ def abbreviate_phrase(
 def str_overlap(s1, s2):
     """
     Ex: 
-    from python_tools import string_utils as stru
+    from datasci_tools import string_utils as stru
     stru.str_overlap("my name is Brendan","helloBrend")
     """
     s = difflib.SequenceMatcher(None, s1, s2)
@@ -102,7 +102,7 @@ def remove_range_list(
     
     """
     Ex: 
-    from python_tools import string_utils as stru
+    from datasci_tools import string_utils as stru
     stru.remove_range_list(
         string = 'geeksforgeeks is best for geeks',
         range_list = [(3, 6), (7, 10), (14, 17)],
@@ -145,7 +145,7 @@ def eliminate_patterns(
     ):
     return replace_patterns(string,patterns)
 
-#from python_tools import string_utils as stru
+#from datasci_tools import string_utils as stru
 
 def strip_whitespace(
     string,
@@ -165,7 +165,7 @@ def strip_whitespace(
         2) Eliminate that group from the original string
         
     Ex: 
-    from python_tools import string_utils as stru
+    from datasci_tools import string_utils as stru
        
     stru.strip_whitespace(
         string = "     \t\n    hello there             \t \n\n\n",
@@ -208,7 +208,7 @@ def strip_whitespace(
     return string
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import numpy_utils as nu
 from . import regex_utils as reu
 

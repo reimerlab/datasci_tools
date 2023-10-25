@@ -14,7 +14,7 @@ from typing import List
 
 def get_links():
     return [
-        #"python_tools @ git+https://github.com/bacelii/python_tools.git'"
+        #"datasci_tools @ git+https://github.com/bacelii/datasci_tools.git'"
     ]
 
 def get_install_requires(filepath=None):
@@ -98,6 +98,6 @@ def setup_py_str_generator(
     
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import file_utils as filu
 from . import inspect_utils as iu

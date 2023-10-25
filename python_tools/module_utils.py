@@ -367,7 +367,7 @@ def set_global_parameters_and_attributes_by_data_type(
 
 
     def set_global_parameters_and_attributes_by_data_type(data_type):
-        from python_tools import module_utils as modu 
+        from datasci_tools import module_utils as modu 
         modu.set_global_parameters_and_attributes_by_data_type(syu,data_type)
 
     set_global_parameters_and_attributes_by_data_type("microns")
@@ -593,7 +593,7 @@ def all_modules_set_global_parameters_and_attributes(
     of all modules in a certain directory
     
     Ex: 
-    from python_tools import module_utils as modu
+    from datasci_tools import module_utils as modu
     modu.all_modules_set_global_parameters_and_attributes(
         "microns",
         verbose = True,
@@ -677,7 +677,7 @@ def multiline_str(
     
     Ex: 
     multiline_str(
-        filepath = "/python_tools/python_tools/example_re.py",
+        filepath = "/datasci_tools/datasci_tools/example_re.py",
         verbose = True
     )
     """
@@ -808,7 +808,7 @@ def clean_module_imports(
     filename,
     overwrite_file = False,
     verbose = False,
-    relative_package = "python_tools",
+    relative_package = "datasci_tools",
     relative_replacement = ".",
     ):
     """
@@ -1520,7 +1520,7 @@ def load_modules_in_directory(
 def module_name_no_prefix(module):
     return module.__name__.split(".")[-1]
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import data_struct_utils as dsu
 from . import file_utils as filu
 from . import general_utils as gu

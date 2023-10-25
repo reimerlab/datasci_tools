@@ -46,7 +46,7 @@ def global_vars(module,verbose = False,):
     Purpose: Will return the names of the global variables
     defined in the module
     
-    from python_tools import numpy_utils as nu
+    from datasci_tools import numpy_utils as nu
     iu.global_vars(nu,verbose = True)
     """
     attr = list(dir(module))

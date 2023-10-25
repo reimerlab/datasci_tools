@@ -81,8 +81,8 @@ turn_off_warnings = ignore_warnings
 
 
 #from os import devnull
-#from python_tools import tqdm_utils as tqu
-#from python_tools.tqdm_utils import tqdm
+#from datasci_tools import tqdm_utils as tqu
+#from datasci_tools.tqdm_utils import tqdm
 #import copy
 
 @contextmanager
@@ -465,14 +465,14 @@ def rm_dir(directory,ignore_errors = False):
     
 
 
-#from python_tools import system_utils as su
+#from datasci_tools import system_utils as su
 
 
 
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import tqdm_utils as tqu
 from .tqdm_utils import tqdm
 from . import mesh_utils as meshu

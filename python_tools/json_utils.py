@@ -11,7 +11,7 @@ Purpose: to help parse json files
 import json
 import pandas as pd
 from pathlib import Path
-#from python_tools import pandas_utils as pu
+#from datasci_tools import pandas_utils as pu
 #import pandas as pd
 #import json
 indent_default = 4
@@ -46,7 +46,7 @@ def json_from_file(filepath,multiple_objs = True):
             studentDict = json.loads(f)
         return studentDict
     
-#from python_tools import json_utils as ju
+#from datasci_tools import json_utils as ju
 
 def json_to_dict(filepath):
 
@@ -91,7 +91,7 @@ def is_jsonable(x):
 def json_to_flat_dict(filepath,**kwargs):
     curr_json = jsu.json_to_dict(filepath,**kwargs)
     return gu.flatten_nested_dict(curr_json)
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import pandas_utils as pu
 from . import general_utils as gu
 

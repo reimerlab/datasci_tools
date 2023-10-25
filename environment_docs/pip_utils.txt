@@ -32,5 +32,5 @@ Ex: /usr/local/lib/python3.6/dist-packages/
 5) Remove from the path inside ipynb
 
 from os import sys
-sys.path.remove("/neurd_packages/python_tools")
-import python_tools --> should result in error
+sys.path.remove("/neurd_packages/datasci_tools")
+import datasci_tools --> should result in error

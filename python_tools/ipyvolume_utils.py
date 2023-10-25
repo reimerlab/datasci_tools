@@ -132,7 +132,7 @@ def example_mesh():
     ipv.show()
     return new_mesh
     
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 def example_plot_line_segments(array = None):
     if array is None:
         array = np.array([[[0,0,0],[1,1,1]],
@@ -711,7 +711,7 @@ def trisurf_plot_func(
 
 mesh_plot_func = trisurf_plot_func
 
-#from python_tools import matplotlib_utils as mu
+#from datasci_tools import matplotlib_utils as mu
     
 def plot_obj(
     array,
@@ -737,7 +737,7 @@ def plot_obj(
     using a plot type (and possibly add on widgets)
     to help control
     
-    from python_tools import ipyvolume_utils as ipvu
+    from datasci_tools import ipyvolume_utils as ipvu
     import ipyvolume as ipv
 
     ipvu.plot_obj(
@@ -844,8 +844,8 @@ def xyz_from_array(array):
     array = np.array(array).astype('float')
     return array[:,0],array[:,1],array[:,2]
 
-#from python_tools import matplotlib_utils as mu
-#from python_tools import mesh_utils as mhu
+#from datasci_tools import matplotlib_utils as mu
+#from datasci_tools import mesh_utils as mhu
 def plot_mesh(
     mesh,
     alpha = None,
@@ -949,7 +949,7 @@ def plot_scatter(
     
 
 
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 
 def plot_multi_scatters(
     scatters,
@@ -1958,7 +1958,7 @@ def hide_legend_panel():
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import matplotlib_utils as mu
 from . import mesh_utils as mhu
 from . import numpy_utils as nu

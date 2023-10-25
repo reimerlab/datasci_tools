@@ -32,7 +32,7 @@ out2 = [eval(cmd,globs,locs) for cmd in ['self.b']]
 """
 
 
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 #from . import numpy_dep as np
 #import itertools
 def invert_mapping(my_map,total_keys=None,one_to_one=False):
@@ -131,7 +131,7 @@ def dict_to_array(current_dict):
 def add_prefix_to_keys(data,prefix):
     return {f"{prefix}_{k}":v for k,v in data.items()}
 
-#from python_tools import data_struct_utils as dsu
+#from datasci_tools import data_struct_utils as dsu
 def merge_dicts(dicts):
     """
     Purpose: To combine multiple dictionaries
@@ -338,7 +338,7 @@ def merge_dicts_simple(dicts):
 def is_function(obj):
     """
     Ex: 
-    from python_tools import general_utils as gu
+    from datasci_tools import general_utils as gu
 
     def print_hello():
         print("hi")
@@ -419,6 +419,6 @@ def add_prefix_to_dict_keys(data,prefix):
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import data_struct_utils as dsu
 from . import numpy_utils as nu

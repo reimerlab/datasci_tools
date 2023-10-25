@@ -8,12 +8,12 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-#sys.path.insert(0, os.path.abspath('../python_tools'))
-#import python_tools
+#sys.path.insert(0, os.path.abspath('../datasci_tools'))
+#import datasci_tools
 
 
 
-project = 'python_tools'
+project = 'datasci_tools'
 copyright = '2023, Brendan Celii'
 author = 'Brendan Celii'
 release = '1'

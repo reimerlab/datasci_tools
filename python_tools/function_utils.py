@@ -17,7 +17,7 @@ def arg_names(func):
     """
     Purpose: To get the names of the argument
     
-    from python_tools import function_utils as funcu
+    from datasci_tools import function_utils as funcu
     funcu.arg_names(myfunc)
     """
     return inspect.getfullargspec(func).args

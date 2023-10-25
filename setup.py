@@ -21,7 +21,7 @@ def get_links():
 
 
 setup(
-    name='python_tools', # the name of the package, which can be different than the folder when using pip instal
+    name='datasci_tools', # the name of the package, which can be different than the folder when using pip instal
     version='1.0.0',
     description='',
     author='Brendan Celii',

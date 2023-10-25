@@ -267,7 +267,7 @@ def file_regex_search(
 
     return all_matches
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import numpy_utils as nu
 from . import regex_utils as reu
 

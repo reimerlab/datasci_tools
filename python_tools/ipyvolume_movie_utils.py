@@ -80,11 +80,11 @@ def example_rotating_motif():
     )
     
     
-#from python_tools import ipyvolume_movie_utils as ipvm
+#from datasci_tools import ipyvolume_movie_utils as ipvm
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import ipyvolume_utils as ipvu
 
 from . import ipyvolume_movie_utils as ipvm

@@ -13,7 +13,7 @@ import time
 import trimesh
 #import trimesh
 #from . import numpy_dep as np
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 
 
 def mesh_center_vertex_average(mesh_list):
@@ -88,7 +88,7 @@ def center_mesh_at_origin(mesh,center=None):
 
 
 #import trimesh
-#from python_tools import ipyvolume_utils as ipvu
+#from datasci_tools import ipyvolume_utils as ipvu
 #from scipy.spatial import Delaunay
 def mesh_from_delauny_3d(
     tri,
@@ -124,7 +124,7 @@ def sample_surface(
     """
     Purpose: To sample the surface of a mesh
     
-    from python_tools import mesh_utils as mhu
+    from datasci_tools import mesh_utils as mhu
     sample_surface(mesh,10000,even_sampling=False,plot=True)
     """
     
@@ -551,7 +551,7 @@ def clear_all_mesh_cache_in_nested_data_struct(
         for func in clear_cache_funcs:
             func(k)
 
-#from python_tools import mesh_utils as meshu
+#from datasci_tools import mesh_utils as meshu
 def align_mesh(mesh,align_matrix=None,in_place = False):
     if len(mesh.vertices ) <= 0:
         return mesh
@@ -564,7 +564,7 @@ def align_mesh(mesh,align_matrix=None,in_place = False):
     return mesh
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import ipyvolume_utils as ipvu
 from . import numpy_utils as nu
 from . import general_utils as gu

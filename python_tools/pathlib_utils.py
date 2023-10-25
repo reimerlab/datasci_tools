@@ -51,7 +51,7 @@ def create_folder(folder_path):
     """
     To create a new folder
     
-    from python_tools import pathlib_utils as plu
+    from datasci_tools import pathlib_utils as plu
     plu.create_folder("/mnt/dj-stor01/platinum/minnie65/02/graphs")
     """
     p = Path(folder_path)
@@ -93,10 +93,10 @@ def inside_directory(directory,filepath):
     """
     Ex: 
     from pathlib import Path
-    from python_tools import pathlib_utils as plu
+    from datasci_tools import pathlib_utils as plu
 
-    root = Path("/python_tools/python_tools/")#.resolve()
-    child = Path("../python_tools/numpy_utils.py")#.resolve()
+    root = Path("/datasci_tools/datasci_tools/")#.resolve()
+    child = Path("../datasci_tools/numpy_utils.py")#.resolve()
     plu.inside_directory(root,child)
     """
     return Path(directory).resolve() in parents(filepath)
@@ -119,8 +119,8 @@ def n_levels_parent_above(parent,filepath,verbose = False):
     
     Ex: 
     plu.n_levels_parent_above(
-        filepath = Path("/python_tools/python_tools/dj_utils.py"),
-        parent = "/python_tools/",
+        filepath = Path("/datasci_tools/datasci_tools/dj_utils.py"),
+        parent = "/datasci_tools/",
         verbose = True
     )
     """
@@ -131,7 +131,7 @@ def n_levels_parent_above(parent,filepath,verbose = False):
     return n_levels
 
 
-#from python_tools import pathlib_utils as plu
+#from datasci_tools import pathlib_utils as plu
 
 
 

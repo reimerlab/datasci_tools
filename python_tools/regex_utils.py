@@ -43,7 +43,7 @@ algorithm = "split"
 data_type = "h01"
 search_string = fr"{dict_type}.*{algorithm}.*{data_type}"
 test_str = "global_parameters_hi_split_h01"
-#from python_tools import regex_utils as ru
+#from datasci_tools import regex_utils as ru
 ru.match_substring_in_str(search_string,
             test_str)
 
@@ -152,7 +152,7 @@ def multiple_replace(
     Purpose: To replace multiple strings with a dictionary apping
     
     Ex: 
-    from python_tools import regex_utils as ru
+    from datasci_tools import regex_utils as ru
     query = "u in [1,2,3,4]"
     dict_mapping = dict(u="v",v="u")
     ru.multiple_replace(query,dict_mapping)

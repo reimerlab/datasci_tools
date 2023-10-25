@@ -16,10 +16,10 @@ from . import numpy_dep as np
 import pandas as pd
 import time
 #import datajoint as dj
-#from python_tools import numpy_utils as nu
+#from datasci_tools import numpy_utils as nu
 #from . import numpy_dep as np
 #import pandas as pd
-#from python_tools import pandas_utils as pu
+#from datasci_tools import pandas_utils as pu
 
 def df_from_table_old(
     table,
@@ -249,7 +249,7 @@ def parameter_datatype(
     else:
         raise Exception(f"Unknown type: {type(parameter)}")
         
-#from python_tools import data_struct_utils as dsu
+#from datasci_tools import data_struct_utils as dsu
 def parameter_datatype_description(kwargs_dict,
                                   kwargs_datatype_dict = None,
                                    add_null = True,
@@ -344,7 +344,7 @@ def query_table_from_kwargs(
         return table & key
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import data_struct_utils as dsu
 from . import numpy_utils as nu
 from . import pandas_utils as pu

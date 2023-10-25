@@ -22,7 +22,7 @@ def compare_uneven_groups(group1,
     that are not in the other group
     
     Example: 
-    from python_tools import algorithms_utils as au
+    from datasci_tools import algorithms_utils as au
     au = reload(au)
     au.compare_uneven_groups(obj1.inside_pieces[:10],obj2.inside_pieces,
                              comparison_func = tu.compare_meshes_by_face_midpoints,

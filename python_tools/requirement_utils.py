@@ -20,8 +20,8 @@ default_packages_to_install = [
     "ipython_genutils"
 ]
 
-#from python_tools import system_utils as su
-#from python_tools import numpy_utils as nu
+#from datasci_tools import system_utils as su
+#from datasci_tools import numpy_utils as nu
 #import tqdm
 #from pathlib import Path
 
@@ -176,7 +176,7 @@ def package_ver_dict_from_file(filepath):
 
 
 
-#--- from python_tools ---
+#--- from datasci_tools ---
 from . import file_utils as filu
 from . import module_utils as modu
 from . import numpy_utils as nu

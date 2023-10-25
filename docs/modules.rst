@@ -1,7 +1,7 @@
-python_tools
+datasci_tools
 ============
 
 .. toctree::
    :maxdepth: 4
 
-   python_tools
+   datasci_tools
