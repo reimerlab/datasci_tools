@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>datasci_tools.widget_utils &mdash; datasci_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            datasci_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">datasci_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datasci_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">datasci_tools.widget_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for datasci_tools.widget_utils</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">YouTubeVideo</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">How to install the widget for ipynb</span>
+
+<span class="sd">!pip3 install ipywidgets</span>
+<span class="sd">!jupyter nbextension enable --py widgetsnbextension</span>
+
+<span class="sd">#import ipywidgets as widgets</span>
+<span class="sd">#from IPython.display import display</span>
+
+
+
+<span class="sd">Ex: </span>
+<span class="sd">pixel_layout = 0</span>
+<span class="sd">item_layout = widgets.Layout(margin=f&#39;{pixel_layout}px {pixel_layout}px {pixel_layout}px {pixel_layout}px&#39;)</span>
+<span class="sd">dropdown_year = widgets.ToggleButtons(</span>
+<span class="sd">    description = &quot;Dropdown&quot;,</span>
+<span class="sd">    options = [&quot;yes&quot;,&quot;no&quot;,&quot;yes partial&quot;]</span>
+<span class="sd">)</span>
+
+<span class="sd">toggle = widgets.RadioButtons(</span>
+<span class="sd">    options = [&quot;option1&quot;,&quot;option2&quot;]</span>
+<span class="sd">)</span>
+
+<span class="sd">input_widgets = widgets.VBox([</span>
+<span class="sd">    dropdown_year,toggle,toggle,toggle,</span>
+<span class="sd">    </span>
+<span class="sd">],layout = item_layout,)</span>
+
+<span class="sd">notes_box = widgets.Textarea(</span>
+<span class="sd">    placehold = &quot;Type some notes here&quot;,</span>
+<span class="sd">    description = &quot;Notes&quot;,</span>
+<span class="sd">    layout = Layout(</span>
+<span class="sd">        width = &quot;100%&quot;,</span>
+<span class="sd">        #min_height = &quot;300px&quot;</span>
+<span class="sd">    )</span>
+<span class="sd">)</span>
+<span class="sd">btn = widgets.Button(description=&#39;Save Validation to Dict&#39;)</span>
+<span class="sd">def btn_eventhandler(obj):</span>
+<span class="sd">    print(&#39;Hello from the {} button!&#39;.format(obj.description))</span>
+<span class="sd">btn.on_click(btn_eventhandler)</span>
+<span class="sd">total_widgets = widgets.VBox([input_widgets,notes_box,btn])</span>
+<span class="sd">display(total_widgets)</span>
+
+
+<span class="sd">Categories of Buttons</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">text_numbers_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;BoundedIntText&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BoundedFloatText&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IntText&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FloatText&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">boolean_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ToggleButton&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CheckBox&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Valid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Select&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SelectionSlider&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SelectionRangeSlider&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ToggleButtons&quot;</span><span class="p">,</span> <span class="c1">#multiple buttons but can only select one</span>
+    <span class="s2">&quot;SelectMutliple&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">For options you can set the  string label</span>
+<span class="sd">or put label value pairs</span>
+
+<span class="sd">Ex: </span>
+<span class="sd">widgets.Dropdown(</span>
+<span class="sd">    options=[(&#39;One&#39;, 1), (&#39;Two&#39;, 2), (&#39;Three&#39;, 3)],</span>
+<span class="sd">    value=2,</span>
+<span class="sd">    description=&#39;Number:&#39;,</span>
+<span class="sd">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">selection_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Dropdown&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RadioButtons&quot;</span>
+<span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">string_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Textarea&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Combobox&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Label&quot;</span>
+    
+<span class="p">]</span>
+
+<span class="n">action_item_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Button&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">animation_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Play&quot;</span>
+<span class="p">]</span>
+
+<span class="n">date_time_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DatePicker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TimePicker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DateTimePicker&quot;</span>
+    
+<span class="p">]</span>
+
+<span class="n">color_picker_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ColorPicker&quot;</span>
+<span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Notes: </span>
+<span class="sd">Each container has a children attributes that can be set</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">container_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Box&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HBox&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VBox&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GridBox&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">multi_container_widgets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Tabs&quot;</span><span class="p">,</span> <span class="c1">#can show different panels</span>
+    <span class="s2">&quot;Accordian&quot;</span><span class="p">,</span> <span class="c1">#have the arrows that can control if displays or not</span>
+<span class="p">]</span>
+
+<span class="c1">#import ipywidgets as widgets</span>
+<span class="c1">#from IPython.display import display</span>
+
+<div class="viewcode-block" id="set_label"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.set_label">[docs]</a><span class="k">def</span> <span class="nf">set_label</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">label</span><span class="p">):</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="example_label_widget"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_label_widget">[docs]</a><span class="k">def</span> <span class="nf">example_label_widget</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use label when want to create a custom label</span>
+<span class="sd">    to use in a widget</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">([</span><span class="n">widgets</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;The $m$ in $E=mc^2$:&quot;</span><span class="p">),</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">()])</span></div>
+
+
+<div class="viewcode-block" id="example_image"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_image">[docs]</a><span class="k">def</span> <span class="nf">example_image</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="example_animation"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_animation">[docs]</a><span class="k">def</span> <span class="nf">example_animation</span><span class="p">():</span>
+    <span class="n">play</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Play</span><span class="p">(</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="nb">min</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Press Play,&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">()</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">jslink</span><span class="p">((</span><span class="n">play</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">),(</span><span class="n">slider</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">))</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">([</span><span class="n">play</span><span class="p">,</span><span class="n">slider</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="example_color_picker"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_color_picker">[docs]</a><span class="k">def</span> <span class="nf">example_color_picker</span><span class="p">():</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ColorPicker</span><span class="p">(</span>
+        <span class="n">concise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Pick a color&#39;</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+        <span class="n">disabled</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span></div>
+    
+<div class="viewcode-block" id="example_tabs"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_tabs">[docs]</a><span class="k">def</span> <span class="nf">example_tabs</span><span class="p">():</span>
+    <span class="n">tab_contents</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;P0&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;P3&#39;</span><span class="p">,</span> <span class="s1">&#39;P4&#39;</span><span class="p">]</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">widgets</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tab_contents</span><span class="p">]</span>
+    <span class="n">tab</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Tab</span><span class="p">()</span>
+    <span class="n">tab</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="n">children</span>
+    <span class="n">tab</span><span class="o">.</span><span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">tab</span></div>
+
+<div class="viewcode-block" id="example_accordian"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_accordian">[docs]</a><span class="k">def</span> <span class="nf">example_accordian</span><span class="p">():</span>
+    <span class="n">accordion</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Accordion</span><span class="p">(</span>
+    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(),</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Text</span><span class="p">()],</span>
+    <span class="n">titles</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Slider&#39;</span><span class="p">,</span> <span class="s1">&#39;Text&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">accordion</span></div>
+
+<span class="c1">#from IPython.display import YouTubeVideo</span>
+<span class="c1">#from IPython.display import display</span>
+<div class="viewcode-block" id="example_display_youtube_video"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_display_youtube_video">[docs]</a><span class="k">def</span> <span class="nf">example_display_youtube_video</span><span class="p">(</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="s1">&#39;eWzY2nGfkXk&#39;</span>
+    <span class="p">):</span>
+    
+    <span class="n">out</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;1px solid black&#39;</span><span class="p">})</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">YouTubeVideo</span><span class="p">(</span><span class="n">link</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="example_function_to_output_widget"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_function_to_output_widget">[docs]</a><span class="k">def</span> <span class="nf">example_function_to_output_widget</span><span class="p">(</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">clear_output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1">#whether to clear output every time write to it</span>
+    <span class="n">wait</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1">#only clears output once new output sent</span>
+    <span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="nd">@w</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">clear_output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">wait</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">function_with_captured_output</span><span class="p">(</span>
+        <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Hello world!&#39;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="clear_output"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.clear_output">[docs]</a><span class="k">def</span> <span class="nf">clear_output</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">wait</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wait will wait until the next time something</span>
+<span class="sd">    is sent to it</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span> <span class="o">=</span> <span class="n">wait</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="example_linking_interactive_function_with_output"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_linking_interactive_function_with_output">[docs]</a><span class="k">def</span> <span class="nf">example_linking_interactive_function_with_output</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pseudocode: </span>
+<span class="sd">    1) Create slider</span>
+<span class="sd">    2) Creates function to output string of sliders</span>
+<span class="sd">    3) Creates output widget</span>
+<span class="sd">    4) Stack sliders and output widget in one widget</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">interactive_output</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">))</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">([</span><span class="n">widgets</span><span class="o">.</span><span class="n">VBox</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]),</span><span class="n">out</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="example_add_function_to_button"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_add_function_to_button">[docs]</a><span class="k">def</span> <span class="nf">example_add_function_to_button</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Psuedocode: </span>
+<span class="sd">    1) Create button and output</span>
+<span class="sd">    2) Display Button and Output</span>
+<span class="sd">    3) Create a function that brings to the output</span>
+<span class="sd">    4) Adds the function to button widget on .on_click funct</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">button</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Click Me!&quot;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
+
+    <span class="n">display</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+
+    <span class="nd">@output</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">clear_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">on_button_clicked</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Button clicked.&quot;</span><span class="p">)</span>
+
+    <span class="n">button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">on_button_clicked</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="example_add_function_to_value_change"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_add_function_to_value_change">[docs]</a><span class="k">def</span> <span class="nf">example_add_function_to_value_change</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: The function that runs on the change </span>
+<span class="sd">    should have an argument that accepts a dictionary</span>
+<span class="sd">    holding the information of the change</span>
+
+
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">int_range</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
+
+    <span class="n">display</span><span class="p">(</span><span class="n">int_range</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    
+    <span class="nd">@output</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">clear_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">wait</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">on_value_change</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="s1">&#39;new&#39;</span><span class="p">])</span>
+        
+    <span class="n">int_range</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">on_value_change</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="add_on_change_func"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.add_on_change_func">[docs]</a><span class="k">def</span> <span class="nf">add_on_change_func</span><span class="p">(</span>
+    <span class="n">w</span><span class="p">,</span>
+    <span class="n">f</span><span class="p">,</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1">#names=&quot;value&quot;,</span>
+    <span class="c1">#type=&quot;change&quot;,#type of notification to filter by</span>
+    <span class="p">):</span>
+    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1">#out.capture(clear_output=True,wait = True)</span>
+        <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">out</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">curr_func</span> <span class="o">=</span> <span class="n">new_func</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">curr_func</span> <span class="o">=</span> <span class="n">f</span>
+    
+    <span class="n">w</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span>
+        <span class="n">curr_func</span><span class="p">,</span>
+        <span class="c1">#names=names,</span>
+        <span class="c1">#type=type</span>
+    <span class="p">)</span></div>
+    
+<span class="c1"># ---------- Linking attributes ------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Psueodocde: </span>
+<span class="sd">1) Create the widgets</span>
+<span class="sd">2) Use .link or .dlink (only the downstream is linked to upstream) to connect certain attributes of widgets</span>
+<span class="sd">3) Display</span>
+
+
+<span class="sd">Notes:</span>
+<span class="sd">1) using the jslink and jsdlink allow attributes to be linked</span>
+<span class="sd">even when </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="example_link_both_directions"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_link_both_directions">[docs]</a><span class="k">def</span> <span class="nf">example_link_both_directions</span><span class="p">():</span>
+    <span class="n">sliders1</span><span class="p">,</span> <span class="n">slider2</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Slider 1&#39;</span><span class="p">),</span>\
+                    <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Slider 2&#39;</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">link</span><span class="p">((</span><span class="n">sliders1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">slider2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span> <span class="n">sliders1</span><span class="p">,</span> <span class="n">slider2</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="example_link_directional"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.example_link_directional">[docs]</a><span class="k">def</span> <span class="nf">example_link_directional</span><span class="p">():</span>
+    <span class="n">sliders1</span><span class="p">,</span> <span class="n">slider2</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Slider 1&#39;</span><span class="p">),</span>\
+                    <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Slider 2&#39;</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">dlink</span><span class="p">((</span><span class="n">sliders1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">slider2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span> <span class="n">sliders1</span><span class="p">,</span> <span class="n">slider2</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="unlink"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.widget_utils.unlink">[docs]</a><span class="k">def</span> <span class="nf">unlink</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+    <span class="n">link</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span></div>
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

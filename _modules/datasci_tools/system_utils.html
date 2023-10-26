@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>datasci_tools.system_utils &mdash; datasci_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            datasci_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">datasci_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datasci_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">datasci_tools.system_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for datasci_tools.system_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+
+<span class="sd">How to get a reference to the current module</span>
+
+<span class="sd">#import sys</span>
+<span class="sd">current_module = sys.modules[__name__]</span>
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">devnull</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span><span class="p">,</span><span class="n">redirect_stderr</span><span class="p">,</span><span class="n">redirect_stdout</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+<span class="kn">import</span> <span class="nn">_pickle</span> <span class="k">as</span> <span class="nn">cPickle</span>
+<span class="kn">import</span> <span class="nn">bz2</span>
+<span class="kn">import</span> <span class="nn">bz2</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="c1"># # ************ warning this will disable all printing until turned off *************</span>
+<span class="c1"># # Disable</span>
+<span class="c1"># def blockPrint():</span>
+<span class="c1">#     sys.stdout = open(os.devnull, &#39;w&#39;)</span>
+
+<span class="c1"># # Restore</span>
+<span class="c1"># def enablePrint():</span>
+<span class="c1">#     sys.stdout = sys.__stdout__</span>
+<span class="c1"># # ************ warning this will disable all printing until turned off *************</span>
+
+    
+    
+<span class="c1">#better way of turning off printing: </span>
+<span class="c1">#import os, sys</span>
+
+
+<div class="viewcode-block" id="HiddenPrints"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.HiddenPrints">[docs]</a><span class="k">class</span> <span class="nc">HiddenPrints</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example of how to use: </span>
+<span class="sd">    with HiddenPrints():</span>
+<span class="sd">        print(&quot;This will not be printed&quot;)</span>
+
+<span class="sd">    print(&quot;This will be printed as before&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_stdout</span></div>
+    
+<span class="c1">#import warnings</span>
+<span class="c1">#import logging, sys</span>
+<div class="viewcode-block" id="ignore_warnings"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.ignore_warnings">[docs]</a><span class="k">def</span> <span class="nf">ignore_warnings</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This will ignore warnings but not the meshlab warnings</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span></div>
+    
+<span class="n">suppress_warnings</span> <span class="o">=</span> <span class="n">ignore_warnings</span>
+<span class="n">turn_off_warnings</span> <span class="o">=</span> <span class="n">ignore_warnings</span>
+    
+
+
+<span class="c1">#from os import devnull</span>
+<span class="c1">#from datasci_tools import tqdm_utils as tqu</span>
+<span class="c1">#from datasci_tools.tqdm_utils import tqdm</span>
+<span class="c1">#import copy</span>
+
+<div class="viewcode-block" id="suppress_stdout_stderr"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.suppress_stdout_stderr">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">suppress_stdout_stderr</span><span class="p">(</span><span class="n">suppress_tqdm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: Will suppress all print outs</span>
+<span class="sd">    and pinky warning messages:</span>
+<span class="sd">    --&gt; will now suppress the output of all the widgets like tqdm outputs</span>
+<span class="sd">    if suppress_tqdm = True</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: How to suppress warning messages in Poisson</span>
+<span class="sd">    from neurd import soma_extraction_utils as sm</span>
+<span class="sd">with su.suppress_stdout_stderr():</span>
+<span class="sd">    sm.soma_volume_ratio(my_neuron.concept_network.nodes[&quot;S0&quot;][&quot;data&quot;].mesh)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    A context manager that redirects stdout and stderr to devnull</span>
+<span class="sd">    Example of how to use: </span>
+<span class="sd">    import sys</span>
+
+<span class="sd">    def rogue_function():</span>
+<span class="sd">        print(&#39;spam to stdout&#39;)</span>
+<span class="sd">        print(&#39;important warning&#39;, file=sys.stderr)</span>
+<span class="sd">        1 + &#39;a&#39;</span>
+<span class="sd">        return 42</span>
+
+<span class="sd">    with suppress_stdout_stderr():</span>
+<span class="sd">        rogue_function()</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#will supress the warnings:</span>
+    <span class="n">ignore_warnings</span><span class="p">()</span>
+    
+    
+    <span class="c1">#get the original setting of the tqdm.disable</span>
+    <span class="k">if</span> <span class="n">suppress_tqdm</span><span class="p">:</span>
+        <span class="n">original_tqdm</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tqdm</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+        <span class="n">tqu</span><span class="o">.</span><span class="n">turn_off_tqdm</span><span class="p">()</span>
+    
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fnull</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">redirect_stderr</span><span class="p">(</span><span class="n">fnull</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">,</span> <span class="n">redirect_stdout</span><span class="p">(</span><span class="n">fnull</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">original_tqdm</span><span class="p">:</span>
+        <span class="n">tqu</span><span class="o">.</span><span class="n">turn_on_tqdm</span><span class="p">()</span></div>
+<span class="w">            </span>
+<span class="w">    </span>
+<span class="w">            </span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">#for creating a conditional with statement around some code (to suppress outputs)</span>
+
+
+<span class="sd">Example: (used in neuron init)</span>
+<span class="sd">if minimal_output:</span>
+<span class="sd">            print(&quot;Processing Neuorn in minimal output mode...please wait&quot;)</span>
+
+<span class="sd">with su.suppress_stdout_stderr() if minimal_output else su.dummy_context_mgr():</span>
+<span class="sd">    #do the block of node</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">dummy_context_mgr</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<span class="c1">#import contextlib</span>
+
+<div class="viewcode-block" id="dummy_context_mgr"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.dummy_context_mgr">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">dummy_context_mgr</span><span class="p">():</span>
+
+    <span class="k">yield</span> <span class="kc">None</span></div>
+    
+    
+
+<span class="c1"># How to save and load objects</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">*** Warning *****</span>
+<span class="sd">The way you import a class can affect whether it was picklable or not</span>
+
+<span class="sd">Example: </span>
+
+<span class="sd">---Way that works---: </span>
+
+<span class="sd">su = reload(su)</span>
+
+<span class="sd">#from meshAfterParty.neuron import Neuron</span>
+<span class="sd">another_neuron = Neuron(new_neuron)</span>
+<span class="sd">su.save_object(another_neuron,&quot;inhibitory_saved_neuron&quot;)</span>
+
+<span class="sd">---Way that doesn&#39;t work---</span>
+<span class="sd">su = reload(su)</span>
+
+<span class="sd">#from neurd import neuron</span>
+<span class="sd">another_neuron = neuron.Neuron(new_neuron)</span>
+<span class="sd">su.save_object(another_neuron,&quot;inhibitory_saved_neuron&quot;)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#from pathlib import Path</span>
+<span class="c1">#import pickle</span>
+<div class="viewcode-block" id="save_object"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.save_object">[docs]</a><span class="k">def</span> <span class="nf">save_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span><span class="n">return_size</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: to save a pickled object of a neuron</span>
+<span class="sd">    </span>
+<span class="sd">    ** Warning ** do not reload the module of the </span>
+<span class="sd">    object you are compressing before compression</span>
+<span class="sd">    or else it will not work***</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">Path</span><span class="p">()):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">+=</span> <span class="s2">&quot;.pkl&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>  <span class="c1"># Overwrites any existing file.</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved object at </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">file_size</span> <span class="o">=</span> <span class="n">get_file_size</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File size is </span><span class="si">{</span><span class="n">file_size</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">meshu</span><span class="o">.</span><span class="n">clear_all_mesh_cache_in_nested_data_struct</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">return_size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">file_size</span></div>
+    
+<span class="c1">#import pickle5 as pickle5</span>
+<div class="viewcode-block" id="load_object"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.load_object">[docs]</a><span class="k">def</span> <span class="nf">load_object</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">Path</span><span class="p">()):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">+=</span> <span class="s2">&quot;.pkl&quot;</span>
+            
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">input</span><span class="p">:</span>
+        <span class="n">retrieved_obj</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="c1">#     except:</span>
+<span class="c1">#         with open(filename, &quot;rb&quot;) as fh:</span>
+<span class="c1">#             data = pickle5.load(fh)</span>
+    <span class="k">return</span> <span class="n">retrieved_obj</span></div>
+
+
+<span class="n">load_pkl</span> <span class="o">=</span> <span class="n">load_object</span>
+
+
+
+<span class="c1">#--------------- Less memory pickling options -----------------</span>
+<span class="c1"># Pickle a file and then compress it into a file with extension </span>
+<span class="c1">#import bz2</span>
+<span class="c1">#import _pickle as cPickle</span>
+<div class="viewcode-block" id="compressed_pickle"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.compressed_pickle">[docs]</a><span class="k">def</span> <span class="nf">compressed_pickle</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">return_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">return_filepath</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compressed_pickle(data,&#39;example_cp&#39;) </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">Path</span><span class="p">()):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.pbz2&quot;</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">+=</span> <span class="s2">&quot;.pbz2&quot;</span>
+ 
+    <span class="k">with</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> 
+        <span class="n">cPickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        
+    <span class="n">file_size</span> <span class="o">=</span> <span class="n">get_file_size</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved object at </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File size is </span><span class="si">{</span><span class="n">file_size</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">return_size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">file_size</span>
+
+    <span class="k">if</span> <span class="n">return_filepath</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span></div>
+
+<span class="c1"># Load any compressed pickle file</span>
+<div class="viewcode-block" id="decompress_pickle"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.decompress_pickle">[docs]</a><span class="k">def</span> <span class="nf">decompress_pickle</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example: </span>
+<span class="sd">    data = decompress_pickle(&#39;example_cp.pbz2&#39;) </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">Path</span><span class="p">()):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.pbz2&quot;</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">+=</span> <span class="s2">&quot;.pbz2&quot;</span>
+        
+    <span class="n">data</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<span class="c1">#import os</span>
+<div class="viewcode-block" id="get_file_size"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.get_file_size">[docs]</a><span class="k">def</span> <span class="nf">get_file_size</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span><span class="n">MB</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">curr_size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">MB</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">curr_size</span><span class="o">/</span><span class="mi">1000000</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">curr_size</span></div>
+
+
+<span class="c1"># ----------- How to make copies -------------- #</span>
+<span class="c1">#import shutil</span>
+
+<span class="c1">#import os</span>
+<span class="c1">#from pathlib import Path</span>
+
+<div class="viewcode-block" id="is_path_obj"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.is_path_obj">[docs]</a><span class="k">def</span> <span class="nf">is_path_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">Path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="copy_file"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.copy_file">[docs]</a><span class="k">def</span> <span class="nf">copy_file</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="n">destination</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_path_obj</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">is_path_obj</span><span class="p">(</span><span class="n">destination</span><span class="p">):</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">destination</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="n">destination</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copy_file_and_create_shell_script"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.copy_file_and_create_shell_script">[docs]</a><span class="k">def</span> <span class="nf">copy_file_and_create_shell_script</span><span class="p">(</span><span class="n">original_file</span><span class="p">,</span><span class="n">num_copies</span><span class="p">,</span><span class="n">new_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example: </span>
+<span class="sd">    copy_file_and_create_shell_script(&quot;BaylorSegmentCentroid.py&quot;,5,new_dir=False)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">new_dir</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;copies&quot;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;copies&quot;</span><span class="p">)</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;./copies&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using folder </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1">#create the new files</span>
+    <span class="n">new_file_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_copies</span><span class="p">):</span>
+        <span class="c1"># Copy the file in same folder with different name</span>
+        <span class="n">new_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">original_file</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">original_file</span><span class="p">,</span><span class="n">folder</span> <span class="o">+</span><span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_name</span><span class="p">))</span>
+        
+        <span class="n">new_file_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+
+    <span class="c1">#write the shell script</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s2">&quot;/run_multiple_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">original_file</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#!/bin/bash&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">new_file_names</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;python3 &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &amp;&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    
+    
+<span class="c1">#import signal</span>
+<span class="c1">#from contextlib import contextmanager</span>
+
+<div class="viewcode-block" id="TimeoutException"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.TimeoutException">[docs]</a><span class="k">class</span> <span class="nc">TimeoutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="time_limit"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.time_limit">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">time_limit</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    How to do call it</span>
+<span class="sd">    try:</span>
+<span class="sd">        with su.time_limit(10):</span>
+<span class="sd">            long_function_call()</span>
+<span class="sd">    except su.TimeoutException as e:</span>
+<span class="sd">        print(&quot;Timed out!&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">TimeoutException</span><span class="p">(</span><span class="s2">&quot;Timed out!&quot;</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">signal_handler</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+        
+        
+<span class="c1">#from pathlib import Path</span>
+<div class="viewcode-block" id="filter_folder_for_substring"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.filter_folder_for_substring">[docs]</a><span class="k">def</span> <span class="nf">filter_folder_for_substring</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">substring_query</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PUrpose: To filter a directory for certain files</span>
+<span class="sd">    using regex expressions</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: This replaces the need for this</span>
+<span class="sd">    decomp_path = Path(&quot;/mnt/dj-stor01/platinum/minnie65/02/decomposition/&quot;)</span>
+<span class="sd">    files = list(decomp_path.glob(&quot;*axon_v7.pbz2&quot;))</span>
+<span class="sd">    files</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">substring_query</span><span class="p">))</span>
+    <span class="k">return</span> </div>
+
+<span class="c1"># ---------------- 10/19 ---------------------</span>
+<span class="c1">#import subprocess</span>
+<div class="viewcode-block" id="bash_command"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.bash_command">[docs]</a><span class="k">def</span> <span class="nf">bash_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="n">split_by_line</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">file_outputs</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">split_by_line</span><span class="p">:</span>
+        <span class="n">return_value</span> <span class="o">=</span> <span class="n">file_outputs</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">return_value</span> <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">file_outputs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+    
+    
+    
+<span class="c1">#--------------- 2/1 Saving off zipped files -------------</span>
+<span class="c1">#from zipfile import ZipFile</span>
+<span class="c1">#import time</span>
+<span class="c1">#from . import numpy_dep as np</span>
+
+<div class="viewcode-block" id="zip_write_from_file_paths"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.zip_write_from_file_paths">[docs]</a><span class="k">def</span> <span class="nf">zip_write_from_file_paths</span><span class="p">(</span>
+    <span class="n">zip_file_path</span><span class="p">,</span>
+    <span class="n">file_paths</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">calculate_size_diff</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">save_directory_structure</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To Create a zip file from </span>
+<span class="sd">    a list of file directories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">zipObj</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="n">original_size</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">file_paths</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="s2">&quot;str&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">calculate_size_diff</span><span class="p">:</span>
+            <span class="n">original_size</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">su</span><span class="o">.</span><span class="n">get_file_size</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">MB</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">save_directory_structure</span><span class="p">:</span>
+            <span class="n">zipObj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">zipObj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">arcname</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">zipObj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">calculate_size_diff</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original Size before zip = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">original_size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total zip size: </span><span class="si">{</span><span class="n">su</span><span class="o">.</span><span class="n">get_file_size</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span><span class="n">MB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total time = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">zip_file_path</span></div>
+
+<div class="viewcode-block" id="zip_extract"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.zip_extract">[docs]</a><span class="k">def</span> <span class="nf">zip_extract</span><span class="p">(</span>
+    <span class="n">path_to_zip_file</span><span class="p">,</span>
+    <span class="n">directory_to_extract_to</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+
+    <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">path_to_zip_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+        <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">directory_to_extract_to</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time for unzipping = </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="environment_variables"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.environment_variables">[docs]</a><span class="k">def</span> <span class="nf">environment_variables</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span></div>
+
+<span class="c1">#import shutil</span>
+<div class="viewcode-block" id="rm_dir"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.system_utils.rm_dir">[docs]</a><span class="k">def</span> <span class="nf">rm_dir</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">ignore_errors</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="n">ignore_errors</span><span class="p">)</span></div>
+    
+
+    
+
+
+<span class="c1">#from datasci_tools import system_utils as su</span>
+
+
+
+
+
+
+<span class="c1">#--- from datasci_tools ---</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tqdm_utils</span> <span class="k">as</span> <span class="n">tqu</span>
+<span class="kn">from</span> <span class="nn">.tqdm_utils</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">mesh_utils</span> <span class="k">as</span> <span class="n">meshu</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">system_utils</span> <span class="k">as</span> <span class="n">su</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

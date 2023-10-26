@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>datasci_tools.regex_utils &mdash; datasci_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            datasci_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">datasci_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datasci_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">datasci_tools.regex_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for datasci_tools.regex_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+
+<span class="sd">Note: </span>
+<span class="sd">- * only works at the beginning of string</span>
+
+<span class="sd">Rules:</span>
+<span class="sd">. any single character</span>
+<span class="sd">.* zero or more characters but scan all of them</span>
+<span class="sd">.+ one or more characters but scan all of them</span>
+<span class="sd">.+? zero or more characters, scan up to all of them but be wishy washy about it</span>
+<span class="sd">(.*) zero or more characters, scan all of them, but collect the whole thing as a field and then do nothing with it.</span>
+
+
+<span class="sd">#--- cheat sheet ----: https://www.rexegg.com/regex-quickstart.html</span>
+<span class="sd">. : any singl character</span>
+<span class="sd">[] one of characters in brackets</span>
+<span class="sd">[]+: 1 or more of word wherever evercharacter is one category in the brackets</span>
+
+<span class="sd">\b: word boundary</span>
+<span class="sd">\w: word</span>
+<span class="sd">\W: not word</span>
+<span class="sd">\d: digit</span>
+<span class="sd">\D: not digit</span>
+<span class="sd">\s: whitespace</span>
+<span class="sd">^: beginning of string</span>
+<span class="sd">$: end of string (end of line)</span>
+<span class="sd">|: means or</span>
+
+
+<span class="sd">\d{3}: 3 digits</span>
+<span class="sd">\d?: optionally 0 or 1 digit</span>
+<span class="sd">\d{0,3}: 0 to 3 digits</span>
+
+<span class="sd">[A-Za-z0-9_\s]+ : will match a length 1 or longer string with only characters_numbers and underscores and white space</span>
+
+<span class="sd">Rule 1: Surround expression with () to designate it as a group</span>
+
+<span class="sd"># -------- how to use wildcard character in teh middle</span>
+<span class="sd">dict_type = &quot;global_parameters&quot;</span>
+<span class="sd">algorithm = &quot;split&quot;</span>
+<span class="sd">data_type = &quot;h01&quot;</span>
+<span class="sd">search_string = fr&quot;{dict_type}.*{algorithm}.*{data_type}&quot;</span>
+<span class="sd">test_str = &quot;global_parameters_hi_split_h01&quot;</span>
+<span class="sd">#from datasci_tools import regex_utils as ru</span>
+<span class="sd">ru.match_substring_in_str(search_string,</span>
+<span class="sd">            test_str)</span>
+
+
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">re</span> 
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Exaples of searches-----------------</span>
+<span class="sd">Basic process: </span>
+<span class="sd">1) Compile a patter</span>
+<span class="sd">2) run find iter or search</span>
+<span class="sd">3) Do something with the results</span>
+
+<span class="sd">------------Example 1: shows how to find start and end ------------</span>
+<span class="sd">#import re</span>
+<span class="sd">s = &quot;hello there 12345 hig pig&quot;</span>
+<span class="sd">pattern = re.compile(r&quot;\b(\w{3})\b&quot;)</span>
+<span class="sd">s_find = pattern.finditer(s)</span>
+
+<span class="sd">for st in s_find:</span>
+<span class="sd">    print(st.start(),st.end())</span>
+<span class="sd">    print(st.span())</span>
+<span class="sd">    print(st.groups())</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">--------- Example 2: How to replace expression with function ------</span>
+<span class="sd">#import re</span>
+<span class="sd">s = &quot;hello there 12345 hig pig&quot;</span>
+<span class="sd">pattern = re.compile(r&quot;\b(\w{3})\b&quot;)</span>
+
+<span class="sd">def convert_func(match_obj):</span>
+<span class="sd">    return f&quot;--this was {match_obj.group(1)} replaced--&quot;</span>
+
+<span class="sd">res_str = pattern.sub(convert_func,s)</span>
+
+
+<span class="sd">------ Example 3: Showing complex replacement --------</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Accomplishes the following change</span>
+<span class="sd">before replace:</span>
+<span class="sd"> (x == MAX( x )) or (x = 6)</span>
+<span class="sd">after replace:</span>
+<span class="sd"> (x == (SELECT MAX( x ) FROM df)) or (x = 6)</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">verbose = True</span>
+<span class="sd">s = &quot;(x == MAX( x )) or (x = 6)&quot;</span>
+
+<span class="sd">if verbose:</span>
+<span class="sd">    print(f&quot;before replace:\n {s}&quot;)</span>
+
+<span class="sd">def convert_func(match_obj):</span>
+<span class="sd">    return f&quot;(SELECT {match_obj.group(1).upper()}({match_obj.group(2)}) FROM df)&quot;</span>
+
+
+<span class="sd">sql_pattern = re.compile(fr&quot;({func_name}|{func_name.lower()}|{func_name.upper()})\(([A-Za-z0-9_\s]+)\)&quot;)</span>
+<span class="sd">s = sql_pattern.sub(convert_func,s)</span>
+
+<span class="sd">if verbose:</span>
+<span class="sd">    print(f&quot;after replace:\n {s}&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd"># ------- searching for something but only replacing a certain part ----</span>
+
+<span class="sd">Ex: Will </span>
+<span class="sd">s = dotmotif_str</span>
+<span class="sd">s = &quot;6P-PT  -&gt; hellow&quot;</span>
+<span class="sd">pattern = (</span>
+<span class="sd">    &quot;([a-zA-Z0-9])-([a-zA-Z0-9])&quot;)</span>
+<span class="sd">re.sub(pattern,r&quot;\1\2&quot;,s)</span>
+
+<span class="sd"># --- captured groups vs uncaptured groups</span>
+<span class="sd">(?: something) this is an uncaptured group, where group something together but not save for named</span>
+<span class="sd">():captured group</span>
+
+
+
+<span class="sd"># -------- Example: Lookbs for no alphanumeric char ---</span>
+<span class="sd">(?&lt;![a-zA-z_])volume_utils #look behind (letters that preceeded)</span>
+<span class="sd">volume_utils(?![a-zA-z_])# look ahead (letters that come after)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">start_of_file_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\A&quot;</span>
+<span class="n">end_of_file_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\Z&quot;</span>
+
+<span class="n">start_of_line_pattern</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;(?:</span><span class="si">{</span><span class="n">start_of_file_pattern</span><span class="si">}</span><span class="s2">|\n)&quot;</span>
+<span class="n">multiline_str_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;([&#39;&quot;])\1\1(.*?)\1</span><span class="si">{3}</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">word_pattern</span> <span class="o">=</span> <span class="s2">&quot;[a-zA-Z._]+&quot;</span>
+<span class="n">word_pattern_comma_space</span> <span class="o">=</span> <span class="s2">&quot;[a-zA-Z._, ]+&quot;</span>
+<span class="n">word_pattern_number</span> <span class="o">=</span> <span class="s2">&quot;[a-zA-Z._][a-zA-Z._0-9]+&quot;</span>
+<span class="n">word_pattern_comma_space_numb</span> <span class="o">=</span> <span class="s2">&quot;[a-zA-Z._, ][a-zA-Z._, 0-9]*&quot;</span>
+
+<div class="viewcode-block" id="multiple_replace"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.multiple_replace">[docs]</a><span class="k">def</span> <span class="nf">multiple_replace</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">dict_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To replace multiple strings with a dictionary apping</span>
+<span class="sd">    </span>
+<span class="sd">    Ex: </span>
+<span class="sd">    from datasci_tools import regex_utils as ru</span>
+<span class="sd">    query = &quot;u in [1,2,3,4]&quot;</span>
+<span class="sd">    dict_mapping = dict(u=&quot;v&quot;,v=&quot;u&quot;)</span>
+<span class="sd">    ru.multiple_replace(query,dict_mapping)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a regular expression  from the dictionary keys</span>
+    <span class="k">if</span> <span class="n">dict_map</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="n">dict_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+        <span class="c1"># For each match, look-up corresponding value in dictionary</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">mo</span><span class="p">:</span> <span class="n">dict_map</span><span class="p">[</span><span class="n">mo</span><span class="o">.</span><span class="n">string</span><span class="p">[</span><span class="n">mo</span><span class="o">.</span><span class="n">start</span><span class="p">():</span><span class="n">mo</span><span class="o">.</span><span class="n">end</span><span class="p">()]],</span> <span class="n">text</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">text</span></div>
+        
+
+<div class="viewcode-block" id="all_match_substring_in_str"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.all_match_substring_in_str">[docs]</a><span class="k">def</span> <span class="nf">all_match_substring_in_str</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span><span class="n">expression</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span><span class="n">expression</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">z</span></div>
+
+<div class="viewcode-block" id="match_substring_in_str"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.match_substring_in_str">[docs]</a><span class="k">def</span> <span class="nf">match_substring_in_str</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span><span class="n">expression</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span><span class="n">expression</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">z</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+    
+<div class="viewcode-block" id="substr_from_match_obj"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.substr_from_match_obj">[docs]</a><span class="k">def</span> <span class="nf">substr_from_match_obj</span><span class="p">(</span><span class="n">match_obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">match_obj</span><span class="o">.</span><span class="n">string</span><span class="p">[</span><span class="n">match_obj</span><span class="o">.</span><span class="n">span</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span><span class="n">match_obj</span><span class="o">.</span><span class="n">span</span><span class="p">()[</span><span class="mi">1</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="sub_str_for_pattern"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.sub_str_for_pattern">[docs]</a><span class="k">def</span> <span class="nf">sub_str_for_pattern</span><span class="p">(</span>
+    <span class="n">s</span><span class="p">,</span>
+    <span class="n">pattern</span><span class="p">,</span>
+    <span class="n">replacement</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="n">replacement</span><span class="p">,</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sub_str_for_pattern_with_count"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.sub_str_for_pattern_with_count">[docs]</a><span class="k">def</span> <span class="nf">sub_str_for_pattern_with_count</span><span class="p">(</span>
+    <span class="n">s</span><span class="p">,</span>
+    <span class="n">pattern</span><span class="p">,</span>
+    <span class="n">replacement</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span><span class="n">replacement</span><span class="p">,</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="match_pattern_in_str"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.regex_utils.match_pattern_in_str">[docs]</a><span class="k">def</span> <span class="nf">match_pattern_in_str</span><span class="p">(</span>
+    <span class="n">string</span><span class="p">,</span>
+    <span class="n">pattern</span><span class="p">,</span>
+    <span class="n">return_one</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To find the string that</span>
+<span class="sd">    matches the pattern compiled</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+    <span class="n">s_find</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="n">found_strings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">s_find</span><span class="p">:</span>
+        <span class="n">found_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">start</span><span class="p">():</span><span class="n">st</span><span class="o">.</span><span class="n">end</span><span class="p">()])</span>
+        
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;found_strings = </span><span class="si">{</span><span class="n">found_strings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_one</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">found_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">found_strings</span></div>
+    
+
+
+
+
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">regex_utils</span> <span class="k">as</span> <span class="n">ru</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

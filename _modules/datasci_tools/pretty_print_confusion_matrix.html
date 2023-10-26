@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>datasci_tools.pretty_print_confusion_matrix &mdash; datasci_tools 1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=404a92a0"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            datasci_tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">datasci_tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datasci_tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">datasci_tools.pretty_print_confusion_matrix</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for datasci_tools.pretty_print_confusion_matrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+
+
+<span class="sd">plot a pretty confusion matrix with seaborn</span>
+<span class="sd">Created on Mon Jun 25 14:17:37 2018</span>
+<span class="sd">@author: Wagner Cipriano - wagnerbhbr - gmail - CEFETMG / MMC</span>
+<span class="sd">REFerences:</span>
+<span class="sd">  https://www.mathworks.com/help/nnet/ref/plotconfusion.html</span>
+<span class="sd">  https://stackoverflow.com/questions/28200786/how-to-plot-scikit-learn-classification-report</span>
+<span class="sd">  https://stackoverflow.com/questions/5821125/how-to-plot-confusion-matrix-with-string-axis-rather-than-integer-in-python</span>
+<span class="sd">  https://www.programcreek.com/python/example/96197/seaborn.heatmap</span>
+<span class="sd">  https://stackoverflow.com/questions/19233771/sklearn-plot-confusion-matrix-with-labels/31720054</span>
+<span class="sd">  http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py</span>
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">QuadMesh</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">import</span> <span class="nn">matplotlib.font_manager</span> <span class="k">as</span> <span class="nn">fm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">numpy_dep</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sn</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">#imports</span>
+<span class="c1">#from pandas import DataFrame</span>
+<span class="c1">#from . import numpy_dep as np</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="c1">#import matplotlib.font_manager as fm</span>
+<span class="c1">#from matplotlib.collections import QuadMesh</span>
+<span class="c1">#import seaborn as sn</span>
+
+
+<div class="viewcode-block" id="get_new_fig"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pretty_print_confusion_matrix.get_new_fig">[docs]</a><span class="k">def</span> <span class="nf">get_new_fig</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Init graphics &quot;&quot;&quot;</span>
+    <span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">figsize</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>   <span class="c1">#Get Current Axis</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span> <span class="c1"># clear existing plot</span>
+    <span class="k">return</span> <span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span></div>
+<span class="c1">#</span>
+
+<span class="n">percentage_wrong_color</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span>
+<span class="n">percentage_right_color</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span>
+
+<div class="viewcode-block" id="configcell_text_and_colors"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pretty_print_confusion_matrix.configcell_text_and_colors">[docs]</a><span class="k">def</span> <span class="nf">configcell_text_and_colors</span><span class="p">(</span><span class="n">array_df</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">oText</span><span class="p">,</span> <span class="n">facecolors</span><span class="p">,</span> <span class="n">posi</span><span class="p">,</span> <span class="n">fz</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">show_null_values</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      config cell text and colors</span>
+<span class="sd">      and return text elements to add and to dell</span>
+<span class="sd">      @TODO: use fmt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">text_add</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">text_del</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="n">cell_val</span> <span class="o">=</span> <span class="n">array_df</span><span class="p">[</span><span class="n">lin</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+    <span class="n">tot_all</span> <span class="o">=</span> <span class="n">array_df</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">per</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cell_val</span><span class="p">)</span> <span class="o">/</span> <span class="n">tot_all</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">curr_column</span> <span class="o">=</span> <span class="n">array_df</span><span class="p">[:,</span><span class="n">col</span><span class="p">]</span>
+    <span class="n">ccl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">curr_column</span><span class="p">)</span>
+
+    <span class="c1">#last line  and/or last column</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="p">(</span><span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">lin</span> <span class="o">==</span> <span class="p">(</span><span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="c1">#tots and percents</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cell_val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lin</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">tot_rig</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">array_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">tot_rig</span> <span class="o">+=</span> <span class="n">array_df</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">per_ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">tot_rig</span><span class="p">)</span> <span class="o">/</span> <span class="n">cell_val</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">tot_rig</span> <span class="o">=</span> <span class="n">array_df</span><span class="p">[</span><span class="n">lin</span><span class="p">][</span><span class="n">lin</span><span class="p">]</span>
+                <span class="n">per_ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">tot_rig</span><span class="p">)</span> <span class="o">/</span> <span class="n">cell_val</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">lin</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">tot_rig</span> <span class="o">=</span> <span class="n">array_df</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+                <span class="n">per_ok</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">tot_rig</span><span class="p">)</span> <span class="o">/</span> <span class="n">cell_val</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="n">per_err</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">per_ok</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">per_ok</span> <span class="o">=</span> <span class="n">per_err</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">per_ok_s</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%.1f%%</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">per_ok</span><span class="p">),</span> <span class="s1">&#39;100%&#39;</span><span class="p">]</span> <span class="p">[</span><span class="n">per_ok</span> <span class="o">==</span> <span class="mi">100</span><span class="p">]</span>
+
+        <span class="c1">#text to DEL</span>
+        <span class="n">text_del</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oText</span><span class="p">)</span>
+
+        <span class="c1">#text to ADD</span>
+        <span class="n">font_prop</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fz</span><span class="p">)</span>
+        <span class="n">text_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">gid</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font_prop</span><span class="p">)</span>
+        <span class="n">lis_txt</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">cell_val</span><span class="p">),</span> <span class="n">per_ok_s</span><span class="p">,]</span><span class="c1"># &#39;%.1f%%&#39;%(per_err)]</span>
+        <span class="n">lis_kwa</span> <span class="o">=</span> <span class="p">[</span><span class="n">text_kwargs</span><span class="p">]</span>
+        <span class="n">dic</span> <span class="o">=</span> <span class="n">text_kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">dic</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percentage_right_color</span><span class="p">;</span> <span class="n">lis_kwa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dic</span><span class="p">);</span>
+        <span class="c1">#dic = text_kwargs.copy(); dic[&#39;color&#39;] = percentage_wrong_color; lis_kwa.append(dic);</span>
+        <span class="n">lis_pos</span> <span class="o">=</span> <span class="p">[(</span><span class="n">oText</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">oText</span><span class="o">.</span><span class="n">_y</span><span class="o">-</span><span class="mf">0.3</span><span class="p">),</span> <span class="p">(</span><span class="n">oText</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">oText</span><span class="o">.</span><span class="n">_y</span><span class="p">),</span> <span class="p">(</span><span class="n">oText</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="n">oText</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="mf">0.3</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lis_txt</span><span class="p">)):</span>
+            <span class="n">newText</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">lis_pos</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">lis_pos</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="n">lis_txt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kw</span><span class="o">=</span><span class="n">lis_kwa</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="c1">#print &#39;lin: %s, col: %s, newText: %s&#39; %(lin, col, newText)</span>
+            <span class="n">text_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newText</span><span class="p">)</span>
+        <span class="c1">#print &#39;\n&#39;</span>
+
+        <span class="c1">#set background color for sum cells (last line and last column)</span>
+        <span class="n">carr</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.27</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.27</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lin</span> <span class="o">==</span> <span class="n">ccl</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">carr</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.17</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+        <span class="n">facecolors</span><span class="p">[</span><span class="n">posi</span><span class="p">]</span> <span class="o">=</span> <span class="n">carr</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">per</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">cell_val</span><span class="p">,)</span><span class="c1">#%.1f%%&#39; %(cell_val, per)</span>
+            <span class="c1">#txt = &#39;%s\n%.1f%%&#39; %(cell_val, per)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">show_null_values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">show_null_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;0</span><span class="se">\n</span><span class="s1">0.0%&#39;</span>
+        <span class="n">oText</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+
+        <span class="c1">#main diagonal</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">lin</span><span class="p">):</span>
+            <span class="c1">#set color of the textin the diagonal to white</span>
+            <span class="n">oText</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="c1"># set background color in the diagonal to blue</span>
+            <span class="n">facecolors</span><span class="p">[</span><span class="n">posi</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">oText</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text_add</span><span class="p">,</span> <span class="n">text_del</span></div>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="insert_totals"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pretty_print_confusion_matrix.insert_totals">[docs]</a><span class="k">def</span> <span class="nf">insert_totals</span><span class="p">(</span><span class="n">df_cm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; insert total column and line (the last ones) &quot;&quot;&quot;</span>
+    <span class="n">sum_col</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df_cm</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">sum_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">df_cm</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">sum_lin</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item_line</span> <span class="ow">in</span> <span class="n">df_cm</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">sum_lin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">item_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">df_cm</span><span class="p">[</span><span class="s1">&#39;Combined&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_lin</span>
+    <span class="n">sum_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sum_lin</span><span class="p">))</span>
+    <span class="n">df_cm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Combined&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_col</span></div>
+    <span class="c1">#print (&#39;\ndf_cm:\n&#39;, df_cm, &#39;\n\b\n&#39;)</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="pretty_plot_confusion_matrix"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pretty_print_confusion_matrix.pretty_plot_confusion_matrix">[docs]</a><span class="k">def</span> <span class="nf">pretty_plot_confusion_matrix</span><span class="p">(</span><span class="n">df_cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Oranges&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">,</span> <span class="n">fz</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+      <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">show_null_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pred_val_axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span>
+                                 <span class="n">axes_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Confusion matrix&#39;</span><span class="p">,</span>
+                                 <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                 <span class="n">ticklabel_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                                <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      print conf matrix with default layout (like matlab)</span>
+<span class="sd">      params:</span>
+<span class="sd">        df_cm          dataframe (pandas) without totals</span>
+<span class="sd">        annot          print text in each cell</span>
+<span class="sd">        cmap           Oranges,Oranges_r,YlGnBu,Blues,RdBu, ... see:</span>
+<span class="sd">        fz             fontsize</span>
+<span class="sd">        lw             linewidth</span>
+<span class="sd">        pred_val_axis  where to show the prediction values (x or y axis)</span>
+<span class="sd">                        &#39;col&#39; or &#39;x&#39;: show predicted values in columns (x axis) instead lines</span>
+<span class="sd">                        &#39;lin&#39; or &#39;y&#39;: show predicted values in lines   (y axis)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pred_val_axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)):</span>
+        <span class="n">xlbl</span> <span class="o">=</span> <span class="s1">&#39;Predicted&#39;</span>
+        <span class="n">ylbl</span> <span class="o">=</span> <span class="s1">&#39;Actual&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xlbl</span> <span class="o">=</span> <span class="s1">&#39;Actual&#39;</span>
+        <span class="n">ylbl</span> <span class="o">=</span> <span class="s1">&#39;Predicted&#39;</span>
+        <span class="n">df_cm</span> <span class="o">=</span> <span class="n">df_cm</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># create &quot;Total&quot; column</span>
+    <span class="n">insert_totals</span><span class="p">(</span><span class="n">df_cm</span><span class="p">)</span>
+
+    <span class="c1">#this is for print allways in the same window</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">get_new_fig</span><span class="p">(</span><span class="s1">&#39;Conf matrix default&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="p">)</span>
+
+    <span class="c1">#thanks for seaborn</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">sn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df_cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">fz</span><span class="p">},</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span>
+                    <span class="n">cbar</span><span class="o">=</span><span class="n">cbar</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+
+    <span class="c1">#set ticklabels rotation</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span> <span class="o">=</span> <span class="mi">45</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="n">ticklabel_fontsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">(),</span> <span class="n">rotation</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="n">ticklabel_fontsize</span><span class="p">)</span>
+
+    <span class="c1"># Turn off all the ticks</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">tick1On</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">tick2On</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">tick1On</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">tick2On</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#face colors list</span>
+    <span class="n">quadmesh</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">findobj</span><span class="p">(</span><span class="n">QuadMesh</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">facecolors</span> <span class="o">=</span> <span class="n">quadmesh</span><span class="o">.</span><span class="n">get_facecolors</span><span class="p">()</span>
+
+    <span class="c1">#iter in text elements</span>
+    <span class="n">array_df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">df_cm</span><span class="o">.</span><span class="n">to_records</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">text_add</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">text_del</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="n">posi</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1">#from left to right, bottom to top.</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">texts</span><span class="p">:</span> <span class="c1">#ax.texts:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">t</span><span class="o">.</span><span class="n">get_position</span><span class="p">())</span> <span class="o">-</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]</span>
+        <span class="n">lin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">posi</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1">#print (&#39;&gt;&gt;&gt; pos: %s, posi: %s, val: %s, txt: %s&#39; %(pos, posi, array_df[lin][col], t.get_text()))</span>
+
+        <span class="c1">#set text</span>
+        <span class="n">txt_res</span> <span class="o">=</span> <span class="n">configcell_text_and_colors</span><span class="p">(</span><span class="n">array_df</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">facecolors</span><span class="p">,</span> <span class="n">posi</span><span class="p">,</span> <span class="n">fz</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">show_null_values</span><span class="p">)</span>
+
+        <span class="n">text_add</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">txt_res</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">text_del</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">txt_res</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#remove the old ones</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">text_del</span><span class="p">:</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+    <span class="c1">#append the new ones</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">text_add</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;kw&#39;</span><span class="p">])</span>
+
+    <span class="c1">#titles and legends</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">title_fontsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlbl</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">axes_fontsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylbl</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">axes_fontsize</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  <span class="c1">#set layout slim</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="plot_confusion_matrix_from_data"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pretty_print_confusion_matrix.plot_confusion_matrix_from_data">[docs]</a><span class="k">def</span> <span class="nf">plot_confusion_matrix_from_data</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Oranges&quot;</span><span class="p">,</span>
+      <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">,</span> <span class="n">fz</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">show_null_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pred_val_axis</span><span class="o">=</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span>
+                                   <span class="n">axes_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Confusion matrix&#39;</span><span class="p">,</span>
+                                 <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                 <span class="n">ticklabel_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        plot confusion matrix function with y_test (actual values) and predictions (predic),</span>
+<span class="sd">        whitout a confusion matrix yet</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+    <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+    <span class="c1">#data</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="c1">#labels axis integer:</span>
+        <span class="c1">##columns = range(1, len(np.unique(y_test))+1)</span>
+        <span class="c1">#labels axis string:</span>
+        <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_uppercase</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;class </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ascii_uppercase</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_test</span><span class="p">))]]</span>
+
+    <span class="n">confm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span><span class="n">labels</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1">#cmap = &#39;Oranges&#39;;</span>
+    <span class="c1">#fz = 11;</span>
+    <span class="c1">#figsize=[9,9];</span>
+    <span class="c1">#show_null_values = 2</span>
+    <span class="n">df_cm</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">confm</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">pretty_plot_confusion_matrix</span><span class="p">(</span><span class="n">df_cm</span><span class="p">,</span> <span class="n">fz</span><span class="o">=</span><span class="n">fz</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="n">show_null_values</span><span class="o">=</span><span class="n">show_null_values</span><span class="p">,</span>
+                                 <span class="n">pred_val_axis</span><span class="o">=</span><span class="n">pred_val_axis</span><span class="p">,</span>
+                                <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                                <span class="n">axes_fontsize</span><span class="o">=</span><span class="n">axes_fontsize</span><span class="p">,</span>
+                                <span class="n">title_fontsize</span><span class="o">=</span><span class="n">title_fontsize</span><span class="p">,</span>
+                                <span class="n">ticklabel_fontsize</span><span class="o">=</span><span class="n">ticklabel_fontsize</span><span class="p">)</span></div>
+<span class="c1">#</span>
+
+
+
+<span class="c1">#</span>
+<span class="c1">#TEST functions</span>
+<span class="c1">#</span>
+<span class="k">def</span> <span class="nf">_test_cm</span><span class="p">():</span>
+    <span class="c1">#test function with confusion matrix done</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[[</span><span class="mi">13</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+                       <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+                       <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+                       <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+                       <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+                       <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">]])</span>
+    <span class="c1">#get pandas dataframe</span>
+    <span class="n">df_cm</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+    <span class="c1">#colormap: see this and choose your more dear</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;PuRd&#39;</span>
+    <span class="n">pretty_plot_confusion_matrix</span><span class="p">(</span><span class="n">df_cm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="c1">#</span>
+
+<span class="k">def</span> <span class="nf">_test_data_class</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; test function with y_test (actual values) and predictions (predic) &quot;&quot;&quot;</span>
+    <span class="c1">#data</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">predic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Examples to validate output (confusion matrix plot)</span>
+<span class="sd">        actual: 5 and prediction 1   &gt;&gt;  3</span>
+<span class="sd">        actual: 2 and prediction 4   &gt;&gt;  1</span>
+<span class="sd">        actual: 3 and prediction 4   &gt;&gt;  10</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">;</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;Oranges&#39;</span><span class="p">;</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;.2f&#39;</span>
+    <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">show_null_values</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">pred_val_axis</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+    <span class="c1">#size::</span>
+    <span class="n">fz</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">fz</span><span class="o">=</span><span class="mi">9</span><span class="p">;</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span><span class="mi">14</span><span class="p">];</span>
+    <span class="n">plot_confusion_matrix_from_data</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predic</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span>
+      <span class="n">annot</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">fz</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">cbar</span><span class="p">,</span> <span class="n">figsize</span><span class="p">,</span> <span class="n">show_null_values</span><span class="p">,</span> <span class="n">pred_val_axis</span><span class="p">)</span>
+<span class="c1">#</span>
+
+
+<span class="c1">#</span>
+<span class="c1">#MAIN function</span>
+<span class="c1">#</span>
+<span class="k">if</span><span class="p">(</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;__main__&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_test_cm: test function with confusion matrix done</span><span class="se">\n</span><span class="s1">and pause&#39;</span><span class="p">)</span>
+    <span class="n">_test_cm</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_test_data_class: test function with y_test (actual values) and predictions (predic)&#39;</span><span class="p">)</span>
+    <span class="n">_test_data_class</span><span class="p">()</span>
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Brendan Celii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
