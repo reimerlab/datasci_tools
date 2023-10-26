@@ -1,10 +1,10 @@
-python\_tools package
+datasci\_tools package
 =====================
 
 Submodules
 ----------
 
-python\_tools.algorithms\_utils module
+datasci\_tools.algorithms\_utils module
 --------------------------------------
 
 .. automodule:: datasci_tools.algorithms_utils
@@ -12,7 +12,7 @@ python\_tools.algorithms\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.argparse\_utils module
+datasci\_tools.argparse\_utils module
 ------------------------------------
 
 .. automodule:: datasci_tools.argparse_utils
@@ -20,7 +20,7 @@ python\_tools.argparse\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.data\_struct\_utils module
+datasci\_tools.data\_struct\_utils module
 ----------------------------------------
 
 .. automodule:: datasci_tools.data_struct_utils
@@ -28,7 +28,7 @@ python\_tools.data\_struct\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.dataclass\_utils module
+datasci\_tools.dataclass\_utils module
 -------------------------------------
 
 .. automodule:: datasci_tools.dataclass_utils
@@ -36,7 +36,7 @@ python\_tools.dataclass\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.dict\_utils module
+datasci\_tools.dict\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.dict_utils
@@ -44,7 +44,7 @@ python\_tools.dict\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.dj\_utils module
+datasci\_tools.dj\_utils module
 ------------------------------
 
 .. automodule:: datasci_tools.dj_utils
@@ -52,7 +52,7 @@ python\_tools.dj\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.enum\_utils module
+datasci\_tools.enum\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.enum_utils
@@ -60,7 +60,7 @@ python\_tools.enum\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.file\_utils module
+datasci\_tools.file\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.file_utils
@@ -68,7 +68,7 @@ python\_tools.file\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.filtering\_utils module
+datasci\_tools.filtering\_utils module
 -------------------------------------
 
 .. automodule:: datasci_tools.filtering_utils
@@ -76,7 +76,7 @@ python\_tools.filtering\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.function\_utils module
+datasci\_tools.function\_utils module
 ------------------------------------
 
 .. automodule:: datasci_tools.function_utils
@@ -84,7 +84,7 @@ python\_tools.function\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.general\_utils module
+datasci\_tools.general\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.general_utils
@@ -92,7 +92,7 @@ python\_tools.general\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.hash\_utils module
+datasci\_tools.hash\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.hash_utils
@@ -100,7 +100,7 @@ python\_tools.hash\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.inspect\_utils module
+datasci\_tools.inspect\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.inspect_utils
@@ -108,7 +108,7 @@ python\_tools.inspect\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.ipyvolume\_movie\_utils module
+datasci\_tools.ipyvolume\_movie\_utils module
 --------------------------------------------
 
 .. automodule:: datasci_tools.ipyvolume_movie_utils
@@ -116,7 +116,7 @@ python\_tools.ipyvolume\_movie\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.ipyvolume\_utils module
+datasci\_tools.ipyvolume\_utils module
 -------------------------------------
 
 .. automodule:: datasci_tools.ipyvolume_utils
@@ -124,7 +124,7 @@ python\_tools.ipyvolume\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.json\_utils module
+datasci\_tools.json\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.json_utils
@@ -132,7 +132,7 @@ python\_tools.json\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.linalg\_utils module
+datasci\_tools.linalg\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.linalg_utils
@@ -140,7 +140,7 @@ python\_tools.linalg\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.logging\_utils module
+datasci\_tools.logging\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.logging_utils
@@ -148,7 +148,7 @@ python\_tools.logging\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.matlab\_utils module
+datasci\_tools.matlab\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.matlab_utils
@@ -156,7 +156,7 @@ python\_tools.matlab\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.matplotlib\_utils module
+datasci\_tools.matplotlib\_utils module
 --------------------------------------
 
 .. automodule:: datasci_tools.matplotlib_utils
@@ -164,7 +164,7 @@ python\_tools.matplotlib\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.mesh\_utils module
+datasci\_tools.mesh\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.mesh_utils
@@ -172,7 +172,7 @@ python\_tools.mesh\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.module\_utils module
+datasci\_tools.module\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.module_utils
@@ -180,7 +180,7 @@ python\_tools.module\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.networkx\_utils module
+datasci\_tools.networkx\_utils module
 ------------------------------------
 
 .. automodule:: datasci_tools.networkx_utils
@@ -188,7 +188,7 @@ python\_tools.networkx\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.numpy\_utils module
+datasci\_tools.numpy\_utils module
 ---------------------------------
 
 .. automodule:: datasci_tools.numpy_utils
@@ -196,7 +196,7 @@ python\_tools.numpy\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.package\_utils module
+datasci\_tools.package\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.package_utils
@@ -204,7 +204,7 @@ python\_tools.package\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.pandas\_utils module
+datasci\_tools.pandas\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.pandas_utils
@@ -212,7 +212,7 @@ python\_tools.pandas\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.pathlib\_utils module
+datasci\_tools.pathlib\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.pathlib_utils
@@ -220,7 +220,7 @@ python\_tools.pathlib\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.pretty\_print\_confusion\_matrix module
+datasci\_tools.pretty\_print\_confusion\_matrix module
 -----------------------------------------------------
 
 .. automodule:: datasci_tools.pretty_print_confusion_matrix
@@ -228,7 +228,7 @@ python\_tools.pretty\_print\_confusion\_matrix module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.pydantic\_utls module
+datasci\_tools.pydantic\_utls module
 -----------------------------------
 
 .. automodule:: datasci_tools.pydantic_utls
@@ -236,7 +236,7 @@ python\_tools.pydantic\_utls module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.regex\_utils module
+datasci\_tools.regex\_utils module
 ---------------------------------
 
 .. automodule:: datasci_tools.regex_utils
@@ -244,7 +244,7 @@ python\_tools.regex\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.requirement\_utils module
+datasci\_tools.requirement\_utils module
 ---------------------------------------
 
 .. automodule:: datasci_tools.requirement_utils
@@ -252,7 +252,7 @@ python\_tools.requirement\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.scipy\_utils module
+datasci\_tools.scipy\_utils module
 ---------------------------------
 
 .. automodule:: datasci_tools.scipy_utils
@@ -260,7 +260,7 @@ python\_tools.scipy\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.seaborn\_utils module
+datasci\_tools.seaborn\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.seaborn_utils
@@ -268,7 +268,7 @@ python\_tools.seaborn\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.setup\_py\_utils module
+datasci\_tools.setup\_py\_utils module
 -------------------------------------
 
 .. automodule:: datasci_tools.setup_py_utils
@@ -276,7 +276,7 @@ python\_tools.setup\_py\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.statistics\_utils module
+datasci\_tools.statistics\_utils module
 --------------------------------------
 
 .. automodule:: datasci_tools.statistics_utils
@@ -284,7 +284,7 @@ python\_tools.statistics\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.statistics\_visualizations module
+datasci\_tools.statistics\_visualizations module
 -----------------------------------------------
 
 .. automodule:: datasci_tools.statistics_visualizations
@@ -292,7 +292,7 @@ python\_tools.statistics\_visualizations module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.string\_utils module
+datasci\_tools.string\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.string_utils
@@ -300,7 +300,7 @@ python\_tools.string\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.system\_utils module
+datasci\_tools.system\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.system_utils
@@ -308,7 +308,7 @@ python\_tools.system\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.tqdm\_utils module
+datasci\_tools.tqdm\_utils module
 --------------------------------
 
 .. automodule:: datasci_tools.tqdm_utils
@@ -316,7 +316,7 @@ python\_tools.tqdm\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.typeing\_utils module
+datasci\_tools.typeing\_utils module
 -----------------------------------
 
 .. automodule:: datasci_tools.typeing_utils
@@ -324,7 +324,7 @@ python\_tools.typeing\_utils module
    :undoc-members:
    :show-inheritance:
 
-python\_tools.widget\_utils module
+datasci\_tools.widget\_utils module
 ----------------------------------
 
 .. automodule:: datasci_tools.widget_utils

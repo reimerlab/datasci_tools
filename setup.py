@@ -17,15 +17,34 @@ def get_links():
     return [
         #"git+https://github.com/bacelii/machine_learning_tools.git"
     ]
+    
+    
 
+
+def get_long_description(filepath='README.md'):
+    try:
+        import pypandoc
+    except:
+        raise Exception("Need to install pypandoc (and if havent done so install apt-get install pandoc)")
+        
+    long_description = pypandoc.convert_file(filepath, 'rst')        
+    return long_description
 
 
 setup(
     name='datasci_tools', # the name of the package, which can be different than the folder when using pip instal
-    version='1.0.0',
-    description='',
+    version='1.0.4',
+    description='Utility functions for commonly used data science packages (numpy, pandas, etc) and generic python utility functions',
+    
+    #long_description = Path("README.md").read_text()
+    #long_description_content_type="something crazy",
+    long_description=get_long_description(),
+    project_urls={
+        'Source':"https://github.com/reimerlab/datasci_tools",
+        'Documentation':"https://reimerlab.github.io/datasci_tools/",
+    },
     author='Brendan Celii',
-    author_email='brendanacelii',
+    author_email='brendanacelii@gmail.com',
     packages=find_packages(),  #teslls what packages to be included for the install
     install_requires=get_install_requires(), #external packages as dependencies
     dependency_links = get_links(),
@@ -38,7 +57,7 @@ setup(
     entry_points={
         #'console_scripts': ['pipeline_download=Applications.Eleox_Data_Fetch.Eleox_Data_Fetcher_vp1:main']
     },
-    scripts=[], 
+    scripts=[],
     
 )
 

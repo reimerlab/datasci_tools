@@ -30,6 +30,15 @@ def get_install_requires(filepath=None):
     targets += get_links()
     return targets
 
+def get_long_description(filepath='README.md'):
+    try:
+        import pypandoc
+        long_description = pypandoc.convert_file(filepath, 'rst')
+    except(IOError, ImportError):
+        long_description = open('README.md').read()
+        
+    return long_description
+
 
 
 setup_py_str = """
@@ -38,6 +47,9 @@ setup(
     name='[name]', # the name of the package, which can be different than the folder when using pip instal
     version='[version]',
     description='[description]',
+    long_description=get_long_description(),
+    #long_description_content_type = 'text/markdown',
+    url='[url]',
     author='[author]',
     author_email='[author_email]',
     packages=find_packages(),  #teslls what packages to be included for the install
@@ -53,7 +65,21 @@ setup(
         #'console_scripts': ['pipeline_download=Applications.Eleox_Data_Fetch.Eleox_Data_Fetcher_vp1:main']
     },
     scripts=[], 
+    #python_requires=">=3.8",
+    # project_urls={
+    #     'Source':"https://github.com/reimerlab/datasci_tools",
+    #     'Documentation':"https://reimerlab.github.io/datasci_tools/",
+    # },
     
+    # these are tags you can use to search for 
+    #classifiers=[
+    #   
+    #]
+    
+    # for optional requirements and would install using pip install packagename[key]
+    #extras_require={
+    #  key:[list of packages],
+    #}
 )
 
 """
@@ -62,7 +88,7 @@ def setup_py_str_generator(
     name,
     version = "1.0.0",
     author = "Brendan Celii",
-    author_email = "brendanacelii",
+    author_email = "brendanacelii@gmail.com",
     description = "",
     output_path = None,
     import_list = (
@@ -70,6 +96,7 @@ def setup_py_str_generator(
         "from setuptools import setup, find_packages",
         "from typing import List" ,
     ),
+    url = "None",
     ):
     
     replace_dict = {
@@ -77,7 +104,8 @@ def setup_py_str_generator(
         "[version]":version,
         "[author]":author,
         "[author_email]":author_email,
-        "[description]":description
+        "[description]":description,
+        "[url]":url,
     }
     
     data =  str(setup_py_str)    
@@ -88,6 +116,7 @@ def setup_py_str_generator(
         "\n".join(import_list)  + "\n"
         + "\n" + iu.function_code_as_str(get_install_requires)
         + "\n" + iu.function_code_as_str(get_links)
+        + "\n" + iu.function_code_as_str(get_long_description)
         + "\n" + data
     )
     

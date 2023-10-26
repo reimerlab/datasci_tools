@@ -1,0 +1,102 @@
+---- Tutorial 1: 
+
+source: https://www.youtube.com/watch?v=WGsMydFFPMk
+
+
+1) Create pypi account
+
+a. Go to https://pypi.org/ > Register
+
+2) Create a token:
+
+a. Account Settings > Two factor authentication > Setup
+b. Account Settings > API tokens > Add API token
+c. give token name and scope
+d. Save token
+
+3) Create your package folder
+
+
+# --- what added to setup.py 
+long_description
+long_description_content_type
+url
+name (so that it is unique)
+
+Process for building and pushing to pypi
+
+0) pip3 install build twine
+1) Create your Setup.py
+2) py -m build (will create a dist folder with .whl and .tar.gz files)
+3) Upload it to repository: 
+    python -m twine upload --repository testpypi dist/*
+    username: __token__
+    password: The token password
+
+4) returns the link
+
+
+
+----- Arjan Codes -----
+source: https://www.youtube.com/watch?v=5KEObONUkik
+
+background: 
+1) setuptools helps you package your code:
+- wheel: packaged binary version of your code that is ready for publication
+	pip3 install wheel
+	python setup.py bdist_wheel
+
+- sdist file (.tar.gz), called the source distribution file
+	python setup.py sdist
+
+could run both the wheel and sdist at the same time
+python3 setup.py bdist_wheel sdist
+
+2) You can actually test uploading to pypi: test.pypi.org
+
+3) twine package, helps you check that everything is there before uploading
+	twine check dist/*
+	twine upload -r testpypi dist/*
+
+
+Overall Process: 
+apt-get install pandoc
+pip3 install pypandoc
+
+1) create the setup.py file
+2) ceate the source and binary distribution files
+	python3 setup.py bdist_wheel sdist
+3) Check that everything is in correct using twine
+	twine check dist/*
+4) Upload package to testpypi using twine
+	twine upload -r testpypi dist/*
+5) pip install and check everything works
+6) Upload to pypi
+	twine upload dist/*
+
+Login info:
+
+username: __token__
+password: The token password
+
+
+---How to overwrite a pypi version for a certain number:
+
+source: https://stackoverflow.com/questions/21064581/how-to-overwrite-pypi-package-when-doing-upload-from-command-line
+
+mypackage-0.31.0-py2.py3-none-any.whl
+mypackage-0.31.0-1-py2.py3-none-any.whl
+mypackage-0.31.0-2-py2.py3-none-any.whl
+
+The "-1" or "-2" are build numbers. If pip finds all these files for the same release, it will pick the one with the highest build number
+
+
+Sample project for releases: 
+https://github.com/pypa/sampleproject
+
+
+
+-------------- how to create a .toml file instead ----
+https://stackoverflow.com/questions/73257839/setup-py-install-is-deprecated-warning-shows-up-every-time-i-open-a-terminal-i
+
+pip install setuptools==58.2.0
