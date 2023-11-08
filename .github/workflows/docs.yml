@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: print name
+        run: |
+          echo ${{ github.event.repository.name }}
+
       - name: Install Python
         uses: actions/setup-python@v1
         with:
