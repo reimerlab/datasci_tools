@@ -18,14 +18,14 @@ jobs:
         # run: |
         #   echo ${{ github.event.repository.name }}
         #   name: downcase REPO
-        run: |
-          #export REPO=${{steps.string.outputs.lowercase}}
-          #echo $REPO
-          REPO_URL=$(git config --get remote.origin.url)
-          REPO_NAME=$(basename -s .git $REPO_URL)
-          REPO_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
-          OWNER_NAME=$(dirname $REPO_URL | xargs basename)
-          echo $REPO_NAME
+        # run: |
+        #   #export REPO=${{steps.string.outputs.lowercase}}
+        #   #echo $REPO
+        #   REPO_URL=$(git config --get remote.origin.url)
+        #   REPO_NAME=$(basename -s .git $REPO_URL)
+        #   REPO_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
+        #   OWNER_NAME=$(dirname $REPO_URL | xargs basename)
+        #   echo $REPO_NAME
 
       - name: Install Python
         uses: actions/setup-python@v1
@@ -52,6 +52,9 @@ jobs:
         run: |
           # rm docs/${{ github.event.repository.name }}.rst
           # sphinx-apidoc -o docs ${{ github.event.repository.name }}
+          REPO_URL=$(git config --get remote.origin.url)
+          REPO_NAME=$(basename -s .git $REPO_URL)
+          REPO_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
           echo $REPO_NAME
           rm docs/$REPO_NAME.rst
           sphinx-apidoc -o docs $REPO_NAME/
