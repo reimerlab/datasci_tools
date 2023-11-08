@@ -220,6 +220,14 @@ datasci\_tools.networkx\_utils module
    :undoc-members:
    :show-inheritance:
 
+datasci\_tools.new\_module module
+---------------------------------
+
+.. automodule:: datasci_tools.new_module
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 datasci\_tools.numpy\_dep module
 --------------------------------
 
