@@ -8,6 +8,8 @@ jobs:
   docs:
     name: Docs
     runs-on: ubuntu-latest
+    env:
+      Repository: { { github.event.repository.name } }
     steps:
       - uses: actions/checkout@v2
 
@@ -16,7 +18,7 @@ jobs:
         #   echo ${{ github.event.repository.name }}
         #   name: downcase REPO
         run: |
-          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+          echo "REPO=${Repository,,}" >>${GITHUB_ENV}
           echo $REPO
 
       - name: Install Python
