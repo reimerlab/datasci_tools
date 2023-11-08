@@ -19,7 +19,7 @@ jobs:
         #   echo ${{ github.event.repository.name }}
         #   name: downcase REPO
         run: |
-          echo "REPO=${{steps.string.outputs.lowercase}}"
+          export REPO=${{steps.string.outputs.lowercase}}
           echo $REPO
 
       - name: Install Python
