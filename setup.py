@@ -32,7 +32,7 @@ def get_long_description(filepath='README.md'):
 
 
 setup(
-    name='datasci_tools', # the name of the package, which can be different than the folder when using pip instal
+    name='datasci_stdlib_tools', # the name of the package, which can be different than the folder when using pip instal
     version='1.0.0',
     description='Utility functions for commonly used data science packages (numpy, pandas, etc) and generic python utility functions',
     

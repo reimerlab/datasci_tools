@@ -33,9 +33,11 @@ def get_install_requires(filepath=None):
 def get_long_description(filepath='README.md'):
     try:
         import pypandoc
-        long_description = pypandoc.convert_file(filepath, 'rst')
-    except(IOError, ImportError):
-        long_description = open('README.md').read()
+        long_description = pypandoc.convert_file(filepath, 'rst') 
+    except:
+        print("\n\n\n****Need to install pypandoc (and if havent done so install apt-get install pandoc) to make long description clean****\n\n\n")
+        
+        long_description = Path("README.md").read_text()
         
     return long_description
 

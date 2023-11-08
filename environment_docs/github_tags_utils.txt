@@ -1,0 +1,9 @@
+source: https://www.youtube.com/watch?v=Ob9llA_QhQY&t=2s
+
+
+Instructions: 
+1) Left panel: (make new release) or (releases > draft new release)
+
+2) Fill in specifics
+tag: v1.0.0 (click create new tag on publish)
+Name: My first release (or could do 1.0.0)

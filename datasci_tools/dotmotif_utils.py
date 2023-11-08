@@ -70,7 +70,7 @@ B.cell_type in "inhibitoryexcitatory"
 try:
     import dotmotif
 except ImportError as e:
-    raise e("DotMotif must be installed from https://github.com/bacelii/dotmotif/")
+    raise e("DotMotif must be installed from https://github.com/reimerlab/dotmotif/")
     
 from dotmotif import Motif, NetworkXExecutor
 try:
