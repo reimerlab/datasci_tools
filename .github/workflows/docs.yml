@@ -25,6 +25,7 @@ jobs:
           REPO_NAME=$(basename -s .git $REPO_URL)
           REPO_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
           OWNER_NAME=$(dirname $REPO_URL | xargs basename)
+          echo $REPO_NAME
 
       - name: Install Python
         uses: actions/setup-python@v1
