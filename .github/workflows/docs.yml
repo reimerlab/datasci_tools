@@ -12,8 +12,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: print name
+        # run: |
+        #   echo ${{ github.event.repository.name }}
+        #   name: downcase REPO
         run: |
-          echo ${{ github.event.repository.name }}
+          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+          echo $REPO
 
       - name: Install Python
         uses: actions/setup-python@v1
@@ -38,8 +42,10 @@ jobs:
 
       - name: Add any new modules
         run: |
-          rm docs/${{ github.event.repository.name }}.rst
-          sphinx-apidoc -o docs ${{ github.event.repository.name }}/
+          # rm docs/${{ github.event.repository.name }}.rst
+          # sphinx-apidoc -o docs ${{ github.event.repository.name }}
+          rm docs/$REPO.rst
+          sphinx-apidoc -o docs $REPO/
 
       - name: Build docs
         run: |
