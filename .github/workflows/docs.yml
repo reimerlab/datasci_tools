@@ -47,8 +47,8 @@ jobs:
         run: |
           # rm docs/${{ github.event.repository.name }}.rst
           # sphinx-apidoc -o docs ${{ github.event.repository.name }}
-          rm docs/$REPO.rst
-          sphinx-apidoc -o docs $REPO/
+          rm docs/${{REPO}}.rst
+          sphinx-apidoc -o docs ${{REPO}}/
 
       - name: Build docs
         run: |
