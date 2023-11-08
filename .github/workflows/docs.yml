@@ -9,13 +9,17 @@ jobs:
     name: Docs
     runs-on: ubuntu-latest
     steps:
+      - id: string
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ github.event.repository.name }}
       - uses: actions/checkout@v2
       - name: print name
         # run: |
         #   echo ${{ github.event.repository.name }}
         #   name: downcase REPO
         run: |
-          echo "REPO=${{ github.event.repository.name ,,}}" >>${GITHUB_ENV}
+          echo "REPO=${{steps.string.outputs.lowercase}}"
           echo $REPO
 
       - name: Install Python
