@@ -9,18 +9,22 @@ jobs:
     name: Docs
     runs-on: ubuntu-latest
     steps:
-      - id: string
-        uses: ASzc/change-string-case-action@v1
-        with:
-          string: ${{ github.event.repository.name }}
+      # - id: string
+      #   uses: ASzc/change-string-case-action@v1
+      #   with:
+      #     string: ${{ github.event.repository.name }}
       - uses: actions/checkout@v2
       - name: print name
         # run: |
         #   echo ${{ github.event.repository.name }}
         #   name: downcase REPO
         run: |
-          export REPO=${{steps.string.outputs.lowercase}}
-          echo $REPO
+          #export REPO=${{steps.string.outputs.lowercase}}
+          #echo $REPO
+          REPO_URL=$(git config --get remote.origin.url)
+          REPO_NAME=$(basename -s .git $REPO_URL)
+          REPO_NAME=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
+          OWNER_NAME=$(dirname $REPO_URL | xargs basename)
 
       - name: Install Python
         uses: actions/setup-python@v1
@@ -47,8 +51,8 @@ jobs:
         run: |
           # rm docs/${{ github.event.repository.name }}.rst
           # sphinx-apidoc -o docs ${{ github.event.repository.name }}
-          rm docs/${{REPO}}.rst
-          sphinx-apidoc -o docs ${{REPO}}/
+          rm docs/$REPO_NAME.rst
+          sphinx-apidoc -o docs $REPO_NAME/
 
       - name: Build docs
         run: |
