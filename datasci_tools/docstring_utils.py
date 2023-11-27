@@ -3,16 +3,78 @@ Tutorial 1: Sphinx docstring format
 
 source: https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#:~:text=The%20Sphinx%20docstring%20format,-In%20general%2C%20a&text=A%20pair%20of%20%3Aparam%3A%20and,values%20returned%20by%20our%20code.
 
+Documentation for different docstring config with autoDocstringf
+
+https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
+
 """
 
-def myfunc(x = 10,y = 20):
-    """_summary_
 
-    Args:
-        x (int, optional): _description_. Defaults to 10.
-        y (int, optional): _description_. Defaults to 20.
+def summary_from_docstring(
+    docstring,
+    verbose = False,):
     """
+    Purpose: To extract the summary portion
+    of the docstring
     
+    Example
+    -------
+    
+    my_str = '''
+    This is some docstring blah blah
+    blah blah
+
+
+    Other
+    '''
+    
+    
+    summary_from_docstring(my_str)
+    """
+
+    summary = []
+    return_counter = 0
+    max_return_count = 1
+    for s in docstring.split('\n'):
+        if len(s) == 0:
+            if len(summary) == 0:
+                continue
+            else:
+                return_counter += 1
+        else:
+            summary.append(s)
+
+        if return_counter >= max_return_count:
+            break
+
+    if len(summary) > 0:
+        summary = "\n".join(summary)
+    else:
+        summary = ""
+    
+    if verbose:
+        print(f"summary = {summary}")
+    
+    return summary
+
+def myfunc(x = 10,y = 20):
+    """
+    _summary_
+
+    Parameters
+    ----------
+    x : int, optional
+        _description_, by default 10
+    y : int, optional
+        _description_, by default 20
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
+    return None
+
     
 def simple_arg_return_docstring():
     """ function to turn a trimesh object of a neuron into a skeleton, without running soma collapse,

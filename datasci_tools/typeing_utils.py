@@ -22,6 +22,16 @@ def get_install_requires(filepath=None) -> List[str]:
 
 '''
 
-
+# example function with type annottions
+def headline(text: str, centered: bool = False) -> str:
+    if not centered:
+        return f"{text.title()}\n{'-' * len(text)}"
+    else:
+        return f" {text.title()} ".center(50, "o")
+    
+    
+from typing import Union
+def foo(client_id: str) -> Union[list, bool]:
+    pass
 
 

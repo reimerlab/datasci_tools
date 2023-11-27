@@ -1,0 +1,5 @@
+When assigning variable names
+
+REPO_URL=$(git config --get remote.origin.url)
+
+this variable can only be referenced inside the same name: block (otherwise it will be blank)
