@@ -74,16 +74,78 @@
 
 <span class="sd">source: https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#:~:text=The%20Sphinx%20docstring%20format,-In%20general%2C%20a&amp;text=A%20pair%20of%20%3Aparam%3A%20and,values%20returned%20by%20our%20code.</span>
 
+<span class="sd">Documentation for different docstring config with autoDocstringf</span>
+
+<span class="sd">https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="myfunc"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.docstring_utils.myfunc">[docs]</a><span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        x (int, optional): _description_. Defaults to 10.</span>
-<span class="sd">        y (int, optional): _description_. Defaults to 20.</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="summary_from_docstring"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.docstring_utils.summary_from_docstring">[docs]</a><span class="k">def</span> <span class="nf">summary_from_docstring</span><span class="p">(</span>
+    <span class="n">docstring</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose: To extract the summary portion</span>
+<span class="sd">    of the docstring</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    my_str = &#39;&#39;&#39;</span>
+<span class="sd">    This is some docstring blah blah</span>
+<span class="sd">    blah blah</span>
+
+
+<span class="sd">    Other</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    summary_from_docstring(my_str)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">return_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">max_return_count</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">docstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">return_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">summary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_counter</span> <span class="o">&gt;=</span> <span class="n">max_return_count</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;summary = </span><span class="si">{</span><span class="n">summary</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">summary</span></div>
+
+<div class="viewcode-block" id="myfunc"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.docstring_utils.myfunc">[docs]</a><span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    _summary_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : int, optional</span>
+<span class="sd">        _description_, by default 10</span>
+<span class="sd">    y : int, optional</span>
+<span class="sd">        _description_, by default 20</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    _type_</span>
+<span class="sd">        _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
     
 <div class="viewcode-block" id="simple_arg_return_docstring"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.docstring_utils.simple_arg_return_docstring">[docs]</a><span class="k">def</span> <span class="nf">simple_arg_return_docstring</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; function to turn a trimesh object of a neuron into a skeleton, without running soma collapse,</span>

@@ -80,6 +80,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.docstring_utils.docstring_with_code_example"><code class="docutils literal notranslate"><span class="pre">docstring_with_code_example()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.docstring_utils.myfunc"><code class="docutils literal notranslate"><span class="pre">myfunc()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.docstring_utils.simple_arg_return_docstring"><code class="docutils literal notranslate"><span class="pre">simple_arg_return_docstring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.docstring_utils.summary_from_docstring"><code class="docutils literal notranslate"><span class="pre">summary_from_docstring()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.docstring_utils.very_advanced_docstring"><code class="docutils literal notranslate"><span class="pre">very_advanced_docstring()</span></code></a></li>
 </ul>
 </li>
@@ -1310,7 +1311,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.tqdm_utils.turn_on_tqdm"><code class="docutils literal notranslate"><span class="pre">turn_on_tqdm()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-datasci_tools.typeing_utils">datasci_tools.typeing_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datasci_tools.typeing_utils">datasci_tools.typeing_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.typeing_utils.foo"><code class="docutils literal notranslate"><span class="pre">foo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.typeing_utils.headline"><code class="docutils literal notranslate"><span class="pre">headline()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-datasci_tools.widget_utils">datasci_tools.widget_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.widget_utils.add_on_change_func"><code class="docutils literal notranslate"><span class="pre">add_on_change_func()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.widget_utils.boolean_widgets"><code class="docutils literal notranslate"><span class="pre">boolean_widgets</span></code></a></li>
@@ -1647,6 +1652,8 @@ max_phrase_len = 15</p>
 <span id="datasci-tools-docstring-utils-module"></span><h2>datasci_tools.docstring_utils module<a class="headerlink" href="#module-datasci_tools.docstring_utils" title="Permalink to this heading"></a></h2>
 <p>Tutorial 1: Sphinx docstring format</p>
 <p>source: <a class="reference external" href="https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#:~:text=The%20Sphinx%20docstring%20format,-In%20general%2C%20a&amp;text=A%20pair%20of%20%3Aparam%3A%20and,values%20returned%20by%20our%20code">https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#:~:text=The%20Sphinx%20docstring%20format,-In%20general%2C%20a&amp;text=A%20pair%20of%20%3Aparam%3A%20and,values%20returned%20by%20our%20code</a>.</p>
+<p>Documentation for different docstring config with autoDocstringf</p>
+<p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring">https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring</a></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.docstring_utils.docstring_with_code_example">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.docstring_utils.</span></span><span class="sig-name descname"><span class="pre">docstring_with_code_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/docstring_utils.html#docstring_with_code_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.docstring_utils.docstring_with_code_example" title="Permalink to this definition"></a></dt>
@@ -1703,9 +1710,15 @@ cycles of a graph. Comm. ACM 12, 9 (Sept 1969), 514-518.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_. Defaults to 10.</p></li>
-<li><p><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_. Defaults to 20.</p></li>
+<li><p><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_, by default 10</p></li>
+<li><p><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_, by default 20</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1758,6 +1771,20 @@ based upon how it was invalidated.</p></li>
 </p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.docstring_utils.summary_from_docstring">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.docstring_utils.</span></span><span class="sig-name descname"><span class="pre">summary_from_docstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/docstring_utils.html#summary_from_docstring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.docstring_utils.summary_from_docstring" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: To extract the summary portion
+of the docstring</p>
+<p class="rubric">Example</p>
+<p>my_str = ‘’’
+This is some docstring blah blah
+blah blah</p>
+<p>Other
+‘’’</p>
+<p>summary_from_docstring(my_str)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -11317,6 +11344,16 @@ a list of file directories</p>
 </section>
 <section id="module-datasci_tools.typeing_utils">
 <span id="datasci-tools-typeing-utils-module"></span><h2>datasci_tools.typeing_utils module<a class="headerlink" href="#module-datasci_tools.typeing_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.typeing_utils.foo">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.typeing_utils.</span></span><span class="sig-name descname"><span class="pre">foo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/datasci_tools/typeing_utils.html#foo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.typeing_utils.foo" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.typeing_utils.headline">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.typeing_utils.</span></span><span class="sig-name descname"><span class="pre">headline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centered</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/datasci_tools/typeing_utils.html#headline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.typeing_utils.headline" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-datasci_tools.widget_utils">
 <span id="datasci-tools-widget-utils-module"></span><h2>datasci_tools.widget_utils module<a class="headerlink" href="#module-datasci_tools.widget_utils" title="Permalink to this heading"></a></h2>
