@@ -24,6 +24,7 @@ def file_from_dicts(
     seperation_character = ",",
     verbose = False,
     verbose_line = False,
+    header = False,
     ):
     """
     Purpose: Convert list of dictionaries to 
@@ -41,6 +42,9 @@ def file_from_dicts(
 
 
     with open(filepath,"w") as f:
+        if len(dicts)>0 and header:
+            line_to_write = seperation_character.join(list(dicts[0].keys()))+"\n"
+            f.write(line_to_write)
         for i,d in enumerate(dicts):
             line_to_write = seperation_character.join([str(k) for k in d.values()])+"\n"
             if verbose_line:

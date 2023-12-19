@@ -4406,9 +4406,51 @@ def bin_array_column(
 def plot_gradients_over_coordiante_columns(*args,**kwargs):
     return mu.plot_gradients_over_coordiante_columns(*args,**kwargs)
                   
+def column_value_count_str(
+    df,
+    column,
+    count_column_name = "unique_counts",
+    verbose = True,
+    print_N = True,
+    ascending =  True,
+    ):
+    """
+    Purpose
+    -------
+    Want to print the bins and count of bins
+    after grouping a dataframe
+
+    Pseudocode 
+    ----------
+    1) Count the unique number of certain column
+    2) Export that dataframe as a dictionary
+    3) print the dictionary
+    
+    Example
+    -------
+    column_value_count_str(
+        df = pd.DataFrame.from_dict(dict(color = ['r','b','b'],id = ['Brendan',"Celii","Bob"]))
+        column = "color"
+    )
+    """
+    curr_df = pu.sort_df_by_column(
+        pu.count_unique_column_values(
+            df,
+            column,
+            count_column_name = count_column_name
+        ),column,ascending=ascending)
+    array = curr_df[[column,count_column_name]].to_numpy()
+    new_str = ", ".join([f"{k} ({v})" for k,v in array])
+
+    if verbose:
+        if print_N:
+            print(f"N = {len(df)}")
+        print(f"{new_str}")
+
+    return new_str
 
 #from datasci_tools import pandas_utils as pu
-
+column_count_str = column_value_count_str
 
 
 

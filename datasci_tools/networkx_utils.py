@@ -8,8 +8,6 @@ https://github.com/networkx/networkx/blob/main/networkx/drawing/nx_pylab.py#L584
 
 
 
-
-
 '''
 from copy import deepcopy
 from networkx.classes.function import path_weight as pw
