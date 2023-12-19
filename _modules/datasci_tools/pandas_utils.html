@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>datasci_tools.pandas_utils &mdash; datasci_tools 1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -4477,9 +4479,51 @@
 <div class="viewcode-block" id="plot_gradients_over_coordiante_columns"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.plot_gradients_over_coordiante_columns">[docs]</a><span class="k">def</span> <span class="nf">plot_gradients_over_coordiante_columns</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">mu</span><span class="o">.</span><span class="n">plot_gradients_over_coordiante_columns</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
                   
+<div class="viewcode-block" id="column_value_count_str"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.column_value_count_str">[docs]</a><span class="k">def</span> <span class="nf">column_value_count_str</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">column</span><span class="p">,</span>
+    <span class="n">count_column_name</span> <span class="o">=</span> <span class="s2">&quot;unique_counts&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">print_N</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">ascending</span> <span class="o">=</span>  <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose</span>
+<span class="sd">    -------</span>
+<span class="sd">    Want to print the bins and count of bins</span>
+<span class="sd">    after grouping a dataframe</span>
+
+<span class="sd">    Pseudocode </span>
+<span class="sd">    ----------</span>
+<span class="sd">    1) Count the unique number of certain column</span>
+<span class="sd">    2) Export that dataframe as a dictionary</span>
+<span class="sd">    3) print the dictionary</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    column_value_count_str(</span>
+<span class="sd">        df = pd.DataFrame.from_dict(dict(color = [&#39;r&#39;,&#39;b&#39;,&#39;b&#39;],id = [&#39;Brendan&#39;,&quot;Celii&quot;,&quot;Bob&quot;]))</span>
+<span class="sd">        column = &quot;color&quot;</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">curr_df</span> <span class="o">=</span> <span class="n">pu</span><span class="o">.</span><span class="n">sort_df_by_column</span><span class="p">(</span>
+        <span class="n">pu</span><span class="o">.</span><span class="n">count_unique_column_values</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">column</span><span class="p">,</span>
+            <span class="n">count_column_name</span> <span class="o">=</span> <span class="n">count_column_name</span>
+        <span class="p">),</span><span class="n">column</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="n">ascending</span><span class="p">)</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">curr_df</span><span class="p">[[</span><span class="n">column</span><span class="p">,</span><span class="n">count_column_name</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">new_str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">array</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">print_N</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;N = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_str</span></div>
 
 <span class="c1">#from datasci_tools import pandas_utils as pu</span>
-
+<span class="n">column_count_str</span> <span class="o">=</span> <span class="n">column_value_count_str</span>
 
 
 

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>datasci_tools package &mdash; datasci_tools 1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -969,7 +971,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.closest_row_to_coordinate"><code class="docutils literal notranslate"><span class="pre">closest_row_to_coordinate()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.col_to_datatype_dict"><code class="docutils literal notranslate"><span class="pre">col_to_datatype_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.col_to_numeric_array"><code class="docutils literal notranslate"><span class="pre">col_to_numeric_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.column_count_str"><code class="docutils literal notranslate"><span class="pre">column_count_str()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.column_data_types"><code class="docutils literal notranslate"><span class="pre">column_data_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.column_value_count_str"><code class="docutils literal notranslate"><span class="pre">column_value_count_str()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.columns_of_datatype"><code class="docutils literal notranslate"><span class="pre">columns_of_datatype()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.columns_values_from_df"><code class="docutils literal notranslate"><span class="pre">columns_values_from_df()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.combine_columns_as_str"><code class="docutils literal notranslate"><span class="pre">combine_columns_as_str()</span></code></a></li>
@@ -1691,7 +1695,7 @@ using Kirchhoff’s Laws.</p>
 <p>This is adapted from algorithm CACM 491 <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id2" role="note">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Paton, K. An algorithm for finding a fundamental set of
 cycles of a graph. Comm. ACM 12, 9 (Sept 1969), 514-518.</p>
@@ -2021,7 +2025,7 @@ the list has an order to them</p>
 <p>Utils functions for helping to work with files</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.file_utils.file_from_dicts">
-<span class="sig-prename descclassname"><span class="pre">datasci_tools.file_utils.</span></span><span class="sig-name descname"><span class="pre">file_from_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seperation_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/file_utils.html#file_from_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.file_utils.file_from_dicts" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.file_utils.</span></span><span class="sig-name descname"><span class="pre">file_from_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seperation_character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/file_utils.html#file_from_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.file_utils.file_from_dicts" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: Convert list of dictionaries to
 a file with one dictionary per line</p>
 </dd></dl>
@@ -2068,8 +2072,8 @@ filu.file_regex_search(</p>
 <div><p>filepath = ‘/neurd_packages/mesh_tools/mesh_tools/skeleton_utils.py’,
 patterns = [</p>
 <blockquote>
-<div><p>“nviz.([<a href="#id19"><span class="problematic" id="id20">a-zA-Z1-9_</span></a>-]*)(“,
-#”sm.([<a href="#id21"><span class="problematic" id="id22">a-zA-Z1-9_</span></a>-]*)(”</p>
+<div><p>“nviz.([<a href="#id21"><span class="problematic" id="id22">a-zA-Z1-9_</span></a>-]*)(“,
+#”sm.([<a href="#id23"><span class="problematic" id="id24">a-zA-Z1-9_</span></a>-]*)(”</p>
 </div></blockquote>
 <p>],
 verbose = True,
@@ -7901,7 +7905,7 @@ from C to Fortran or Fortran to C)</p>
 <p>Ex:
 image_height=3
 image_width=4
-<a href="#id23"><span class="problematic" id="id24">mp_</span></a> = np.array([ 3,  6,  1,  4, 10,  2])</p>
+<a href="#id25"><span class="problematic" id="id26">mp_</span></a> = np.array([ 3,  6,  1,  4, 10,  2])</p>
 <dl class="simple">
 <dt>ind_conversion(</dt><dd><dl class="simple">
 <dt>idx=mp_,</dt><dd><p>shape = (image_height,image_width),
@@ -8978,9 +8982,59 @@ return_df = True,</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.pandas_utils.column_count_str">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">column_count_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unique_counts'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datasci_tools.pandas_utils.column_count_str" title="Permalink to this definition"></a></dt>
+<dd><section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Permalink to this heading"></a></h3>
+<p>Want to print the bins and count of bins
+after grouping a dataframe</p>
+</section>
+<section id="pseudocode">
+<h3>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Count the unique number of certain column</p></li>
+<li><p>Export that dataframe as a dictionary</p></li>
+<li><p>print the dictionary</p></li>
+</ol>
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>column_value_count_str(</dt><dd><p>df = pd.DataFrame.from_dict(dict(color = [‘r’,’b’,’b’],id = [‘Brendan’,”Celii”,”Bob”]))
+column = “color”</p>
+</dd>
+</dl>
+<p>)</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.pandas_utils.column_data_types">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">column_data_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#column_data_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.column_data_types" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.pandas_utils.column_value_count_str">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">column_value_count_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unique_counts'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#column_value_count_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.column_value_count_str" title="Permalink to this definition"></a></dt>
+<dd><section id="id15">
+<h3>Purpose<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<p>Want to print the bins and count of bins
+after grouping a dataframe</p>
+</section>
+<section id="id16">
+<h3>Pseudocode<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Count the unique number of certain column</p></li>
+<li><p>Export that dataframe as a dictionary</p></li>
+<li><p>print the dictionary</p></li>
+</ol>
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>column_value_count_str(</dt><dd><p>df = pd.DataFrame.from_dict(dict(color = [‘r’,’b’,’b’],id = [‘Brendan’,”Celii”,”Bob”]))
+column = “color”</p>
+</dd>
+</dl>
+<p>)</p>
+</section>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.pandas_utils.columns_of_datatype">
@@ -10622,11 +10676,11 @@ D: not digit
 s: whitespace
 ^: beginning of string
 $: end of string (end of line)
-<a href="#id15"><span class="problematic" id="id16">|</span></a>: means or</p>
+<a href="#id17"><span class="problematic" id="id18">|</span></a>: means or</p>
 <p>d{3}: 3 digits
 d?: optionally 0 or 1 digit
 d{0,3}: 0 to 3 digits</p>
-<p>[<a href="#id25"><span class="problematic" id="id26">A-Za-z0-9_</span></a>s]+ : will match a length 1 or longer string with only characters_numbers and underscores and white space</p>
+<p>[<a href="#id27"><span class="problematic" id="id28">A-Za-z0-9_</span></a>s]+ : will match a length 1 or longer string with only characters_numbers and underscores and white space</p>
 <p>Rule 1: Surround expression with () to designate it as a group</p>
 <p># ——– how to use wildcard character in teh middle
 dict_type = “global_parameters”
@@ -11122,7 +11176,7 @@ from datasci_tools import string_utils as stru</p>
 </div></blockquote>
 <dl>
 <dt>“,</dt><dd><blockquote>
-<div><p>#string = ”   hello “,
+<div><p>#string = “   hello “,
 verbose = True,</p>
 </div></blockquote>
 <p>)</p>
@@ -11201,7 +11255,7 @@ data = decompress_pickle(‘example_cp.pbz2’)</p>
 using regex expressions</p>
 <p>Ex: This replaces the need for this
 decomp_path = Path(“/mnt/dj-stor01/platinum/minnie65/02/decomposition/”)
-files = list(decomp_path.glob(”<a href="#id17"><span class="problematic" id="id18">*</span></a>axon_v7.pbz2”))
+files = list(decomp_path.glob(”<a href="#id19"><span class="problematic" id="id20">*</span></a>axon_v7.pbz2”))
 files</p>
 </dd></dl>
 
