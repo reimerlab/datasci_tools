@@ -949,12 +949,24 @@
     <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">col</span><span class="p">,</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">x</span></div>
 
-<div class="viewcode-block" id="convert_columns_to_numeric"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.convert_columns_to_numeric">[docs]</a><span class="k">def</span> <span class="nf">convert_columns_to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_columns_to_numeric"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.convert_columns_to_numeric">[docs]</a><span class="k">def</span> <span class="nf">convert_columns_to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">suppress_errors</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">convert_to_array_like</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suppress_errors</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         
     <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="df_to_numeric"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.df_to_numeric">[docs]</a><span class="k">def</span> <span class="nf">df_to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">suppress_errors</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">convert_columns_to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">suppress_errors</span> <span class="o">=</span> <span class="n">suppress_errors</span><span class="p">)</span></div>
+    
 
 <span class="c1">#from functools import reduce</span>
 <div class="viewcode-block" id="restrict_df_by_dict"><a class="viewcode-back" href="../../datasci_tools.html#datasci_tools.pandas_utils.restrict_df_by_dict">[docs]</a><span class="k">def</span> <span class="nf">restrict_df_by_dict</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">dict_restriction</span><span class="p">,</span><span class="n">return_indexes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>

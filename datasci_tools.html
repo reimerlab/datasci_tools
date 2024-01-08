@@ -999,6 +999,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.df_to_gzip"><code class="docutils literal notranslate"><span class="pre">df_to_gzip()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.df_to_index_dict"><code class="docutils literal notranslate"><span class="pre">df_to_index_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.df_to_list"><code class="docutils literal notranslate"><span class="pre">df_to_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.df_to_numeric"><code class="docutils literal notranslate"><span class="pre">df_to_numeric()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.df_to_render_table"><code class="docutils literal notranslate"><span class="pre">df_to_render_table()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.dict_column_to_columns"><code class="docutils literal notranslate"><span class="pre">dict_column_to_columns()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.pandas_utils.dicts_to_dataframe"><code class="docutils literal notranslate"><span class="pre">dicts_to_dataframe()</span></code></a></li>
@@ -9071,7 +9072,7 @@ there are no repeats in certain columns beforehand</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.pandas_utils.convert_columns_to_numeric">
-<span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">convert_columns_to_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#convert_columns_to_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.convert_columns_to_numeric" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">convert_columns_to_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#convert_columns_to_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.convert_columns_to_numeric" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -9175,6 +9176,11 @@ to just one dictionary indexed by the index</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.pandas_utils.df_to_list">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">df_to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tuples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#df_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.df_to_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.pandas_utils.df_to_numeric">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.pandas_utils.</span></span><span class="sig-name descname"><span class="pre">df_to_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/pandas_utils.html#df_to_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.pandas_utils.df_to_numeric" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
