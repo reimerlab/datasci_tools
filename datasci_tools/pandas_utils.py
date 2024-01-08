@@ -876,12 +876,24 @@ def col_to_numeric_array(col=None,
     x = pd.to_numeric(col,errors='coerce').to_list()
     return x
 
-def convert_columns_to_numeric(df,columns):
+def convert_columns_to_numeric(df,columns=None,suppress_errors = False):
+    if columns is None:
+        columns = list(df.columns)
     columns = nu.convert_to_array_like(columns)
     for k in columns:
-        df[k] = pd.to_numeric(df[k])
+        try:
+            df[k] = pd.to_numeric(df[k])
+        except Exception as e:
+            if suppress_errors:
+                continue
+            else:
+                raise Exception(str(e))
         
     return df
+
+def df_to_numeric(df,suppress_errors = True):
+    return convert_columns_to_numeric(df,columns=None,suppress_errors = suppress_errors)
+    
 
 #from functools import reduce
 def restrict_df_by_dict(df,dict_restriction,return_indexes=False):
