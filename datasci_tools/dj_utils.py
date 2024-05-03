@@ -342,6 +342,170 @@ def query_table_from_kwargs(
         return table
     else:
         return table & key
+    
+    
+def dependencies_from_definition(
+    definition,
+    ignore_list = ("master",),
+    ignore_proj = True,
+    ):
+    """
+    Purpose: To extract from a defintion string
+    all dependencies that aren't the master
+
+    Pseudocode: 
+    1) Split the string by "---"
+    For each line in the string
+        a. eliminate all white space
+        b. split by -> 
+        c. If the following is not master, add to the list
+    """
+    if ignore_list is None:
+        ignore_list = []
+        
+    def dependency_on_line(line):
+        line = line.replace(" ","")
+        deps = line.split("->")
+        if len(deps) <= 1:
+            return None
+        elif len(deps) > 2:
+            raise Exception("Unexpected multiple ->")
+        else:
+            return deps[1]
+
+    if not hasattr(definition,"split"):
+        try:
+            definition = definition.definition
+        except:
+            return None
+    primary = definition.split("---")[0]
+    lines = primary.split("\n")
+    dependencies = []
+    for i,d in enumerate(lines):
+        dep = dependency_on_line(d)
+        if dep not in ignore_list and dep is not None:
+            if ignore_proj:
+                idx = dep.find(f".proj(")
+                if idx != -1:
+                    dep = dep[:idx]
+            dependencies.append(dep)
+            
+    return dependencies
+
+def dj_table_check(
+    obj,
+    schema=None,
+    table_strs = ("datajoint.","table"),
+    table_name_exclude_str = ("master","key_source","_log"),
+    ):
+    for s in table_name_exclude_str:
+        if s in obj:
+            return False
+    if schema is not None:
+        try:
+            obj = getattr(schema,obj)
+        except:
+            return False
+    
+    curr_str = str(type(obj))
+    for s in table_strs:
+        if s not in curr_str:
+            return False
+        
+    return True
+
+def table_attributes(obj):
+    return [k for k in dir(obj) if dj_table_check(k,obj)]
+
+import networkx as nx
+
+def dependency_dag(
+    root,
+    root_name="root",
+    verbose = False,
+    schema_always_starts = True,
+    return_graph = True,
+    ):
+    """
+    Purpose: Get a topological sorting of all the tables in 
+    a schema
+
+    Brainstorming:
+    1) start with the schema as the parent object, make parent name
+    2) get the top most table and name from the queue
+    3) For each table attribute in current table:
+        d. Analyze the definition for dependencies
+        e. If a dependency is master, use the current parent object name as the master
+        f. Add the dependency as an edge in the graph
+        g. Add the table to the queue of tables to check (as long as not already checked before) (along with its namez)
+    4) continue until no new tables to check
+    """
+    schema_name = root_name.split(".")[0]
+
+    if root is None:
+        root = eval(root_name)
+
+
+    obj_to_check = {root_name,}
+    edges = []
+
+
+    while obj_to_check:
+        p = obj_to_check.pop()
+        obj = eval(p)
+        dependencies = djut.dependencies_from_definition(
+            definition=obj,
+            ignore_list = None,
+        )
+
+        parent = ".".join(p.split(".")[:-1])
+
+        if dependencies is None:
+            dependencies = []
+
+
+        table_edges = [(k.replace('master',parent),p) for k in dependencies]
+        if schema_always_starts:
+            table_edges = [(f"{schema_name}.{k}",v) if f"{root_name}." not in k
+                          else (k,v) for k,v in table_edges]
+        edges += table_edges
+
+        children_names = [f"{p}.{k}" for k in djut.table_attributes(obj)]
+    #     for k in children_names:
+    #         P[k] = p   
+        obj_to_check.update(children_names)
+
+        if verbose:
+            print(f"Processing table {p}:")
+            print(f"\tdependency edges:")
+            for e in table_edges:
+                print(f"\t\t{e}")
+            print(f"\tchildren tables")
+            for c in children_names:
+                print(f"\t\t{c}")
+        
+        
+    if return_graph:
+        dag = nx.DiGraph()
+        dag.add_edges_from(edges)
+        return
+    else:
+        return edges
+    
+def topological_sorted_tables(
+    root,
+    root_name="root",
+    verbose = False,
+    **kwargs
+    ):
+    
+    dag = dependency_dag(
+        root,
+        root_name=root_name,
+        verbose = verbose,
+        **kwargs
+        )
+    return list(nx.topological_sort(dag))
 
 
 #--- from datasci_tools ---

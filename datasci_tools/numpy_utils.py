@@ -2436,9 +2436,52 @@ array_from_txt = loadtxt
 read_txt = loadtxt
 
 
+def elements_from_row_col_arrays(arr,row,col):
+    """
+    Given information of which elements to extract in the form
+    of 2 sepearte lists: the rows and the columns, how to extract those elements
+    
+    Idea: First index into the rows
+    """
+    arr = np.array(arr)
+    return arr[row,col]
+
+def binary_combinations_from_n_bits(n):
+    return list(map(list, itertools.product([0, 1], repeat=n)))
+
+def bounding_box_vertices(
+    min_coord,
+    max_coord = None,
+    plot = False):
+    """
+    Purpose: calculate all the vertices of the bounding box
+    """
+    min_coord = np.array(min_coord)
+    if max_coord is None and min_coord.ndim == 2:
+        max_coord = min_coord[1]
+        min_coord = min_coord[0]
+    else:
+        raise ValueError("if max_coord is None then min_coord array needs to be a 2D array")
+    
+    coords = np.vstack([min_coord,max_coord])
+    n = coords.shape[-1]
+    bin_map = nu.binary_combinations_from_n_bits(n)
+    idx = np.arange(n)
+    coordinates = np.vstack([coords[k,idx] for k in bin_map]) 
+
+    if plot:
+        ipvu.plot_objects(
+            scatters=[coordinates],
+            buffer=1,
+            axis_box_off = False,
+            scatter_size=1
+        )
+        
+    return coordinates
 
 #--- from datasci_tools ---
 from . import networkx_utils as xu
 from . import pandas_utils as pu
+from . import ipyvolume_utils as ipvu
 
 from . import numpy_utils as nu
