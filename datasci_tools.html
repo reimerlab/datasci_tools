@@ -793,11 +793,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bbox_with_buffer"><code class="docutils literal notranslate"><span class="pre">bbox_with_buffer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bin_array"><code class="docutils literal notranslate"><span class="pre">bin_array()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bin_ndim_array"><code class="docutils literal notranslate"><span class="pre">bin_ndim_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.binary_combinations_from_n_bits"><code class="docutils literal notranslate"><span class="pre">binary_combinations_from_n_bits()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.binary_permutation_matrix"><code class="docutils literal notranslate"><span class="pre">binary_permutation_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box"><code class="docutils literal notranslate"><span class="pre">bounding_box()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box_corners"><code class="docutils literal notranslate"><span class="pre">bounding_box_corners()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box_midpoint"><code class="docutils literal notranslate"><span class="pre">bounding_box_midpoint()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box_side_lengths"><code class="docutils literal notranslate"><span class="pre">bounding_box_side_lengths()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box_vertices"><code class="docutils literal notranslate"><span class="pre">bounding_box_vertices()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bounding_box_volume"><code class="docutils literal notranslate"><span class="pre">bounding_box_volume()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bouning_box_corners"><code class="docutils literal notranslate"><span class="pre">bouning_box_corners()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.bouning_box_midpoint"><code class="docutils literal notranslate"><span class="pre">bouning_box_midpoint()</span></code></a></li>
@@ -833,6 +835,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.eigenvalue_max"><code class="docutils literal notranslate"><span class="pre">eigenvalue_max()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.eigenvalue_max_sym"><code class="docutils literal notranslate"><span class="pre">eigenvalue_max_sym()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.eigenvalue_min"><code class="docutils literal notranslate"><span class="pre">eigenvalue_min()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.elements_from_row_col_arrays"><code class="docutils literal notranslate"><span class="pre">elements_from_row_col_arrays()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.empty_n_by_m_default_matrix"><code class="docutils literal notranslate"><span class="pre">empty_n_by_m_default_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.equal_depth_bins"><code class="docutils literal notranslate"><span class="pre">equal_depth_bins()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datasci_tools.numpy_utils.equal_width_bins"><code class="docutils literal notranslate"><span class="pre">equal_width_bins()</span></code></a></li>
@@ -7542,6 +7545,11 @@ verbose = False</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.numpy_utils.binary_combinations_from_n_bits">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">binary_combinations_from_n_bits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#binary_combinations_from_n_bits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.binary_combinations_from_n_bits" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.numpy_utils.binary_permutation_matrix">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">binary_permutation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#binary_permutation_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.binary_permutation_matrix" title="Permalink to this definition"></a></dt>
 <dd><p>Purpose: to get a binary matrix of n number of variables
@@ -7567,6 +7575,12 @@ showing all the possible binary combinations</p>
 <dt class="sig sig-object py" id="datasci_tools.numpy_utils.bounding_box_side_lengths">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">bounding_box_side_lengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#bounding_box_side_lengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.bounding_box_side_lengths" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.numpy_utils.bounding_box_vertices">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">bounding_box_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_coord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_coord</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#bounding_box_vertices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.bounding_box_vertices" title="Permalink to this definition"></a></dt>
+<dd><p>Purpose: calculate all the vertices of the bounding box</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.numpy_utils.bounding_box_volume">
@@ -7835,6 +7849,14 @@ all of the labels</p>
 <dt class="sig sig-object py" id="datasci_tools.numpy_utils.eigenvalue_min">
 <span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">eigenvalue_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#eigenvalue_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.eigenvalue_min" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="datasci_tools.numpy_utils.elements_from_row_col_arrays">
+<span class="sig-prename descclassname"><span class="pre">datasci_tools.numpy_utils.</span></span><span class="sig-name descname"><span class="pre">elements_from_row_col_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datasci_tools/numpy_utils.html#elements_from_row_col_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#datasci_tools.numpy_utils.elements_from_row_col_arrays" title="Permalink to this definition"></a></dt>
+<dd><p>Given information of which elements to extract in the form
+of 2 sepearte lists: the rows and the columns, how to extract those elements</p>
+<p>Idea: First index into the rows</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="datasci_tools.numpy_utils.empty_n_by_m_default_matrix">
