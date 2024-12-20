@@ -4464,6 +4464,46 @@ def column_value_count_str(
 #from datasci_tools import pandas_utils as pu
 column_count_str = column_value_count_str
 
+def df_to_latex(
+    df,
+    filepath="./df_latex.tex",
+    longtable = False,
+    **kwargs):
+    
+    # Generate LaTeX table from DataFrame
+    latex_table = df.to_latex(
+        index=False,
+        longtable=longtable,
+        **kwargs)
+
+    return latex_table
+
+def csv_to_latex(
+    filepath,
+    return_str = False,
+    output_path=None,
+    longtable = False,
+    **kwargs):
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(filepath)
+    latex_table = df_to_latex(
+        df,
+        longtable=longtable,
+        **kwargs)
+    
+    if return_str:
+        return latex_table
+    
+    if output_path is None:
+        output_path = str(filepath)
+    output_filepath = output_path.replace('.csv', '.tex')
+
+    with open(output_filepath, 'w') as f:
+        f.write(latex_table)
+
+    return output_filepath
+
+
 
 
 #--- from datasci_tools ---

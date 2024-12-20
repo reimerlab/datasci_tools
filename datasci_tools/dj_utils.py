@@ -343,11 +343,48 @@ def query_table_from_kwargs(
     else:
         return table & key
     
+def formatted_table_name(
+    table_name,
+    verbose = False):
+    return_name = str(table_name)
+    root_replacements = {
+        'microns_h01_auto_proofreading':"h01auto",
+        'microns_h01_morphology':"h01mor",
+        'microns_h01_materialization':"h01mat",
+    }
+    replacements = {
+        '`.`__':".",
+        '`':"",
+        "__":"_",
+        "#":"",
+    }
+    replacements.update({k:"" for k in root_replacements})
+    
+    root = None
+    #print(f"table_name = {table_name}")
+    for k,v in root_replacements.items():
+        if k in table_name:
+            root = v
+            #print(f"root = {root}")
+            break
+    
+    for o,n in replacements.items():
+        return_name = return_name.replace(o,n)
+    return_name = "".join([k.title() for k in return_name.split("_")])
+    
+    if root is not None:
+        return_name = root + return_name
+    
+    if verbose:
+        print(f"Before {table_name}, After: {return_name}")
+    return return_name
+
     
 def dependencies_from_definition(
     definition,
     ignore_list = ("master",),
     ignore_proj = True,
+    format_names = True
     ):
     """
     Purpose: To extract from a defintion string
@@ -369,15 +406,19 @@ def dependencies_from_definition(
         if len(deps) <= 1:
             return None
         elif len(deps) > 2:
-            raise Exception("Unexpected multiple ->")
+            raise Exception("Unexpcted multiple ->")
         else:
             return deps[1]
 
     if not hasattr(definition,"split"):
-        try:
+        if hasattr(definition,"definition") and hasattr(definition.definition,"split"):
             definition = definition.definition
-        except:
+        elif hasattr(definition,"describe"):
+            with su.suppress_stdout_stderr():
+                definition = definition.describe()
+        else:
             return None
+        
     primary = definition.split("---")[0]
     lines = primary.split("\n")
     dependencies = []
@@ -389,7 +430,9 @@ def dependencies_from_definition(
                 if idx != -1:
                     dep = dep[:idx]
             dependencies.append(dep)
-            
+    # want to clean dependencies
+    if format_names:
+        dependencies = map(formatted_table_name,dependencies)
     return dependencies
 
 def dj_table_check(
@@ -425,6 +468,8 @@ def dependency_dag(
     verbose = False,
     schema_always_starts = True,
     return_graph = True,
+    add_dep_to_member_dep = True,
+    verbose_member = False,
     ):
     """
     Purpose: Get a topological sorting of all the tables in 
@@ -440,23 +485,52 @@ def dependency_dag(
         g. Add the table to the queue of tables to check (as long as not already checked before) (along with its namez)
     4) continue until no new tables to check
     """
+    debug = False
     schema_name = root_name.split(".")[0]
 
     if root is None:
         root = eval(root_name)
 
-
+    total_objs = {}
     obj_to_check = {root_name,}
     edges = []
 
+    root_search_str = f"{root_name}."
 
     while obj_to_check:
         p = obj_to_check.pop()
-        obj = eval(p)
-        dependencies = djut.dependencies_from_definition(
+        if debug:
+            print(
+                f"p = {p}",f"root = {root}"
+            )
+        if root_name is not None and root_search_str in p:
+            obj = eval(f'root.{p.replace(root_search_str,"")}')
+            
+        elif root_name == p:
+            obj = root
+        else:
+            obj = eval(p)
+            
+        if debug:
+            print(
+                f"obj AFTER = {obj}"
+            )
+            
+        
+        if debug:
+            print(f"-----{obj}----")
+            try:
+                print(f"-----{formatted_table_name(obj)}----")
+            except:
+                pass
+            
+        dependencies = dependencies_from_definition(
             definition=obj,
             ignore_list = None,
         )
+        
+        if debug:
+            print(f"  -> dependencies: {dependencies}")
 
         parent = ".".join(p.split(".")[:-1])
 
@@ -470,10 +544,14 @@ def dependency_dag(
                           else (k,v) for k,v in table_edges]
         edges += table_edges
 
-        children_names = [f"{p}.{k}" for k in djut.table_attributes(obj)]
+        children_names = [f"{p}.{k}" for k in table_attributes(obj)]
     #     for k in children_names:
-    #         P[k] = p   
+    #         P[k] = p  
+        
         obj_to_check.update(children_names)
+        if debug:
+            print(f"children_names = {children_names}") 
+            print(f"obj_to_check = {obj_to_check}")
 
         if verbose:
             print(f"Processing table {p}:")
@@ -484,18 +562,85 @@ def dependency_dag(
             for c in children_names:
                 print(f"\t\t{c}")
         
+    if add_dep_to_member_dep:
+        #print(f"in add_dep_to_member_dep")
+        upstream = [k for k,v in edges]
+        downstream = [v for k,v in edges]
+        names = set(upstream).union(downstream)
+        #print(f"names = {names}")
+        for n in names:
+            member_name = f"{n}.Member" 
+            if member_name in names:
+                new_edges = [(k,n) for k,v in edges
+                          if v == member_name and k != n]
+                if verbose_member:
+                    print(f"for {n}, adding: {new_edges}")
+                edges += new_edges
         
     if return_graph:
         dag = nx.DiGraph()
         dag.add_edges_from(edges)
-        return
+        return dag
     else:
         return edges
     
+def ensure_parent_name_before_child(
+    string_list,
+    verbose = False
+    ):
+    """
+    Purpose: To move a string up on a list
+    so that no strings that fully contain that string are before it
+    
+    Pseudocode: 
+    As long as end is not 0
+    1) Get the string of "last" pointer
+    2) Find the indexes of all proceeding string that contain the string and are longer
+    3a) If the list is non-empty, insert the string before the first index in list
+    3b) if the list is empty, increment the last pointer
+    
+    Ex: 
+    test_list = [
+        "bogus",
+        "hellothere",
+        "hihello",
+        "hello",
+        "hi",
+    ]
+
+    ensure_parent_name_before_child(
+        test_list,
+        verbose = True)
+    """
+    last = len(string_list) - 1
+    while last > 0:
+        if verbose:
+            print(f"current list = {string_list}")
+            print(f"  On idx {last}")
+        curr_str = string_list[last]
+        child_str = [i for i,k in enumerate(string_list[:last])
+                    if curr_str in k and len(k) > len(curr_str)]
+        if len(child_str)>0:
+            new_idx = child_str[0]
+            new_list = string_list[:new_idx] + [curr_str] + string_list[new_idx:last]
+            if last != len(string_list):
+                new_list += string_list[last+1:]
+            string_list = new_list
+            if verbose:
+                print(f"found child idx = {new_idx}")
+                print(f"  new list = {new_list}")
+        else:
+            last -= 1
+            if verbose:
+                print(f"Didn't find child idx")
+            
+    return string_list
+
 def topological_sorted_tables(
     root,
     root_name="root",
     verbose = False,
+    sort_parent_child_tables = True,
     **kwargs
     ):
     
@@ -505,13 +650,17 @@ def topological_sorted_tables(
         verbose = verbose,
         **kwargs
         )
-    return list(nx.topological_sort(dag))
-
+    return_list = list(nx.topological_sort(dag))
+    
+    if sort_parent_child_tables:
+        return_list = ensure_parent_name_before_child(return_list)
+    return return_list
 
 #--- from datasci_tools ---
 from . import data_struct_utils as dsu
 from . import numpy_utils as nu
 from . import pandas_utils as pu
+from . import system_utils as su
 
 restrict_table_from_list = pu.restrict_df_from_list
 

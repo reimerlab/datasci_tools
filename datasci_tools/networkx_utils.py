@@ -4023,16 +4023,14 @@ def adjacency_feature_info(
     Process: get the information
     needed for GNN training
     1) Node names
-    2) Adjacency matrix
-    3) Feature matrix
+    2) feature names
+    3) Adjacency matrix
+    4) Feature matrix
 
     """
     if features is None:
         features = np.array(xu.node_df_features(G))
-    adj_matrix,nodelist = xu.adjacency_matrix(
-        G,
-        dense=dense_adjacency,
-        return_nodelist = True)
+    adj_matrix,nodelist =
     
     X = xu.feature_matrix_from_G(
         G,
