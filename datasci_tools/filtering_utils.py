@@ -516,6 +516,8 @@ def filter_to_one_by_query(
     return_df_before_query = False,
     verbose = False,
     go_to_next_query_if_zero = True,
+    global_attributes = None,
+    compute_relative_attributes_every_round = False,
     ):
     """
     Purpose: to filter a comparator object down
@@ -546,6 +548,7 @@ def filter_to_one_by_query(
         n_nodes_left = len(sub_G.nodes())
         if verbose:
             print(f"n_nodes_left = {n_nodes_left}")
+            print(f"nodes = {list(sub_G.nodes())}")
 
         
         if n_nodes_left == 1:
@@ -555,6 +558,13 @@ def filter_to_one_by_query(
             break
         elif n_nodes_left > 1:
             C.replace_G(sub_G)
+            if compute_relative_attributes_every_round:
+                if verbose:
+                    print(f"recomputing the global attributes")
+                C.compute_global_functions(
+                    attributes_list=global_attributes,
+                    verbose = verbose
+                )
             continue
         else:
             if go_to_next_query_if_zero:
