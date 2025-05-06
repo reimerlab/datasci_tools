@@ -2479,6 +2479,26 @@ def bounding_box_vertices(
         
     return coordinates
 
+def expand_indices(indices, offset, min_val=0, max_val=None):
+    """
+    Given a 1D array of integer indices, returns a sorted array of all
+    integers within ±offset of any index in the original list.
+    
+    Optionally clips to [min_val, max_val] if provided.
+    """
+    idx = np.asarray(indices, dtype=int)
+    # 1) make the ±offset array
+    offs = np.arange(-offset, offset+1)
+    # 2) broadcast and flatten
+    all_idx = (idx[:, None] + offs[None, :]).ravel()
+    # 3) optional clipping
+    if min_val is not None or max_val is not None:
+        lo = min_val if min_val is not None else all_idx.min()
+        hi = max_val if max_val is not None else all_idx.max()
+        all_idx = np.clip(all_idx, lo, hi)
+    # 4) unique & sorted
+    return np.unique(all_idx)
+
 #--- from datasci_tools ---
 from . import networkx_utils as xu
 from . import pandas_utils as pu
