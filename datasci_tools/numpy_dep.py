@@ -24,7 +24,10 @@ def abs(*args,**kwargs):
     return numpy.abs(*args,**kwargs)
 
 bool = numpy.bool_
-float = numpy.float_
+try:
+    float = numpy.float_
+except:
+    float = numpy.float64
 # def bool(*args,**kwargs):
 #     return numpy.bool_(*args,**kwargs)
 
